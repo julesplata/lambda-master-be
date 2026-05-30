@@ -1,0 +1,2899 @@
+{
+  "questions": [
+    {
+      "title": "Purpose of a load balancer",
+      "description": "What is the primary purpose of placing a load balancer in front of a pool of identical application servers?",
+      "difficulty": "easy",
+      "explanation": "A load balancer distributes incoming requests across multiple backend servers so no single instance is overwhelmed, improving throughput and availability.",
+      "options": [
+        {
+          "text": "To distribute incoming traffic across multiple servers",
+          "is_correct": true
+        },
+        {
+          "text": "To permanently store user session data",
+          "is_correct": false
+        },
+        {
+          "text": "To compile application code before deployment",
+          "is_correct": false
+        },
+        {
+          "text": "To encrypt the database at rest",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "load-balancing",
+        "scalability"
+      ]
+    },
+    {
+      "title": "Horizontal vs vertical scaling",
+      "description": "Which statement best describes horizontal scaling?",
+      "difficulty": "easy",
+      "explanation": "Horizontal scaling (scaling out) adds more machines to the pool, whereas vertical scaling (scaling up) adds more resources to a single machine.",
+      "options": [
+        {
+          "text": "Adding more machines to share the load",
+          "is_correct": true
+        },
+        {
+          "text": "Adding more CPU and RAM to a single machine",
+          "is_correct": false
+        },
+        {
+          "text": "Rewriting the app in a faster language",
+          "is_correct": false
+        },
+        {
+          "text": "Reducing the number of running services",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "scalability"
+      ]
+    },
+    {
+      "title": "What a cache is for",
+      "description": "Why would you add a cache layer such as Redis in front of a database?",
+      "difficulty": "easy",
+      "explanation": "Caches store frequently accessed data in fast memory to reduce latency and offload repeated reads from the database.",
+      "options": [
+        {
+          "text": "To serve frequently requested data faster and reduce database load",
+          "is_correct": true
+        },
+        {
+          "text": "To guarantee strong consistency for all writes",
+          "is_correct": false
+        },
+        {
+          "text": "To replace the need for a primary database entirely",
+          "is_correct": false
+        },
+        {
+          "text": "To increase write durability on disk",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "caching",
+        "performance"
+      ]
+    },
+    {
+      "title": "Stateless services and scaling",
+      "description": "Why are stateless application servers easier to scale horizontally?",
+      "difficulty": "medium",
+      "explanation": "Because they hold no client-specific state between requests, any instance can serve any request, so you can add or remove instances freely behind a load balancer.",
+      "options": [
+        {
+          "text": "Any instance can handle any request, so instances are interchangeable",
+          "is_correct": true
+        },
+        {
+          "text": "They never need a database connection",
+          "is_correct": false
+        },
+        {
+          "text": "They automatically encrypt all traffic",
+          "is_correct": false
+        },
+        {
+          "text": "They use less disk because they store all data in RAM",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "scalability",
+        "stateless"
+      ]
+    },
+    {
+      "title": "CAP theorem core trade-off",
+      "description": "According to the CAP theorem, when a network partition occurs, a distributed system must choose between which two properties?",
+      "difficulty": "medium",
+      "explanation": "During a partition you cannot have both consistency and availability; you must sacrifice one. CAP says: in the presence of a Partition, choose Consistency or Availability.",
+      "options": [
+        {
+          "text": "Consistency and availability",
+          "is_correct": true
+        },
+        {
+          "text": "Latency and throughput",
+          "is_correct": false
+        },
+        {
+          "text": "Durability and partition tolerance",
+          "is_correct": false
+        },
+        {
+          "text": "Security and performance",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "cap-theorem",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "Read replicas and scaling reads",
+      "description": "How do read replicas help a read-heavy application scale?",
+      "difficulty": "medium",
+      "explanation": "Read replicas copy data from the primary and serve read queries, distributing read load while the primary handles writes.",
+      "options": [
+        {
+          "text": "Read queries are spread across replicas, offloading the primary",
+          "is_correct": true
+        },
+        {
+          "text": "They allow concurrent writes to every replica",
+          "is_correct": false
+        },
+        {
+          "text": "They eliminate the need for caching",
+          "is_correct": false
+        },
+        {
+          "text": "They guarantee zero replication lag",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "scalability",
+        "replication"
+      ]
+    },
+    {
+      "title": "Latency vs throughput",
+      "description": "Which pair of definitions correctly distinguishes latency from throughput?",
+      "difficulty": "medium",
+      "explanation": "Latency is the time to complete a single operation; throughput is the number of operations completed per unit of time.",
+      "options": [
+        {
+          "text": "Latency is time per request; throughput is requests per unit time",
+          "is_correct": true
+        },
+        {
+          "text": "Latency is requests per second; throughput is time per request",
+          "is_correct": false
+        },
+        {
+          "text": "Both measure the same thing in different units",
+          "is_correct": false
+        },
+        {
+          "text": "Latency measures disk space; throughput measures CPU usage",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "performance"
+      ]
+    },
+    {
+      "title": "Cache eviction with LRU",
+      "description": "What does a Least Recently Used (LRU) cache eviction policy do when the cache is full?",
+      "difficulty": "medium",
+      "explanation": "LRU evicts the entry that has not been accessed for the longest time, assuming recently used items are more likely to be used again.",
+      "options": [
+        {
+          "text": "Evicts the entry that was accessed least recently",
+          "is_correct": true
+        },
+        {
+          "text": "Evicts the largest entry by size",
+          "is_correct": false
+        },
+        {
+          "text": "Evicts a random entry",
+          "is_correct": false
+        },
+        {
+          "text": "Evicts the most recently added entry",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "caching"
+      ]
+    },
+    {
+      "title": "Consistent hashing benefit",
+      "description": "What problem does consistent hashing primarily solve in a distributed cache or storage cluster?",
+      "difficulty": "hard",
+      "explanation": "Consistent hashing minimizes the number of keys that must be remapped when nodes are added or removed, avoiding a full reshuffle of the keyspace.",
+      "options": [
+        {
+          "text": "It minimizes key remapping when nodes join or leave",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees perfectly even load with no virtual nodes",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need for replication",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts keys before hashing",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "consistent-hashing",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "Eventual consistency meaning",
+      "description": "In an eventually consistent system, what guarantee is provided?",
+      "difficulty": "medium",
+      "explanation": "Eventual consistency guarantees that, absent new updates, all replicas will converge to the same value over time, but reads may be stale in the interim.",
+      "options": [
+        {
+          "text": "Replicas converge to the same value given enough time without new writes",
+          "is_correct": true
+        },
+        {
+          "text": "Every read always returns the most recent write immediately",
+          "is_correct": false
+        },
+        {
+          "text": "Writes are rejected until all replicas agree",
+          "is_correct": false
+        },
+        {
+          "text": "Data is never replicated to other nodes",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "consistency",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "Cache-aside pattern",
+      "description": "In the cache-aside (lazy loading) pattern, what happens on a cache miss?",
+      "difficulty": "medium",
+      "explanation": "On a miss the application reads from the database, then populates the cache so subsequent reads hit the cache.",
+      "options": [
+        {
+          "text": "The app loads from the database and then writes the value into the cache",
+          "is_correct": true
+        },
+        {
+          "text": "The cache automatically queries the database itself",
+          "is_correct": false
+        },
+        {
+          "text": "The request fails until the cache is warmed manually",
+          "is_correct": false
+        },
+        {
+          "text": "The write is sent only to the cache, never the database",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "caching"
+      ]
+    },
+    {
+      "title": "Thundering herd / cache stampede",
+      "description": "A popular cache key expires and thousands of concurrent requests all miss and hit the database at once. What is this problem called?",
+      "difficulty": "hard",
+      "explanation": "This is a cache stampede (thundering herd). Mitigations include request coalescing, locks, or staggered/early recomputation of TTLs.",
+      "options": [
+        {
+          "text": "A cache stampede (thundering herd)",
+          "is_correct": true
+        },
+        {
+          "text": "A split-brain",
+          "is_correct": false
+        },
+        {
+          "text": "A cold start",
+          "is_correct": false
+        },
+        {
+          "text": "A head-of-line block",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "caching",
+        "performance"
+      ]
+    },
+    {
+      "title": "Write-through vs write-back cache",
+      "description": "What is the key risk of a write-back (write-behind) cache compared to write-through?",
+      "difficulty": "hard",
+      "explanation": "Write-back acknowledges the write after updating only the cache and flushes to the store later, so a crash before the flush can lose data.",
+      "options": [
+        {
+          "text": "Data buffered in the cache can be lost if the node crashes before flushing",
+          "is_correct": true
+        },
+        {
+          "text": "It always has higher write latency than write-through",
+          "is_correct": false
+        },
+        {
+          "text": "It cannot be used with an LRU policy",
+          "is_correct": false
+        },
+        {
+          "text": "It prevents the cache from ever being read",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "caching"
+      ]
+    },
+    {
+      "title": "Availability and the 'nines'",
+      "description": "Roughly how much downtime per year does 99.9% ('three nines') availability allow?",
+      "difficulty": "medium",
+      "explanation": "Three nines permits about 8.76 hours of downtime per year (0.1% of 8760 hours).",
+      "options": [
+        {
+          "text": "About 8.8 hours",
+          "is_correct": true
+        },
+        {
+          "text": "About 5 minutes",
+          "is_correct": false
+        },
+        {
+          "text": "About 3.65 days",
+          "is_correct": false
+        },
+        {
+          "text": "About 88 hours",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "availability",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Reverse proxy role",
+      "description": "Which function is commonly handled by a reverse proxy?",
+      "difficulty": "easy",
+      "explanation": "A reverse proxy sits in front of servers and can terminate TLS, route requests, cache responses, and balance load.",
+      "options": [
+        {
+          "text": "TLS termination and request routing to backend servers",
+          "is_correct": true
+        },
+        {
+          "text": "Storing the canonical copy of all user data",
+          "is_correct": false
+        },
+        {
+          "text": "Running database migrations automatically",
+          "is_correct": false
+        },
+        {
+          "text": "Generating application source code",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "networking",
+        "reverse-proxy"
+      ]
+    },
+    {
+      "title": "Idempotency definition",
+      "description": "What does it mean for an operation to be idempotent?",
+      "difficulty": "medium",
+      "explanation": "An idempotent operation produces the same result whether performed once or multiple times, which is important for safe retries.",
+      "options": [
+        {
+          "text": "Performing it multiple times has the same effect as performing it once",
+          "is_correct": true
+        },
+        {
+          "text": "It can only ever be executed a single time",
+          "is_correct": false
+        },
+        {
+          "text": "It always returns a different result each call",
+          "is_correct": false
+        },
+        {
+          "text": "It must complete within a fixed time budget",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "idempotency",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Back-of-the-envelope estimation",
+      "description": "Why do system design interviews emphasize back-of-the-envelope capacity estimation?",
+      "difficulty": "medium",
+      "explanation": "Rough estimates of QPS, storage, and bandwidth justify architectural choices like sharding, caching, or CDN use before committing to a design.",
+      "options": [
+        {
+          "text": "To size the system and justify components like caches, shards, and CDNs",
+          "is_correct": true
+        },
+        {
+          "text": "To produce exact production capacity numbers",
+          "is_correct": false
+        },
+        {
+          "text": "To replace load testing entirely",
+          "is_correct": false
+        },
+        {
+          "text": "To decide the programming language",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "estimation",
+        "scalability"
+      ]
+    },
+    {
+      "title": "Sticky sessions trade-off",
+      "description": "What is a drawback of using sticky sessions (session affinity) on a load balancer?",
+      "difficulty": "hard",
+      "explanation": "Pinning a user to one server uneven-loads the pool and loses the user's session if that server fails, undermining horizontal scaling benefits.",
+      "options": [
+        {
+          "text": "Load can become uneven and a server failure drops that user's session",
+          "is_correct": true
+        },
+        {
+          "text": "It makes all servers fully stateless",
+          "is_correct": false
+        },
+        {
+          "text": "It guarantees perfectly even distribution",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need for a load balancer",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "load-balancing",
+        "sessions"
+      ]
+    },
+    {
+      "title": "Strong consistency cost",
+      "description": "What is a typical cost of providing strong consistency across geographically distributed replicas?",
+      "difficulty": "hard",
+      "explanation": "Coordinating replicas before acknowledging a write (e.g., quorum or consensus across regions) increases write latency and can reduce availability during partitions.",
+      "options": [
+        {
+          "text": "Higher write latency and reduced availability during partitions",
+          "is_correct": true
+        },
+        {
+          "text": "Unlimited write throughput",
+          "is_correct": false
+        },
+        {
+          "text": "Zero replication overhead",
+          "is_correct": false
+        },
+        {
+          "text": "Automatic conflict-free merging at no cost",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "consistency",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "CDN primary benefit",
+      "description": "What is the primary benefit of serving static assets through a CDN?",
+      "difficulty": "easy",
+      "explanation": "CDNs cache content at edge locations close to users, reducing latency and offloading origin servers.",
+      "options": [
+        {
+          "text": "Lower latency by serving content from edge locations near users",
+          "is_correct": true
+        },
+        {
+          "text": "Stronger database consistency",
+          "is_correct": false
+        },
+        {
+          "text": "Automatic schema migrations",
+          "is_correct": false
+        },
+        {
+          "text": "Guaranteed real-time write propagation",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "cdn",
+        "performance"
+      ]
+    },
+    {
+      "title": "Graceful degradation",
+      "description": "What does graceful degradation mean in system design?",
+      "difficulty": "medium",
+      "explanation": "When a dependency fails, the system continues to provide reduced functionality rather than failing completely (e.g., serving stale cache data).",
+      "options": [
+        {
+          "text": "Continuing to provide reduced functionality when a component fails",
+          "is_correct": true
+        },
+        {
+          "text": "Shutting down all services to protect data",
+          "is_correct": false
+        },
+        {
+          "text": "Automatically scaling up to infinite capacity",
+          "is_correct": false
+        },
+        {
+          "text": "Rejecting all requests during partial failures",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "reliability",
+        "resilience"
+      ]
+    },
+    {
+      "title": "Health checks in load balancing",
+      "description": "Why does a load balancer perform periodic health checks on backend instances?",
+      "difficulty": "easy",
+      "explanation": "Health checks let the load balancer stop routing traffic to unhealthy instances, improving availability.",
+      "options": [
+        {
+          "text": "To stop sending traffic to unhealthy instances",
+          "is_correct": true
+        },
+        {
+          "text": "To back up the database",
+          "is_correct": false
+        },
+        {
+          "text": "To compile new code on each instance",
+          "is_correct": false
+        },
+        {
+          "text": "To rotate TLS certificates",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "load-balancing",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Quorum reads and writes",
+      "description": "In a Dynamo-style system with N replicas, what does the condition W + R > N guarantee?",
+      "difficulty": "hard",
+      "explanation": "When the write quorum plus read quorum exceeds the replica count, the read set and write set overlap on at least one node, so reads can observe the latest write.",
+      "options": [
+        {
+          "text": "Read and write quorums overlap, so reads can see the latest write",
+          "is_correct": true
+        },
+        {
+          "text": "All replicas are always perfectly synchronized",
+          "is_correct": false
+        },
+        {
+          "text": "Writes never need to contact more than one node",
+          "is_correct": false
+        },
+        {
+          "text": "The system can tolerate any number of failures",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "fundamentals",
+        "consistency",
+        "quorum",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "SQL vs NoSQL choice",
+      "description": "Which scenario most favors a relational (SQL) database over a typical NoSQL store?",
+      "difficulty": "easy",
+      "explanation": "Workloads with complex relationships, multi-row transactions, and ad-hoc joins fit relational databases well.",
+      "options": [
+        {
+          "text": "Highly relational data needing multi-row ACID transactions and joins",
+          "is_correct": true
+        },
+        {
+          "text": "Massive append-only logs with a simple key lookup",
+          "is_correct": false
+        },
+        {
+          "text": "Schema-less documents that change shape frequently",
+          "is_correct": false
+        },
+        {
+          "text": "Purely in-memory ephemeral counters",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "sql",
+        "nosql"
+      ]
+    },
+    {
+      "title": "ACID atomicity",
+      "description": "What does the 'A' (Atomicity) in ACID guarantee for a transaction?",
+      "difficulty": "easy",
+      "explanation": "Atomicity ensures all operations in a transaction either complete fully or have no effect at all; partial application is impossible.",
+      "options": [
+        {
+          "text": "All operations commit together or none do",
+          "is_correct": true
+        },
+        {
+          "text": "Transactions execute as fast as possible",
+          "is_correct": false
+        },
+        {
+          "text": "Data is stored on at least two disks",
+          "is_correct": false
+        },
+        {
+          "text": "Every read returns committed data only",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "acid",
+        "transactions"
+      ]
+    },
+    {
+      "title": "Database index purpose",
+      "description": "What is the primary purpose of adding an index to a database column?",
+      "difficulty": "easy",
+      "explanation": "An index speeds up lookups and range queries on that column by avoiding full table scans, at the cost of extra storage and slower writes.",
+      "options": [
+        {
+          "text": "To speed up read queries that filter or sort on that column",
+          "is_correct": true
+        },
+        {
+          "text": "To compress the entire table",
+          "is_correct": false
+        },
+        {
+          "text": "To make all writes faster",
+          "is_correct": false
+        },
+        {
+          "text": "To enforce that the column is encrypted",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "indexing",
+        "performance"
+      ]
+    },
+    {
+      "title": "Index write trade-off",
+      "description": "What is a cost of adding many indexes to a frequently written table?",
+      "difficulty": "medium",
+      "explanation": "Every insert/update/delete must also update each index, so write performance degrades and storage grows as index count increases.",
+      "options": [
+        {
+          "text": "Writes become slower because each index must be maintained",
+          "is_correct": true
+        },
+        {
+          "text": "Reads on indexed columns become slower",
+          "is_correct": false
+        },
+        {
+          "text": "The table can no longer be queried",
+          "is_correct": false
+        },
+        {
+          "text": "Transactions lose atomicity",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "indexing",
+        "performance"
+      ]
+    },
+    {
+      "title": "Sharding definition",
+      "description": "What is database sharding?",
+      "difficulty": "medium",
+      "explanation": "Sharding horizontally partitions a dataset across multiple databases/nodes, each holding a subset of the rows, to scale beyond one machine.",
+      "options": [
+        {
+          "text": "Splitting data horizontally across multiple databases by a shard key",
+          "is_correct": true
+        },
+        {
+          "text": "Copying the full dataset to every node",
+          "is_correct": false
+        },
+        {
+          "text": "Compressing old rows into archive files",
+          "is_correct": false
+        },
+        {
+          "text": "Adding indexes to every column",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "sharding",
+        "scalability"
+      ]
+    },
+    {
+      "title": "Choosing a shard key",
+      "description": "What is the main risk of choosing a poor shard key?",
+      "difficulty": "hard",
+      "explanation": "A skewed shard key concentrates data and traffic on a few shards (hot shards), defeating the purpose of horizontal partitioning.",
+      "options": [
+        {
+          "text": "Hot shards: uneven data and traffic distribution",
+          "is_correct": true
+        },
+        {
+          "text": "It prevents the use of any index",
+          "is_correct": false
+        },
+        {
+          "text": "It automatically violates ACID",
+          "is_correct": false
+        },
+        {
+          "text": "It doubles storage on every shard",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "sharding",
+        "scalability"
+      ]
+    },
+    {
+      "title": "Normalization goal",
+      "description": "What is the main goal of normalizing a relational schema?",
+      "difficulty": "medium",
+      "explanation": "Normalization reduces data redundancy and update anomalies by organizing data into related tables with foreign keys.",
+      "options": [
+        {
+          "text": "Reduce redundancy and avoid update anomalies",
+          "is_correct": true
+        },
+        {
+          "text": "Maximize duplication for faster reads",
+          "is_correct": false
+        },
+        {
+          "text": "Eliminate the need for primary keys",
+          "is_correct": false
+        },
+        {
+          "text": "Store all data in a single wide table",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "data-modeling",
+        "normalization"
+      ]
+    },
+    {
+      "title": "Denormalization for reads",
+      "description": "Why might you deliberately denormalize data in a read-heavy system?",
+      "difficulty": "medium",
+      "explanation": "Denormalization duplicates data to avoid expensive joins at read time, trading write complexity and storage for faster reads.",
+      "options": [
+        {
+          "text": "To avoid expensive joins and speed up reads",
+          "is_correct": true
+        },
+        {
+          "text": "To guarantee third normal form",
+          "is_correct": false
+        },
+        {
+          "text": "To reduce total storage used",
+          "is_correct": false
+        },
+        {
+          "text": "To make writes simpler",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "data-modeling",
+        "performance"
+      ]
+    },
+    {
+      "title": "B-tree index strength",
+      "description": "Which query pattern does a B-tree index handle efficiently?",
+      "difficulty": "medium",
+      "explanation": "B-tree indexes keep keys in sorted order, making them efficient for equality and range queries (e.g., BETWEEN, ORDER BY).",
+      "options": [
+        {
+          "text": "Range and ordered lookups such as BETWEEN and ORDER BY",
+          "is_correct": true
+        },
+        {
+          "text": "Full-text fuzzy matching across documents",
+          "is_correct": false
+        },
+        {
+          "text": "Geospatial nearest-neighbor search",
+          "is_correct": false
+        },
+        {
+          "text": "Approximate set membership tests",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "indexing"
+      ]
+    },
+    {
+      "title": "Object storage use case",
+      "description": "Which is the best fit for an object store like Amazon S3?",
+      "difficulty": "easy",
+      "explanation": "Object stores excel at storing large, immutable blobs (images, videos, backups) accessed by key, not transactional row updates.",
+      "options": [
+        {
+          "text": "Storing large files like images, videos, and backups",
+          "is_correct": true
+        },
+        {
+          "text": "Running complex multi-table joins",
+          "is_correct": false
+        },
+        {
+          "text": "Enforcing foreign key constraints",
+          "is_correct": false
+        },
+        {
+          "text": "Sub-millisecond transactional counters",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "storage",
+        "object-storage"
+      ]
+    },
+    {
+      "title": "Connection pooling",
+      "description": "Why do applications use a database connection pool?",
+      "difficulty": "medium",
+      "explanation": "Establishing connections is expensive; a pool reuses a bounded set of open connections, reducing latency and protecting the database from connection exhaustion.",
+      "options": [
+        {
+          "text": "To reuse connections and limit concurrent load on the database",
+          "is_correct": true
+        },
+        {
+          "text": "To encrypt every query automatically",
+          "is_correct": false
+        },
+        {
+          "text": "To shard data across nodes",
+          "is_correct": false
+        },
+        {
+          "text": "To cache query results in the application",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "connection-pooling",
+        "performance"
+      ]
+    },
+    {
+      "title": "Replication lag impact",
+      "description": "An app writes to the primary then immediately reads from a replica and sees stale data. What is the cause?",
+      "difficulty": "medium",
+      "explanation": "Asynchronous replication means a replica may not yet have applied the latest write, so a read-after-write on a replica can be stale (replication lag).",
+      "options": [
+        {
+          "text": "Replication lag between primary and replica",
+          "is_correct": true
+        },
+        {
+          "text": "The index is corrupted",
+          "is_correct": false
+        },
+        {
+          "text": "The transaction was not atomic",
+          "is_correct": false
+        },
+        {
+          "text": "The shard key was wrong",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "replication",
+        "consistency"
+      ]
+    },
+    {
+      "title": "Write-ahead log (WAL)",
+      "description": "What is the primary purpose of a write-ahead log in a database?",
+      "difficulty": "hard",
+      "explanation": "The WAL records changes durably before applying them to data files, enabling crash recovery and durability without flushing every page synchronously.",
+      "options": [
+        {
+          "text": "To ensure durability and enable crash recovery",
+          "is_correct": true
+        },
+        {
+          "text": "To speed up read-only queries",
+          "is_correct": false
+        },
+        {
+          "text": "To compress historical data",
+          "is_correct": false
+        },
+        {
+          "text": "To replace the need for indexes",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "durability",
+        "wal"
+      ]
+    },
+    {
+      "title": "LSM tree write advantage",
+      "description": "Why are LSM-tree-based stores (e.g., Cassandra, RocksDB) well suited to write-heavy workloads?",
+      "difficulty": "hard",
+      "explanation": "LSM trees buffer writes in memory and flush them sequentially to disk, turning random writes into fast sequential I/O, with compaction merging segments later.",
+      "options": [
+        {
+          "text": "They convert random writes into fast sequential disk writes",
+          "is_correct": true
+        },
+        {
+          "text": "They never need compaction",
+          "is_correct": false
+        },
+        {
+          "text": "They store all data in a single sorted file forever",
+          "is_correct": false
+        },
+        {
+          "text": "They avoid using memory entirely",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "storage",
+        "lsm-tree"
+      ]
+    },
+    {
+      "title": "Isolation level: read committed",
+      "description": "Under the READ COMMITTED isolation level, which anomaly is still possible?",
+      "difficulty": "hard",
+      "explanation": "READ COMMITTED prevents dirty reads but allows non-repeatable reads, where re-reading a row within a transaction can return different committed values.",
+      "options": [
+        {
+          "text": "Non-repeatable reads",
+          "is_correct": true
+        },
+        {
+          "text": "Dirty reads",
+          "is_correct": false
+        },
+        {
+          "text": "Lost updates are impossible by definition",
+          "is_correct": false
+        },
+        {
+          "text": "No anomalies are possible",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "transactions",
+        "isolation"
+      ]
+    },
+    {
+      "title": "Time-series database fit",
+      "description": "Which workload is a time-series database optimized for?",
+      "difficulty": "medium",
+      "explanation": "Time-series databases optimize for high-volume timestamped writes and time-window aggregations, like metrics and IoT sensor data.",
+      "options": [
+        {
+          "text": "High-volume timestamped metrics with time-range queries",
+          "is_correct": true
+        },
+        {
+          "text": "Complex many-to-many relational joins",
+          "is_correct": false
+        },
+        {
+          "text": "Full-text document search",
+          "is_correct": false
+        },
+        {
+          "text": "Storing large binary blobs",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "time-series",
+        "storage"
+      ]
+    },
+    {
+      "title": "Foreign key constraint role",
+      "description": "What does a foreign key constraint enforce?",
+      "difficulty": "easy",
+      "explanation": "A foreign key ensures referential integrity: a value in the child table must reference an existing row in the parent table.",
+      "options": [
+        {
+          "text": "Referential integrity between related tables",
+          "is_correct": true
+        },
+        {
+          "text": "That a column value is unique",
+          "is_correct": false
+        },
+        {
+          "text": "That a column is indexed",
+          "is_correct": false
+        },
+        {
+          "text": "That writes are encrypted",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "data-modeling",
+        "constraints"
+      ]
+    },
+    {
+      "title": "Partitioning vs replication",
+      "description": "What is the key difference between partitioning and replication?",
+      "difficulty": "medium",
+      "explanation": "Partitioning splits data into disjoint subsets across nodes (for scale); replication copies the same data to multiple nodes (for availability/read scaling).",
+      "options": [
+        {
+          "text": "Partitioning splits data into subsets; replication copies the same data",
+          "is_correct": true
+        },
+        {
+          "text": "They are two names for the same thing",
+          "is_correct": false
+        },
+        {
+          "text": "Replication splits data; partitioning copies it",
+          "is_correct": false
+        },
+        {
+          "text": "Both reduce total storage usage",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "sharding",
+        "replication"
+      ]
+    },
+    {
+      "title": "Optimistic concurrency control",
+      "description": "How does optimistic concurrency control typically detect a conflicting update?",
+      "difficulty": "hard",
+      "explanation": "Optimistic concurrency reads a version/timestamp, then on write checks it is unchanged; if it changed, the update is rejected and the caller retries.",
+      "options": [
+        {
+          "text": "By checking a version number or timestamp at write time",
+          "is_correct": true
+        },
+        {
+          "text": "By locking the row for the entire transaction",
+          "is_correct": false
+        },
+        {
+          "text": "By disabling all other connections",
+          "is_correct": false
+        },
+        {
+          "text": "By replicating the row before writing",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "concurrency",
+        "transactions"
+      ]
+    },
+    {
+      "title": "Materialized view",
+      "description": "What is a materialized view?",
+      "difficulty": "medium",
+      "explanation": "A materialized view stores the precomputed result of a query physically, speeding up reads at the cost of needing refresh when underlying data changes.",
+      "options": [
+        {
+          "text": "A precomputed, stored query result that must be refreshed",
+          "is_correct": true
+        },
+        {
+          "text": "A virtual table computed fresh on every query",
+          "is_correct": false
+        },
+        {
+          "text": "An in-memory cache managed by the OS",
+          "is_correct": false
+        },
+        {
+          "text": "A backup copy of the entire database",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "performance",
+        "views"
+      ]
+    },
+    {
+      "title": "Hot partition mitigation",
+      "description": "A key-value store has one partition receiving most traffic. Which technique helps distribute the load?",
+      "difficulty": "hard",
+      "explanation": "Adding a salt/suffix to the key spreads writes for a hot key across multiple partitions, reducing the hot-partition bottleneck.",
+      "options": [
+        {
+          "text": "Salting the key to spread it across multiple partitions",
+          "is_correct": true
+        },
+        {
+          "text": "Removing all replicas",
+          "is_correct": false
+        },
+        {
+          "text": "Increasing the isolation level",
+          "is_correct": false
+        },
+        {
+          "text": "Disabling the cache",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "sharding",
+        "performance"
+      ]
+    },
+    {
+      "title": "Blob in DB vs object store",
+      "description": "Why is it usually better to store large media in object storage and keep only a URL/reference in the relational database?",
+      "difficulty": "medium",
+      "explanation": "Storing large blobs in a relational DB bloats backups, slows queries, and wastes expensive transactional storage; a reference keeps the DB lean.",
+      "options": [
+        {
+          "text": "It keeps the database small and lets a CDN/object store serve media efficiently",
+          "is_correct": true
+        },
+        {
+          "text": "Object stores enforce foreign keys better",
+          "is_correct": false
+        },
+        {
+          "text": "Relational databases cannot store binary data at all",
+          "is_correct": false
+        },
+        {
+          "text": "It improves transaction isolation",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "storage",
+        "object-storage"
+      ]
+    },
+    {
+      "title": "Two-phase commit drawback",
+      "description": "What is a well-known drawback of two-phase commit (2PC) for distributed transactions?",
+      "difficulty": "hard",
+      "explanation": "2PC is blocking: if the coordinator fails after prepare, participants may hold locks indefinitely awaiting the decision, hurting availability.",
+      "options": [
+        {
+          "text": "It can block participants holding locks if the coordinator fails",
+          "is_correct": true
+        },
+        {
+          "text": "It cannot guarantee atomicity",
+          "is_correct": false
+        },
+        {
+          "text": "It requires no coordinator",
+          "is_correct": false
+        },
+        {
+          "text": "It eliminates network communication",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "transactions",
+        "distributed-systems"
+      ]
+    },
+    {
+      "title": "Composite index column order",
+      "description": "For a composite index on (a, b), which query can use the index efficiently for filtering?",
+      "difficulty": "hard",
+      "explanation": "A composite index can be used for the leftmost prefix; filtering on `a` (or `a` and `b`) uses it, but filtering on `b` alone generally cannot.",
+      "options": [
+        {
+          "text": "A query filtering on column a (the leftmost prefix)",
+          "is_correct": true
+        },
+        {
+          "text": "A query filtering only on column b",
+          "is_correct": false
+        },
+        {
+          "text": "Any query regardless of columns used",
+          "is_correct": false
+        },
+        {
+          "text": "Only queries that select all columns",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "indexing",
+        "performance"
+      ]
+    },
+    {
+      "title": "Message queue purpose",
+      "description": "What is the primary benefit of putting a message queue between a producer and a consumer service?",
+      "difficulty": "easy",
+      "explanation": "A queue decouples producer and consumer, smoothing load spikes and letting the consumer process work asynchronously at its own pace.",
+      "options": [
+        {
+          "text": "It decouples services and buffers load so work is processed asynchronously",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees synchronous responses to the producer",
+          "is_correct": false
+        },
+        {
+          "text": "It replaces the need for a database",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts all messages by default",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "message-queue",
+        "async"
+      ]
+    },
+    {
+      "title": "At-least-once delivery implication",
+      "description": "If a message queue provides at-least-once delivery, what must consumers handle?",
+      "difficulty": "medium",
+      "explanation": "At-least-once means a message may be delivered more than once, so consumers must be idempotent to handle duplicates safely.",
+      "options": [
+        {
+          "text": "Duplicate messages, by being idempotent",
+          "is_correct": true
+        },
+        {
+          "text": "Messages arriving strictly once and in order",
+          "is_correct": false
+        },
+        {
+          "text": "Messages that are never delivered",
+          "is_correct": false
+        },
+        {
+          "text": "Automatic deduplication with no effort",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "message-queue",
+        "idempotency"
+      ]
+    },
+    {
+      "title": "Pub/sub vs point-to-point",
+      "description": "How does publish/subscribe messaging differ from a point-to-point queue?",
+      "difficulty": "medium",
+      "explanation": "In pub/sub, each message is delivered to all subscribers of a topic; in a point-to-point queue, each message is consumed by exactly one consumer.",
+      "options": [
+        {
+          "text": "Pub/sub fans a message out to all subscribers; a queue gives it to one consumer",
+          "is_correct": true
+        },
+        {
+          "text": "Pub/sub guarantees one consumer; queues fan out to all",
+          "is_correct": false
+        },
+        {
+          "text": "They behave identically",
+          "is_correct": false
+        },
+        {
+          "text": "Pub/sub cannot have more than one subscriber",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "message-queue",
+        "pubsub"
+      ]
+    },
+    {
+      "title": "Consensus algorithm role",
+      "description": "What problem do consensus algorithms like Raft and Paxos solve?",
+      "difficulty": "hard",
+      "explanation": "They let a group of nodes agree on a single value/log order despite failures, enabling consistent replication and leader election.",
+      "options": [
+        {
+          "text": "Getting multiple nodes to agree on a value despite failures",
+          "is_correct": true
+        },
+        {
+          "text": "Compressing network packets",
+          "is_correct": false
+        },
+        {
+          "text": "Encrypting data at rest",
+          "is_correct": false
+        },
+        {
+          "text": "Indexing a database table",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "consensus",
+        "raft"
+      ]
+    },
+    {
+      "title": "Leader election purpose",
+      "description": "Why do many distributed systems elect a single leader node?",
+      "difficulty": "medium",
+      "explanation": "A single leader serializes writes and coordinates replication, simplifying consistency compared to accepting writes on any node.",
+      "options": [
+        {
+          "text": "To serialize writes and coordinate replication through one authority",
+          "is_correct": true
+        },
+        {
+          "text": "To increase the number of single points of failure",
+          "is_correct": false
+        },
+        {
+          "text": "To allow every node to accept writes independently",
+          "is_correct": false
+        },
+        {
+          "text": "To remove the need for replication",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "leader-election",
+        "consensus"
+      ]
+    },
+    {
+      "title": "Split-brain problem",
+      "description": "What is a 'split-brain' scenario in a distributed cluster?",
+      "difficulty": "hard",
+      "explanation": "A network partition causes two subsets of nodes to each believe they are the leader/primary, risking divergent, conflicting writes.",
+      "options": [
+        {
+          "text": "A partition causes two nodes to both act as leader, risking conflicting writes",
+          "is_correct": true
+        },
+        {
+          "text": "A single node runs out of memory",
+          "is_correct": false
+        },
+        {
+          "text": "The cache and database disagree on a value",
+          "is_correct": false
+        },
+        {
+          "text": "A query plan chooses the wrong index",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "consensus",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Dead letter queue",
+      "description": "What is a dead letter queue (DLQ) used for?",
+      "difficulty": "medium",
+      "explanation": "A DLQ captures messages that repeatedly fail processing so they can be inspected and reprocessed without blocking the main queue.",
+      "options": [
+        {
+          "text": "Holding messages that repeatedly fail so they can be inspected later",
+          "is_correct": true
+        },
+        {
+          "text": "Storing successfully processed messages permanently",
+          "is_correct": false
+        },
+        {
+          "text": "Encrypting messages in transit",
+          "is_correct": false
+        },
+        {
+          "text": "Load balancing across consumers",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "message-queue",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Event sourcing concept",
+      "description": "What is the core idea behind event sourcing?",
+      "difficulty": "hard",
+      "explanation": "Event sourcing stores state as an immutable, append-only sequence of events; current state is derived by replaying those events.",
+      "options": [
+        {
+          "text": "Persisting state as an append-only log of events that can be replayed",
+          "is_correct": true
+        },
+        {
+          "text": "Overwriting the current state on every change with no history",
+          "is_correct": false
+        },
+        {
+          "text": "Storing only the latest snapshot and discarding events",
+          "is_correct": false
+        },
+        {
+          "text": "Caching events in memory only",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "event-sourcing",
+        "architecture"
+      ]
+    },
+    {
+      "title": "CQRS pattern",
+      "description": "What does CQRS (Command Query Responsibility Segregation) separate?",
+      "difficulty": "hard",
+      "explanation": "CQRS separates the write model (commands) from the read model (queries), allowing each to be optimized and scaled independently.",
+      "options": [
+        {
+          "text": "The write (command) model from the read (query) model",
+          "is_correct": true
+        },
+        {
+          "text": "The frontend from the backend",
+          "is_correct": false
+        },
+        {
+          "text": "The cache from the database",
+          "is_correct": false
+        },
+        {
+          "text": "Authentication from authorization",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "cqrs",
+        "architecture"
+      ]
+    },
+    {
+      "title": "Saga pattern",
+      "description": "How does the saga pattern manage a transaction that spans multiple microservices?",
+      "difficulty": "hard",
+      "explanation": "A saga breaks the workflow into local transactions, each with a compensating action to undo prior steps if a later step fails, avoiding distributed locks.",
+      "options": [
+        {
+          "text": "As a series of local transactions with compensating actions on failure",
+          "is_correct": true
+        },
+        {
+          "text": "By holding a single global lock across all services",
+          "is_correct": false
+        },
+        {
+          "text": "By using two-phase commit across every service",
+          "is_correct": false
+        },
+        {
+          "text": "By disabling transactions entirely",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "saga",
+        "microservices"
+      ]
+    },
+    {
+      "title": "Heartbeat mechanism",
+      "description": "What is the role of heartbeats in a distributed system?",
+      "difficulty": "medium",
+      "explanation": "Periodic heartbeat signals let nodes detect that peers are alive; a missed heartbeat triggers failure detection and possibly failover.",
+      "options": [
+        {
+          "text": "To detect node failures by monitoring periodic liveness signals",
+          "is_correct": true
+        },
+        {
+          "text": "To synchronize database schemas",
+          "is_correct": false
+        },
+        {
+          "text": "To encrypt inter-node traffic",
+          "is_correct": false
+        },
+        {
+          "text": "To compress messages",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "failure-detection",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Idempotency key in APIs",
+      "description": "How does an idempotency key make a payment API safe to retry?",
+      "difficulty": "medium",
+      "explanation": "The server records the key with the first request's result; repeated requests with the same key return the stored result instead of charging again.",
+      "options": [
+        {
+          "text": "The server dedupes repeated requests with the same key, returning the original result",
+          "is_correct": true
+        },
+        {
+          "text": "It encrypts the payment amount",
+          "is_correct": false
+        },
+        {
+          "text": "It guarantees the request never fails",
+          "is_correct": false
+        },
+        {
+          "text": "It speeds up the database write",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "idempotency",
+        "api"
+      ]
+    },
+    {
+      "title": "Exactly-once delivery reality",
+      "description": "Which statement about 'exactly-once' message delivery is most accurate?",
+      "difficulty": "hard",
+      "explanation": "True end-to-end exactly-once delivery over an unreliable network is generally impossible; it's approximated via at-least-once delivery plus idempotent processing or transactional deduplication.",
+      "options": [
+        {
+          "text": "It is typically approximated with at-least-once delivery plus idempotent consumers",
+          "is_correct": true
+        },
+        {
+          "text": "It is trivially provided by all message brokers for free",
+          "is_correct": false
+        },
+        {
+          "text": "It requires no consumer-side deduplication",
+          "is_correct": false
+        },
+        {
+          "text": "It is the same as at-most-once delivery",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "message-queue",
+        "idempotency"
+      ]
+    },
+    {
+      "title": "Backpressure",
+      "description": "What does backpressure refer to in a streaming or queue-based system?",
+      "difficulty": "hard",
+      "explanation": "Backpressure is a mechanism by which a slow consumer signals upstream producers to slow down, preventing unbounded buffering and resource exhaustion.",
+      "options": [
+        {
+          "text": "A slow consumer signaling producers to slow down to avoid overload",
+          "is_correct": true
+        },
+        {
+          "text": "Pushing all data as fast as possible regardless of consumers",
+          "is_correct": false
+        },
+        {
+          "text": "Encrypting the data stream",
+          "is_correct": false
+        },
+        {
+          "text": "Replaying failed messages forever",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "streaming",
+        "backpressure"
+      ]
+    },
+    {
+      "title": "Vector clocks",
+      "description": "What do vector clocks help determine in a distributed system?",
+      "difficulty": "hard",
+      "explanation": "Vector clocks capture causality between events across nodes, letting the system detect concurrent updates that may conflict.",
+      "options": [
+        {
+          "text": "The causal ordering of events and whether updates are concurrent",
+          "is_correct": true
+        },
+        {
+          "text": "The exact wall-clock time of every event",
+          "is_correct": false
+        },
+        {
+          "text": "The amount of free disk on each node",
+          "is_correct": false
+        },
+        {
+          "text": "The network latency between nodes",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "causality",
+        "consistency"
+      ]
+    },
+    {
+      "title": "Service discovery",
+      "description": "What problem does service discovery solve in a microservices architecture?",
+      "difficulty": "medium",
+      "explanation": "Service discovery lets services find the current network locations of other services, which change as instances scale, move, or fail.",
+      "options": [
+        {
+          "text": "Locating healthy instances of a service whose addresses change dynamically",
+          "is_correct": true
+        },
+        {
+          "text": "Choosing which database index to use",
+          "is_correct": false
+        },
+        {
+          "text": "Compiling service code",
+          "is_correct": false
+        },
+        {
+          "text": "Encrypting service-to-service traffic",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "microservices",
+        "service-discovery"
+      ]
+    },
+    {
+      "title": "Clock skew problem",
+      "description": "Why is relying on synchronized wall-clock timestamps across servers risky for ordering events?",
+      "difficulty": "hard",
+      "explanation": "Server clocks drift and are only loosely synchronized (clock skew), so timestamp ordering can be wrong; logical clocks are preferred for causal ordering.",
+      "options": [
+        {
+          "text": "Clocks drift between machines, so timestamp ordering can be incorrect",
+          "is_correct": true
+        },
+        {
+          "text": "Timestamps consume too much storage",
+          "is_correct": false
+        },
+        {
+          "text": "Wall clocks are always perfectly synchronized",
+          "is_correct": false
+        },
+        {
+          "text": "Timestamps cannot be compared at all",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "clocks",
+        "consistency"
+      ]
+    },
+    {
+      "title": "Bulkhead pattern",
+      "description": "What does the bulkhead pattern achieve in a resilient system?",
+      "difficulty": "hard",
+      "explanation": "Bulkheads isolate resources (e.g., separate thread pools per dependency) so a failure or overload in one area cannot exhaust resources and take down the whole system.",
+      "options": [
+        {
+          "text": "It isolates resources so one failing component cannot exhaust the whole system",
+          "is_correct": true
+        },
+        {
+          "text": "It merges all thread pools into one for efficiency",
+          "is_correct": false
+        },
+        {
+          "text": "It retries failed requests indefinitely",
+          "is_correct": false
+        },
+        {
+          "text": "It caches all responses",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "resilience",
+        "patterns"
+      ]
+    },
+    {
+      "title": "Kafka partition ordering",
+      "description": "In Apache Kafka, ordering of messages is guaranteed at what level?",
+      "difficulty": "hard",
+      "explanation": "Kafka guarantees order only within a single partition, not across partitions of a topic; keys are used to route related messages to the same partition.",
+      "options": [
+        {
+          "text": "Within a single partition",
+          "is_correct": true
+        },
+        {
+          "text": "Across the entire topic globally",
+          "is_correct": false
+        },
+        {
+          "text": "Across all topics in the cluster",
+          "is_correct": false
+        },
+        {
+          "text": "Only per consumer group with no partitions",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "kafka",
+        "message-queue"
+      ]
+    },
+    {
+      "title": "Choreography vs orchestration",
+      "description": "In microservice workflows, how does choreography differ from orchestration?",
+      "difficulty": "hard",
+      "explanation": "In orchestration a central coordinator directs each step; in choreography services react to events independently with no central controller.",
+      "options": [
+        {
+          "text": "Choreography uses events with no central coordinator; orchestration uses a central controller",
+          "is_correct": true
+        },
+        {
+          "text": "They are identical patterns",
+          "is_correct": false
+        },
+        {
+          "text": "Choreography always uses a central controller",
+          "is_correct": false
+        },
+        {
+          "text": "Orchestration forbids any messaging",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "microservices",
+        "patterns"
+      ]
+    },
+    {
+      "title": "Outbox pattern",
+      "description": "What problem does the transactional outbox pattern solve?",
+      "difficulty": "hard",
+      "explanation": "It avoids the dual-write problem by writing the business change and an outbox event in one local transaction; a relay then publishes the event reliably.",
+      "options": [
+        {
+          "text": "Reliably publishing events without the dual-write problem",
+          "is_correct": true
+        },
+        {
+          "text": "Encrypting messages before sending",
+          "is_correct": false
+        },
+        {
+          "text": "Sharding the database",
+          "is_correct": false
+        },
+        {
+          "text": "Load balancing consumers",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "outbox",
+        "messaging"
+      ]
+    },
+    {
+      "title": "Gossip protocol",
+      "description": "How does a gossip protocol disseminate information in a cluster?",
+      "difficulty": "hard",
+      "explanation": "Nodes periodically exchange state with a few random peers; information spreads epidemically across the cluster, scaling without a central coordinator.",
+      "options": [
+        {
+          "text": "Each node randomly shares state with a few peers, spreading info epidemically",
+          "is_correct": true
+        },
+        {
+          "text": "A central server broadcasts to every node directly",
+          "is_correct": false
+        },
+        {
+          "text": "Nodes never communicate state to each other",
+          "is_correct": false
+        },
+        {
+          "text": "Only the leader holds all information",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "gossip",
+        "membership"
+      ]
+    },
+    {
+      "title": "Fan-out on write vs read",
+      "description": "In a social feed, 'fan-out on write' means:",
+      "difficulty": "hard",
+      "explanation": "Fan-out on write pushes a new post into each follower's feed at write time (fast reads, costly for celebrities); fan-out on read assembles the feed at query time.",
+      "options": [
+        {
+          "text": "Pushing a new post into each follower's feed when it is created",
+          "is_correct": true
+        },
+        {
+          "text": "Assembling each user's feed only when they request it",
+          "is_correct": false
+        },
+        {
+          "text": "Replicating the database to every region",
+          "is_correct": false
+        },
+        {
+          "text": "Sharding the user table by ID",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "feed",
+        "architecture"
+      ]
+    },
+    {
+      "title": "REST statelessness",
+      "description": "What does it mean that REST is stateless?",
+      "difficulty": "easy",
+      "explanation": "Each request must contain all information needed to process it; the server stores no client session context between requests.",
+      "options": [
+        {
+          "text": "Each request carries all needed context; the server keeps no client session state",
+          "is_correct": true
+        },
+        {
+          "text": "The server remembers the client between requests",
+          "is_correct": false
+        },
+        {
+          "text": "Responses are never cacheable",
+          "is_correct": false
+        },
+        {
+          "text": "The client cannot send any data",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "rest",
+        "fundamentals"
+      ]
+    },
+    {
+      "title": "HTTP idempotent methods",
+      "description": "Which HTTP method is expected to be idempotent and safe (no side effects)?",
+      "difficulty": "easy",
+      "explanation": "GET is both safe (no state change) and idempotent. PUT and DELETE are idempotent but not safe; POST is generally neither.",
+      "options": [
+        {
+          "text": "GET",
+          "is_correct": true
+        },
+        {
+          "text": "POST",
+          "is_correct": false
+        },
+        {
+          "text": "PATCH",
+          "is_correct": false
+        },
+        {
+          "text": "CONNECT",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "rest",
+        "http"
+      ]
+    },
+    {
+      "title": "Rate limiting purpose",
+      "description": "Why do APIs apply rate limiting to clients?",
+      "difficulty": "easy",
+      "explanation": "Rate limiting protects the service from abuse and overload and ensures fair resource sharing across clients.",
+      "options": [
+        {
+          "text": "To prevent abuse/overload and ensure fair usage",
+          "is_correct": true
+        },
+        {
+          "text": "To encrypt request bodies",
+          "is_correct": false
+        },
+        {
+          "text": "To guarantee responses are cached",
+          "is_correct": false
+        },
+        {
+          "text": "To replace authentication",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "rate-limiting",
+        "security"
+      ]
+    },
+    {
+      "title": "Token bucket algorithm",
+      "description": "How does the token bucket rate-limiting algorithm allow bursts?",
+      "difficulty": "medium",
+      "explanation": "Tokens accrue at a fixed rate up to a capacity; a request consumes a token, so accumulated tokens permit short bursts up to the bucket size.",
+      "options": [
+        {
+          "text": "Accumulated tokens permit short bursts up to the bucket capacity",
+          "is_correct": true
+        },
+        {
+          "text": "It strictly allows one request per fixed interval with no bursts",
+          "is_correct": false
+        },
+        {
+          "text": "It blocks all requests once the first token is used",
+          "is_correct": false
+        },
+        {
+          "text": "It never refills tokens",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "rate-limiting",
+        "algorithms"
+      ]
+    },
+    {
+      "title": "gRPC vs REST",
+      "description": "Which is an advantage of gRPC over typical JSON/REST for internal service-to-service calls?",
+      "difficulty": "medium",
+      "explanation": "gRPC uses HTTP/2 and binary Protocol Buffers, giving lower latency, smaller payloads, streaming, and strongly-typed contracts.",
+      "options": [
+        {
+          "text": "Compact binary payloads, HTTP/2 streaming, and typed contracts",
+          "is_correct": true
+        },
+        {
+          "text": "It is easier to call directly from a browser without tooling",
+          "is_correct": false
+        },
+        {
+          "text": "It requires no schema definition",
+          "is_correct": false
+        },
+        {
+          "text": "It only works over HTTP/1.0",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "grpc",
+        "rest"
+      ]
+    },
+    {
+      "title": "GraphQL over-fetching",
+      "description": "Which REST problem does GraphQL specifically aim to reduce?",
+      "difficulty": "medium",
+      "explanation": "GraphQL lets clients request exactly the fields they need in one query, reducing over-fetching and under-fetching common with fixed REST endpoints.",
+      "options": [
+        {
+          "text": "Over-fetching and under-fetching of data",
+          "is_correct": true
+        },
+        {
+          "text": "TLS certificate management",
+          "is_correct": false
+        },
+        {
+          "text": "Database replication lag",
+          "is_correct": false
+        },
+        {
+          "text": "DNS resolution time",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "graphql",
+        "rest"
+      ]
+    },
+    {
+      "title": "API pagination",
+      "description": "Why is cursor-based pagination often preferred over offset-based pagination for large, changing datasets?",
+      "difficulty": "hard",
+      "explanation": "Offset pagination can skip or duplicate rows when data changes between pages and gets slow at high offsets; cursors anchor to a stable position.",
+      "options": [
+        {
+          "text": "It avoids skipped/duplicated rows and stays fast as the dataset grows",
+          "is_correct": true
+        },
+        {
+          "text": "It always returns the entire dataset at once",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need for any ordering",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts the page contents",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "pagination",
+        "performance"
+      ]
+    },
+    {
+      "title": "DNS role",
+      "description": "What is the primary function of DNS?",
+      "difficulty": "easy",
+      "explanation": "DNS resolves human-readable domain names into IP addresses so clients can connect to servers.",
+      "options": [
+        {
+          "text": "Translating domain names into IP addresses",
+          "is_correct": true
+        },
+        {
+          "text": "Encrypting HTTP traffic",
+          "is_correct": false
+        },
+        {
+          "text": "Balancing database load",
+          "is_correct": false
+        },
+        {
+          "text": "Storing user sessions",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "networking",
+        "dns",
+        "fundamentals"
+      ]
+    },
+    {
+      "title": "API gateway responsibilities",
+      "description": "Which responsibility is commonly centralized in an API gateway?",
+      "difficulty": "medium",
+      "explanation": "Gateways centralize cross-cutting concerns like authentication, rate limiting, routing, and request aggregation in front of microservices.",
+      "options": [
+        {
+          "text": "Authentication, rate limiting, and routing for backend services",
+          "is_correct": true
+        },
+        {
+          "text": "Running database migrations",
+          "is_correct": false
+        },
+        {
+          "text": "Storing the primary copy of business data",
+          "is_correct": false
+        },
+        {
+          "text": "Compiling backend source code",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "api-gateway",
+        "microservices"
+      ]
+    },
+    {
+      "title": "Circuit breaker pattern",
+      "description": "What does a circuit breaker do when a downstream dependency keeps failing?",
+      "difficulty": "medium",
+      "explanation": "After a failure threshold, the breaker 'opens' and fails fast (or returns a fallback) instead of waiting on the failing dependency, giving it time to recover.",
+      "options": [
+        {
+          "text": "It trips open and fails fast to avoid hammering the failing dependency",
+          "is_correct": true
+        },
+        {
+          "text": "It retries the dependency as fast as possible forever",
+          "is_correct": false
+        },
+        {
+          "text": "It restarts the database",
+          "is_correct": false
+        },
+        {
+          "text": "It caches all successful responses permanently",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "resilience",
+        "circuit-breaker"
+      ]
+    },
+    {
+      "title": "Exponential backoff",
+      "description": "Why should clients use exponential backoff with jitter when retrying failed requests?",
+      "difficulty": "medium",
+      "explanation": "Increasing delays reduce load on a struggling server, and jitter prevents many clients from retrying in synchronized waves (the retry storm).",
+      "options": [
+        {
+          "text": "To reduce load on a recovering server and avoid synchronized retry storms",
+          "is_correct": true
+        },
+        {
+          "text": "To retry immediately and repeatedly with no delay",
+          "is_correct": false
+        },
+        {
+          "text": "To guarantee the request eventually succeeds",
+          "is_correct": false
+        },
+        {
+          "text": "To encrypt the retry payload",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "resilience",
+        "retries"
+      ]
+    },
+    {
+      "title": "HTTP 429 meaning",
+      "description": "What does an HTTP 429 status code indicate?",
+      "difficulty": "easy",
+      "explanation": "429 Too Many Requests means the client has been rate limited and should slow down, often respecting a Retry-After header.",
+      "options": [
+        {
+          "text": "Too Many Requests — the client is being rate limited",
+          "is_correct": true
+        },
+        {
+          "text": "The server crashed",
+          "is_correct": false
+        },
+        {
+          "text": "The resource was not found",
+          "is_correct": false
+        },
+        {
+          "text": "Authentication failed",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "http",
+        "rate-limiting"
+      ]
+    },
+    {
+      "title": "Microservices vs monolith trade-off",
+      "description": "Which is a genuine trade-off of microservices compared to a monolith?",
+      "difficulty": "medium",
+      "explanation": "Microservices enable independent deployment and scaling but add operational complexity: networking, distributed debugging, and data consistency across services.",
+      "options": [
+        {
+          "text": "Independent scaling/deploys at the cost of operational and consistency complexity",
+          "is_correct": true
+        },
+        {
+          "text": "They eliminate all network calls",
+          "is_correct": false
+        },
+        {
+          "text": "They always reduce total infrastructure cost",
+          "is_correct": false
+        },
+        {
+          "text": "They make distributed transactions trivial",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "microservices",
+        "architecture"
+      ]
+    },
+    {
+      "title": "TLS termination location",
+      "description": "Where is TLS commonly terminated in a typical web architecture?",
+      "difficulty": "medium",
+      "explanation": "TLS is often terminated at the load balancer or reverse proxy/CDN edge, with internal traffic on a trusted network (or re-encrypted for zero trust).",
+      "options": [
+        {
+          "text": "At the load balancer or reverse proxy / edge",
+          "is_correct": true
+        },
+        {
+          "text": "Only inside the database",
+          "is_correct": false
+        },
+        {
+          "text": "In the browser's local storage",
+          "is_correct": false
+        },
+        {
+          "text": "It is never terminated anywhere",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "networking",
+        "tls",
+        "security"
+      ]
+    },
+    {
+      "title": "Observability pillars",
+      "description": "Which three signals are commonly described as the pillars of observability?",
+      "difficulty": "medium",
+      "explanation": "Logs, metrics, and traces together let operators understand system behavior and diagnose issues.",
+      "options": [
+        {
+          "text": "Logs, metrics, and traces",
+          "is_correct": true
+        },
+        {
+          "text": "CPU, RAM, and disk",
+          "is_correct": false
+        },
+        {
+          "text": "Users, sessions, and cookies",
+          "is_correct": false
+        },
+        {
+          "text": "Encryption, hashing, and signing",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "observability",
+        "monitoring"
+      ]
+    },
+    {
+      "title": "Distributed tracing",
+      "description": "What does a distributed trace let you do?",
+      "difficulty": "hard",
+      "explanation": "A trace follows a single request across services via a propagated trace/span context, revealing where latency and errors occur in the call chain.",
+      "options": [
+        {
+          "text": "Follow one request across services to locate latency and errors",
+          "is_correct": true
+        },
+        {
+          "text": "Measure only total CPU usage of the cluster",
+          "is_correct": false
+        },
+        {
+          "text": "Encrypt traffic between services",
+          "is_correct": false
+        },
+        {
+          "text": "Back up the database",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "observability",
+        "tracing"
+      ]
+    },
+    {
+      "title": "Blue-green deployment",
+      "description": "What is the main advantage of a blue-green deployment?",
+      "difficulty": "medium",
+      "explanation": "Two identical environments let you switch traffic to the new version instantly and roll back quickly by switching back, minimizing downtime.",
+      "options": [
+        {
+          "text": "Near-instant cutover and easy rollback by switching environments",
+          "is_correct": true
+        },
+        {
+          "text": "It requires only one environment",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need for testing",
+          "is_correct": false
+        },
+        {
+          "text": "It shards the database automatically",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "deployment",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Canary release",
+      "description": "What is a canary release?",
+      "difficulty": "medium",
+      "explanation": "A canary routes a small percentage of traffic to the new version first to catch problems before a full rollout.",
+      "options": [
+        {
+          "text": "Rolling out a new version to a small subset of traffic first",
+          "is_correct": true
+        },
+        {
+          "text": "Deploying to 100% of users instantly",
+          "is_correct": false
+        },
+        {
+          "text": "Rolling back to the previous version",
+          "is_correct": false
+        },
+        {
+          "text": "Disabling monitoring during deploys",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "deployment",
+        "reliability"
+      ]
+    },
+    {
+      "title": "Idempotent infrastructure (IaC)",
+      "description": "Why is idempotency valued in infrastructure-as-code tools?",
+      "difficulty": "medium",
+      "explanation": "Applying the same configuration repeatedly converges to the same desired state without unintended duplicate resources or drift.",
+      "options": [
+        {
+          "text": "Re-applying the same config yields the same end state without duplication",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees zero-downtime deploys",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts all secrets automatically",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need for version control",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "iac",
+        "idempotency"
+      ]
+    },
+    {
+      "title": "Authentication vs authorization",
+      "description": "What is the difference between authentication and authorization?",
+      "difficulty": "easy",
+      "explanation": "Authentication verifies who you are; authorization decides what you are allowed to do.",
+      "options": [
+        {
+          "text": "Authentication verifies identity; authorization grants permissions",
+          "is_correct": true
+        },
+        {
+          "text": "They are the same thing",
+          "is_correct": false
+        },
+        {
+          "text": "Authentication grants permissions; authorization verifies identity",
+          "is_correct": false
+        },
+        {
+          "text": "Both only apply to databases",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "security",
+        "auth",
+        "fundamentals"
+      ]
+    },
+    {
+      "title": "JWT stateless auth",
+      "description": "What is one advantage of using signed JWTs for authentication?",
+      "difficulty": "medium",
+      "explanation": "A signed JWT carries the claims and can be verified without a database/session lookup, enabling stateless auth across services.",
+      "options": [
+        {
+          "text": "Servers can verify the token without a central session store lookup",
+          "is_correct": true
+        },
+        {
+          "text": "Tokens can be revoked instantly with no extra mechanism",
+          "is_correct": false
+        },
+        {
+          "text": "The payload is automatically encrypted and hidden",
+          "is_correct": false
+        },
+        {
+          "text": "They never expire",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "security",
+        "auth",
+        "jwt"
+      ]
+    },
+    {
+      "title": "JWT revocation challenge",
+      "description": "What is a known challenge with stateless JWTs?",
+      "difficulty": "hard",
+      "explanation": "Because they are self-contained and valid until expiry, revoking a JWT before expiry requires extra state like a denylist, partly defeating statelessness.",
+      "options": [
+        {
+          "text": "Immediate revocation requires extra server-side state like a denylist",
+          "is_correct": true
+        },
+        {
+          "text": "They cannot carry any user claims",
+          "is_correct": false
+        },
+        {
+          "text": "They require a session lookup on every request",
+          "is_correct": false
+        },
+        {
+          "text": "They cannot be signed",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "security",
+        "auth",
+        "jwt"
+      ]
+    },
+    {
+      "title": "Webhook reliability",
+      "description": "What should a webhook receiver do to handle the provider's retries safely?",
+      "difficulty": "medium",
+      "explanation": "Providers retry on non-2xx or timeouts, so receivers must process webhooks idempotently (e.g., dedupe by event ID) to avoid double-processing.",
+      "options": [
+        {
+          "text": "Process events idempotently, deduplicating by event ID",
+          "is_correct": true
+        },
+        {
+          "text": "Assume each event is delivered exactly once",
+          "is_correct": false
+        },
+        {
+          "text": "Respond with 500 to acknowledge success",
+          "is_correct": false
+        },
+        {
+          "text": "Ignore retries entirely",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "webhooks",
+        "idempotency"
+      ]
+    },
+    {
+      "title": "Caching with ETags",
+      "description": "How does an ETag reduce bandwidth for repeated requests?",
+      "difficulty": "hard",
+      "explanation": "The client sends the ETag via If-None-Match; if unchanged, the server returns 304 Not Modified with no body, saving transfer of the full resource.",
+      "options": [
+        {
+          "text": "The server can return 304 Not Modified with no body if the ETag matches",
+          "is_correct": true
+        },
+        {
+          "text": "It compresses the response body",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts the response",
+          "is_correct": false
+        },
+        {
+          "text": "It forces the client to always re-download",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "api",
+        "http",
+        "caching"
+      ]
+    },
+    {
+      "title": "Zero-downtime schema migration",
+      "description": "Which approach supports a zero-downtime change when renaming a database column used by a live service?",
+      "difficulty": "hard",
+      "explanation": "Use an expand/contract migration: add the new column, dual-write/backfill, switch reads, then drop the old column once nothing depends on it.",
+      "options": [
+        {
+          "text": "Expand/contract: add new column, backfill and dual-write, then drop the old",
+          "is_correct": true
+        },
+        {
+          "text": "Rename the column in place during peak traffic",
+          "is_correct": false
+        },
+        {
+          "text": "Take the database offline and rename it",
+          "is_correct": false
+        },
+        {
+          "text": "Drop the column first, then recreate it",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "migrations",
+        "deployment"
+      ]
+    },
+    {
+      "title": "Read-your-writes consistency",
+      "description": "Which technique helps provide read-your-writes consistency when reading from replicas?",
+      "difficulty": "hard",
+      "explanation": "Route a user's reads to the primary (or to a replica known to have applied their write) for a short window after they write, so they see their own update.",
+      "options": [
+        {
+          "text": "Temporarily route that user's reads to the primary after a write",
+          "is_correct": true
+        },
+        {
+          "text": "Disable replication entirely",
+          "is_correct": false
+        },
+        {
+          "text": "Always read from the most lagging replica",
+          "is_correct": false
+        },
+        {
+          "text": "Cache the write only on the client and never persist it",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "consistency",
+        "replication"
+      ]
+    },
+    {
+      "title": "Bloom filter use",
+      "description": "How does a Bloom filter help a storage engine avoid unnecessary disk reads?",
+      "difficulty": "hard",
+      "explanation": "A Bloom filter quickly answers 'definitely not present' or 'possibly present' for a key, letting the engine skip disk lookups for keys it cannot contain (no false negatives).",
+      "options": [
+        {
+          "text": "It can rule out keys that are definitely absent, skipping disk lookups",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees a key is present with no false positives",
+          "is_correct": false
+        },
+        {
+          "text": "It stores the full value of each key",
+          "is_correct": false
+        },
+        {
+          "text": "It sorts data on disk",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "bloom-filter",
+        "performance"
+      ]
+    },
+    {
+      "title": "Multi-region active-active",
+      "description": "What is the hardest challenge in an active-active multi-region deployment that accepts writes in every region?",
+      "difficulty": "hard",
+      "explanation": "Concurrent writes in different regions can conflict; resolving these conflicts (last-writer-wins, CRDTs, app logic) while keeping low latency is the core difficulty.",
+      "options": [
+        {
+          "text": "Resolving conflicting concurrent writes across regions",
+          "is_correct": true
+        },
+        {
+          "text": "Translating domain names to IPs",
+          "is_correct": false
+        },
+        {
+          "text": "Choosing a programming language",
+          "is_correct": false
+        },
+        {
+          "text": "Compressing log files",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "distributed-systems",
+        "multi-region",
+        "consistency"
+      ]
+    },
+    {
+      "title": "Sidecar pattern",
+      "description": "What is the sidecar pattern in a service mesh?",
+      "difficulty": "medium",
+      "explanation": "A sidecar is a helper process/container deployed alongside a service to handle cross-cutting concerns (e.g., proxying, mTLS, telemetry) without changing app code.",
+      "options": [
+        {
+          "text": "A co-located proxy handling networking/observability for the main service",
+          "is_correct": true
+        },
+        {
+          "text": "A backup copy of the database",
+          "is_correct": false
+        },
+        {
+          "text": "A second region for failover",
+          "is_correct": false
+        },
+        {
+          "text": "A queue for failed messages",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "infra",
+        "service-mesh",
+        "patterns"
+      ]
+    },
+    {
+      "title": "Hot vs cold storage tiering",
+      "description": "Why move infrequently accessed data to a 'cold' storage tier?",
+      "difficulty": "easy",
+      "explanation": "Cold tiers are cheaper but slower; moving rarely accessed data there reduces cost while keeping hot data on fast, more expensive storage.",
+      "options": [
+        {
+          "text": "To cut cost by keeping rarely accessed data on cheaper, slower storage",
+          "is_correct": true
+        },
+        {
+          "text": "To make that data faster to access",
+          "is_correct": false
+        },
+        {
+          "text": "To enforce ACID transactions",
+          "is_correct": false
+        },
+        {
+          "text": "To improve write consistency",
+          "is_correct": false
+        }
+      ],
+      "tags": [
+        "databases",
+        "storage",
+        "cost"
+      ]
+    }
+  ]
+}
