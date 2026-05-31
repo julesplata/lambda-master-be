@@ -29,6 +29,9 @@ def require_admin(x_admin_key: str | None = Header(default=None)) -> None:
 def get_current_user_id(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
 ) -> uuid.UUID:
+    # DEV ONLY: short-circuit auth when AUTH_BYPASS_USER_ID is set. Never set in prod.
+    if settings.auth_bypass_user_id:
+        return uuid.UUID(settings.auth_bypass_user_id)
     if credentials is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

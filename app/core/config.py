@@ -19,6 +19,10 @@ class Settings(BaseSettings):
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
 
+    # DEV ONLY. When set (AUTH_BYPASS_USER_ID in .env), get_current_user_id skips
+    # JWT validation and returns this user id. MUST be empty in production.
+    auth_bypass_user_id: str = ""
+
     jwt_secret: str = ""  # REQUIRED in prod; HS256 signing key (JWT_SECRET in .env)
     jwt_algorithm: str = "HS256"
     access_token_ttl_minutes: int = 15
