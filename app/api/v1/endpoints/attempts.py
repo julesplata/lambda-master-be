@@ -1,3 +1,4 @@
+import random
 import uuid
 from datetime import datetime, timezone
 
@@ -143,7 +144,7 @@ async def get_attempt(
             description=q.description,
             difficulty=q.difficulty,
             category=CategoryPublic(id=q.category.id, name=q.category.name, slug=q.category.slug, position=q.category.position),
-            options=[OptionPublic(id=o.id, text=o.option_text) for o in q.options],
+            options=random.sample([OptionPublic(id=o.id, text=o.option_text) for o in q.options], k=len(q.options)),
         )
         for q in questions
     ]
