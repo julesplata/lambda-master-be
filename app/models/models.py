@@ -142,10 +142,6 @@ class Tag(Base):
     )
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
-    questions: Mapped[list[Question]] = relationship(
-        secondary="question_tags", back_populates="tags"
-    )
-
 
 class QuestionTag(Base):
     __tablename__ = "question_tags"
