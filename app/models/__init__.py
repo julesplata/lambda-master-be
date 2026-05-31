@@ -1,4 +1,5 @@
 from app.models.models import (
+    Category,
     Question,
     QuestionOption,
     QuestionTag,
@@ -11,6 +12,7 @@ from app.models.models import (
 )
 
 __all__ = [
+    "Category",
     "Question",
     "QuestionOption",
     "QuestionTag",

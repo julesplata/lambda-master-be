@@ -6,12 +6,22 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 Difficulty = Literal["easy", "medium", "hard"]
 
 
+class CategoryPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    name: str
+    slug: str
+    position: int
+
+
 class QuestionSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
     title: str
     difficulty: Difficulty
+    category: CategoryPublic
 
 
 class OptionPublic(BaseModel):
@@ -26,6 +36,7 @@ class QuestionDetail(BaseModel):
     title: str
     description: str
     difficulty: Difficulty
+    category: CategoryPublic
     options: list[OptionPublic]
 
 
@@ -40,7 +51,7 @@ class QuestionCreate(BaseModel):
     difficulty: Difficulty
     explanation: str | None = None
     options: list[OptionCreate] = Field(min_length=2)
-    tags: list[str] = Field(default_factory=list)
+    category: str = Field(min_length=1, max_length=50)
 
     @model_validator(mode="after")
     def at_least_one_correct(self) -> "QuestionCreate":

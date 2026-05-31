@@ -8,10 +8,11 @@ from sqlalchemy.orm import selectinload
 
 from app.api.deps import require_admin
 from app.db.session import get_session
-from app.models import Question, QuestionOption, Tag
+from app.models import Category, Question, QuestionOption
 from app.schemas.question import (
     BulkCreateResponse,
     BulkQuestionCreate,
+    CategoryPublic,
     Difficulty,
     OptionPublic,
     QuestionDetail,
@@ -31,19 +32,17 @@ async def bulk_create_questions(
     payload: BulkQuestionCreate,
     session: AsyncSession = Depends(get_session),
 ):
-    # Resolve all tag names across the batch up front, reusing existing tags
-    # and creating any that are missing. A shared name->Tag map avoids duplicate
-    # inserts and unique-constraint races within this request.
-    tag_names = {name for q in payload.questions for name in q.tags}
-    tags_by_name: dict[str, Tag] = {}
-    if tag_names:
-        existing = await session.execute(select(Tag).where(Tag.name.in_(tag_names)))
-        tags_by_name = {tag.name: tag for tag in existing.scalars()}
-        for name in tag_names:
-            if name not in tags_by_name:
-                tag = Tag(name=name)
-                session.add(tag)
-                tags_by_name[name] = tag
+    # Validate all referenced category slugs against the closed set
+    slugs = {q.category for q in payload.questions}
+    existing = await session.execute(select(Category).where(Category.slug.in_(slugs)))
+    cats_by_slug = {c.slug: c for c in existing.scalars()}
+
+    unknown = slugs - cats_by_slug.keys()
+    if unknown:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unknown category slugs: {sorted(unknown)}",
+        )
 
     questions: list[Question] = []
     for item in payload.questions:
@@ -52,6 +51,7 @@ async def bulk_create_questions(
             description=item.description,
             difficulty=item.difficulty,
             explanation=item.explanation,
+            category_id=cats_by_slug[item.category].id,
             created_by=None,
         )
         question.options = [
@@ -62,7 +62,6 @@ async def bulk_create_questions(
             )
             for position, option in enumerate(item.options)
         ]
-        question.tags = [tags_by_name[name] for name in item.tags]
         session.add(question)
         questions.append(question)
 
@@ -85,14 +84,14 @@ async def list_questions(
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     difficulty: Difficulty | None = Query(default=None),
-    tag: str | None = Query(default=None),
+    category: str | None = Query(default=None),
     session: AsyncSession = Depends(get_session),
 ):
-    stmt = select(Question)
+    stmt = select(Question).options(selectinload(Question.category))
     if difficulty:
         stmt = stmt.where(Question.difficulty == difficulty)
-    if tag:
-        stmt = stmt.join(Question.tags).where(Tag.name == tag)
+    if category:
+        stmt = stmt.join(Question.category).where(Category.slug == category)
     stmt = stmt.order_by(Question.created_at.desc()).limit(limit).offset(offset)
 
     result = await session.execute(stmt)
@@ -107,7 +106,7 @@ async def get_question(
     stmt = (
         select(Question)
         .where(Question.id == question_id)
-        .options(selectinload(Question.options))
+        .options(selectinload(Question.options), selectinload(Question.category))
     )
     question = (await session.execute(stmt)).scalar_one_or_none()
     if question is None:
@@ -120,5 +119,6 @@ async def get_question(
         title=question.title,
         description=question.description,
         difficulty=question.difficulty,
+        category=CategoryPublic.model_validate(question.category),
         options=[OptionPublic(id=o.id, text=o.option_text) for o in question.options],
     )

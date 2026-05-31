@@ -63,6 +63,19 @@ class RefreshToken(Base):
     )
 
 
+class Category(Base):
+    __tablename__ = "categories"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    slug: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    position: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    questions: Mapped[list["Question"]] = relationship(back_populates="category")
+
+
 class Question(Base):
     __tablename__ = "questions"
     __table_args__ = (
@@ -79,6 +92,11 @@ class Question(Base):
     description: Mapped[str] = mapped_column(Text, nullable=False)
     difficulty: Mapped[str] = mapped_column(String(10), nullable=False)
     explanation: Mapped[str | None] = mapped_column(Text)
+    category_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("categories.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
     created_by: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL")
     )
@@ -94,9 +112,7 @@ class Question(Base):
         cascade="all, delete-orphan",
         order_by="QuestionOption.position",
     )
-    tags: Mapped[list["Tag"]] = relationship(
-        secondary="question_tags", back_populates="questions"
-    )
+    category: Mapped["Category"] = relationship(back_populates="questions")
 
 
 class QuestionOption(Base):
