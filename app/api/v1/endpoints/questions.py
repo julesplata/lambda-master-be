@@ -79,6 +79,10 @@ async def bulk_create_questions(
     return BulkCreateResponse(created=len(question_ids), question_ids=question_ids)
 
 
+def _category_public(c: Category) -> CategoryPublic:
+    return CategoryPublic(id=c.id, name=c.name, slug=c.slug, position=c.position)
+
+
 @router.get("", response_model=list[QuestionSummary])
 async def list_questions(
     limit: int = Query(default=20, ge=1, le=100),
@@ -95,7 +99,11 @@ async def list_questions(
     stmt = stmt.order_by(Question.created_at.desc()).limit(limit).offset(offset)
 
     result = await session.execute(stmt)
-    return result.scalars().unique().all()
+    questions = result.scalars().unique().all()
+    return [
+        QuestionSummary(id=q.id, title=q.title, difficulty=q.difficulty, category=_category_public(q.category))
+        for q in questions
+    ]
 
 
 @router.get("/{question_id}", response_model=QuestionDetail)
@@ -119,6 +127,6 @@ async def get_question(
         title=question.title,
         description=question.description,
         difficulty=question.difficulty,
-        category=CategoryPublic.model_validate(question.category),
+        category=_category_public(question.category),
         options=[OptionPublic(id=o.id, text=o.option_text) for o in question.options],
     )

@@ -27,7 +27,7 @@ from app.schemas.attempt import (
     AttemptCreateResponse,
     AttemptDetail,
 )
-from app.schemas.question import OptionPublic, QuestionDetail
+from app.schemas.question import CategoryPublic, OptionPublic, QuestionDetail
 
 router = APIRouter(prefix="/quiz-attempts", tags=["quiz-attempts"])
 
@@ -132,7 +132,7 @@ async def get_attempt(
     q_stmt = (
         select(Question)
         .where(Question.id.in_(question_ids))
-        .options(selectinload(Question.options))
+        .options(selectinload(Question.options), selectinload(Question.category))
     )
     questions = (await session.execute(q_stmt)).scalars().unique().all()
 
@@ -142,6 +142,7 @@ async def get_attempt(
             title=q.title,
             description=q.description,
             difficulty=q.difficulty,
+            category=CategoryPublic(id=q.category.id, name=q.category.name, slug=q.category.slug, position=q.category.position),
             options=[OptionPublic(id=o.id, text=o.option_text) for o in q.options],
         )
         for q in questions

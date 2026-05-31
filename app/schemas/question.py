@@ -25,13 +25,13 @@ class QuestionSummary(BaseModel):
 
 
 class OptionPublic(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: uuid.UUID
     text: str
 
 
 class QuestionDetail(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     title: str
     description: str
