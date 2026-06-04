@@ -116,9 +116,7 @@ async def my_stats_by_tag(
         select(
             Tag.name,
             func.count().label("answered"),
-            func.count()
-            .filter(answered_subq.c.is_correct.is_(True))
-            .label("correct"),
+            func.count().filter(answered_subq.c.is_correct.is_(True)).label("correct"),
         )
         .select_from(answered_subq)
         .join(QuestionTag, QuestionTag.question_id == answered_subq.c.question_id)
@@ -148,9 +146,7 @@ async def my_stats_by_difficulty(
         select(
             Question.difficulty,
             func.count().label("answered"),
-            func.count()
-            .filter(answered_subq.c.is_correct.is_(True))
-            .label("correct"),
+            func.count().filter(answered_subq.c.is_correct.is_(True)).label("correct"),
         )
         .select_from(answered_subq)
         .join(Question, Question.id == answered_subq.c.question_id)
@@ -194,9 +190,11 @@ async def my_attempt_history(
             attempt_id=a.id,
             score=a.score,
             total_questions=a.total_questions,
-            percentage=round(a.score / a.total_questions * 100, 2)
-            if a.total_questions
-            else 0.0,
+            percentage=(
+                round(a.score / a.total_questions * 100, 2)
+                if a.total_questions
+                else 0.0
+            ),
             completed_at=a.completed_at,
         )
         for a in attempts

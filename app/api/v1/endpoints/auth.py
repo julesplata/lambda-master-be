@@ -102,11 +102,7 @@ async def refresh(
     ).scalar_one_or_none()
 
     now = datetime.now(timezone.utc)
-    if (
-        row is None
-        or row.revoked_at is not None
-        or row.expires_at <= now
-    ):
+    if row is None or row.revoked_at is not None or row.expires_at <= now:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired refresh token",

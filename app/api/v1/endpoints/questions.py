@@ -101,7 +101,12 @@ async def list_questions(
     result = await session.execute(stmt)
     questions = result.scalars().unique().all()
     return [
-        QuestionSummary(id=q.id, title=q.title, difficulty=q.difficulty, category=_category_public(q.category))
+        QuestionSummary(
+            id=q.id,
+            title=q.title,
+            difficulty=q.difficulty,
+            category=_category_public(q.category),
+        )
         for q in questions
     ]
 

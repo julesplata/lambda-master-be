@@ -34,9 +34,7 @@ async def list_users(
     offset: int = Query(default=0, ge=0),
     session: AsyncSession = Depends(get_session),
 ):
-    stmt = (
-        select(User).order_by(User.created_at.desc()).limit(limit).offset(offset)
-    )
+    stmt = select(User).order_by(User.created_at.desc()).limit(limit).offset(offset)
     return (await session.execute(stmt)).scalars().all()
 
 

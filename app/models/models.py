@@ -164,11 +164,9 @@ class QuizAttempt(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
     )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("users.id", ondelete="CASCADE"),
-        nullable=False,
-    )
+    # Guest-only mode: attempts are anonymous, so user_id is unused for now.
+    # Kept (nullable, no FK) so auth can be re-enabled later without a schema churn.
+    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     total_questions: Mapped[int] = mapped_column(Integer, nullable=False)
     started_at: Mapped[datetime] = mapped_column(

@@ -23,11 +23,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "load-balancing",
-        "scalability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Horizontal vs vertical scaling",
@@ -52,10 +48,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "scalability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "What a cache is for",
@@ -80,11 +73,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "caching",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Stateless services and scaling",
@@ -109,11 +98,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "scalability",
-        "stateless"
-      ]
+      "category": "architecture"
     },
     {
       "title": "CAP theorem core trade-off",
@@ -138,11 +123,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "cap-theorem",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Read replicas and scaling reads",
@@ -167,11 +148,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "scalability",
-        "replication"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Latency vs throughput",
@@ -196,10 +173,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Cache eviction with LRU",
@@ -224,10 +198,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "caching"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Consistent hashing benefit",
@@ -252,11 +223,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "consistent-hashing",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Eventual consistency meaning",
@@ -281,11 +248,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "consistency",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Cache-aside pattern",
@@ -310,10 +273,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "caching"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Thundering herd / cache stampede",
@@ -338,11 +298,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "caching",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Write-through vs write-back cache",
@@ -367,10 +323,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "caching"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Availability and the 'nines'",
@@ -395,11 +348,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "availability",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Reverse proxy role",
@@ -424,11 +373,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "networking",
-        "reverse-proxy"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Idempotency definition",
@@ -453,11 +398,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "idempotency",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Back-of-the-envelope estimation",
@@ -482,11 +423,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "estimation",
-        "scalability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Sticky sessions trade-off",
@@ -511,11 +448,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "load-balancing",
-        "sessions"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Strong consistency cost",
@@ -540,11 +473,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "consistency",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "CDN primary benefit",
@@ -569,11 +498,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "cdn",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Graceful degradation",
@@ -598,11 +523,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "reliability",
-        "resilience"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Health checks in load balancing",
@@ -627,11 +548,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "load-balancing",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Quorum reads and writes",
@@ -656,12 +573,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "fundamentals",
-        "consistency",
-        "quorum",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "SQL vs NoSQL choice",
@@ -686,11 +598,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "sql",
-        "nosql"
-      ]
+      "category": "architecture"
     },
     {
       "title": "ACID atomicity",
@@ -715,11 +623,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "acid",
-        "transactions"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Database index purpose",
@@ -744,11 +648,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "indexing",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Index write trade-off",
@@ -773,11 +673,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "indexing",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Sharding definition",
@@ -802,11 +698,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "sharding",
-        "scalability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Choosing a shard key",
@@ -831,11 +723,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "sharding",
-        "scalability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Normalization goal",
@@ -860,11 +748,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "data-modeling",
-        "normalization"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Denormalization for reads",
@@ -889,11 +773,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "data-modeling",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "B-tree index strength",
@@ -918,10 +798,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "indexing"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Object storage use case",
@@ -946,11 +823,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "storage",
-        "object-storage"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Connection pooling",
@@ -975,11 +848,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "connection-pooling",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Replication lag impact",
@@ -1004,11 +873,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "replication",
-        "consistency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Write-ahead log (WAL)",
@@ -1033,11 +898,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "durability",
-        "wal"
-      ]
+      "category": "architecture"
     },
     {
       "title": "LSM tree write advantage",
@@ -1062,11 +923,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "storage",
-        "lsm-tree"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Isolation level: read committed",
@@ -1091,11 +948,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "transactions",
-        "isolation"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Time-series database fit",
@@ -1120,11 +973,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "time-series",
-        "storage"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Foreign key constraint role",
@@ -1149,11 +998,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "data-modeling",
-        "constraints"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Partitioning vs replication",
@@ -1178,11 +1023,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "sharding",
-        "replication"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Optimistic concurrency control",
@@ -1207,11 +1048,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "concurrency",
-        "transactions"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Materialized view",
@@ -1236,11 +1073,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "performance",
-        "views"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Hot partition mitigation",
@@ -1265,11 +1098,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "sharding",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Blob in DB vs object store",
@@ -1294,11 +1123,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "storage",
-        "object-storage"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Two-phase commit drawback",
@@ -1323,11 +1148,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "transactions",
-        "distributed-systems"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Composite index column order",
@@ -1352,11 +1173,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "indexing",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Message queue purpose",
@@ -1381,11 +1198,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "message-queue",
-        "async"
-      ]
+      "category": "architecture"
     },
     {
       "title": "At-least-once delivery implication",
@@ -1410,11 +1223,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "message-queue",
-        "idempotency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Pub/sub vs point-to-point",
@@ -1439,11 +1248,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "message-queue",
-        "pubsub"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Consensus algorithm role",
@@ -1468,11 +1273,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "consensus",
-        "raft"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Leader election purpose",
@@ -1497,11 +1298,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "leader-election",
-        "consensus"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Split-brain problem",
@@ -1526,11 +1323,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "consensus",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Dead letter queue",
@@ -1555,11 +1348,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "message-queue",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Event sourcing concept",
@@ -1584,11 +1373,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "event-sourcing",
-        "architecture"
-      ]
+      "category": "architecture"
     },
     {
       "title": "CQRS pattern",
@@ -1613,11 +1398,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "cqrs",
-        "architecture"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Saga pattern",
@@ -1642,11 +1423,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "saga",
-        "microservices"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Heartbeat mechanism",
@@ -1671,11 +1448,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "failure-detection",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Idempotency key in APIs",
@@ -1700,11 +1473,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "idempotency",
-        "api"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Exactly-once delivery reality",
@@ -1729,11 +1498,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "message-queue",
-        "idempotency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Backpressure",
@@ -1758,11 +1523,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "streaming",
-        "backpressure"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Vector clocks",
@@ -1787,11 +1548,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "causality",
-        "consistency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Service discovery",
@@ -1816,11 +1573,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "microservices",
-        "service-discovery"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Clock skew problem",
@@ -1845,11 +1598,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "clocks",
-        "consistency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Bulkhead pattern",
@@ -1874,11 +1623,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "resilience",
-        "patterns"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Kafka partition ordering",
@@ -1903,11 +1648,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "kafka",
-        "message-queue"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Choreography vs orchestration",
@@ -1932,11 +1673,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "microservices",
-        "patterns"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Outbox pattern",
@@ -1961,11 +1698,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "outbox",
-        "messaging"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Gossip protocol",
@@ -1990,11 +1723,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "gossip",
-        "membership"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Fan-out on write vs read",
@@ -2019,11 +1748,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "feed",
-        "architecture"
-      ]
+      "category": "architecture"
     },
     {
       "title": "REST statelessness",
@@ -2048,11 +1773,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "rest",
-        "fundamentals"
-      ]
+      "category": "architecture"
     },
     {
       "title": "HTTP idempotent methods",
@@ -2077,11 +1798,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "rest",
-        "http"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Rate limiting purpose",
@@ -2106,11 +1823,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "rate-limiting",
-        "security"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Token bucket algorithm",
@@ -2135,11 +1848,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "rate-limiting",
-        "algorithms"
-      ]
+      "category": "architecture"
     },
     {
       "title": "gRPC vs REST",
@@ -2164,11 +1873,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "grpc",
-        "rest"
-      ]
+      "category": "architecture"
     },
     {
       "title": "GraphQL over-fetching",
@@ -2193,11 +1898,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "graphql",
-        "rest"
-      ]
+      "category": "architecture"
     },
     {
       "title": "API pagination",
@@ -2222,11 +1923,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "pagination",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "DNS role",
@@ -2251,11 +1948,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "networking",
-        "dns",
-        "fundamentals"
-      ]
+      "category": "architecture"
     },
     {
       "title": "API gateway responsibilities",
@@ -2280,11 +1973,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "api-gateway",
-        "microservices"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Circuit breaker pattern",
@@ -2309,11 +1998,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "resilience",
-        "circuit-breaker"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Exponential backoff",
@@ -2338,11 +2023,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "resilience",
-        "retries"
-      ]
+      "category": "architecture"
     },
     {
       "title": "HTTP 429 meaning",
@@ -2351,7 +2032,7 @@
       "explanation": "429 Too Many Requests means the client has been rate limited and should slow down, often respecting a Retry-After header.",
       "options": [
         {
-          "text": "Too Many Requests — the client is being rate limited",
+          "text": "Too Many Requests \u2014 the client is being rate limited",
           "is_correct": true
         },
         {
@@ -2367,11 +2048,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "http",
-        "rate-limiting"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Microservices vs monolith trade-off",
@@ -2396,11 +2073,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "microservices",
-        "architecture"
-      ]
+      "category": "architecture"
     },
     {
       "title": "TLS termination location",
@@ -2425,11 +2098,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "networking",
-        "tls",
-        "security"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Observability pillars",
@@ -2454,11 +2123,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "observability",
-        "monitoring"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Distributed tracing",
@@ -2483,11 +2148,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "observability",
-        "tracing"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Blue-green deployment",
@@ -2512,11 +2173,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "deployment",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Canary release",
@@ -2541,11 +2198,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "deployment",
-        "reliability"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Idempotent infrastructure (IaC)",
@@ -2570,11 +2223,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "iac",
-        "idempotency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Authentication vs authorization",
@@ -2599,11 +2248,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "security",
-        "auth",
-        "fundamentals"
-      ]
+      "category": "architecture"
     },
     {
       "title": "JWT stateless auth",
@@ -2628,11 +2273,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "security",
-        "auth",
-        "jwt"
-      ]
+      "category": "architecture"
     },
     {
       "title": "JWT revocation challenge",
@@ -2657,11 +2298,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "security",
-        "auth",
-        "jwt"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Webhook reliability",
@@ -2686,11 +2323,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "webhooks",
-        "idempotency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Caching with ETags",
@@ -2715,11 +2348,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "api",
-        "http",
-        "caching"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Zero-downtime schema migration",
@@ -2744,11 +2373,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "migrations",
-        "deployment"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Read-your-writes consistency",
@@ -2773,11 +2398,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "consistency",
-        "replication"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Bloom filter use",
@@ -2802,11 +2423,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "bloom-filter",
-        "performance"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Multi-region active-active",
@@ -2831,11 +2448,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "distributed-systems",
-        "multi-region",
-        "consistency"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Sidecar pattern",
@@ -2860,11 +2473,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "infra",
-        "service-mesh",
-        "patterns"
-      ]
+      "category": "architecture"
     },
     {
       "title": "Hot vs cold storage tiering",
@@ -2889,11 +2498,7 @@
           "is_correct": false
         }
       ],
-      "tags": [
-        "databases",
-        "storage",
-        "cost"
-      ]
+      "category": "architecture"
     }
   ]
 }

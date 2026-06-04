@@ -1,20 +1,15 @@
 import uuid
 from datetime import datetime
-from typing import Literal
 
 from pydantic import BaseModel, Field
 
 from app.schemas.question import Difficulty, QuestionDetail
 
-# "random" samples fresh questions (default); "review" pulls the user's questions
-# that are due for spaced-repetition revision (see user_question_stats).
-AttemptMode = Literal["random", "review"]
-
 
 class AttemptCreate(BaseModel):
     question_count: int = Field(gt=0, le=100)
     difficulty: Difficulty | None = None
-    mode: AttemptMode = "random"
+    category: str | None = None
 
 
 class AttemptCreateResponse(BaseModel):
@@ -30,6 +25,7 @@ class AnswerSubmit(BaseModel):
 class AnswerResult(BaseModel):
     correct: bool
     explanation: str | None = None
+    correct_option_id: uuid.UUID | None = None
 
 
 class AttemptDetail(BaseModel):
@@ -46,7 +42,3 @@ class AttemptComplete(BaseModel):
     score: int
     total_questions: int
     percentage: float
-    xp_earned: int
-    total_xp: int
-    level: int
-    current_streak: int

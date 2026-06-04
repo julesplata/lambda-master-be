@@ -61,6 +61,4 @@ def generate_refresh_token() -> tuple[str, str]:
 
 
 def refresh_token_expiry() -> datetime:
-    return datetime.now(timezone.utc) + timedelta(
-        days=settings.refresh_token_ttl_days
-    )
+    return datetime.now(timezone.utc) + timedelta(days=settings.refresh_token_ttl_days)
