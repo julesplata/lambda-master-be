@@ -1,0 +1,1954 @@
+{
+  "questions": [
+    {
+      "title": "Purpose of a primary key",
+      "description": "What is the primary purpose of a primary key in a relational table?",
+      "difficulty": "easy",
+      "explanation": "A primary key uniquely identifies each row in a table and cannot contain NULL values.",
+      "options": [
+        { "text": "To uniquely identify each row in the table", "is_correct": true },
+        { "text": "To store the largest column value", "is_correct": false },
+        { "text": "To sort rows alphabetically", "is_correct": false },
+        { "text": "To encrypt the table contents", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What SELECT does",
+      "description": "Which SQL statement is used to retrieve data from a table?",
+      "difficulty": "easy",
+      "explanation": "SELECT is the read operation in SQL; it returns rows matching the query without modifying the data.",
+      "options": [
+        { "text": "SELECT", "is_correct": true },
+        { "text": "INSERT", "is_correct": false },
+        { "text": "UPDATE", "is_correct": false },
+        { "text": "DELETE", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Role of a foreign key",
+      "description": "What does a foreign key enforce between two tables?",
+      "difficulty": "easy",
+      "explanation": "A foreign key enforces referential integrity by ensuring a value in one table matches a primary/unique key in another.",
+      "options": [
+        { "text": "Referential integrity between related tables", "is_correct": true },
+        { "text": "Automatic encryption of joined rows", "is_correct": false },
+        { "text": "Faster disk writes", "is_correct": false },
+        { "text": "Uniqueness of every column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of WHERE clause",
+      "description": "What is the WHERE clause used for in a SQL query?",
+      "difficulty": "easy",
+      "explanation": "The WHERE clause filters rows, returning only those that satisfy the given condition.",
+      "options": [
+        { "text": "To filter rows based on a condition", "is_correct": true },
+        { "text": "To define a new table", "is_correct": false },
+        { "text": "To group aggregated results", "is_correct": false },
+        { "text": "To rename a column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What an index improves",
+      "description": "What is the main benefit of adding an index to a column?",
+      "difficulty": "easy",
+      "explanation": "An index speeds up read queries that filter or sort on the indexed column, at the cost of slower writes and extra storage.",
+      "options": [
+        { "text": "Faster lookups on the indexed column", "is_correct": true },
+        { "text": "Smaller table size on disk", "is_correct": false },
+        { "text": "Automatic data backups", "is_correct": false },
+        { "text": "Faster INSERT performance", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "INSERT statement purpose",
+      "description": "Which statement adds a new row to a table?",
+      "difficulty": "easy",
+      "explanation": "INSERT adds new rows of data into a table.",
+      "options": [
+        { "text": "INSERT", "is_correct": true },
+        { "text": "SELECT", "is_correct": false },
+        { "text": "ALTER", "is_correct": false },
+        { "text": "DROP", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "DELETE vs DROP",
+      "description": "What is the difference between DELETE and DROP?",
+      "difficulty": "easy",
+      "explanation": "DELETE removes rows from a table; DROP removes the entire table (or object) including its structure.",
+      "options": [
+        { "text": "DELETE removes rows; DROP removes the whole table", "is_correct": true },
+        { "text": "They are identical", "is_correct": false },
+        { "text": "DELETE removes the table; DROP removes rows", "is_correct": false },
+        { "text": "DROP only works on indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of ORDER BY",
+      "description": "What does the ORDER BY clause do?",
+      "difficulty": "easy",
+      "explanation": "ORDER BY sorts the result set by one or more columns, ascending by default.",
+      "options": [
+        { "text": "Sorts the result set by specified columns", "is_correct": true },
+        { "text": "Filters duplicate rows", "is_correct": false },
+        { "text": "Limits the number of returned rows", "is_correct": false },
+        { "text": "Joins two tables", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What NULL represents",
+      "description": "In SQL, what does NULL represent?",
+      "difficulty": "easy",
+      "explanation": "NULL represents an unknown or missing value; it is not the same as zero or an empty string.",
+      "options": [
+        { "text": "An unknown or missing value", "is_correct": true },
+        { "text": "The number zero", "is_correct": false },
+        { "text": "An empty string", "is_correct": false },
+        { "text": "A boolean false", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of COUNT",
+      "description": "What does the aggregate function COUNT(*) return?",
+      "difficulty": "easy",
+      "explanation": "COUNT(*) returns the number of rows that match the query.",
+      "options": [
+        { "text": "The number of rows", "is_correct": true },
+        { "text": "The sum of a column", "is_correct": false },
+        { "text": "The average of a column", "is_correct": false },
+        { "text": "The largest value in a column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a relational database stores data in",
+      "description": "In a relational database, data is organized primarily into what structure?",
+      "difficulty": "easy",
+      "explanation": "Relational databases store data in tables made up of rows and columns.",
+      "options": [
+        { "text": "Tables with rows and columns", "is_correct": true },
+        { "text": "Key-value pairs only", "is_correct": false },
+        { "text": "Nested JSON documents only", "is_correct": false },
+        { "text": "Graph nodes and edges", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of UPDATE",
+      "description": "Which statement modifies existing rows in a table?",
+      "difficulty": "easy",
+      "explanation": "UPDATE changes values in existing rows, usually combined with a WHERE clause to target specific rows.",
+      "options": [
+        { "text": "UPDATE", "is_correct": true },
+        { "text": "INSERT", "is_correct": false },
+        { "text": "SELECT", "is_correct": false },
+        { "text": "CREATE", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What DISTINCT does",
+      "description": "What is the effect of the DISTINCT keyword in a SELECT?",
+      "difficulty": "easy",
+      "explanation": "DISTINCT removes duplicate rows from the result set.",
+      "options": [
+        { "text": "Removes duplicate rows from results", "is_correct": true },
+        { "text": "Sorts the rows", "is_correct": false },
+        { "text": "Counts the rows", "is_correct": false },
+        { "text": "Deletes duplicate rows from the table", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of a schema",
+      "description": "What does a database schema describe?",
+      "difficulty": "easy",
+      "explanation": "A schema defines the structure of the database: tables, columns, types, and the relationships between them.",
+      "options": [
+        { "text": "The structure and organization of the data", "is_correct": true },
+        { "text": "The physical disk where data is stored", "is_correct": false },
+        { "text": "The list of currently connected users", "is_correct": false },
+        { "text": "The backup retention policy", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What LIMIT does",
+      "description": "What is the purpose of the LIMIT clause?",
+      "difficulty": "easy",
+      "explanation": "LIMIT restricts the number of rows returned by a query.",
+      "options": [
+        { "text": "Restricts how many rows are returned", "is_correct": true },
+        { "text": "Limits column width", "is_correct": false },
+        { "text": "Caps the table size", "is_correct": false },
+        { "text": "Sets a query timeout", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Row vs column",
+      "description": "In a table, what does a single row typically represent?",
+      "difficulty": "easy",
+      "explanation": "A row (record) represents a single entity or instance, while columns represent its attributes.",
+      "options": [
+        { "text": "A single record or entity", "is_correct": true },
+        { "text": "A single attribute type", "is_correct": false },
+        { "text": "The whole table", "is_correct": false },
+        { "text": "A database connection", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of CREATE TABLE",
+      "description": "What does the CREATE TABLE statement do?",
+      "difficulty": "easy",
+      "explanation": "CREATE TABLE defines a new table with its columns and data types.",
+      "options": [
+        { "text": "Defines a new table and its columns", "is_correct": true },
+        { "text": "Inserts rows into an existing table", "is_correct": false },
+        { "text": "Deletes a table", "is_correct": false },
+        { "text": "Backs up a table", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a JOIN does",
+      "description": "At a high level, what does a SQL JOIN do?",
+      "difficulty": "easy",
+      "explanation": "A JOIN combines rows from two or more tables based on a related column between them.",
+      "options": [
+        { "text": "Combines rows from multiple tables based on a related column", "is_correct": true },
+        { "text": "Merges two databases into one", "is_correct": false },
+        { "text": "Appends one table's rows below another's", "is_correct": false },
+        { "text": "Duplicates a table", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Unique constraint",
+      "description": "What does a UNIQUE constraint guarantee for a column?",
+      "difficulty": "easy",
+      "explanation": "A UNIQUE constraint ensures no two rows share the same value in that column (NULLs may be allowed depending on the engine).",
+      "options": [
+        { "text": "No two rows have the same value in that column", "is_correct": true },
+        { "text": "The column is automatically indexed and encrypted", "is_correct": false },
+        { "text": "The column cannot be queried", "is_correct": false },
+        { "text": "The column stores only numbers", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of a database",
+      "description": "What is the core purpose of a database management system (DBMS)?",
+      "difficulty": "easy",
+      "explanation": "A DBMS provides an organized, reliable way to store, retrieve, and manage data with concurrency and integrity controls.",
+      "options": [
+        { "text": "To store, retrieve, and manage data reliably", "is_correct": true },
+        { "text": "To render web pages", "is_correct": false },
+        { "text": "To compile source code", "is_correct": false },
+        { "text": "To route network packets", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What GROUP BY does",
+      "description": "What is the GROUP BY clause used for?",
+      "difficulty": "easy",
+      "explanation": "GROUP BY groups rows that share a value so aggregate functions can be applied per group.",
+      "options": [
+        { "text": "Groups rows so aggregates can be computed per group", "is_correct": true },
+        { "text": "Sorts rows in descending order", "is_correct": false },
+        { "text": "Joins multiple tables", "is_correct": false },
+        { "text": "Removes NULL values", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Primary key uniqueness",
+      "description": "Can a primary key column contain duplicate values?",
+      "difficulty": "easy",
+      "explanation": "No. A primary key must be unique across all rows and cannot be NULL.",
+      "options": [
+        { "text": "No, primary key values must be unique", "is_correct": true },
+        { "text": "Yes, duplicates are allowed", "is_correct": false },
+        { "text": "Only if the table is empty", "is_correct": false },
+        { "text": "Only for text columns", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What MAX returns",
+      "description": "What does the aggregate function MAX(column) return?",
+      "difficulty": "easy",
+      "explanation": "MAX returns the largest value found in the specified column.",
+      "options": [
+        { "text": "The largest value in the column", "is_correct": true },
+        { "text": "The number of rows", "is_correct": false },
+        { "text": "The smallest value", "is_correct": false },
+        { "text": "The most frequent value", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "SQL vs NoSQL basics",
+      "description": "Which is a defining characteristic of a relational (SQL) database compared to most NoSQL stores?",
+      "difficulty": "easy",
+      "explanation": "Relational databases enforce a predefined schema and support SQL with relationships and joins.",
+      "options": [
+        { "text": "It uses a predefined schema with tables and relationships", "is_correct": true },
+        { "text": "It can never use indexes", "is_correct": false },
+        { "text": "It cannot store text", "is_correct": false },
+        { "text": "It requires no structure at all", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a transaction is",
+      "description": "At a basic level, what is a database transaction?",
+      "difficulty": "easy",
+      "explanation": "A transaction is a unit of work that is executed as a whole; it either fully completes (commit) or has no effect (rollback).",
+      "options": [
+        { "text": "A unit of work that fully completes or fully rolls back", "is_correct": true },
+        { "text": "A single column in a table", "is_correct": false },
+        { "text": "A backup of the database", "is_correct": false },
+        { "text": "A user login event", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of ALTER TABLE",
+      "description": "What does ALTER TABLE allow you to do?",
+      "difficulty": "easy",
+      "explanation": "ALTER TABLE changes an existing table's structure, such as adding, modifying, or dropping columns.",
+      "options": [
+        { "text": "Modify the structure of an existing table", "is_correct": true },
+        { "text": "Insert many rows quickly", "is_correct": false },
+        { "text": "Encrypt the table", "is_correct": false },
+        { "text": "Run a backup", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What COMMIT does",
+      "description": "What happens when you COMMIT a transaction?",
+      "difficulty": "easy",
+      "explanation": "COMMIT permanently saves all changes made during the transaction so they become visible to others.",
+      "options": [
+        { "text": "Permanently saves the transaction's changes", "is_correct": true },
+        { "text": "Discards all changes", "is_correct": false },
+        { "text": "Creates a new table", "is_correct": false },
+        { "text": "Locks the whole database forever", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What ROLLBACK does",
+      "description": "What is the effect of a ROLLBACK?",
+      "difficulty": "easy",
+      "explanation": "ROLLBACK undoes all changes made in the current transaction, returning the data to its prior state.",
+      "options": [
+        { "text": "Undoes the changes made in the current transaction", "is_correct": true },
+        { "text": "Saves changes permanently", "is_correct": false },
+        { "text": "Deletes the table", "is_correct": false },
+        { "text": "Speeds up the next query", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Aggregate SUM",
+      "description": "What does SUM(column) compute?",
+      "difficulty": "easy",
+      "explanation": "SUM adds up all the numeric values in the specified column across the selected rows.",
+      "options": [
+        { "text": "The total of all values in the column", "is_correct": true },
+        { "text": "The count of rows", "is_correct": false },
+        { "text": "The average value", "is_correct": false },
+        { "text": "The maximum value", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Default sort direction",
+      "description": "By default, ORDER BY sorts results in which direction?",
+      "difficulty": "easy",
+      "explanation": "ORDER BY sorts in ascending (ASC) order by default; use DESC for descending.",
+      "options": [
+        { "text": "Ascending", "is_correct": true },
+        { "text": "Descending", "is_correct": false },
+        { "text": "Random", "is_correct": false },
+        { "text": "Insertion order", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a column data type defines",
+      "description": "Why does each column have a defined data type (e.g., INTEGER, VARCHAR)?",
+      "difficulty": "easy",
+      "explanation": "Data types constrain what kind of values a column can store and how they are stored and compared.",
+      "options": [
+        { "text": "It constrains and describes the kind of values allowed", "is_correct": true },
+        { "text": "It sets the table's name", "is_correct": false },
+        { "text": "It defines user permissions", "is_correct": false },
+        { "text": "It controls backup frequency", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of AS alias",
+      "description": "What does the AS keyword do in a SELECT statement?",
+      "difficulty": "easy",
+      "explanation": "AS assigns an alias (alternate name) to a column or table in the result, improving readability.",
+      "options": [
+        { "text": "Gives a column or table a temporary alias", "is_correct": true },
+        { "text": "Adds a new permanent column", "is_correct": false },
+        { "text": "Filters rows", "is_correct": false },
+        { "text": "Casts a value to another type", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What TRUNCATE does",
+      "description": "What does the TRUNCATE TABLE statement do?",
+      "difficulty": "easy",
+      "explanation": "TRUNCATE quickly removes all rows from a table while keeping its structure intact.",
+      "options": [
+        { "text": "Removes all rows but keeps the table structure", "is_correct": true },
+        { "text": "Deletes the table definition", "is_correct": false },
+        { "text": "Removes a single row", "is_correct": false },
+        { "text": "Renames the table", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a query is",
+      "description": "In database terms, what is a query?",
+      "difficulty": "easy",
+      "explanation": "A query is a request to retrieve or manipulate data, typically expressed in SQL.",
+      "options": [
+        { "text": "A request to retrieve or manipulate data", "is_correct": true },
+        { "text": "A physical storage block", "is_correct": false },
+        { "text": "A database user account", "is_correct": false },
+        { "text": "A network protocol", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "AVG aggregate",
+      "description": "What does the AVG(column) function return?",
+      "difficulty": "easy",
+      "explanation": "AVG returns the arithmetic mean of the numeric values in the column.",
+      "options": [
+        { "text": "The average of the column's values", "is_correct": true },
+        { "text": "The sum of the values", "is_correct": false },
+        { "text": "The count of distinct values", "is_correct": false },
+        { "text": "The middle value", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of a NOT NULL constraint",
+      "description": "What does a NOT NULL constraint enforce?",
+      "difficulty": "easy",
+      "explanation": "NOT NULL requires that a column always contain a value; it cannot be left empty/NULL.",
+      "options": [
+        { "text": "The column must always have a value", "is_correct": true },
+        { "text": "The column must be unique", "is_correct": false },
+        { "text": "The column is auto-incremented", "is_correct": false },
+        { "text": "The column is indexed", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "LIKE operator",
+      "description": "What is the LIKE operator used for?",
+      "difficulty": "easy",
+      "explanation": "LIKE performs pattern matching on text using wildcards such as % and _.",
+      "options": [
+        { "text": "Pattern matching on strings with wildcards", "is_correct": true },
+        { "text": "Exact numeric comparison", "is_correct": false },
+        { "text": "Joining tables", "is_correct": false },
+        { "text": "Sorting results", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a table name must be",
+      "description": "Within a single schema, table names must be what?",
+      "difficulty": "easy",
+      "explanation": "Table names must be unique within their schema so the database can resolve references unambiguously.",
+      "options": [
+        { "text": "Unique within the schema", "is_correct": true },
+        { "text": "All uppercase", "is_correct": false },
+        { "text": "Numeric only", "is_correct": false },
+        { "text": "Identical to a column name", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of MIN",
+      "description": "What does MIN(column) return?",
+      "difficulty": "easy",
+      "explanation": "MIN returns the smallest value found in the specified column.",
+      "options": [
+        { "text": "The smallest value in the column", "is_correct": true },
+        { "text": "The number of rows", "is_correct": false },
+        { "text": "The largest value", "is_correct": false },
+        { "text": "The average value", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What IN does",
+      "description": "What does the IN operator check in a WHERE clause?",
+      "difficulty": "easy",
+      "explanation": "IN tests whether a value matches any value in a given list or subquery result.",
+      "options": [
+        { "text": "Whether a value is within a specified set of values", "is_correct": true },
+        { "text": "Whether a value is NULL", "is_correct": false },
+        { "text": "Whether two tables share rows", "is_correct": false },
+        { "text": "Whether a string matches a pattern", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of BETWEEN",
+      "description": "What does the BETWEEN operator do?",
+      "difficulty": "easy",
+      "explanation": "BETWEEN checks whether a value falls within an inclusive range (low AND high).",
+      "options": [
+        { "text": "Tests if a value falls within an inclusive range", "is_correct": true },
+        { "text": "Joins two tables", "is_correct": false },
+        { "text": "Counts distinct values", "is_correct": false },
+        { "text": "Removes duplicates", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a record is",
+      "description": "The term 'record' in a database is another word for what?",
+      "difficulty": "easy",
+      "explanation": "A record is another name for a row — a single entry in a table.",
+      "options": [
+        { "text": "A row", "is_correct": true },
+        { "text": "A column", "is_correct": false },
+        { "text": "A table", "is_correct": false },
+        { "text": "An index", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Auto-increment columns",
+      "description": "What is the purpose of an auto-increment (identity) column?",
+      "difficulty": "easy",
+      "explanation": "An auto-increment column automatically generates a new sequential number for each inserted row, often used for surrogate primary keys.",
+      "options": [
+        { "text": "Automatically generate unique sequential values for new rows", "is_correct": true },
+        { "text": "Encrypt the row", "is_correct": false },
+        { "text": "Sort the table", "is_correct": false },
+        { "text": "Limit row count", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of HAVING vs WHERE intro",
+      "description": "The HAVING clause is most similar in purpose to which other clause?",
+      "difficulty": "easy",
+      "explanation": "HAVING filters results, like WHERE, but it filters groups produced by GROUP BY rather than individual rows.",
+      "options": [
+        { "text": "WHERE (it filters, but on groups)", "is_correct": true },
+        { "text": "ORDER BY", "is_correct": false },
+        { "text": "JOIN", "is_correct": false },
+        { "text": "INSERT", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What backup is for",
+      "description": "Why are database backups important?",
+      "difficulty": "easy",
+      "explanation": "Backups allow data to be restored after accidental loss, corruption, or hardware failure.",
+      "options": [
+        { "text": "To recover data after loss, corruption, or failure", "is_correct": true },
+        { "text": "To speed up queries", "is_correct": false },
+        { "text": "To normalize tables", "is_correct": false },
+        { "text": "To create indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Boolean column",
+      "description": "A BOOLEAN column typically stores which kind of value?",
+      "difficulty": "easy",
+      "explanation": "A BOOLEAN column stores true/false (and possibly NULL) values.",
+      "options": [
+        { "text": "True or false", "is_correct": true },
+        { "text": "Any text string", "is_correct": false },
+        { "text": "A date", "is_correct": false },
+        { "text": "A large binary blob", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What a view is (intro)",
+      "description": "At a basic level, what is a database view?",
+      "difficulty": "easy",
+      "explanation": "A view is a saved query that behaves like a virtual table; it does not store data itself but presents data from underlying tables.",
+      "options": [
+        { "text": "A saved query that acts like a virtual table", "is_correct": true },
+        { "text": "A physical copy of a table", "is_correct": false },
+        { "text": "A database user", "is_correct": false },
+        { "text": "A type of index", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of WHERE with DELETE",
+      "description": "Why is it important to include a WHERE clause with most DELETE statements?",
+      "difficulty": "easy",
+      "explanation": "Without WHERE, DELETE removes every row in the table; WHERE restricts deletion to the intended rows.",
+      "options": [
+        { "text": "Without it, all rows in the table are deleted", "is_correct": true },
+        { "text": "It makes the delete faster", "is_correct": false },
+        { "text": "It encrypts the deleted rows", "is_correct": false },
+        { "text": "It is required syntax in all databases", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Composite key (intro)",
+      "description": "What is a composite primary key?",
+      "difficulty": "easy",
+      "explanation": "A composite primary key is a primary key made up of two or more columns whose combination is unique.",
+      "options": [
+        { "text": "A primary key made of more than one column", "is_correct": true },
+        { "text": "A key that is encrypted", "is_correct": false },
+        { "text": "A foreign key pointing to itself", "is_correct": false },
+        { "text": "A key that allows NULLs", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of a DEFAULT value",
+      "description": "What does a DEFAULT value on a column do?",
+      "difficulty": "easy",
+      "explanation": "A DEFAULT supplies a value for a column when an INSERT does not specify one.",
+      "options": [
+        { "text": "Provides a value when none is given on insert", "is_correct": true },
+        { "text": "Prevents the column from being queried", "is_correct": false },
+        { "text": "Makes the column a primary key", "is_correct": false },
+        { "text": "Encrypts the column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "ACID atomicity",
+      "description": "In ACID, what does Atomicity guarantee about a transaction?",
+      "difficulty": "medium",
+      "explanation": "Atomicity ensures a transaction is all-or-nothing: either every operation succeeds, or none of them are applied.",
+      "options": [
+        { "text": "All operations succeed together or none are applied", "is_correct": true },
+        { "text": "Transactions never block each other", "is_correct": false },
+        { "text": "Data is always stored in RAM", "is_correct": false },
+        { "text": "Every query returns the newest data", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "ACID consistency",
+      "description": "What does the Consistency property in ACID ensure?",
+      "difficulty": "medium",
+      "explanation": "Consistency ensures a transaction moves the database from one valid state to another, preserving all defined rules and constraints.",
+      "options": [
+        { "text": "The database remains in a valid state, respecting constraints", "is_correct": true },
+        { "text": "All reads happen before writes", "is_correct": false },
+        { "text": "Data is replicated to all nodes instantly", "is_correct": false },
+        { "text": "Queries always run in parallel", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "ACID isolation",
+      "description": "What does Isolation in ACID concern?",
+      "difficulty": "medium",
+      "explanation": "Isolation ensures concurrent transactions do not interfere with each other; results should be as if transactions ran serially.",
+      "options": [
+        { "text": "How concurrent transactions are kept from interfering", "is_correct": true },
+        { "text": "How data is encrypted on disk", "is_correct": false },
+        { "text": "How backups are scheduled", "is_correct": false },
+        { "text": "How indexes are built", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "ACID durability",
+      "description": "What does Durability guarantee in ACID?",
+      "difficulty": "medium",
+      "explanation": "Durability ensures that once a transaction is committed, its changes survive even a crash or power loss.",
+      "options": [
+        { "text": "Committed changes persist even after a crash", "is_correct": true },
+        { "text": "Transactions can always be rolled back", "is_correct": false },
+        { "text": "Queries never time out", "is_correct": false },
+        { "text": "Data is compressed automatically", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "INNER JOIN result",
+      "description": "What rows does an INNER JOIN return?",
+      "difficulty": "medium",
+      "explanation": "An INNER JOIN returns only rows that have matching values in both joined tables.",
+      "options": [
+        { "text": "Only rows with matches in both tables", "is_correct": true },
+        { "text": "All rows from the left table", "is_correct": false },
+        { "text": "All rows from both tables", "is_correct": false },
+        { "text": "Rows with no match in either table", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "LEFT JOIN behavior",
+      "description": "What does a LEFT (OUTER) JOIN return?",
+      "difficulty": "medium",
+      "explanation": "A LEFT JOIN returns all rows from the left table plus matching rows from the right; unmatched right-side columns are NULL.",
+      "options": [
+        { "text": "All left-table rows, with NULLs where the right has no match", "is_correct": true },
+        { "text": "Only matching rows", "is_correct": false },
+        { "text": "All right-table rows only", "is_correct": false },
+        { "text": "The intersection of both tables", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "First normal form",
+      "description": "What does First Normal Form (1NF) require?",
+      "difficulty": "medium",
+      "explanation": "1NF requires that each column hold atomic (indivisible) values and that there are no repeating groups or arrays in a column.",
+      "options": [
+        { "text": "Each column holds atomic values with no repeating groups", "is_correct": true },
+        { "text": "Every table has a foreign key", "is_correct": false },
+        { "text": "All columns are indexed", "is_correct": false },
+        { "text": "Tables are joined automatically", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Second normal form",
+      "description": "What additional rule does Second Normal Form (2NF) add over 1NF?",
+      "difficulty": "medium",
+      "explanation": "2NF requires 1NF plus that every non-key column depends on the whole primary key, eliminating partial dependencies on part of a composite key.",
+      "options": [
+        { "text": "No partial dependency on part of a composite key", "is_correct": true },
+        { "text": "No transitive dependencies", "is_correct": false },
+        { "text": "All columns must be unique", "is_correct": false },
+        { "text": "Every column must be NOT NULL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Third normal form",
+      "description": "What does Third Normal Form (3NF) eliminate?",
+      "difficulty": "medium",
+      "explanation": "3NF requires 2NF plus removing transitive dependencies, so non-key columns depend only on the primary key, not on other non-key columns.",
+      "options": [
+        { "text": "Transitive dependencies between non-key columns", "is_correct": true },
+        { "text": "All foreign keys", "is_correct": false },
+        { "text": "The need for a primary key", "is_correct": false },
+        { "text": "All indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Purpose of normalization",
+      "description": "What is the main goal of normalizing a relational schema?",
+      "difficulty": "medium",
+      "explanation": "Normalization reduces data redundancy and avoids update anomalies by organizing data into related tables.",
+      "options": [
+        { "text": "Reduce redundancy and prevent update anomalies", "is_correct": true },
+        { "text": "Increase duplicate data for speed", "is_correct": false },
+        { "text": "Remove all relationships", "is_correct": false },
+        { "text": "Eliminate the need for indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Denormalization trade-off",
+      "description": "Why might a team deliberately denormalize a schema?",
+      "difficulty": "medium",
+      "explanation": "Denormalization adds controlled redundancy to reduce expensive joins and speed up reads, at the cost of more complex writes and potential inconsistency.",
+      "options": [
+        { "text": "To speed up reads by avoiding costly joins", "is_correct": true },
+        { "text": "To guarantee no data is ever duplicated", "is_correct": false },
+        { "text": "To remove all indexes", "is_correct": false },
+        { "text": "To enforce stricter constraints", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What an index costs",
+      "description": "What is a typical downside of adding many indexes to a table?",
+      "difficulty": "medium",
+      "explanation": "Indexes must be updated on every write, so they slow down INSERT/UPDATE/DELETE and consume extra storage.",
+      "options": [
+        { "text": "Slower writes and more storage usage", "is_correct": true },
+        { "text": "Slower reads on indexed columns", "is_correct": false },
+        { "text": "Loss of referential integrity", "is_correct": false },
+        { "text": "Automatic data deletion", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "B-tree index use case",
+      "description": "A B-tree index is especially well suited for which kind of query?",
+      "difficulty": "medium",
+      "explanation": "B-tree indexes efficiently support equality and range queries (e.g., <, >, BETWEEN) and ordered scans.",
+      "options": [
+        { "text": "Equality and range lookups on ordered data", "is_correct": true },
+        { "text": "Full-text search only", "is_correct": false },
+        { "text": "Geospatial proximity only", "is_correct": false },
+        { "text": "Random hashing only", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "HAVING clause role",
+      "description": "When is the HAVING clause evaluated relative to GROUP BY?",
+      "difficulty": "medium",
+      "explanation": "HAVING filters groups after GROUP BY has aggregated rows, allowing conditions on aggregate values like COUNT or SUM.",
+      "options": [
+        { "text": "After grouping, to filter aggregated groups", "is_correct": true },
+        { "text": "Before any rows are read", "is_correct": false },
+        { "text": "Only on indexed columns", "is_correct": false },
+        { "text": "After ORDER BY sorts the rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Subquery definition",
+      "description": "What is a subquery (nested query)?",
+      "difficulty": "medium",
+      "explanation": "A subquery is a query nested inside another query, whose result is used by the outer query.",
+      "options": [
+        { "text": "A query embedded within another query", "is_correct": true },
+        { "text": "A query that runs on a backup", "is_correct": false },
+        { "text": "A query without a WHERE clause", "is_correct": false },
+        { "text": "A query that returns no rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Correlated subquery",
+      "description": "What distinguishes a correlated subquery from a regular subquery?",
+      "difficulty": "medium",
+      "explanation": "A correlated subquery references columns from the outer query and is re-evaluated for each outer row.",
+      "options": [
+        { "text": "It references the outer query and runs per outer row", "is_correct": true },
+        { "text": "It always returns a single constant", "is_correct": false },
+        { "text": "It cannot use WHERE", "is_correct": false },
+        { "text": "It only works on views", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Connection pooling purpose",
+      "description": "Why do applications use a database connection pool?",
+      "difficulty": "medium",
+      "explanation": "Opening connections is expensive; a pool reuses a set of established connections to reduce latency and limit concurrent load on the database.",
+      "options": [
+        { "text": "To reuse established connections and limit overhead", "is_correct": true },
+        { "text": "To encrypt all queries", "is_correct": false },
+        { "text": "To replace indexes", "is_correct": false },
+        { "text": "To store query results permanently", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Read replica purpose",
+      "description": "What is the primary purpose of a read replica?",
+      "difficulty": "medium",
+      "explanation": "Read replicas copy data from a primary to offload read traffic, improving read scalability and availability.",
+      "options": [
+        { "text": "To serve read queries and offload the primary", "is_correct": true },
+        { "text": "To accept all writes directly", "is_correct": false },
+        { "text": "To replace backups entirely", "is_correct": false },
+        { "text": "To shard data across nodes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Primary-replica write path",
+      "description": "In a typical primary-replica setup, where are writes directed?",
+      "difficulty": "medium",
+      "explanation": "Writes go to the primary, which then replicates changes to the read replicas.",
+      "options": [
+        { "text": "To the primary, which replicates to replicas", "is_correct": true },
+        { "text": "To any replica directly", "is_correct": false },
+        { "text": "To all nodes simultaneously by the client", "is_correct": false },
+        { "text": "To a cache only", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Replication lag",
+      "description": "What is replication lag?",
+      "difficulty": "medium",
+      "explanation": "Replication lag is the delay between a write committing on the primary and that change appearing on a replica, which can cause stale reads.",
+      "options": [
+        { "text": "The delay before a replica reflects the primary's writes", "is_correct": true },
+        { "text": "The time to open a connection", "is_correct": false },
+        { "text": "The size of the transaction log", "is_correct": false },
+        { "text": "The latency of an index rebuild", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What sharding is",
+      "description": "What does horizontal sharding do to a dataset?",
+      "difficulty": "medium",
+      "explanation": "Sharding partitions rows across multiple database nodes by a shard key, so each node holds a subset of the data.",
+      "options": [
+        { "text": "Splits rows across multiple nodes by a shard key", "is_correct": true },
+        { "text": "Copies the whole dataset to every node", "is_correct": false },
+        { "text": "Combines many tables into one", "is_correct": false },
+        { "text": "Compresses the data", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Stored procedure",
+      "description": "What is a stored procedure?",
+      "difficulty": "medium",
+      "explanation": "A stored procedure is a precompiled set of SQL statements stored in the database and executed by name, often with parameters.",
+      "options": [
+        { "text": "Saved SQL logic stored and executed in the database", "is_correct": true },
+        { "text": "A type of index", "is_correct": false },
+        { "text": "A backup format", "is_correct": false },
+        { "text": "A client-side cache", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Database trigger",
+      "description": "What is a database trigger?",
+      "difficulty": "medium",
+      "explanation": "A trigger is code that automatically executes in response to events such as INSERT, UPDATE, or DELETE on a table.",
+      "options": [
+        { "text": "Code that runs automatically on data-change events", "is_correct": true },
+        { "text": "A scheduled backup job", "is_correct": false },
+        { "text": "A foreign key constraint", "is_correct": false },
+        { "text": "A type of join", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "UNION vs UNION ALL",
+      "description": "What is the difference between UNION and UNION ALL?",
+      "difficulty": "medium",
+      "explanation": "UNION removes duplicate rows from the combined result; UNION ALL keeps all rows including duplicates and is faster.",
+      "options": [
+        { "text": "UNION removes duplicates; UNION ALL keeps them", "is_correct": true },
+        { "text": "They are identical", "is_correct": false },
+        { "text": "UNION ALL sorts results; UNION does not", "is_correct": false },
+        { "text": "UNION joins tables side by side", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What an EXPLAIN plan shows",
+      "description": "What does running EXPLAIN on a query reveal?",
+      "difficulty": "medium",
+      "explanation": "EXPLAIN shows the query planner's execution strategy, including join types, index usage, and estimated costs.",
+      "options": [
+        { "text": "How the database plans to execute the query", "is_correct": true },
+        { "text": "The raw bytes of the table on disk", "is_correct": false },
+        { "text": "A list of database users", "is_correct": false },
+        { "text": "The backup schedule", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Full table scan meaning",
+      "description": "What does a full table scan indicate in a query plan?",
+      "difficulty": "medium",
+      "explanation": "A full table scan reads every row in the table, often because no suitable index exists; it can be slow on large tables.",
+      "options": [
+        { "text": "The database reads every row, often missing an index", "is_correct": true },
+        { "text": "The query used an index efficiently", "is_correct": false },
+        { "text": "The table was locked", "is_correct": false },
+        { "text": "The query returned no rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Composite index column order",
+      "description": "Why does column order matter in a composite (multi-column) index?",
+      "difficulty": "medium",
+      "explanation": "A composite index is most useful when queries filter on a leftmost prefix of its columns; order determines which queries can use it.",
+      "options": [
+        { "text": "Queries benefit only when filtering a leftmost prefix of columns", "is_correct": true },
+        { "text": "Order has no effect", "is_correct": false },
+        { "text": "Only the last column is used", "is_correct": false },
+        { "text": "It changes the table's row order", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Optimistic vs pessimistic locking",
+      "description": "What characterizes optimistic locking?",
+      "difficulty": "medium",
+      "explanation": "Optimistic locking assumes conflicts are rare; it checks at commit time (e.g., via a version column) and retries if a conflict is detected, without holding locks.",
+      "options": [
+        { "text": "It detects conflicts at commit time instead of locking upfront", "is_correct": true },
+        { "text": "It locks rows for the entire transaction", "is_correct": false },
+        { "text": "It disables transactions", "is_correct": false },
+        { "text": "It always blocks readers", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Deadlock definition",
+      "description": "What is a database deadlock?",
+      "difficulty": "medium",
+      "explanation": "A deadlock occurs when two or more transactions each hold a lock the other needs, so none can proceed; the database usually aborts one to break it.",
+      "options": [
+        { "text": "Two transactions each waiting on a lock the other holds", "is_correct": true },
+        { "text": "A query that runs forever due to a missing index", "is_correct": false },
+        { "text": "A crashed replica", "is_correct": false },
+        { "text": "A full disk", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Surrogate key",
+      "description": "What is a surrogate key?",
+      "difficulty": "medium",
+      "explanation": "A surrogate key is an artificial, system-generated identifier (like an auto-increment ID or UUID) with no business meaning, used as the primary key.",
+      "options": [
+        { "text": "A system-generated identifier with no business meaning", "is_correct": true },
+        { "text": "A key derived from real-world data like email", "is_correct": false },
+        { "text": "A foreign key to another database", "is_correct": false },
+        { "text": "A temporary key for a session", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Natural key",
+      "description": "What is a natural key?",
+      "difficulty": "medium",
+      "explanation": "A natural key is a primary key formed from existing, meaningful business data (such as an ISBN or email), rather than a generated value.",
+      "options": [
+        { "text": "A primary key based on meaningful real-world data", "is_correct": true },
+        { "text": "An auto-incrementing integer", "is_correct": false },
+        { "text": "A randomly generated UUID", "is_correct": false },
+        { "text": "A hidden internal row id", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "CHECK constraint",
+      "description": "What does a CHECK constraint do?",
+      "difficulty": "medium",
+      "explanation": "A CHECK constraint enforces that a column's values satisfy a boolean expression, e.g., price > 0.",
+      "options": [
+        { "text": "Enforces that values meet a specified condition", "is_correct": true },
+        { "text": "Indexes the column", "is_correct": false },
+        { "text": "Links two tables", "is_correct": false },
+        { "text": "Encrypts the column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "ON DELETE CASCADE",
+      "description": "What happens with a foreign key defined as ON DELETE CASCADE?",
+      "difficulty": "medium",
+      "explanation": "When the referenced parent row is deleted, the child rows that reference it are automatically deleted too.",
+      "options": [
+        { "text": "Deleting the parent row also deletes the related child rows", "is_correct": true },
+        { "text": "Deletion of the parent is blocked", "is_correct": false },
+        { "text": "Child rows are set to NULL", "is_correct": false },
+        { "text": "Nothing happens to child rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Materialized view",
+      "description": "How does a materialized view differ from a regular view?",
+      "difficulty": "medium",
+      "explanation": "A materialized view stores the query result physically and must be refreshed, whereas a regular view computes results on each access.",
+      "options": [
+        { "text": "It stores results physically and needs refreshing", "is_correct": true },
+        { "text": "It cannot be queried", "is_correct": false },
+        { "text": "It is always faster to write to", "is_correct": false },
+        { "text": "It never goes stale", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Transaction isolation: dirty read",
+      "description": "What is a dirty read?",
+      "difficulty": "medium",
+      "explanation": "A dirty read occurs when a transaction reads data written by another transaction that has not yet committed and might be rolled back.",
+      "options": [
+        { "text": "Reading uncommitted changes from another transaction", "is_correct": true },
+        { "text": "Reading from a corrupted disk block", "is_correct": false },
+        { "text": "Reading a deleted row", "is_correct": false },
+        { "text": "Reading from a replica", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Primary key vs unique index",
+      "description": "How does a primary key differ from a plain unique index?",
+      "difficulty": "medium",
+      "explanation": "A primary key is a unique constraint that also forbids NULLs and serves as the table's main identifier; a table has at most one primary key but can have many unique indexes.",
+      "options": [
+        { "text": "A primary key disallows NULLs and there is only one per table", "is_correct": true },
+        { "text": "They are exactly the same", "is_correct": false },
+        { "text": "Unique indexes disallow NULLs but primary keys allow them", "is_correct": false },
+        { "text": "A table can have many primary keys", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Cartesian product / CROSS JOIN",
+      "description": "What does a CROSS JOIN produce?",
+      "difficulty": "medium",
+      "explanation": "A CROSS JOIN produces the Cartesian product: every row of the first table paired with every row of the second.",
+      "options": [
+        { "text": "Every combination of rows from both tables", "is_correct": true },
+        { "text": "Only matching rows", "is_correct": false },
+        { "text": "Rows from the left table only", "is_correct": false },
+        { "text": "Distinct rows from both tables", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "GROUP BY with aggregates",
+      "description": "When using GROUP BY, what must be true of non-aggregated columns in the SELECT list (in standard SQL)?",
+      "difficulty": "medium",
+      "explanation": "In standard SQL, every selected column that is not inside an aggregate must appear in the GROUP BY clause.",
+      "options": [
+        { "text": "They must appear in the GROUP BY clause", "is_correct": true },
+        { "text": "They must be indexed", "is_correct": false },
+        { "text": "They must be NULL", "is_correct": false },
+        { "text": "They must be primary keys", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Covering index",
+      "description": "What is a covering index?",
+      "difficulty": "medium",
+      "explanation": "A covering index includes all columns a query needs, so the query can be answered from the index alone without reading the table rows.",
+      "options": [
+        { "text": "An index that contains all columns a query needs", "is_correct": true },
+        { "text": "An index on every column of a table", "is_correct": false },
+        { "text": "A backup of the index", "is_correct": false },
+        { "text": "An index shared across tables", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Cardinality and index usefulness",
+      "description": "How does a column's cardinality affect index usefulness?",
+      "difficulty": "medium",
+      "explanation": "High-cardinality columns (many distinct values) make indexes more selective and useful; low-cardinality columns yield less benefit.",
+      "options": [
+        { "text": "High cardinality makes an index more selective and useful", "is_correct": true },
+        { "text": "Low cardinality always makes the best indexes", "is_correct": false },
+        { "text": "Cardinality has no effect on indexes", "is_correct": false },
+        { "text": "Indexes only help boolean columns", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What WAL is for",
+      "description": "What is the purpose of a write-ahead log (WAL)?",
+      "difficulty": "medium",
+      "explanation": "A WAL records changes before they are applied to the data files, enabling crash recovery and durability.",
+      "options": [
+        { "text": "Record changes before applying them, enabling recovery", "is_correct": true },
+        { "text": "Cache query results", "is_correct": false },
+        { "text": "Store user passwords", "is_correct": false },
+        { "text": "Compress old rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Eventual consistency",
+      "description": "What does eventual consistency mean?",
+      "difficulty": "medium",
+      "explanation": "With eventual consistency, replicas may temporarily diverge but will converge to the same value if no new writes occur.",
+      "options": [
+        { "text": "Replicas converge to the same state over time", "is_correct": true },
+        { "text": "All reads are always immediately up to date", "is_correct": false },
+        { "text": "Writes are never replicated", "is_correct": false },
+        { "text": "Data is never consistent", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "OLTP vs OLAP",
+      "description": "Which workload best describes OLTP systems?",
+      "difficulty": "medium",
+      "explanation": "OLTP (online transaction processing) handles many short, write-heavy transactions, while OLAP focuses on complex analytical reads.",
+      "options": [
+        { "text": "Many short, frequent read/write transactions", "is_correct": true },
+        { "text": "Large analytical aggregations over history", "is_correct": false },
+        { "text": "Batch report generation only", "is_correct": false },
+        { "text": "Long-running data mining queries", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Foreign key and orphan rows",
+      "description": "How does a foreign key constraint help prevent orphan rows?",
+      "difficulty": "medium",
+      "explanation": "A foreign key blocks inserting a child row that references a non-existent parent, preventing orphaned references.",
+      "options": [
+        { "text": "It rejects child rows referencing a missing parent", "is_correct": true },
+        { "text": "It deletes all child rows automatically", "is_correct": false },
+        { "text": "It indexes the parent table", "is_correct": false },
+        { "text": "It duplicates parent rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "COALESCE function",
+      "description": "What does COALESCE(a, b, c) return?",
+      "difficulty": "medium",
+      "explanation": "COALESCE returns the first non-NULL argument from its list, commonly used to provide default values.",
+      "options": [
+        { "text": "The first non-NULL value in the list", "is_correct": true },
+        { "text": "The sum of all arguments", "is_correct": false },
+        { "text": "The last argument always", "is_correct": false },
+        { "text": "NULL if any argument is NULL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Self join",
+      "description": "What is a self join?",
+      "difficulty": "medium",
+      "explanation": "A self join joins a table to itself, typically using aliases, to relate rows within the same table (e.g., employees to their managers).",
+      "options": [
+        { "text": "Joining a table to itself using aliases", "is_correct": true },
+        { "text": "Joining two unrelated tables", "is_correct": false },
+        { "text": "A join that returns no rows", "is_correct": false },
+        { "text": "A join across two databases", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Index on low-selectivity boolean",
+      "description": "Why is a plain B-tree index on a low-selectivity boolean column often not helpful?",
+      "difficulty": "medium",
+      "explanation": "When a column has few distinct values, each value matches many rows, so the planner may prefer a full scan over the index.",
+      "options": [
+        { "text": "Each value matches too many rows to be selective", "is_correct": true },
+        { "text": "Boolean columns cannot be indexed", "is_correct": false },
+        { "text": "It corrupts the table", "is_correct": false },
+        { "text": "It forces NULLs everywhere", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Primary vs foreign key direction",
+      "description": "A foreign key in a child table typically references what in the parent table?",
+      "difficulty": "medium",
+      "explanation": "A foreign key references the primary key (or a unique key) of the parent table.",
+      "options": [
+        { "text": "The parent table's primary or unique key", "is_correct": true },
+        { "text": "Any column of the parent", "is_correct": false },
+        { "text": "The child's own primary key", "is_correct": false },
+        { "text": "An index name", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "What VACUUM/compaction addresses",
+      "description": "In MVCC databases, what problem does a process like VACUUM (or compaction) address?",
+      "difficulty": "medium",
+      "explanation": "MVCC keeps old row versions for concurrent readers; VACUUM reclaims space from dead tuples that are no longer visible to any transaction.",
+      "options": [
+        { "text": "Reclaiming space from obsolete row versions", "is_correct": true },
+        { "text": "Encrypting all rows", "is_correct": false },
+        { "text": "Creating new indexes", "is_correct": false },
+        { "text": "Adding foreign keys", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Pagination with OFFSET cost",
+      "description": "Why can OFFSET-based pagination become slow on deep pages?",
+      "difficulty": "medium",
+      "explanation": "OFFSET still scans and discards all skipped rows, so deep offsets read progressively more rows; keyset (seek) pagination avoids this by filtering on the last seen key.",
+      "options": [
+        { "text": "The database must scan and skip all rows before the offset", "is_correct": true },
+        { "text": "OFFSET disables indexes", "is_correct": false },
+        { "text": "OFFSET locks the whole table", "is_correct": false },
+        { "text": "OFFSET duplicates rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Transaction isolation: serializable",
+      "description": "What does the SERIALIZABLE isolation level guarantee?",
+      "difficulty": "hard",
+      "explanation": "SERIALIZABLE guarantees that concurrent transactions produce a result equivalent to some serial (one-at-a-time) ordering, preventing all anomalies including phantom reads.",
+      "options": [
+        { "text": "Results equivalent to running transactions one at a time", "is_correct": true },
+        { "text": "Reads of uncommitted data are allowed", "is_correct": false },
+        { "text": "No locking is ever used", "is_correct": false },
+        { "text": "Transactions can never roll back", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Phantom read",
+      "description": "What is a phantom read?",
+      "difficulty": "hard",
+      "explanation": "A phantom read happens when a transaction re-runs a range query and sees new rows inserted by another committed transaction that match the predicate.",
+      "options": [
+        { "text": "A repeated range query returns newly inserted matching rows", "is_correct": true },
+        { "text": "Reading an uncommitted value", "is_correct": false },
+        { "text": "Reading a row that no longer exists physically", "is_correct": false },
+        { "text": "A read from a stale cache", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Non-repeatable read",
+      "description": "What is a non-repeatable read?",
+      "difficulty": "hard",
+      "explanation": "A non-repeatable read occurs when a transaction reads the same row twice and gets different values because another committed transaction modified it in between.",
+      "options": [
+        { "text": "The same row yields different values on re-read within a transaction", "is_correct": true },
+        { "text": "A query that cannot be run twice", "is_correct": false },
+        { "text": "Reading from two tables at once", "is_correct": false },
+        { "text": "A read that returns NULL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "MVCC mechanism",
+      "description": "How does Multi-Version Concurrency Control (MVCC) let readers avoid blocking writers?",
+      "difficulty": "hard",
+      "explanation": "MVCC keeps multiple versions of a row so readers see a consistent snapshot from their transaction's start, while writers create new versions without blocking those readers.",
+      "options": [
+        { "text": "Readers see a snapshot version while writers create new versions", "is_correct": true },
+        { "text": "Readers always acquire exclusive locks", "is_correct": false },
+        { "text": "Writes are queued until all reads finish", "is_correct": false },
+        { "text": "Only one transaction runs at a time", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Two-phase commit",
+      "description": "What problem does the two-phase commit (2PC) protocol solve?",
+      "difficulty": "hard",
+      "explanation": "2PC coordinates an atomic commit across multiple nodes/resources: a prepare phase followed by a commit phase ensures all participants commit or all abort.",
+      "options": [
+        { "text": "Atomic commit of a transaction across multiple nodes", "is_correct": true },
+        { "text": "Faster single-node reads", "is_correct": false },
+        { "text": "Index rebuilding", "is_correct": false },
+        { "text": "Compressing the WAL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "2PC blocking weakness",
+      "description": "What is a well-known weakness of two-phase commit?",
+      "difficulty": "hard",
+      "explanation": "If the coordinator fails after participants have prepared, they may block indefinitely holding locks while awaiting the final decision.",
+      "options": [
+        { "text": "Participants can block holding locks if the coordinator fails", "is_correct": true },
+        { "text": "It cannot guarantee atomicity", "is_correct": false },
+        { "text": "It only works on a single machine", "is_correct": false },
+        { "text": "It removes the need for a WAL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Saga pattern",
+      "description": "What does the saga pattern use instead of distributed locks to maintain consistency across services?",
+      "difficulty": "hard",
+      "explanation": "A saga breaks a distributed transaction into a series of local transactions, each with a compensating action to undo prior steps on failure.",
+      "options": [
+        { "text": "A sequence of local transactions with compensating actions", "is_correct": true },
+        { "text": "A global lock across all services", "is_correct": false },
+        { "text": "A single ACID transaction across services", "is_correct": false },
+        { "text": "Disabling all writes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Write amplification in LSM trees",
+      "description": "What causes write amplification in an LSM-tree storage engine?",
+      "difficulty": "hard",
+      "explanation": "Background compaction repeatedly rewrites data as it merges SSTables across levels, so a single logical write results in multiple physical writes.",
+      "options": [
+        { "text": "Compaction rewrites data multiple times across levels", "is_correct": true },
+        { "text": "Indexes are never updated", "is_correct": false },
+        { "text": "Reads block all writes", "is_correct": false },
+        { "text": "The WAL is disabled", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "LSM tree read trade-off",
+      "description": "Compared to B-trees, what is a typical read-side trade-off of LSM-tree engines?",
+      "difficulty": "hard",
+      "explanation": "LSM trees optimize writes but a read may need to check several SSTables (and bloom filters) across levels, potentially increasing read amplification.",
+      "options": [
+        { "text": "Reads may need to consult multiple SSTables (read amplification)", "is_correct": true },
+        { "text": "Reads are always faster than B-trees", "is_correct": false },
+        { "text": "Reads cannot use bloom filters", "is_correct": false },
+        { "text": "Writes are slower than B-trees", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Bloom filter in databases",
+      "description": "How do storage engines use a bloom filter to speed up reads?",
+      "difficulty": "hard",
+      "explanation": "A bloom filter probabilistically reports whether a key is definitely absent from an SSTable, letting the engine skip files that cannot contain the key (with possible false positives, never false negatives).",
+      "options": [
+        { "text": "To skip files that definitely do not contain a key", "is_correct": true },
+        { "text": "To guarantee a key exists in a file", "is_correct": false },
+        { "text": "To compress row data", "is_correct": false },
+        { "text": "To enforce uniqueness", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Quorum reads and writes",
+      "description": "In a quorum system with N replicas, what condition on read quorum R and write quorum W guarantees strong consistency?",
+      "difficulty": "hard",
+      "explanation": "When R + W > N, every read quorum overlaps with the latest write quorum, so a read always sees the most recent write.",
+      "options": [
+        { "text": "R + W > N", "is_correct": true },
+        { "text": "R + W < N", "is_correct": false },
+        { "text": "R = W = 1 always", "is_correct": false },
+        { "text": "R + W = 0", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Hash sharding hotspots",
+      "description": "Why does hash-based sharding generally avoid range-scan hotspots better than range sharding?",
+      "difficulty": "hard",
+      "explanation": "Hashing distributes sequential or skewed keys uniformly across shards, preventing a single shard from receiving a burst of adjacent-key traffic — at the cost of efficient range scans.",
+      "options": [
+        { "text": "Hashing spreads adjacent keys evenly across shards", "is_correct": true },
+        { "text": "Hashing keeps adjacent keys on one shard", "is_correct": false },
+        { "text": "Hashing eliminates the need for a shard key", "is_correct": false },
+        { "text": "Hashing improves range-scan performance", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Consistent hashing benefit",
+      "description": "What problem does consistent hashing primarily solve in a sharded/distributed store?",
+      "difficulty": "hard",
+      "explanation": "Consistent hashing minimizes the number of keys that must move when nodes are added or removed, avoiding a full reshuffle.",
+      "options": [
+        { "text": "Minimizing key remapping when nodes are added or removed", "is_correct": true },
+        { "text": "Guaranteeing strong consistency", "is_correct": false },
+        { "text": "Eliminating replication", "is_correct": false },
+        { "text": "Removing the need for a hash function", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Index-only scan requirement",
+      "description": "For an index-only scan to be used in PostgreSQL, what must generally be true?",
+      "difficulty": "hard",
+      "explanation": "All columns the query needs must be in the index, and the visibility map must show the pages as all-visible so heap lookups can be skipped.",
+      "options": [
+        { "text": "The index covers all needed columns and pages are all-visible", "is_correct": true },
+        { "text": "The table has no primary key", "is_correct": false },
+        { "text": "The query uses no WHERE clause", "is_correct": false },
+        { "text": "The index is on a boolean column", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Snapshot isolation anomaly",
+      "description": "Which anomaly can occur under snapshot isolation but not under true serializable isolation?",
+      "difficulty": "hard",
+      "explanation": "Write skew can occur under snapshot isolation: two transactions read overlapping data and make disjoint writes that together violate a constraint, which serializable isolation would prevent.",
+      "options": [
+        { "text": "Write skew", "is_correct": true },
+        { "text": "Dirty read", "is_correct": false },
+        { "text": "Lost commit acknowledgements", "is_correct": false },
+        { "text": "Index corruption", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Gap locks purpose",
+      "description": "In databases like MySQL's InnoDB, what is the purpose of a gap lock?",
+      "difficulty": "hard",
+      "explanation": "Gap locks lock the space between index records to prevent other transactions from inserting into that range, which blocks phantom rows under repeatable read.",
+      "options": [
+        { "text": "To prevent inserts into a range, blocking phantoms", "is_correct": true },
+        { "text": "To compress index pages", "is_correct": false },
+        { "text": "To speed up sequential scans", "is_correct": false },
+        { "text": "To replicate rows to replicas", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Synchronous vs asynchronous replication",
+      "description": "What is the key durability trade-off of asynchronous replication?",
+      "difficulty": "hard",
+      "explanation": "Asynchronous replication acknowledges a write before replicas confirm it, so a primary failure can lose recently committed writes that never reached a replica.",
+      "options": [
+        { "text": "Recent committed writes can be lost if the primary fails", "is_correct": true },
+        { "text": "Writes always wait for every replica", "is_correct": false },
+        { "text": "It guarantees zero data loss", "is_correct": false },
+        { "text": "It eliminates replication lag", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Split-brain in failover",
+      "description": "What is a split-brain scenario in a replicated database cluster?",
+      "difficulty": "hard",
+      "explanation": "Split-brain occurs when a network partition causes two nodes to each believe they are the primary, accepting conflicting writes.",
+      "options": [
+        { "text": "Two nodes both act as primary and accept conflicting writes", "is_correct": true },
+        { "text": "A replica falls permanently behind", "is_correct": false },
+        { "text": "The cluster runs out of disk", "is_correct": false },
+        { "text": "An index is built on two columns", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Fencing tokens",
+      "description": "How do fencing tokens prevent a stale leader from corrupting data after failover?",
+      "difficulty": "hard",
+      "explanation": "A monotonically increasing fencing token is attached to each request; resources reject any request carrying a lower token than one already seen, blocking an outdated leader.",
+      "options": [
+        { "text": "Resources reject requests with an out-of-date (lower) token", "is_correct": true },
+        { "text": "They encrypt all writes", "is_correct": false },
+        { "text": "They speed up the new leader", "is_correct": false },
+        { "text": "They disable replication", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Covering index vs heap fetch",
+      "description": "Why can a covering index dramatically speed up a query?",
+      "difficulty": "hard",
+      "explanation": "Because the index holds every column the query needs, the engine avoids random heap/row lookups, turning many scattered reads into a single ordered index scan.",
+      "options": [
+        { "text": "It avoids extra random row (heap) lookups", "is_correct": true },
+        { "text": "It compresses the table", "is_correct": false },
+        { "text": "It removes the WHERE clause cost", "is_correct": false },
+        { "text": "It caches results permanently", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Skewed shard key",
+      "description": "What is the main risk of choosing a low-cardinality or skewed shard key?",
+      "difficulty": "hard",
+      "explanation": "A skewed shard key concentrates data and traffic on a few shards (hotspots), undermining the scalability benefit of sharding.",
+      "options": [
+        { "text": "Hotspots where a few shards hold most data and load", "is_correct": true },
+        { "text": "Perfectly even data distribution", "is_correct": false },
+        { "text": "Automatic resharding", "is_correct": false },
+        { "text": "Stronger consistency", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Idempotency in retries",
+      "description": "Why is idempotency important when an application retries a database write after a timeout?",
+      "difficulty": "hard",
+      "explanation": "After a timeout the client cannot know if the write applied; an idempotent operation (e.g., keyed by a unique request id) ensures retries do not duplicate effects.",
+      "options": [
+        { "text": "It ensures retries do not apply the write twice", "is_correct": true },
+        { "text": "It speeds up the network", "is_correct": false },
+        { "text": "It removes the need for transactions", "is_correct": false },
+        { "text": "It guarantees lower latency", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "CAP under partition",
+      "description": "Per the CAP theorem, during a network partition a distributed database must sacrifice which property if it stays available?",
+      "difficulty": "hard",
+      "explanation": "During a partition you can keep availability or consistency but not both; an AP system sacrifices strong consistency to remain available.",
+      "options": [
+        { "text": "Strong consistency", "is_correct": true },
+        { "text": "Partition tolerance", "is_correct": false },
+        { "text": "Durability", "is_correct": false },
+        { "text": "Atomicity", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "PACELC extension",
+      "description": "What does the PACELC theorem add beyond CAP?",
+      "difficulty": "hard",
+      "explanation": "PACELC states that besides the partition (P) trade-off of availability vs consistency, Else (E) — when the system is running normally — there is a trade-off between latency (L) and consistency (C).",
+      "options": [
+        { "text": "Even without partitions, there is a latency vs consistency trade-off", "is_correct": true },
+        { "text": "Partitions never happen in practice", "is_correct": false },
+        { "text": "Consistency is always free", "is_correct": false },
+        { "text": "Availability is impossible", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Hot vs cold backup",
+      "description": "What distinguishes a hot backup from a cold backup?",
+      "difficulty": "hard",
+      "explanation": "A hot backup is taken while the database is online and serving traffic; a cold backup requires the database to be stopped/offline.",
+      "options": [
+        { "text": "A hot backup runs while the database is online", "is_correct": true },
+        { "text": "A hot backup requires the database to be offline", "is_correct": false },
+        { "text": "A cold backup is always incremental", "is_correct": false },
+        { "text": "They are identical", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Point-in-time recovery",
+      "description": "What enables point-in-time recovery (PITR)?",
+      "difficulty": "hard",
+      "explanation": "PITR combines a base backup with the continuous transaction/WAL log so the database can be replayed to any chosen moment before a failure.",
+      "options": [
+        { "text": "A base backup plus continuous WAL/transaction logs to replay", "is_correct": true },
+        { "text": "Only a single nightly full dump", "is_correct": false },
+        { "text": "A read replica with no logs", "is_correct": false },
+        { "text": "An in-memory cache", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "N+1 query problem",
+      "description": "What is the N+1 query problem?",
+      "difficulty": "hard",
+      "explanation": "It occurs when code runs one query to fetch a list and then one additional query per item to fetch related data, producing N+1 round trips instead of a single join or batched query.",
+      "options": [
+        { "text": "Running one query per item instead of batching, causing many round trips", "is_correct": true },
+        { "text": "A query that returns one extra row", "is_correct": false },
+        { "text": "An index missing one column", "is_correct": false },
+        { "text": "A transaction with N rollbacks", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Index selectivity and planner",
+      "description": "Why might a query planner choose a sequential scan even when a usable index exists?",
+      "difficulty": "hard",
+      "explanation": "If the predicate matches a large fraction of rows, the planner estimates that scanning sequentially is cheaper than many random index lookups.",
+      "options": [
+        { "text": "When the query matches enough rows that a scan is cheaper", "is_correct": true },
+        { "text": "Indexes are never used by planners", "is_correct": false },
+        { "text": "Because the index is encrypted", "is_correct": false },
+        { "text": "Because sequential scans are always faster", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Lock escalation",
+      "description": "What is lock escalation?",
+      "difficulty": "hard",
+      "explanation": "Lock escalation converts many fine-grained locks (e.g., row locks) into a single coarser lock (e.g., a table lock) to reduce lock-management overhead, at the cost of concurrency.",
+      "options": [
+        { "text": "Converting many fine-grained locks into one coarse lock", "is_correct": true },
+        { "text": "Releasing all locks at once", "is_correct": false },
+        { "text": "Encrypting locked rows", "is_correct": false },
+        { "text": "Promoting a replica to primary", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Foreign key indexing pitfall",
+      "description": "Why is it often recommended to index the foreign key column on the child side?",
+      "difficulty": "hard",
+      "explanation": "Without an index on the child's foreign key, operations like deleting or updating a parent key can trigger slow full scans of the child table to check references.",
+      "options": [
+        { "text": "To avoid slow child-table scans during parent updates/deletes", "is_correct": true },
+        { "text": "Because foreign keys cannot exist without an index", "is_correct": false },
+        { "text": "To encrypt the relationship", "is_correct": false },
+        { "text": "To enforce NOT NULL", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Read-your-writes consistency",
+      "description": "What does read-your-writes consistency guarantee?",
+      "difficulty": "hard",
+      "explanation": "Read-your-writes ensures that after a client makes a write, that same client's subsequent reads will reflect the write, even if other clients might not yet.",
+      "options": [
+        { "text": "A client always sees its own prior writes on later reads", "is_correct": true },
+        { "text": "All clients see all writes instantly", "is_correct": false },
+        { "text": "Writes are never visible to the writer", "is_correct": false },
+        { "text": "Reads bypass the write log", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Partial index",
+      "description": "What is a partial index and when is it useful?",
+      "difficulty": "hard",
+      "explanation": "A partial index indexes only rows satisfying a predicate (e.g., WHERE active = true), saving space and speeding queries that target that subset.",
+      "options": [
+        { "text": "An index over only a subset of rows matching a condition", "is_correct": true },
+        { "text": "An index on half of each value", "is_correct": false },
+        { "text": "An index that is rebuilt every night", "is_correct": false },
+        { "text": "An index spanning multiple tables", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Clustered vs non-clustered index",
+      "description": "How does a clustered index differ from a non-clustered index?",
+      "difficulty": "hard",
+      "explanation": "A clustered index determines the physical order of the table's rows (the data is the index leaf), so a table can have only one; non-clustered indexes are separate structures pointing to rows.",
+      "options": [
+        { "text": "A clustered index defines the physical row order; only one per table", "is_correct": true },
+        { "text": "A clustered index is always smaller", "is_correct": false },
+        { "text": "Non-clustered indexes store the full rows", "is_correct": false },
+        { "text": "They are functionally identical", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Change data capture",
+      "description": "What is Change Data Capture (CDC) primarily used for?",
+      "difficulty": "hard",
+      "explanation": "CDC streams row-level changes (often from the transaction log) so downstream systems like search indexes, caches, or data warehouses stay in sync.",
+      "options": [
+        { "text": "Streaming row changes to keep other systems in sync", "is_correct": true },
+        { "text": "Compressing the database", "is_correct": false },
+        { "text": "Encrypting the WAL", "is_correct": false },
+        { "text": "Rebuilding indexes nightly", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Isolation level default trade-off",
+      "description": "Why do many databases default to READ COMMITTED rather than SERIALIZABLE?",
+      "difficulty": "hard",
+      "explanation": "READ COMMITTED offers good concurrency and performance while preventing dirty reads; SERIALIZABLE adds safety but increases blocking, aborts, and overhead.",
+      "options": [
+        { "text": "It balances concurrency and performance against stricter guarantees", "is_correct": true },
+        { "text": "It allows dirty reads for speed", "is_correct": false },
+        { "text": "It disables transactions", "is_correct": false },
+        { "text": "It is the only level that supports indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Hot partition mitigation",
+      "description": "Which technique helps mitigate a hot partition caused by a sequential key like a timestamp?",
+      "difficulty": "hard",
+      "explanation": "Adding a hash prefix or salt to the partition key spreads sequential writes across multiple partitions, relieving the hotspot.",
+      "options": [
+        { "text": "Prefixing/salting the key to spread writes across partitions", "is_correct": true },
+        { "text": "Removing all indexes", "is_correct": false },
+        { "text": "Using a single global lock", "is_correct": false },
+        { "text": "Lowering the isolation level", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Foreign key vs application-level integrity",
+      "description": "What is a trade-off of enforcing referential integrity in the application instead of with database foreign keys?",
+      "difficulty": "hard",
+      "explanation": "Application-level enforcement can scale across sharded/distributed stores that lack cross-node FKs, but it risks inconsistency if any code path or concurrent write bypasses the check.",
+      "options": [
+        { "text": "More flexibility but higher risk of inconsistent data", "is_correct": true },
+        { "text": "It is always faster and safer", "is_correct": false },
+        { "text": "It removes the need for primary keys", "is_correct": false },
+        { "text": "It guarantees stronger integrity than FKs", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Leader election in distributed DBs",
+      "description": "What is the role of a consensus algorithm like Raft in a distributed database?",
+      "difficulty": "hard",
+      "explanation": "Raft (or Paxos) lets a cluster agree on a single leader and a consistent, ordered log of operations despite failures, underpinning consistent replication.",
+      "options": [
+        { "text": "Agreeing on a leader and a consistent ordered log of operations", "is_correct": true },
+        { "text": "Compressing table data", "is_correct": false },
+        { "text": "Encrypting client connections", "is_correct": false },
+        { "text": "Building secondary indexes", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Tombstones in distributed stores",
+      "description": "What is a tombstone in a log-structured or distributed store, and why can it cause problems?",
+      "difficulty": "hard",
+      "explanation": "A tombstone is a marker that a key was deleted; it must propagate to all replicas before being purged, and accumulating tombstones can slow reads and range scans.",
+      "options": [
+        { "text": "A delete marker that must replicate and can degrade read performance", "is_correct": true },
+        { "text": "A corrupted data page", "is_correct": false },
+        { "text": "A type of primary key", "is_correct": false },
+        { "text": "An encrypted backup", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Connection pool exhaustion",
+      "description": "What symptom typically indicates database connection pool exhaustion under load?",
+      "difficulty": "hard",
+      "explanation": "When all pooled connections are in use, new requests wait for a free connection and may time out, even though the database itself has spare capacity.",
+      "options": [
+        { "text": "Requests block waiting for a free connection and time out", "is_correct": true },
+        { "text": "Queries return wrong results", "is_correct": false },
+        { "text": "Indexes are dropped automatically", "is_correct": false },
+        { "text": "The schema changes by itself", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Write skew example",
+      "description": "Which scenario is a classic example of write skew?",
+      "difficulty": "hard",
+      "explanation": "Two on-call doctors each check that at least one other doctor is on duty and both go off-call simultaneously under snapshot isolation, violating the constraint that one must remain.",
+      "options": [
+        { "text": "Two transactions read a shared invariant then make disjoint writes that break it", "is_correct": true },
+        { "text": "A single transaction updating one row twice", "is_correct": false },
+        { "text": "Reading uncommitted data", "is_correct": false },
+        { "text": "A query returning duplicate rows", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Index bloat",
+      "description": "What is index bloat and how does it commonly arise?",
+      "difficulty": "hard",
+      "explanation": "Index bloat is wasted space from dead entries left by many updates/deletes under MVCC; it inflates index size and slows scans until the index is rebuilt or vacuumed.",
+      "options": [
+        { "text": "Wasted index space from dead entries after many updates/deletes", "is_correct": true },
+        { "text": "An index that is too small to use", "is_correct": false },
+        { "text": "An index encrypted twice", "is_correct": false },
+        { "text": "An index without a primary key", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Logical vs physical replication",
+      "description": "How does logical replication differ from physical (binary) replication?",
+      "difficulty": "hard",
+      "explanation": "Logical replication ships row-level change events that can be filtered and applied across versions or selected tables; physical replication copies the exact byte-level WAL/blocks of the whole cluster.",
+      "options": [
+        { "text": "Logical ships row-change events; physical copies byte-level WAL", "is_correct": true },
+        { "text": "They are the same mechanism", "is_correct": false },
+        { "text": "Logical replication requires identical disk layouts", "is_correct": false },
+        { "text": "Physical replication can filter individual tables easily", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Skip-locked for queue tables",
+      "description": "Why is SELECT ... FOR UPDATE SKIP LOCKED useful for a job-queue table?",
+      "difficulty": "hard",
+      "explanation": "SKIP LOCKED lets concurrent workers grab different unlocked rows without blocking on rows another worker already locked, enabling parallel queue consumption.",
+      "options": [
+        { "text": "Workers grab different rows concurrently without blocking each other", "is_correct": true },
+        { "text": "It locks the entire table for one worker", "is_correct": false },
+        { "text": "It disables transactions for speed", "is_correct": false },
+        { "text": "It guarantees FIFO ordering", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Denormalization and write anomalies",
+      "description": "What is the primary risk introduced by denormalizing data into multiple places?",
+      "difficulty": "hard",
+      "explanation": "Duplicated data must be kept in sync on every write; missing an update path leads to inconsistent copies (update anomalies).",
+      "options": [
+        { "text": "Copies can drift out of sync if not all are updated", "is_correct": true },
+        { "text": "Reads become impossible", "is_correct": false },
+        { "text": "Indexes stop working", "is_correct": false },
+        { "text": "The schema can no longer be queried", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Time-series partitioning",
+      "description": "Why is time-based range partitioning common for large time-series tables?",
+      "difficulty": "hard",
+      "explanation": "Partitioning by time lets queries prune to relevant partitions and makes dropping old data a fast partition-drop instead of a slow bulk DELETE.",
+      "options": [
+        { "text": "It enables partition pruning and fast drops of old data", "is_correct": true },
+        { "text": "It guarantees strong consistency", "is_correct": false },
+        { "text": "It removes the need for indexes", "is_correct": false },
+        { "text": "It encrypts older partitions", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Foreign key locking under concurrency",
+      "description": "How can foreign key constraints contribute to contention under high concurrency?",
+      "difficulty": "hard",
+      "explanation": "Inserting/updating a child row takes a shared lock on the referenced parent row to ensure it still exists, which can serialize transactions touching popular parent rows.",
+      "options": [
+        { "text": "They acquire locks on referenced parent rows, serializing some writes", "is_correct": true },
+        { "text": "They disable all indexes", "is_correct": false },
+        { "text": "They duplicate the parent table", "is_correct": false },
+        { "text": "They never affect concurrency", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Query planner statistics staleness",
+      "description": "Why can stale planner statistics lead to poor query plans?",
+      "difficulty": "hard",
+      "explanation": "The planner estimates row counts from collected statistics; if they are outdated after large data changes, it may misjudge selectivity and pick an inefficient plan.",
+      "options": [
+        { "text": "The planner misestimates row counts and picks a bad plan", "is_correct": true },
+        { "text": "Statistics encrypt the data", "is_correct": false },
+        { "text": "Stale stats drop indexes", "is_correct": false },
+        { "text": "They have no effect on planning", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "Append-only design benefit",
+      "description": "What is a key benefit of an append-only (immutable) table design?",
+      "difficulty": "hard",
+      "explanation": "Append-only writes avoid in-place updates and locks on existing rows, simplifying concurrency, enabling full history/audit, and pairing well with log-structured storage.",
+      "options": [
+        { "text": "Simpler concurrency and a full audit history of changes", "is_correct": true },
+        { "text": "It removes the need for storage", "is_correct": false },
+        { "text": "It makes reads impossible", "is_correct": false },
+        { "text": "It guarantees zero disk usage", "is_correct": false }
+      ],
+      "category": "database"
+    },
+    {
+      "title": "HOT updates in PostgreSQL",
+      "description": "What condition allows a PostgreSQL Heap-Only Tuple (HOT) update, and why is it beneficial?",
+      "difficulty": "hard",
+      "explanation": "A HOT update applies when no indexed column changes and the new row version fits on the same page; it avoids creating new index entries, reducing index bloat and write cost.",
+      "options": [
+        { "text": "No indexed column changes and the new version fits on the same page", "is_correct": true },
+        { "text": "Any update where a primary key changes", "is_correct": false },
+        { "text": "Only updates inside a serializable transaction", "is_correct": false },
+        { "text": "Updates that move the row to another partition", "is_correct": false }
+      ],
+      "category": "database"
+    }
+  ]
+}

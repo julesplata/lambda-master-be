@@ -1,7 +1,9 @@
 from app.models.models import (
+    AppFeedback,
     Category,
     Question,
     QuestionOption,
+    QuestionReport,
     QuestionTag,
     QuizAttempt,
     RefreshToken,
@@ -12,9 +14,11 @@ from app.models.models import (
 )
 
 __all__ = [
+    "AppFeedback",
     "Category",
     "Question",
     "QuestionOption",
+    "QuestionReport",
     "QuestionTag",
     "QuizAttempt",
     "RefreshToken",

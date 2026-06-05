@@ -3,7 +3,9 @@ from fastapi import APIRouter
 from app.api.v1.endpoints import (
     attempts,
     categories,
+    feedback,
     questions,
+    reports,
     tags,
 )
 
@@ -27,3 +29,5 @@ router.include_router(categories.router)
 router.include_router(questions.router)
 router.include_router(attempts.router)
 router.include_router(tags.router)
+router.include_router(reports.router)
+router.include_router(feedback.router)

@@ -16,6 +16,21 @@ class Settings(BaseSettings):
     ]
 
     rate_limit_default: str = "60/minute"
+    # Coarse global backstop on the open, unauthenticated submit endpoints
+    # (question reports + app feedback), applied on top of the per-IP limit.
+    rate_limit_submit: str = "5/minute"
+    rate_limit_submit_global: str = "200/hour"
+
+    # Storage backend for rate-limit counters. Empty = in-memory (per-process,
+    # resets on redeploy) which is fine for a single instance. For multiple
+    # instances, point this at Redis, e.g. "redis://default:pass@host:6379".
+    rate_limit_storage_uri: str = ""
+
+    # Trust X-Forwarded-For to determine the client IP for rate limiting.
+    # MUST be true behind a proxy/load balancer (e.g. Railway), otherwise every
+    # request shares one rate bucket. MUST be false when the app is exposed
+    # directly, since the header is then client-spoofable.
+    trust_forwarded_for: bool = True
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
 

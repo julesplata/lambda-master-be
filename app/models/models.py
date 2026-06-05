@@ -235,3 +235,67 @@ class UserQuestionStat(Base):
     due_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
+
+
+class QuestionReport(Base):
+    """A user-submitted flag that something is wrong with a specific question."""
+
+    __tablename__ = "question_reports"
+    __table_args__ = (
+        CheckConstraint(
+            "reason IN ('incorrect_answer', 'typo', 'unclear', 'outdated', 'other')",
+            name="question_reports_reason_check",
+        ),
+        CheckConstraint(
+            "status IN ('open', 'resolved', 'dismissed')",
+            name="question_reports_status_check",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    question_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("questions.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    # Optional context. No FK, mirroring the guest-attempt pattern.
+    attempt_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    reason: Mapped[str] = mapped_column(String(20), nullable=False)
+    comment: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(String(10), nullable=False, default="open")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+
+class AppFeedback(Base):
+    """Free-form, app-wide feedback not tied to any question."""
+
+    __tablename__ = "app_feedback"
+    __table_args__ = (
+        CheckConstraint(
+            "category IN ('bug', 'idea', 'praise', 'other')",
+            name="app_feedback_category_check",
+        ),
+        CheckConstraint(
+            "rating IS NULL OR rating BETWEEN 1 AND 5",
+            name="app_feedback_rating_check",
+        ),
+        CheckConstraint(
+            "status IN ('open', 'reviewed')",
+            name="app_feedback_status_check",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    category: Mapped[str] = mapped_column(String(20), nullable=False)
+    message: Mapped[str] = mapped_column(Text, nullable=False)
+    rating: Mapped[int | None] = mapped_column(SmallInteger)
+    status: Mapped[str] = mapped_column(String(10), nullable=False, default="open")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
