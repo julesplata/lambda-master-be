@@ -1,4 +1,7 @@
-from pydantic_settings import BaseSettings
+from typing import Annotated
+
+from pydantic import field_validator
+from pydantic_settings import BaseSettings, NoDecode
 
 
 class Settings(BaseSettings):
@@ -6,7 +9,9 @@ class Settings(BaseSettings):
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
 
-    cors_origins: list[str] = [
+    # Set via the CORS_ORIGINS env var as a comma-separated list, e.g.
+    # CORS_ORIGINS="https://app.example.com,https://admin.example.com"
+    cors_origins: Annotated[list[str], NoDecode] = [
         "http://localhost:3000",
         "http://localhost:5173",
         "http://localhost:8080",
@@ -14,6 +19,13 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
         "http://127.0.0.1:8080",
     ]
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def split_cors_origins(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [origin.strip() for origin in value.split(",") if origin.strip()]
+        return value
 
     rate_limit_default: str = "60/minute"
     # Coarse global backstop on the open, unauthenticated submit endpoints
