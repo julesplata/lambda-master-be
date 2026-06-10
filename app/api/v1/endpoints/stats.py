@@ -153,8 +153,8 @@ async def my_stats_by_difficulty(
         .group_by(Question.difficulty)
     )
     rows = (await session.execute(stmt)).all()
-    # Stable easy → hard ordering regardless of how rows come back.
-    order = {"easy": 0, "medium": 1, "hard": 2}
+    # Stable beginner → advanced ordering regardless of how rows come back.
+    order = {"beginner": 0, "intermediate": 1, "advanced": 2}
     rows = sorted(rows, key=lambda r: order.get(r[0], 99))
     return [
         DifficultyAccuracy(

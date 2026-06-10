@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-Difficulty = Literal["easy", "medium", "hard"]
+Difficulty = Literal["beginner", "intermediate", "advanced"]
 
 
 class CategoryPublic(BaseModel):

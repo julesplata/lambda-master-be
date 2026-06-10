@@ -80,7 +80,7 @@ class Question(Base):
     __tablename__ = "questions"
     __table_args__ = (
         CheckConstraint(
-            "difficulty IN ('easy', 'medium', 'hard')",
+            "difficulty IN ('beginner', 'intermediate', 'advanced')",
             name="questions_difficulty_check",
         ),
     )

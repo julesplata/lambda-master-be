@@ -67,9 +67,9 @@ class Settings(BaseSettings):
     #   was due for review). All env-overridable so the economy can be retuned.
     xp_per_correct: int = 10
     xp_difficulty_multipliers: dict[str, float] = {
-        "easy": 1.0,
-        "medium": 1.5,
-        "hard": 2.0,
+        "beginner": 1.0,
+        "intermediate": 1.5,
+        "advanced": 2.0,
     }
     xp_review_bonus: int = 5  # extra XP per due card answered correctly in review
     # Level curve: level = floor(sqrt(xp / xp_per_level_factor)).
