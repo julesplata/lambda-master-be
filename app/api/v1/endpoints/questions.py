@@ -54,6 +54,18 @@ async def bulk_create_questions(
             detail=f"Duplicate titles in payload: {duplicate_titles}",
         )
 
+    # Report exactly which titles already exist rather than failing on an opaque
+    # IntegrityError. This is one indexed lookup against the unique title column.
+    existing_titles = await session.execute(
+        select(Question.title).where(Question.title.in_(titles))
+    )
+    already_present = sorted(existing_titles.scalars())
+    if already_present:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Titles already exist; no questions were created: {already_present}",
+        )
+
     questions: list[Question] = []
     for item in payload.questions:
         question = Question(
@@ -79,9 +91,11 @@ async def bulk_create_questions(
         await session.flush()
     except IntegrityError as exc:
         await session.rollback()
+        # The pre-check above already rules out duplicate titles, so report the
+        # underlying database error instead of assuming it was a title conflict.
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="One or more question titles already exist; no questions were created.",
+            detail=f"Database constraint violation; no questions were created: {exc.orig}",
         ) from exc
     except SQLAlchemyError as exc:
         await session.rollback()
