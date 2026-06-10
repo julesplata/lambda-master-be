@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -44,6 +44,16 @@ async def bulk_create_questions(
             detail=f"Unknown category slugs: {sorted(unknown)}",
         )
 
+    # Reject duplicate titles within the payload itself before hitting the DB,
+    # since the unique constraint would surface this as an opaque IntegrityError.
+    titles = [item.title for item in payload.questions]
+    duplicate_titles = sorted({title for title in titles if titles.count(title) > 1})
+    if duplicate_titles:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Duplicate titles in payload: {duplicate_titles}",
+        )
+
     questions: list[Question] = []
     for item in payload.questions:
         question = Question(
@@ -67,6 +77,12 @@ async def bulk_create_questions(
 
     try:
         await session.flush()
+    except IntegrityError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="One or more question titles already exist; no questions were created.",
+        ) from exc
     except SQLAlchemyError as exc:
         await session.rollback()
         raise HTTPException(
