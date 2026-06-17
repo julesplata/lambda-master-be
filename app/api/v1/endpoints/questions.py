@@ -44,26 +44,39 @@ async def bulk_create_questions(
             detail=f"Unknown category slugs: {sorted(unknown)}",
         )
 
-    # Reject duplicate titles within the payload itself before hitting the DB,
+    # A title may be reused across categories, so duplicates are keyed on
+    # (title, category). Reject in-payload collisions before hitting the DB,
     # since the unique constraint would surface this as an opaque IntegrityError.
-    titles = [item.title for item in payload.questions]
-    duplicate_titles = sorted({title for title in titles if titles.count(title) > 1})
-    if duplicate_titles:
+    title_category_pairs = [(item.title, item.category) for item in payload.questions]
+    duplicate_pairs = sorted(
+        {pair for pair in title_category_pairs if title_category_pairs.count(pair) > 1}
+    )
+    if duplicate_pairs:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Duplicate titles in payload: {duplicate_titles}",
+            detail=f"Duplicate (title, category) pairs in payload: {duplicate_pairs}",
         )
 
-    # Report exactly which titles already exist rather than failing on an opaque
-    # IntegrityError. This is one indexed lookup against the unique title column.
-    existing_titles = await session.execute(
-        select(Question.title).where(Question.title.in_(titles))
+    # Report exactly which (title, category) pairs already exist rather than
+    # failing on an opaque IntegrityError. One indexed lookup keyed on the
+    # composite unique constraint, joined to resolve the category slug.
+    titles = [item.title for item in payload.questions]
+    existing = await session.execute(
+        select(Question.title, Category.slug)
+        .join(Category, Question.category_id == Category.id)
+        .where(Question.title.in_(titles))
     )
-    already_present = sorted(existing_titles.scalars())
+    existing_pairs = {(title, slug) for title, slug in existing}
+    already_present = sorted(
+        pair for pair in title_category_pairs if pair in existing_pairs
+    )
     if already_present:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Titles already exist; no questions were created: {already_present}",
+            detail=(
+                "(title, category) pairs already exist; no questions were "
+                f"created: {already_present}"
+            ),
         )
 
     questions: list[Question] = []

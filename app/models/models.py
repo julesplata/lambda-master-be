@@ -83,7 +83,7 @@ class Question(Base):
             "difficulty IN ('beginner', 'intermediate', 'advanced')",
             name="questions_difficulty_check",
         ),
-        UniqueConstraint("title", name="questions_title_unique"),
+        UniqueConstraint("title", "category_id", name="questions_title_category_unique"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(
