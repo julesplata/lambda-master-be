@@ -2,7 +2,7 @@ import random
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -27,6 +27,21 @@ from app.schemas.question import CategoryPublic, OptionPublic, QuestionDetail
 router = APIRouter(prefix="/quiz-attempts", tags=["quiz-attempts"])
 
 
+def _shuffled_options(
+    attempt_id: uuid.UUID, question: Question
+) -> list[OptionPublic]:
+    """Return a question's options in a shuffled-but-stable order.
+
+    Seeding the shuffle from (attempt_id, question_id) keeps the order constant
+    across repeated reads of the same in-progress attempt — so refreshing the
+    page doesn't move the answers around — while still varying it per question.
+    """
+    options = [OptionPublic(id=o.id, text=o.option_text) for o in question.options]
+    seed = hash((attempt_id, question.id))
+    random.Random(seed).shuffle(options)
+    return options
+
+
 async def _load_attempt(session: AsyncSession, attempt_id: uuid.UUID) -> QuizAttempt:
     # Guest-only mode: attempts are anonymous, so they're looked up by id alone.
     # Anyone holding an attempt id can read it — acceptable for this no-stakes,
@@ -47,6 +62,19 @@ async def _select_question_ids(
 
     The optional difficulty and category filters narrow the pool before sampling.
     """
+    # Fast path: with no filters we can use TABLESAMPLE SYSTEM_ROWS, which reads
+    # roughly N random rows directly instead of scanning and sorting the whole
+    # table the way ORDER BY random() does. It's approximate (it can return
+    # slightly fewer rows than asked on small tables), so we only use it
+    # unfiltered and fall back to the exact path when a filter is present.
+    if not body.difficulty and not body.category:
+        stmt = text(
+            "SELECT id FROM questions TABLESAMPLE SYSTEM_ROWS(:count)"
+        ).bindparams(count=body.question_count)
+        return list((await session.execute(stmt)).scalars())
+
+    # Filtered path: the WHERE clause shrinks the pool first, so ordering by
+    # random() over that smaller set is cheap.
     stmt = select(Question.id)
     if body.difficulty:
         stmt = stmt.where(Question.difficulty == body.difficulty)
@@ -99,36 +127,41 @@ async def get_attempt(
 ):
     attempt = await _load_attempt(session, attempt_id)
 
-    answers_stmt = select(UserAnswer).where(UserAnswer.attempt_id == attempt.id)
-    answers = (await session.execute(answers_stmt)).scalars().all()
-    question_ids = [a.question_id for a in answers]
-    answered_count = sum(1 for a in answers if a.selected_option_id is not None)
-
-    q_stmt = (
-        select(Question)
-        .where(Question.id.in_(question_ids))
-        .options(selectinload(Question.options), selectinload(Question.category))
+    # One query: join the attempt's answers to their questions (with options and
+    # category eager-loaded) instead of fetching answers, then questions separately.
+    rows = (
+        (
+            await session.execute(
+                select(UserAnswer.selected_option_id, Question)
+                .join(Question, Question.id == UserAnswer.question_id)
+                .where(UserAnswer.attempt_id == attempt.id)
+                .options(
+                    selectinload(Question.options), selectinload(Question.category)
+                )
+            )
+        )
+        .unique()
+        .all()
     )
-    questions = (await session.execute(q_stmt)).scalars().unique().all()
+    answered_count = sum(
+        1 for selected_option_id, _ in rows if selected_option_id is not None
+    )
 
     question_details = [
         QuestionDetail(
-            id=q.id,
-            title=q.title,
-            description=q.description,
-            difficulty=q.difficulty,
+            id=question.id,
+            title=question.title,
+            description=question.description,
+            difficulty=question.difficulty,
             category=CategoryPublic(
-                id=q.category.id,
-                name=q.category.name,
-                slug=q.category.slug,
-                position=q.category.position,
+                id=question.category.id,
+                name=question.category.name,
+                slug=question.category.slug,
+                position=question.category.position,
             ),
-            options=random.sample(
-                [OptionPublic(id=o.id, text=o.option_text) for o in q.options],
-                k=len(q.options),
-            ),
+            options=_shuffled_options(attempt.id, question),
         )
-        for q in questions
+        for _, question in rows
     ]
 
     return AttemptDetail(
@@ -170,40 +203,41 @@ async def submit_answer(
             detail="Question already answered",
         )
 
-    opt_stmt = select(QuestionOption).where(
-        QuestionOption.id == body.selected_option_id,
-        QuestionOption.question_id == body.question_id,
+    # One query for everything the response needs: every option of the question
+    # (to locate both the selected and the correct one) plus the explanation.
+    # This replaces the previous selected-option, explanation, and conditional
+    # correct-option lookups — three round-trips collapsed into one.
+    rows = (
+        await session.execute(
+            select(QuestionOption, Question.explanation)
+            .join(Question, Question.id == QuestionOption.question_id)
+            .where(QuestionOption.question_id == body.question_id)
+        )
+    ).all()
+
+    options = [option for option, _ in rows]
+    explanation = rows[0][1] if rows else None
+    selected = next(
+        (o for o in options if o.id == body.selected_option_id), None
     )
-    option = (await session.execute(opt_stmt)).scalar_one_or_none()
-    if option is None:
+    if selected is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Option does not belong to the question",
         )
 
-    answer.selected_option_id = option.id
-    answer.is_correct = option.is_correct
-
-    explanation = (
-        await session.execute(
-            select(Question.explanation).where(Question.id == body.question_id)
-        )
-    ).scalar_one_or_none()
+    answer.selected_option_id = selected.id
+    answer.is_correct = selected.is_correct
 
     correct_option_id = None
-    if not option.is_correct:
-        correct_option_id = (
-            await session.execute(
-                select(QuestionOption.id).where(
-                    QuestionOption.question_id == body.question_id,
-                    QuestionOption.is_correct == True,
-                )
-            )
-        ).scalar_one_or_none()
+    if not selected.is_correct:
+        correct_option_id = next(
+            (o.id for o in options if o.is_correct), None
+        )
 
     await session.commit()
     return AnswerResult(
-        correct=option.is_correct,
+        correct=selected.is_correct,
         explanation=explanation,
         correct_option_id=correct_option_id,
     )

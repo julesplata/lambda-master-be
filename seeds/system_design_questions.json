@@ -3,7 +3,7 @@
     {
       "title": "Purpose of a load balancer",
       "description": "What is the primary purpose of placing a load balancer in front of a pool of identical application servers?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "A load balancer distributes incoming requests across multiple backend servers so no single instance is overwhelmed, improving throughput and availability.",
       "options": [
         {
@@ -23,12 +23,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Horizontal vs vertical scaling",
       "description": "Which statement best describes horizontal scaling?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Horizontal scaling (scaling out) adds more machines to the pool, whereas vertical scaling (scaling up) adds more resources to a single machine.",
       "options": [
         {
@@ -48,12 +48,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "What a cache is for",
       "description": "Why would you add a cache layer such as Redis in front of a database?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Caches store frequently accessed data in fast memory to reduce latency and offload repeated reads from the database.",
       "options": [
         {
@@ -73,12 +73,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Stateless services and scaling",
       "description": "Why are stateless application servers easier to scale horizontally?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Because they hold no client-specific state between requests, any instance can serve any request, so you can add or remove instances freely behind a load balancer.",
       "options": [
         {
@@ -98,12 +98,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "CAP theorem core trade-off",
       "description": "According to the CAP theorem, when a network partition occurs, a distributed system must choose between which two properties?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "During a partition you cannot have both consistency and availability; you must sacrifice one. CAP says: in the presence of a Partition, choose Consistency or Availability.",
       "options": [
         {
@@ -123,12 +123,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Read replicas and scaling reads",
       "description": "How do read replicas help a read-heavy application scale?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Read replicas copy data from the primary and serve read queries, distributing read load while the primary handles writes.",
       "options": [
         {
@@ -148,12 +148,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Latency vs throughput",
       "description": "Which pair of definitions correctly distinguishes latency from throughput?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Latency is the time to complete a single operation; throughput is the number of operations completed per unit of time.",
       "options": [
         {
@@ -173,12 +173,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Cache eviction with LRU",
       "description": "What does a Least Recently Used (LRU) cache eviction policy do when the cache is full?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "LRU evicts the entry that has not been accessed for the longest time, assuming recently used items are more likely to be used again.",
       "options": [
         {
@@ -198,12 +198,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Consistent hashing benefit",
       "description": "What problem does consistent hashing primarily solve in a distributed cache or storage cluster?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Consistent hashing minimizes the number of keys that must be remapped when nodes are added or removed, avoiding a full reshuffle of the keyspace.",
       "options": [
         {
@@ -223,12 +223,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Eventual consistency meaning",
       "description": "In an eventually consistent system, what guarantee is provided?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Eventual consistency guarantees that, absent new updates, all replicas will converge to the same value over time, but reads may be stale in the interim.",
       "options": [
         {
@@ -248,12 +248,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Cache-aside pattern",
       "description": "In the cache-aside (lazy loading) pattern, what happens on a cache miss?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "On a miss the application reads from the database, then populates the cache so subsequent reads hit the cache.",
       "options": [
         {
@@ -273,12 +273,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Thundering herd / cache stampede",
       "description": "A popular cache key expires and thousands of concurrent requests all miss and hit the database at once. What is this problem called?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "This is a cache stampede (thundering herd). Mitigations include request coalescing, locks, or staggered/early recomputation of TTLs.",
       "options": [
         {
@@ -298,12 +298,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Write-through vs write-back cache",
       "description": "What is the key risk of a write-back (write-behind) cache compared to write-through?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Write-back acknowledges the write after updating only the cache and flushes to the store later, so a crash before the flush can lose data.",
       "options": [
         {
@@ -323,12 +323,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Availability and the 'nines'",
       "description": "Roughly how much downtime per year does 99.9% ('three nines') availability allow?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Three nines permits about 8.76 hours of downtime per year (0.1% of 8760 hours).",
       "options": [
         {
@@ -348,12 +348,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Reverse proxy role",
       "description": "Which function is commonly handled by a reverse proxy?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "A reverse proxy sits in front of servers and can terminate TLS, route requests, cache responses, and balance load.",
       "options": [
         {
@@ -373,12 +373,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Idempotency definition",
       "description": "What does it mean for an operation to be idempotent?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "An idempotent operation produces the same result whether performed once or multiple times, which is important for safe retries.",
       "options": [
         {
@@ -398,12 +398,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Back-of-the-envelope estimation",
       "description": "Why do system design interviews emphasize back-of-the-envelope capacity estimation?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Rough estimates of QPS, storage, and bandwidth justify architectural choices like sharding, caching, or CDN use before committing to a design.",
       "options": [
         {
@@ -423,12 +423,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Sticky sessions trade-off",
       "description": "What is a drawback of using sticky sessions (session affinity) on a load balancer?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Pinning a user to one server uneven-loads the pool and loses the user's session if that server fails, undermining horizontal scaling benefits.",
       "options": [
         {
@@ -448,12 +448,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Strong consistency cost",
       "description": "What is a typical cost of providing strong consistency across geographically distributed replicas?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Coordinating replicas before acknowledging a write (e.g., quorum or consensus across regions) increases write latency and can reduce availability during partitions.",
       "options": [
         {
@@ -473,12 +473,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "CDN primary benefit",
       "description": "What is the primary benefit of serving static assets through a CDN?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "CDNs cache content at edge locations close to users, reducing latency and offloading origin servers.",
       "options": [
         {
@@ -498,12 +498,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Graceful degradation",
       "description": "What does graceful degradation mean in system design?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "When a dependency fails, the system continues to provide reduced functionality rather than failing completely (e.g., serving stale cache data).",
       "options": [
         {
@@ -523,12 +523,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Health checks in load balancing",
       "description": "Why does a load balancer perform periodic health checks on backend instances?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Health checks let the load balancer stop routing traffic to unhealthy instances, improving availability.",
       "options": [
         {
@@ -548,12 +548,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Quorum reads and writes",
       "description": "In a Dynamo-style system with N replicas, what does the condition W + R > N guarantee?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "When the write quorum plus read quorum exceeds the replica count, the read set and write set overlap on at least one node, so reads can observe the latest write.",
       "options": [
         {
@@ -573,12 +573,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "SQL vs NoSQL choice",
       "description": "Which scenario most favors a relational (SQL) database over a typical NoSQL store?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Workloads with complex relationships, multi-row transactions, and ad-hoc joins fit relational databases well.",
       "options": [
         {
@@ -598,12 +598,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "ACID atomicity",
       "description": "What does the 'A' (Atomicity) in ACID guarantee for a transaction?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Atomicity ensures all operations in a transaction either complete fully or have no effect at all; partial application is impossible.",
       "options": [
         {
@@ -623,12 +623,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Database index purpose",
       "description": "What is the primary purpose of adding an index to a database column?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "An index speeds up lookups and range queries on that column by avoiding full table scans, at the cost of extra storage and slower writes.",
       "options": [
         {
@@ -648,12 +648,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Index write trade-off",
       "description": "What is a cost of adding many indexes to a frequently written table?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Every insert/update/delete must also update each index, so write performance degrades and storage grows as index count increases.",
       "options": [
         {
@@ -673,12 +673,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Sharding definition",
       "description": "What is database sharding?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Sharding horizontally partitions a dataset across multiple databases/nodes, each holding a subset of the rows, to scale beyond one machine.",
       "options": [
         {
@@ -698,12 +698,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Choosing a shard key",
       "description": "What is the main risk of choosing a poor shard key?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A skewed shard key concentrates data and traffic on a few shards (hot shards), defeating the purpose of horizontal partitioning.",
       "options": [
         {
@@ -723,12 +723,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Normalization goal",
       "description": "What is the main goal of normalizing a relational schema?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Normalization reduces data redundancy and update anomalies by organizing data into related tables with foreign keys.",
       "options": [
         {
@@ -748,12 +748,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Denormalization for reads",
       "description": "Why might you deliberately denormalize data in a read-heavy system?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Denormalization duplicates data to avoid expensive joins at read time, trading write complexity and storage for faster reads.",
       "options": [
         {
@@ -773,12 +773,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "B-tree index strength",
       "description": "Which query pattern does a B-tree index handle efficiently?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "B-tree indexes keep keys in sorted order, making them efficient for equality and range queries (e.g., BETWEEN, ORDER BY).",
       "options": [
         {
@@ -798,12 +798,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Object storage use case",
       "description": "Which is the best fit for an object store like Amazon S3?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Object stores excel at storing large, immutable blobs (images, videos, backups) accessed by key, not transactional row updates.",
       "options": [
         {
@@ -823,12 +823,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Connection pooling",
       "description": "Why do applications use a database connection pool?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Establishing connections is expensive; a pool reuses a bounded set of open connections, reducing latency and protecting the database from connection exhaustion.",
       "options": [
         {
@@ -848,12 +848,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Replication lag impact",
       "description": "An app writes to the primary then immediately reads from a replica and sees stale data. What is the cause?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Asynchronous replication means a replica may not yet have applied the latest write, so a read-after-write on a replica can be stale (replication lag).",
       "options": [
         {
@@ -873,12 +873,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Write-ahead log (WAL)",
       "description": "What is the primary purpose of a write-ahead log in a database?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "The WAL records changes durably before applying them to data files, enabling crash recovery and durability without flushing every page synchronously.",
       "options": [
         {
@@ -898,12 +898,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "LSM tree write advantage",
       "description": "Why are LSM-tree-based stores (e.g., Cassandra, RocksDB) well suited to write-heavy workloads?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "LSM trees buffer writes in memory and flush them sequentially to disk, turning random writes into fast sequential I/O, with compaction merging segments later.",
       "options": [
         {
@@ -923,12 +923,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Isolation level: read committed",
       "description": "Under the READ COMMITTED isolation level, which anomaly is still possible?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "READ COMMITTED prevents dirty reads but allows non-repeatable reads, where re-reading a row within a transaction can return different committed values.",
       "options": [
         {
@@ -948,12 +948,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Time-series database fit",
       "description": "Which workload is a time-series database optimized for?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Time-series databases optimize for high-volume timestamped writes and time-window aggregations, like metrics and IoT sensor data.",
       "options": [
         {
@@ -973,12 +973,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Foreign key constraint role",
       "description": "What does a foreign key constraint enforce?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "A foreign key ensures referential integrity: a value in the child table must reference an existing row in the parent table.",
       "options": [
         {
@@ -998,12 +998,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Partitioning vs replication",
       "description": "What is the key difference between partitioning and replication?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Partitioning splits data into disjoint subsets across nodes (for scale); replication copies the same data to multiple nodes (for availability/read scaling).",
       "options": [
         {
@@ -1023,12 +1023,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Optimistic concurrency control",
       "description": "How does optimistic concurrency control typically detect a conflicting update?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Optimistic concurrency reads a version/timestamp, then on write checks it is unchanged; if it changed, the update is rejected and the caller retries.",
       "options": [
         {
@@ -1048,12 +1048,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Materialized view",
       "description": "What is a materialized view?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A materialized view stores the precomputed result of a query physically, speeding up reads at the cost of needing refresh when underlying data changes.",
       "options": [
         {
@@ -1073,12 +1073,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Hot partition mitigation",
       "description": "A key-value store has one partition receiving most traffic. Which technique helps distribute the load?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Adding a salt/suffix to the key spreads writes for a hot key across multiple partitions, reducing the hot-partition bottleneck.",
       "options": [
         {
@@ -1098,12 +1098,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Blob in DB vs object store",
       "description": "Why is it usually better to store large media in object storage and keep only a URL/reference in the relational database?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Storing large blobs in a relational DB bloats backups, slows queries, and wastes expensive transactional storage; a reference keeps the DB lean.",
       "options": [
         {
@@ -1123,12 +1123,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Two-phase commit drawback",
       "description": "What is a well-known drawback of two-phase commit (2PC) for distributed transactions?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "2PC is blocking: if the coordinator fails after prepare, participants may hold locks indefinitely awaiting the decision, hurting availability.",
       "options": [
         {
@@ -1148,12 +1148,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Composite index column order",
       "description": "For a composite index on (a, b), which query can use the index efficiently for filtering?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A composite index can be used for the leftmost prefix; filtering on `a` (or `a` and `b`) uses it, but filtering on `b` alone generally cannot.",
       "options": [
         {
@@ -1173,12 +1173,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Message queue purpose",
       "description": "What is the primary benefit of putting a message queue between a producer and a consumer service?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "A queue decouples producer and consumer, smoothing load spikes and letting the consumer process work asynchronously at its own pace.",
       "options": [
         {
@@ -1198,12 +1198,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "At-least-once delivery implication",
       "description": "If a message queue provides at-least-once delivery, what must consumers handle?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "At-least-once means a message may be delivered more than once, so consumers must be idempotent to handle duplicates safely.",
       "options": [
         {
@@ -1223,12 +1223,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Pub/sub vs point-to-point",
       "description": "How does publish/subscribe messaging differ from a point-to-point queue?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "In pub/sub, each message is delivered to all subscribers of a topic; in a point-to-point queue, each message is consumed by exactly one consumer.",
       "options": [
         {
@@ -1248,12 +1248,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Consensus algorithm role",
       "description": "What problem do consensus algorithms like Raft and Paxos solve?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "They let a group of nodes agree on a single value/log order despite failures, enabling consistent replication and leader election.",
       "options": [
         {
@@ -1273,12 +1273,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Leader election purpose",
       "description": "Why do many distributed systems elect a single leader node?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A single leader serializes writes and coordinates replication, simplifying consistency compared to accepting writes on any node.",
       "options": [
         {
@@ -1298,12 +1298,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Split-brain problem",
       "description": "What is a 'split-brain' scenario in a distributed cluster?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A network partition causes two subsets of nodes to each believe they are the leader/primary, risking divergent, conflicting writes.",
       "options": [
         {
@@ -1323,12 +1323,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Dead letter queue",
       "description": "What is a dead letter queue (DLQ) used for?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A DLQ captures messages that repeatedly fail processing so they can be inspected and reprocessed without blocking the main queue.",
       "options": [
         {
@@ -1348,12 +1348,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Event sourcing concept",
       "description": "What is the core idea behind event sourcing?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Event sourcing stores state as an immutable, append-only sequence of events; current state is derived by replaying those events.",
       "options": [
         {
@@ -1373,12 +1373,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "CQRS pattern",
       "description": "What does CQRS (Command Query Responsibility Segregation) separate?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "CQRS separates the write model (commands) from the read model (queries), allowing each to be optimized and scaled independently.",
       "options": [
         {
@@ -1398,12 +1398,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Saga pattern",
       "description": "How does the saga pattern manage a transaction that spans multiple microservices?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A saga breaks the workflow into local transactions, each with a compensating action to undo prior steps if a later step fails, avoiding distributed locks.",
       "options": [
         {
@@ -1423,12 +1423,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Heartbeat mechanism",
       "description": "What is the role of heartbeats in a distributed system?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Periodic heartbeat signals let nodes detect that peers are alive; a missed heartbeat triggers failure detection and possibly failover.",
       "options": [
         {
@@ -1448,12 +1448,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Idempotency key in APIs",
       "description": "How does an idempotency key make a payment API safe to retry?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "The server records the key with the first request's result; repeated requests with the same key return the stored result instead of charging again.",
       "options": [
         {
@@ -1473,12 +1473,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Exactly-once delivery reality",
       "description": "Which statement about 'exactly-once' message delivery is most accurate?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "True end-to-end exactly-once delivery over an unreliable network is generally impossible; it's approximated via at-least-once delivery plus idempotent processing or transactional deduplication.",
       "options": [
         {
@@ -1498,12 +1498,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Backpressure",
       "description": "What does backpressure refer to in a streaming or queue-based system?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Backpressure is a mechanism by which a slow consumer signals upstream producers to slow down, preventing unbounded buffering and resource exhaustion.",
       "options": [
         {
@@ -1523,12 +1523,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Vector clocks",
       "description": "What do vector clocks help determine in a distributed system?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Vector clocks capture causality between events across nodes, letting the system detect concurrent updates that may conflict.",
       "options": [
         {
@@ -1548,12 +1548,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Service discovery",
       "description": "What problem does service discovery solve in a microservices architecture?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Service discovery lets services find the current network locations of other services, which change as instances scale, move, or fail.",
       "options": [
         {
@@ -1573,12 +1573,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Clock skew problem",
       "description": "Why is relying on synchronized wall-clock timestamps across servers risky for ordering events?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Server clocks drift and are only loosely synchronized (clock skew), so timestamp ordering can be wrong; logical clocks are preferred for causal ordering.",
       "options": [
         {
@@ -1598,12 +1598,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Bulkhead pattern",
       "description": "What does the bulkhead pattern achieve in a resilient system?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Bulkheads isolate resources (e.g., separate thread pools per dependency) so a failure or overload in one area cannot exhaust resources and take down the whole system.",
       "options": [
         {
@@ -1623,12 +1623,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Kafka partition ordering",
       "description": "In Apache Kafka, ordering of messages is guaranteed at what level?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Kafka guarantees order only within a single partition, not across partitions of a topic; keys are used to route related messages to the same partition.",
       "options": [
         {
@@ -1648,12 +1648,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Choreography vs orchestration",
       "description": "In microservice workflows, how does choreography differ from orchestration?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "In orchestration a central coordinator directs each step; in choreography services react to events independently with no central controller.",
       "options": [
         {
@@ -1673,12 +1673,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Outbox pattern",
       "description": "What problem does the transactional outbox pattern solve?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "It avoids the dual-write problem by writing the business change and an outbox event in one local transaction; a relay then publishes the event reliably.",
       "options": [
         {
@@ -1698,12 +1698,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Gossip protocol",
       "description": "How does a gossip protocol disseminate information in a cluster?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Nodes periodically exchange state with a few random peers; information spreads epidemically across the cluster, scaling without a central coordinator.",
       "options": [
         {
@@ -1723,12 +1723,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Fan-out on write vs read",
       "description": "In a social feed, 'fan-out on write' means:",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Fan-out on write pushes a new post into each follower's feed at write time (fast reads, costly for celebrities); fan-out on read assembles the feed at query time.",
       "options": [
         {
@@ -1748,12 +1748,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "REST statelessness",
       "description": "What does it mean that REST is stateless?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Each request must contain all information needed to process it; the server stores no client session context between requests.",
       "options": [
         {
@@ -1773,12 +1773,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "HTTP idempotent methods",
       "description": "Which HTTP method is expected to be idempotent and safe (no side effects)?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "GET is both safe (no state change) and idempotent. PUT and DELETE are idempotent but not safe; POST is generally neither.",
       "options": [
         {
@@ -1798,12 +1798,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Rate limiting purpose",
       "description": "Why do APIs apply rate limiting to clients?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Rate limiting protects the service from abuse and overload and ensures fair resource sharing across clients.",
       "options": [
         {
@@ -1823,12 +1823,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Token bucket algorithm",
       "description": "How does the token bucket rate-limiting algorithm allow bursts?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Tokens accrue at a fixed rate up to a capacity; a request consumes a token, so accumulated tokens permit short bursts up to the bucket size.",
       "options": [
         {
@@ -1848,12 +1848,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "gRPC vs REST",
       "description": "Which is an advantage of gRPC over typical JSON/REST for internal service-to-service calls?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "gRPC uses HTTP/2 and binary Protocol Buffers, giving lower latency, smaller payloads, streaming, and strongly-typed contracts.",
       "options": [
         {
@@ -1873,12 +1873,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "GraphQL over-fetching",
       "description": "Which REST problem does GraphQL specifically aim to reduce?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "GraphQL lets clients request exactly the fields they need in one query, reducing over-fetching and under-fetching common with fixed REST endpoints.",
       "options": [
         {
@@ -1898,12 +1898,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "API pagination",
       "description": "Why is cursor-based pagination often preferred over offset-based pagination for large, changing datasets?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Offset pagination can skip or duplicate rows when data changes between pages and gets slow at high offsets; cursors anchor to a stable position.",
       "options": [
         {
@@ -1923,12 +1923,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "DNS role",
       "description": "What is the primary function of DNS?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "DNS resolves human-readable domain names into IP addresses so clients can connect to servers.",
       "options": [
         {
@@ -1948,12 +1948,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "API gateway responsibilities",
       "description": "Which responsibility is commonly centralized in an API gateway?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Gateways centralize cross-cutting concerns like authentication, rate limiting, routing, and request aggregation in front of microservices.",
       "options": [
         {
@@ -1973,12 +1973,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Circuit breaker pattern",
       "description": "What does a circuit breaker do when a downstream dependency keeps failing?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "After a failure threshold, the breaker 'opens' and fails fast (or returns a fallback) instead of waiting on the failing dependency, giving it time to recover.",
       "options": [
         {
@@ -1998,12 +1998,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Exponential backoff",
       "description": "Why should clients use exponential backoff with jitter when retrying failed requests?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Increasing delays reduce load on a struggling server, and jitter prevents many clients from retrying in synchronized waves (the retry storm).",
       "options": [
         {
@@ -2023,12 +2023,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "HTTP 429 meaning",
       "description": "What does an HTTP 429 status code indicate?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "429 Too Many Requests means the client has been rate limited and should slow down, often respecting a Retry-After header.",
       "options": [
         {
@@ -2048,12 +2048,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Microservices vs monolith trade-off",
       "description": "Which is a genuine trade-off of microservices compared to a monolith?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Microservices enable independent deployment and scaling but add operational complexity: networking, distributed debugging, and data consistency across services.",
       "options": [
         {
@@ -2073,12 +2073,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "TLS termination location",
       "description": "Where is TLS commonly terminated in a typical web architecture?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "TLS is often terminated at the load balancer or reverse proxy/CDN edge, with internal traffic on a trusted network (or re-encrypted for zero trust).",
       "options": [
         {
@@ -2098,12 +2098,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Observability pillars",
       "description": "Which three signals are commonly described as the pillars of observability?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Logs, metrics, and traces together let operators understand system behavior and diagnose issues.",
       "options": [
         {
@@ -2123,12 +2123,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Distributed tracing",
       "description": "What does a distributed trace let you do?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A trace follows a single request across services via a propagated trace/span context, revealing where latency and errors occur in the call chain.",
       "options": [
         {
@@ -2148,12 +2148,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Blue-green deployment",
       "description": "What is the main advantage of a blue-green deployment?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Two identical environments let you switch traffic to the new version instantly and roll back quickly by switching back, minimizing downtime.",
       "options": [
         {
@@ -2173,12 +2173,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Canary release",
       "description": "What is a canary release?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A canary routes a small percentage of traffic to the new version first to catch problems before a full rollout.",
       "options": [
         {
@@ -2198,12 +2198,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Idempotent infrastructure (IaC)",
       "description": "Why is idempotency valued in infrastructure-as-code tools?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Applying the same configuration repeatedly converges to the same desired state without unintended duplicate resources or drift.",
       "options": [
         {
@@ -2223,12 +2223,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Authentication vs authorization",
       "description": "What is the difference between authentication and authorization?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Authentication verifies who you are; authorization decides what you are allowed to do.",
       "options": [
         {
@@ -2248,12 +2248,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "JWT stateless auth",
       "description": "What is one advantage of using signed JWTs for authentication?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A signed JWT carries the claims and can be verified without a database/session lookup, enabling stateless auth across services.",
       "options": [
         {
@@ -2273,12 +2273,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "JWT revocation challenge",
       "description": "What is a known challenge with stateless JWTs?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Because they are self-contained and valid until expiry, revoking a JWT before expiry requires extra state like a denylist, partly defeating statelessness.",
       "options": [
         {
@@ -2298,12 +2298,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Webhook reliability",
       "description": "What should a webhook receiver do to handle the provider's retries safely?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "Providers retry on non-2xx or timeouts, so receivers must process webhooks idempotently (e.g., dedupe by event ID) to avoid double-processing.",
       "options": [
         {
@@ -2323,12 +2323,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Caching with ETags",
       "description": "How does an ETag reduce bandwidth for repeated requests?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "The client sends the ETag via If-None-Match; if unchanged, the server returns 304 Not Modified with no body, saving transfer of the full resource.",
       "options": [
         {
@@ -2348,12 +2348,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Zero-downtime schema migration",
       "description": "Which approach supports a zero-downtime change when renaming a database column used by a live service?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Use an expand/contract migration: add the new column, dual-write/backfill, switch reads, then drop the old column once nothing depends on it.",
       "options": [
         {
@@ -2373,12 +2373,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Read-your-writes consistency",
       "description": "Which technique helps provide read-your-writes consistency when reading from replicas?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Route a user's reads to the primary (or to a replica known to have applied their write) for a short window after they write, so they see their own update.",
       "options": [
         {
@@ -2398,12 +2398,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Bloom filter use",
       "description": "How does a Bloom filter help a storage engine avoid unnecessary disk reads?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "A Bloom filter quickly answers 'definitely not present' or 'possibly present' for a key, letting the engine skip disk lookups for keys it cannot contain (no false negatives).",
       "options": [
         {
@@ -2423,12 +2423,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Multi-region active-active",
       "description": "What is the hardest challenge in an active-active multi-region deployment that accepts writes in every region?",
-      "difficulty": "hard",
+      "difficulty": "advanced",
       "explanation": "Concurrent writes in different regions can conflict; resolving these conflicts (last-writer-wins, CRDTs, app logic) while keeping low latency is the core difficulty.",
       "options": [
         {
@@ -2448,12 +2448,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Sidecar pattern",
       "description": "What is the sidecar pattern in a service mesh?",
-      "difficulty": "medium",
+      "difficulty": "intermediate",
       "explanation": "A sidecar is a helper process/container deployed alongside a service to handle cross-cutting concerns (e.g., proxying, mTLS, telemetry) without changing app code.",
       "options": [
         {
@@ -2473,12 +2473,12 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     },
     {
       "title": "Hot vs cold storage tiering",
       "description": "Why move infrequently accessed data to a 'cold' storage tier?",
-      "difficulty": "easy",
+      "difficulty": "beginner",
       "explanation": "Cold tiers are cheaper but slower; moving rarely accessed data there reduces cost while keeping hot data on fast, more expensive storage.",
       "options": [
         {
@@ -2498,7 +2498,7 @@
           "is_correct": false
         }
       ],
-      "category": "architecture"
+      "category": "system-design"
     }
   ]
 }

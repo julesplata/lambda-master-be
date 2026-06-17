@@ -56,6 +56,12 @@ class Settings(BaseSettings):
     refresh_token_ttl_days: int = 30
 
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/lambda"
+    # Connection pool sizing. db_pool_size is the number of persistent
+    # connections; db_max_overflow is how many extra are opened under burst load.
+    # Keep pool_size + max_overflow under the Postgres max_connections limit
+    # (and divide by the number of web instances when scaling horizontally).
+    db_pool_size: int = 10
+    db_max_overflow: int = 5
 
     # Spaced repetition (Leitner). Index i = days until review for box (i + 1);
     # a correct answer promotes a card one box (capped at the last), a wrong one
