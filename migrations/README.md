@@ -26,6 +26,4 @@ psql "$DATABASE_URL" -f 0001_init_schema.down.sql
 
 | #    | Name        | Description                                     |
 | ---- | ----------- | ----------------------------------------------- |
-| 0001 | init_schema | Initial tables: users, questions, options, tags, attempts, answers |
-| 0002 | refresh_tokens | Refresh-token store for JWT auth (rotation + revocation) |
-| 0003 | user_question_stats | Per-(user, question) mastery rollup for spaced-repetition review and progress stats |
+| 0001 | init_schema | Consolidated baseline: users (with gamification), categories (seeded), questions, options, tags, attempts (guest-mode), answers, refresh_tokens, user_question_stats, question_reports, app_feedback |
