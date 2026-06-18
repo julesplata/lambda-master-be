@@ -10,3 +10,4 @@ psycopg2-binary>=2.9.0
 bcrypt>=4.1.0
 pyjwt>=2.8.0
 pydantic[email]>=2.0.0
+posthog>=3.5.0

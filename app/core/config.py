@@ -83,6 +83,12 @@ class Settings(BaseSettings):
     # Timezone whose calendar day defines a streak boundary (IANA name).
     streak_timezone: str = "UTC"
 
+    # PostHog product analytics. When posthog_api_key is empty the analytics
+    # middleware is a no-op (no client, no network calls) so local dev and tests
+    # stay quiet. posthog_host is the ingestion endpoint (US Cloud by default).
+    posthog_api_key: str = ""
+    posthog_host: str = "https://us.i.posthog.com"
+
     class Config:
         env_file = ".env"
 
