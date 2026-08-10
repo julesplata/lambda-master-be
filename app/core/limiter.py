@@ -27,6 +27,16 @@ def submit_global_key(request: Request) -> str:
     return "submit-global"
 
 
+def attempt_create_global_key(request: Request) -> str:
+    """Single shared bucket capping app-wide anonymous attempt creation.
+
+    Deliberately separate from submit_global_key: quiz starts are the app's
+    primary user action and must not compete with reports and feedback for the
+    same budget.
+    """
+    return "attempt-create-global"
+
+
 # When rate_limit_storage_uri is set (e.g. a Redis URL), counters are shared
 # across instances; otherwise SlowAPI falls back to per-process in-memory state.
 _limiter_kwargs = {}

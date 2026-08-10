@@ -27,3 +27,5 @@ psql "$DATABASE_URL" -f 0001_init_schema.down.sql
 | #    | Name        | Description                                     |
 | ---- | ----------- | ----------------------------------------------- |
 | 0001 | init_schema | Consolidated baseline: users (with gamification), categories (seeded), questions, options, tags, attempts (guest-mode), answers, refresh_tokens, user_question_stats, question_reports, app_feedback |
+| 0002 | question_title_unique_per_category | Replaces the global unique question title with a `(title, category_id)` unique constraint |
+| 0003 | quiz_attempts_retention_index | Partial index on `quiz_attempts(started_at) WHERE completed_at IS NULL`, backing the abandoned-attempt purge job |

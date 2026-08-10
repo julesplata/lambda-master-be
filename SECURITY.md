@@ -73,3 +73,7 @@ Set these as Railway environment variables:
       localhost-only. Do not use `*` together with `allow_credentials=true`.
 - [ ] `TRUST_FORWARDED_FOR=true` on Railway (see rate limiting above).
 - [ ] Serve only over HTTPS (Railway does this at its edge by default).
+- [ ] Schedule the abandoned-attempt purge — add a Railway Cron service running
+      `python -m scripts.purge_stale_attempts` (suggested schedule: `0 3 * * *`).
+      `POST /quiz-attempts` is open and writes up to 101 rows per call; without
+      this job, attempts left in progress accumulate permanently.

@@ -1,11 +1,13 @@
 import random
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.core.config import settings
+from app.core.limiter import attempt_create_global_key, limiter
 from app.db.session import get_session
 from app.models import (
     Category,
@@ -90,10 +92,18 @@ async def _select_question_ids(
     response_model=AttemptCreateResponse,
     status_code=status.HTTP_201_CREATED,
 )
+@limiter.limit(settings.rate_limit_attempt_create)
+@limiter.limit(settings.rate_limit_attempt_global, key_func=attempt_create_global_key)
 async def create_attempt(
+    request: Request,
     body: AttemptCreate,
     session: AsyncSession = Depends(get_session),
 ):
+    """Start a new anonymous attempt.
+
+    Rate limited per IP and app-wide because it is open and writes one
+    quiz_attempts row plus one user_answers row per question.
+    """
     question_ids = await _select_question_ids(session, body)
     if not question_ids:
         raise HTTPException(
