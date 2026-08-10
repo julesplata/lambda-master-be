@@ -33,6 +33,20 @@ class Settings(BaseSettings):
     rate_limit_submit: str = "5/minute"
     rate_limit_submit_global: str = "200/hour"
 
+    # Anonymous quiz-attempt creation writes one quiz_attempts row plus up to 100
+    # user_answers rows per call, so it gets its own buckets rather than sharing
+    # the reports/feedback budget. The global cap is an emergency ceiling, not a
+    # throttle: keep it well above real peak traffic, since exhausting it locks
+    # out everyone. Note an explicit per-route limit replaces rate_limit_default
+    # rather than stacking with it, so the per-IP value must be tighter on its own.
+    rate_limit_attempt_create: str = "10/minute"
+    rate_limit_attempt_global: str = "2000/hour"
+
+    # Abandoned anonymous attempts have no owner and no expiry. The
+    # scripts/purge_stale_attempts.py job deletes in-progress ones older than
+    # this many days. Completed attempts are kept.
+    attempt_retention_days: int = 7
+
     # Storage backend for rate-limit counters. Empty = in-memory (per-process,
     # resets on redeploy) which is fine for a single instance. For multiple
     # instances, point this at Redis, e.g. "redis://default:pass@host:6379".
