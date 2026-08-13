@@ -29,9 +29,7 @@ from app.schemas.question import CategoryPublic, OptionPublic, QuestionDetail
 router = APIRouter(prefix="/quiz-attempts", tags=["quiz-attempts"])
 
 
-def _shuffled_options(
-    attempt_id: uuid.UUID, question: Question
-) -> list[OptionPublic]:
+def _shuffled_options(attempt_id: uuid.UUID, question: Question) -> list[OptionPublic]:
     """Return a question's options in a shuffled-but-stable order.
 
     Seeding the shuffle from (attempt_id, question_id) keeps the order constant
@@ -227,9 +225,7 @@ async def submit_answer(
 
     options = [option for option, _ in rows]
     explanation = rows[0][1] if rows else None
-    selected = next(
-        (o for o in options if o.id == body.selected_option_id), None
-    )
+    selected = next((o for o in options if o.id == body.selected_option_id), None)
     if selected is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -241,9 +237,7 @@ async def submit_answer(
 
     correct_option_id = None
     if not selected.is_correct:
-        correct_option_id = next(
-            (o.id for o in options if o.is_correct), None
-        )
+        correct_option_id = next((o.id for o in options if o.is_correct), None)
 
     await session.commit()
     return AnswerResult(

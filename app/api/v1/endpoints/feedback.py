@@ -71,9 +71,7 @@ async def update_feedback_status(
     session: AsyncSession = Depends(get_session),
 ):
     feedback = (
-        await session.execute(
-            select(AppFeedback).where(AppFeedback.id == feedback_id)
-        )
+        await session.execute(select(AppFeedback).where(AppFeedback.id == feedback_id))
     ).scalar_one_or_none()
     if feedback is None:
         raise HTTPException(
