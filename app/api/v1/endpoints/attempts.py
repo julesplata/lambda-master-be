@@ -68,14 +68,18 @@ async def _select_question_ids(
     # slightly fewer rows than asked on small tables), so we only use it
     # unfiltered and fall back to the exact path when a filter is present.
     if not body.difficulty and not body.category:
+        # Archived questions are still in the table, so the sample is taken over
+        # both and filtered afterwards. Oversampling absorbs the rows the filter
+        # removes; the LIMIT trims the surplus back to what was asked for.
         stmt = text(
-            "SELECT id FROM questions TABLESAMPLE SYSTEM_ROWS(:count)"
-        ).bindparams(count=body.question_count)
+            "SELECT id FROM questions TABLESAMPLE SYSTEM_ROWS(:sample)"
+            " WHERE archived_at IS NULL LIMIT :count"
+        ).bindparams(sample=body.question_count * 2, count=body.question_count)
         return list((await session.execute(stmt)).scalars())
 
     # Filtered path: the WHERE clause shrinks the pool first, so ordering by
     # random() over that smaller set is cheap.
-    stmt = select(Question.id)
+    stmt = select(Question.id).where(Question.archived_at.is_(None))
     if body.difficulty:
         stmt = stmt.where(Question.difficulty == body.difficulty)
     if body.category:

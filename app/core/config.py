@@ -59,6 +59,13 @@ class Settings(BaseSettings):
     trust_forwarded_for: bool = True
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
+    # The admin console trades admin_api_key for a token with this lifetime, so
+    # the long-lived key is never persisted in a browser. Long enough for an
+    # editing session, short enough that a leaked token stops working the same day.
+    admin_token_ttl_minutes: int = 480
+    # Per-IP limit on the admin key exchange. The key is a single shared secret
+    # with no lockout, so this is what makes guessing it impractical.
+    rate_limit_admin_session: str = "5/minute"
 
     # DEV ONLY. When set (AUTH_BYPASS_USER_ID in .env), get_current_user_id skips
     # JWT validation and returns this user id. MUST be empty in production.

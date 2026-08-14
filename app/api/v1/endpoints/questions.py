@@ -134,7 +134,11 @@ async def list_questions(
     category: str | None = Query(default=None),
     session: AsyncSession = Depends(get_session),
 ):
-    stmt = select(Question).options(selectinload(Question.category))
+    stmt = (
+        select(Question)
+        .options(selectinload(Question.category))
+        .where(Question.archived_at.is_(None))
+    )
     if difficulty:
         stmt = stmt.where(Question.difficulty == difficulty)
     if category:
@@ -161,7 +165,7 @@ async def get_question(
 ):
     stmt = (
         select(Question)
-        .where(Question.id == question_id)
+        .where(Question.id == question_id, Question.archived_at.is_(None))
         .options(selectinload(Question.options), selectinload(Question.category))
     )
     question = (await session.execute(stmt)).scalar_one_or_none()

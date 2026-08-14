@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    admin_auth,
+    admin_questions,
     attempts,
     categories,
     feedback,
@@ -31,3 +33,5 @@ router.include_router(attempts.router)
 router.include_router(tags.router)
 router.include_router(reports.router)
 router.include_router(feedback.router)
+router.include_router(admin_auth.router)
+router.include_router(admin_questions.router)

@@ -49,6 +49,34 @@ def decode_access_token(token: str) -> uuid.UUID:
         raise jwt.InvalidTokenError("invalid subject") from exc
 
 
+def create_admin_token() -> str:
+    """Mint a short-lived token proving the holder presented the admin key.
+
+    The admin console exchanges ADMIN_API_KEY for one of these at sign-in so the
+    long-lived key never has to be stored in a browser. It carries no subject —
+    admin access is a single capability, not a user identity.
+    """
+    now = datetime.now(timezone.utc)
+    payload = {
+        "iat": now,
+        "exp": now + timedelta(minutes=settings.admin_token_ttl_minutes),
+        "type": "admin",
+    }
+    return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+
+
+def decode_admin_token(token: str) -> None:
+    """Verify an admin session token.
+
+    Raises jwt.InvalidTokenError (or a subclass) on any problem.
+    """
+    payload = jwt.decode(
+        token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
+    )
+    if payload.get("type") != "admin":
+        raise jwt.InvalidTokenError("not an admin token")
+
+
 def hash_refresh_token(raw: str) -> str:
     return hashlib.sha256(raw.encode()).hexdigest()
 
