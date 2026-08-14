@@ -30,7 +30,10 @@ async def create_admin_session(request: Request, body: AdminSessionCreate):
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Admin sessions require JWT_SECRET to be set",
         )
-    if not secrets.compare_digest(body.key, settings.admin_api_key):
+    # Bytes, not str: compare_digest raises TypeError on non-ASCII strings, and
+    # body.key is attacker-controlled — comparing as str lets anyone turn this
+    # unauthenticated endpoint into a 500 by posting a non-ASCII key.
+    if not secrets.compare_digest(body.key.encode(), settings.admin_api_key.encode()):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid admin key"
         )

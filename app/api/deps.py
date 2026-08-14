@@ -37,8 +37,11 @@ def require_admin(
             # route is just a missing credential, not a distinct failure.
             pass
 
+    # Compared as bytes, not str: secrets.compare_digest raises TypeError on
+    # non-ASCII strings, so a header carrying any high byte would surface as an
+    # unhandled 500 instead of a plain 401.
     if not x_admin_key or not secrets.compare_digest(
-        x_admin_key, settings.admin_api_key
+        x_admin_key.encode(), settings.admin_api_key.encode()
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -54,21 +54,45 @@ would share a single rate bucket. The `trust_forwarded_for` setting (default
 
 ## Admin endpoints
 
-Admin read/triage routes (`/admin/reports*`, `/feedback/admin*`) require the
-`X-Admin-Key` header, compared with `secrets.compare_digest` (constant-time).
-The guard fails closed: if `ADMIN_API_KEY` is unset the routes return 503.
+Admin routes (`/admin/questions*`, `/admin/reports*`, `/feedback/admin*`,
+`/questions/bulk`) accept **either** credential:
+
+- `X-Admin-Key` — the raw shared secret, compared with `secrets.compare_digest`
+  (constant-time). For seeding scripts and curl.
+- `Authorization: Bearer <token>` — a short-lived admin session token from
+  `POST /admin/session`. For the browser console, so the long-lived key is never
+  persisted in browser storage.
+
+The guard fails closed: if `ADMIN_API_KEY` is unset, all of it returns 503.
 
 - Use a long, random key (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
 - Never log it; only send it over HTTPS.
+- The key exchange is rate limited per IP (`RATE_LIMIT_ADMIN_SESSION`, default
+  `5/minute`). This is the only thing standing between the key and offline-speed
+  online guessing — there is no lockout — so do not raise it casually.
+
+### The admin console page is public; the data behind it is not
+
+The console at `/admin` on the frontend is a static page anyone can load. It
+holds no secrets — every request it makes is rejected without a valid
+credential, and the sign-in screen is all an anonymous visitor can reach. If you
+want the page itself unreachable, put it behind Vercel password protection or an
+IP allowlist; that is defence in depth, not a substitute for the key.
 
 ## Production deployment checklist (Railway)
 
 Set these as Railway environment variables:
 
+- [ ] **Apply migration `0004` before deploying the backend.** It adds
+      `questions.archived_at`, which every question query now filters on. Deploy
+      the code first and reads fail against the old schema.
 - [ ] `DEBUG=false` — leaving it on exposes stack traces and SQL query logs.
 - [ ] `ADMIN_API_KEY` — long random value; without it admin routes are disabled.
 - [ ] `AUTH_BYPASS_USER_ID` — must be **empty/unset**; it short-circuits JWT auth.
-- [ ] `JWT_SECRET` — long random value (required if auth is re-enabled).
+- [ ] `JWT_SECRET` — long random value. **Required**, even in guest-only mode:
+      admin session tokens are signed with it, so `POST /admin/session` returns
+      503 without it and the admin console cannot sign in. (It is separately
+      needed if user accounts are re-enabled.)
 - [ ] `CORS_ORIGINS` — set to your real frontend origin(s); the default is
       localhost-only. Do not use `*` together with `allow_credentials=true`.
 - [ ] `TRUST_FORWARDED_FOR=true` on Railway (see rate limiting above).
