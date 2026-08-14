@@ -59,7 +59,11 @@ Request → SlowAPI rate-limit middleware → CORS middleware
 
 **Two auth guards in `deps.py`:**
 - `get_current_user_id` — Bearer JWT, returns `uuid.UUID`; used by all user-facing endpoints
-- `require_admin` — `X-Admin-Key` header compared via `secrets.compare_digest`; used by question bulk-create and admin user endpoints
+- `require_admin` — accepts *either* the `X-Admin-Key` header (compared via `secrets.compare_digest`; used by seeding scripts and curl) *or* a short-lived admin session token as `Authorization: Bearer`. Used by question bulk-create, the admin question console, reports, feedback and admin user endpoints.
+
+**Admin sessions:** `POST /admin/session` trades `ADMIN_API_KEY` for a JWT with `type: "admin"` and no subject (admin access is a capability, not an identity), TTL `admin_token_ttl_minutes`. This exists so the browser console never has to persist the long-lived key. The exchange is rate-limited per IP (`rate_limit_admin_session`) because the key is one shared secret with no lockout, so that limit is what makes online guessing impractical. Requires `JWT_SECRET`; returns 503 without it.
+
+**Questions are soft-deleted, never dropped:** `questions.archived_at` (migration `0004`). `user_answers.question_id` is `ON DELETE CASCADE`, so a real delete would erase the answer rows of every past attempt that used the question and leave `quiz_attempts.score` pointing at answers that no longer exist. Archiving keeps history intact and makes the console's "Undo" a genuine restore. **Every public read path must filter `archived_at IS NULL`** — the browse list, question detail, and new-attempt sampling all do; the attempt *review* path deliberately does not, since a learner must still see a question they already answered. The unfiltered `TABLESAMPLE` fast path in `attempts.py` oversamples 2× and trims with `LIMIT`, because the filter is applied after the sample.
 
 **Gamification (on `complete_attempt`):**
 - XP = `xp_per_correct × difficulty_multiplier` + optional `xp_review_bonus` if the card was due

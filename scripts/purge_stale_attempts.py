@@ -20,8 +20,7 @@ BATCH_SIZE = 5000
 # Batched so a large backlog never holds one long transaction or a wide lock.
 # make_interval(days => :retention_days) types the parameter explicitly, which
 # asyncpg needs; deleting the attempt cascades to its user_answers rows.
-DELETE_BATCH = text(
-    """
+DELETE_BATCH = text("""
     DELETE FROM quiz_attempts
     WHERE id IN (
         SELECT id FROM quiz_attempts
@@ -29,8 +28,7 @@ DELETE_BATCH = text(
           AND started_at < now() - make_interval(days => :retention_days)
         LIMIT :batch_size
     )
-    """
-)
+    """)
 
 
 async def purge_stale_attempts() -> int:
