@@ -67,9 +67,32 @@ The guard fails closed: if `ADMIN_API_KEY` is unset, all of it returns 503.
 
 - Use a long, random key (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
 - Never log it; only send it over HTTPS.
-- The key exchange is rate limited per IP (`RATE_LIMIT_ADMIN_SESSION`, default
-  `5/minute`). This is the only thing standing between the key and offline-speed
-  online guessing — there is no lockout — so do not raise it casually.
+- The key exchange is rate limited two ways, and these are the only things
+  standing between the key and online guessing — there is no lockout, so do not
+  raise them casually:
+  - per IP (`RATE_LIMIT_ADMIN_SESSION`, default `5/minute`)
+  - globally (`RATE_LIMIT_ADMIN_SESSION_GLOBAL`, default `50/hour`), because a
+    per-IP limit only costs a distributed attacker more addresses
+
+  Both count every call rather than only failures, so a sustained distributed
+  attack will exhaust the global bucket and lock out real sign-ins as well.
+  That is the intended trade: consoles already holding a token keep working.
+  With the default in-memory limiter store both caps are per-process and reset
+  on redeploy — set `RATE_LIMIT_STORAGE_URI` to Redis on more than one instance
+  or the global cap is fiction.
+
+### Rotating the admin key revokes live sessions
+
+Admin tokens carry `akf`, a truncated SHA-256 of the `ADMIN_API_KEY` that minted
+them, re-derived from the environment and checked on every request. Changing the
+env var changes the fingerprint, so sessions opened with the previous key fail on
+their next call rather than staying valid for the rest of their 8-hour TTL.
+
+This means **rotating `ADMIN_API_KEY` is the sign-out-everywhere button** — reach
+for it if the key leaks or a machine with an open console goes missing. It is not
+a substitute for rotating `JWT_SECRET`: anyone who can forge signatures can copy
+the fingerprint out of any token they have seen, since a JWT payload is signed
+but not encrypted.
 
 ### The admin console page is public; the data behind it is not
 
