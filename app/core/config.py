@@ -63,9 +63,15 @@ class Settings(BaseSettings):
     # the long-lived key is never persisted in a browser. Long enough for an
     # editing session, short enough that a leaked token stops working the same day.
     admin_token_ttl_minutes: int = 480
-    # Per-IP limit on the admin key exchange. The key is a single shared secret
-    # with no lockout, so this is what makes guessing it impractical.
+    # Limits on the admin key exchange. The key is a single shared secret with no
+    # lockout, so these are what make guessing it impractical. The per-IP limit
+    # alone only costs an attacker more addresses, so a global bucket caps the
+    # whole endpoint no matter how many IPs the guesses come from. Both count
+    # every call, not just failures: under a sustained distributed attack the
+    # global bucket will lock out real sign-ins too, which is the intended
+    # trade — already-signed-in consoles keep working on their existing token.
     rate_limit_admin_session: str = "5/minute"
+    rate_limit_admin_session_global: str = "50/hour"
 
     # DEV ONLY. When set (AUTH_BYPASS_USER_ID in .env), get_current_user_id skips
     # JWT validation and returns this user id. MUST be empty in production.

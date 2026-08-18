@@ -49,6 +49,20 @@ def decode_access_token(token: str) -> uuid.UUID:
         raise jwt.InvalidTokenError("invalid subject") from exc
 
 
+def admin_key_fingerprint() -> str:
+    """A stable, non-reversible marker for the *current* ADMIN_API_KEY.
+
+    Stamped into every admin token as `akf` and re-derived from the env var on
+    each verification, so rotating the key invalidates tokens minted under the
+    old one. Safe to carry in a JWT payload (which is signed, not encrypted):
+    it is a truncated SHA-256 of a high-entropy secret.
+
+    Deliberately not named `kid` — that claim conventionally selects a *signing*
+    key, which is JWT_SECRET's job here, not this.
+    """
+    return hashlib.sha256(settings.admin_api_key.encode()).hexdigest()[:16]
+
+
 def create_admin_token() -> str:
     """Mint a short-lived token proving the holder presented the admin key.
 
@@ -61,6 +75,7 @@ def create_admin_token() -> str:
         "iat": now,
         "exp": now + timedelta(minutes=settings.admin_token_ttl_minutes),
         "type": "admin",
+        "akf": admin_key_fingerprint(),
     }
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 
@@ -75,6 +90,13 @@ def decode_admin_token(token: str) -> None:
     )
     if payload.get("type") != "admin":
         raise jwt.InvalidTokenError("not an admin token")
+    # Rotating ADMIN_API_KEY changes the fingerprint, so sessions opened with the
+    # previous key stop working on their next request rather than lingering for
+    # the rest of their TTL. Constant-time because it is compared per request.
+    if not secrets.compare_digest(
+        str(payload.get("akf", "")), admin_key_fingerprint()
+    ):
+        raise jwt.InvalidTokenError("token was minted under a rotated admin key")
 
 
 def hash_refresh_token(raw: str) -> str:

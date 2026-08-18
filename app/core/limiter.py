@@ -37,6 +37,18 @@ def attempt_create_global_key(request: Request) -> str:
     return "attempt-create-global"
 
 
+def admin_session_global_key(request: Request) -> str:
+    """Single shared bucket for the admin key exchange.
+
+    The per-IP limit is bypassed by simply using more IPs, so this caps guessing
+    across all of them. Note it is only as strong as the limiter's storage: with
+    the in-memory default the cap is per-process and resets on redeploy, so a
+    multi-instance deployment needs rate_limit_storage_uri pointed at Redis for
+    this to mean anything.
+    """
+    return "admin-session-global"
+
+
 # When rate_limit_storage_uri is set (e.g. a Redis URL), counters are shared
 # across instances; otherwise SlowAPI falls back to per-process in-memory state.
 _limiter_kwargs = {}
