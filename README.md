@@ -57,6 +57,7 @@ Key variables:
 | `RATE_LIMIT_STORAGE_URI` | Empty = in-memory (single instance). Set to a Redis URL when scaling to 2+ instances. |
 | `TRUST_FORWARDED_FOR` | `true` behind a proxy/load balancer; `false` if exposed directly. |
 | `POSTHOG_API_KEY` | Project analytics. Empty = analytics disabled (no client, no network calls). |
+| `ANALYTICS_IP_SALT` | Salt for the anonymous analytics id (`HMAC(salt, client_ip)`), so raw IPs never reach PostHog. Empty = a random per-process salt. |
 | `JWT_SECRET` / `AUTH_BYPASS_USER_ID` | Only relevant if user accounts are re-enabled. |
 
 ---
