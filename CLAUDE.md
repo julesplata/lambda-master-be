@@ -104,6 +104,8 @@ All settings live in `core/config.py` as a `pydantic-settings` `BaseSettings` cl
 
 Options are returned without `is_correct` to the client in quiz context (`OptionPublic`); the correct answer is only revealed via `AnswerResult` after the user submits.
 
+`GET /quiz-attempts/{id}` returns `AttemptQuestion`, which extends `QuestionDetail` with this attempt's answer to each question so a client that lost its in-memory state (a page refresh) can rebuild it. The answer key half of that (`correct_option_id`, `explanation`) is filled in **only for questions already answered**, matching what `AnswerResult` returned at the time: an attempt is readable by anyone holding its id, so populating it earlier would hand out the answers to the rest of the quiz. The endpoint also orders its questions by `user_answers.id`, which is what makes a resume see the same quiz twice; the id is a random UUID, so the order is arbitrary but stable, and stable is the only property a resume needs.
+
 ## Deferred decisions
 
 **Server-side quiz sessions (hide upcoming questions):** Considered an approach where the server holds the picked questions and exposes only "current question" so the full list never reaches the client — preventing cheating *within* an attempt. Deferred. Rationale: this is a self-directed spaced-repetition tool with no graded exams or stakes, so the incentive to cheat is near zero, and answers are already protected (`OptionPublic` strips `is_correct`). When it does become a requirement, build it DB-backed (a `quiz_sessions` table with picked question IDs + a cursor), not in-memory — in-memory state breaks JWT statelessness and doesn't survive `--reload` or horizontal scaling. Revisit when attempts carry weight (graded exams, competitive leaderboards).
