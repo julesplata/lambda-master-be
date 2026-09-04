@@ -16,6 +16,15 @@ source .venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Install the lint/test tooling CI runs (ruff, pytest, httpx)
+pip install -r requirements-dev.txt
+
+# Lint (same check CI runs on every PR; config in ruff.toml)
+ruff check .
+
+# Tests (same check CI runs on every PR)
+pytest
+
 # Apply a migration
 psql "$DATABASE_URL" -f migrations/0001_init_schema.up.sql
 
@@ -34,7 +43,11 @@ python -m scripts.purge_stale_attempts
 
 **Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds).
 
-There is no test suite yet.
+**Tests:** `tests/` holds smoke tests only (the app imports, the OpenAPI schema
+builds, `/health` answers). Nothing touches a database, because CI has no
+Postgres service. Adding a test that needs one means adding that service to the
+`test` job in [.github/workflows/ci.yml](.github/workflows/ci.yml) and applying
+`migrations/` to it first.
 
 ## Architecture
 
