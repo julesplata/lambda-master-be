@@ -1,0 +1,6 @@
+# Tooling for the CI checks in .github/workflows/ci.yml. Not installed in production.
+#   pip install -r requirements.txt -r requirements-dev.txt
+
+ruff==0.16.6      # pinned: a new ruff release can add rules and fail an unrelated PR
+pytest>=8.0.0
+httpx>=0.27.0     # required by fastapi.testclient.TestClient

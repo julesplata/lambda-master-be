@@ -28,6 +28,22 @@ class AnswerResult(BaseModel):
     correct_option_id: uuid.UUID | None = None
 
 
+class AttemptQuestion(QuestionDetail):
+    """A question as it appears inside an attempt, with this attempt's answer.
+
+    The answer fields let a client that lost its in-memory state (a page
+    refresh) rebuild it from the server. They are all null until the question
+    is answered, and `correct_option_id` / `explanation` stay null until then
+    on purpose: an attempt is readable by anyone holding its id, so filling
+    them in early would hand out the answer key to the rest of the quiz.
+    """
+
+    selected_option_id: uuid.UUID | None = None
+    is_correct: bool | None = None
+    correct_option_id: uuid.UUID | None = None
+    explanation: str | None = None
+
+
 class AttemptDetail(BaseModel):
     attempt_id: uuid.UUID
     started_at: datetime
@@ -35,7 +51,7 @@ class AttemptDetail(BaseModel):
     total_questions: int
     answered_count: int
     score: int | None
-    questions: list[QuestionDetail]
+    questions: list[AttemptQuestion]
 
 
 class AttemptComplete(BaseModel):

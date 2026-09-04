@@ -16,6 +16,15 @@ source .venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Install the lint/test tooling CI runs (ruff, pytest, httpx)
+pip install -r requirements-dev.txt
+
+# Lint (same check CI runs on every PR; config in ruff.toml)
+ruff check .
+
+# Tests (same check CI runs on every PR)
+pytest
+
 # Apply a migration
 psql "$DATABASE_URL" -f migrations/0001_init_schema.up.sql
 
@@ -34,7 +43,11 @@ python -m scripts.purge_stale_attempts
 
 **Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds).
 
-There is no test suite yet.
+**Tests:** `tests/` holds smoke tests only (the app imports, the OpenAPI schema
+builds, `/health` answers). Nothing touches a database, because CI has no
+Postgres service. Adding a test that needs one means adding that service to the
+`test` job in [.github/workflows/ci.yml](.github/workflows/ci.yml) and applying
+`migrations/` to it first.
 
 ## Architecture
 
@@ -79,6 +92,8 @@ Request → SlowAPI rate-limit middleware → CORS middleware
 
 **Rate limiting the open write surface:** the three unauthenticated write endpoints each carry an explicit per-IP limit plus a global backstop keyed by a constant. Note that an explicit `@limiter.limit` *replaces* `rate_limit_default` for that route rather than stacking with it (SlowAPI's `override_defaults` is `True` by default), so each per-IP value has to stand on its own. Reports and feedback share the `submit-global` bucket; attempt creation deliberately has its own (`attempt-create-global`, `rate_limit_attempt_*`) because it is the app's primary user action and writes up to 101 rows per call — sharing the 200/hour submit budget would throttle normal use. A global bucket is a self-DoS surface, so size it as an emergency ceiling, not a throttle.
 
+**Analytics never sees a raw IP:** the per-request PostHog event is keyed by the authenticated user id when a valid access token is present, and by `HMAC(analytics_ip_salt, client_ip)` — truncated, prefixed `anon-` — when there is not, which in guest-only mode is every request. Hashing without a salt would be theatre (the IPv4 space is small enough to brute-force a digest back to an address), so `ANALYTICS_IP_SALT` must be a real secret and must stay stable: rotating it re-buckets every anonymous visitor. When it is unset the middleware falls back to a random per-process salt — never a constant — which keeps IPs in but makes anonymous ids per-instance and reset-on-redeploy, so set it in production. The salt is the *only* thing standing between the analytics vendor and the addresses, since there is no consent banner.
+
 **Guest attempt retention:** anonymous attempts have no owner and no expiry, so `scripts/purge_stale_attempts.py` deletes those left in progress (`completed_at IS NULL`) beyond `attempt_retention_days`, in batches; `user_answers` rows go with them via `ON DELETE CASCADE`. Completed attempts are kept — the attempt id is a guest's only handle on their own history. Migration `0003` adds the partial index the purge predicate needs. The job needs an external scheduler (see the SECURITY.md checklist); nothing in the app runs it.
 
 **Migrations:** Plain SQL files in `migrations/`, numbered `NNNN_description.{up,down}.sql`. Applied manually with `psql`. Never edit a migration after it has been applied; write a new one instead.
@@ -93,6 +108,7 @@ All settings live in `core/config.py` as a `pydantic-settings` `BaseSettings` cl
 | `JWT_SECRET` | HS256 signing key (required in production) |
 | `ADMIN_API_KEY` | Enables the admin endpoints |
 | `DEBUG` | Enables SQLAlchemy query logging |
+| `ANALYTICS_IP_SALT` | Salt for the anonymous PostHog `distinct_id` (see the analytics note above) |
 
 ### Schemas vs Models
 
@@ -100,6 +116,8 @@ All settings live in `core/config.py` as a `pydantic-settings` `BaseSettings` cl
 - `app/schemas/` — Pydantic request/response schemas, one file per domain (`auth`, `question`, `attempt`, `stats`, `user`)
 
 Options are returned without `is_correct` to the client in quiz context (`OptionPublic`); the correct answer is only revealed via `AnswerResult` after the user submits.
+
+`GET /quiz-attempts/{id}` returns `AttemptQuestion`, which extends `QuestionDetail` with this attempt's answer to each question so a client that lost its in-memory state (a page refresh) can rebuild it. The answer key half of that (`correct_option_id`, `explanation`) is filled in **only for questions already answered**, matching what `AnswerResult` returned at the time: an attempt is readable by anyone holding its id, so populating it earlier would hand out the answers to the rest of the quiz. The endpoint also orders its questions by `user_answers.id`, which is what makes a resume see the same quiz twice; the id is a random UUID, so the order is arbitrary but stable, and stable is the only property a resume needs.
 
 ## Deferred decisions
 
@@ -136,6 +154,10 @@ Do not introduce:
 - Generic Base Classes
 
 unless explicitly requested.
+
+## Copy Style
+
+No em dashes (—) in user-facing data, output, or text (error messages, seed question content, generated reports, etc.). Use a comma, colon, semicolon, or period instead, whichever reads naturally, keeping the wording otherwise unchanged. Code comments and internal docs are exempt.
 
 ## Output Format
 

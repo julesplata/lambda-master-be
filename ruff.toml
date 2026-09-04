@@ -1,0 +1,36 @@
+# Lint rules for the CI check in .github/workflows/ci.yml.
+# Run the same check locally with:  ruff check .
+#
+# The ruff version is pinned in requirements-dev.txt on purpose: ruff adds rules
+# in new releases, and an unpinned linter turns an unrelated PR red.
+
+target-version = "py311"
+# The codebase is already formatted at 88 columns. E501 is deliberately not
+# selected below (see the note there), so this only affects how rules that
+# reason about line width behave.
+line-length = 88
+
+[lint]
+select = [
+    # Everything ruff enables by default: pycodestyle errors that are almost
+    # always real bugs (E4 imports, E7 statements, E9 syntax/IO) plus pyflakes
+    # (F: undefined names, unused imports and variables, f-string mistakes).
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "I",    # isort: one import order, so import-only diffs stop appearing in reviews
+    "B",    # flake8-bugbear: mutable defaults, except-without-raise-from, and friends
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+]
+# E501 (line-too-long) is left out: the four lines over 88 columns are long
+# string literals and URLs that no formatter can split, so the rule would only
+# generate noqa noise.
+
+ignore = [
+    # B008 forbids a function call in a default argument, which is exactly how
+    # FastAPI's entire dependency system is written: `session = Depends(...)`,
+    # `limit = Query(10)`. Every route in app/api would trip it.
+    "B008",
+]

@@ -119,6 +119,13 @@ Set these as Railway environment variables:
 - [ ] `CORS_ORIGINS` — set to your real frontend origin(s); the default is
       localhost-only. Do not use `*` together with `allow_credentials=true`.
 - [ ] `TRUST_FORWARDED_FOR=true` on Railway (see rate limiting above).
+- [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
+      is. Unauthenticated requests are reported to PostHog as
+      `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside
+      your infrastructure. Unset falls back to a random per-process salt:
+      still non-reversible, but anonymous ids then differ per instance and
+      reset on every redeploy. Keep it stable — rotating it re-buckets every
+      anonymous visitor.
 - [ ] Serve only over HTTPS (Railway does this at its edge by default).
 - [ ] Schedule the abandoned-attempt purge — add a Railway Cron service running
       `python -m scripts.purge_stale_attempts` (suggested schedule: `0 3 * * *`).

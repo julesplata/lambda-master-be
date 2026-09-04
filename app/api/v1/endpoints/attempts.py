@@ -23,8 +23,9 @@ from app.schemas.attempt import (
     AttemptCreate,
     AttemptCreateResponse,
     AttemptDetail,
+    AttemptQuestion,
 )
-from app.schemas.question import CategoryPublic, OptionPublic, QuestionDetail
+from app.schemas.question import CategoryPublic, OptionPublic
 
 router = APIRouter(prefix="/quiz-attempts", tags=["quiz-attempts"])
 
@@ -40,6 +41,45 @@ def _shuffled_options(attempt_id: uuid.UUID, question: Question) -> list[OptionP
     seed = hash((attempt_id, question.id))
     random.Random(seed).shuffle(options)
     return options
+
+
+def _attempt_question(
+    attempt_id: uuid.UUID,
+    question: Question,
+    selected_option_id: uuid.UUID | None,
+    is_correct: bool,
+) -> AttemptQuestion:
+    """Serialise one of an attempt's questions, with its answer if it has one.
+
+    The answer key (`correct_option_id`, `explanation`) is filled in only for a
+    question that has already been answered, matching what `submit_answer`
+    returned at the time. `user_answers.is_correct` defaults to false on an
+    unanswered row, so it is reported as null rather than "wrong".
+    """
+    answered = selected_option_id is not None
+    correct_option_id = None
+    if answered and not is_correct:
+        correct_option_id = next(
+            (option.id for option in question.options if option.is_correct), None
+        )
+
+    return AttemptQuestion(
+        id=question.id,
+        title=question.title,
+        description=question.description,
+        difficulty=question.difficulty,
+        category=CategoryPublic(
+            id=question.category.id,
+            name=question.category.name,
+            slug=question.category.slug,
+            position=question.category.position,
+        ),
+        options=_shuffled_options(attempt_id, question),
+        selected_option_id=selected_option_id,
+        is_correct=is_correct if answered else None,
+        correct_option_id=correct_option_id,
+        explanation=question.explanation if answered else None,
+    )
 
 
 async def _load_attempt(session: AsyncSession, attempt_id: uuid.UUID) -> QuizAttempt:
@@ -141,12 +181,18 @@ async def get_attempt(
 
     # One query: join the attempt's answers to their questions (with options and
     # category eager-loaded) instead of fetching answers, then questions separately.
+    # ORDER BY is required, not cosmetic: without it Postgres may return the same
+    # attempt's questions in a different order on every read, so a client
+    # resuming an attempt would see the questions renumbered. user_answers.id is
+    # a random UUID, which makes the order arbitrary but stable, and stable is
+    # the only property a resume needs.
     rows = (
         (
             await session.execute(
-                select(UserAnswer.selected_option_id, Question)
+                select(UserAnswer.selected_option_id, UserAnswer.is_correct, Question)
                 .join(Question, Question.id == UserAnswer.question_id)
                 .where(UserAnswer.attempt_id == attempt.id)
+                .order_by(UserAnswer.id)
                 .options(
                     selectinload(Question.options), selectinload(Question.category)
                 )
@@ -156,24 +202,12 @@ async def get_attempt(
         .all()
     )
     answered_count = sum(
-        1 for selected_option_id, _ in rows if selected_option_id is not None
+        1 for selected_option_id, _, _ in rows if selected_option_id is not None
     )
 
     question_details = [
-        QuestionDetail(
-            id=question.id,
-            title=question.title,
-            description=question.description,
-            difficulty=question.difficulty,
-            category=CategoryPublic(
-                id=question.category.id,
-                name=question.category.name,
-                slug=question.category.slug,
-                position=question.category.position,
-            ),
-            options=_shuffled_options(attempt.id, question),
-        )
-        for _, question in rows
+        _attempt_question(attempt.id, question, selected_option_id, is_correct)
+        for selected_option_id, is_correct, question in rows
     ]
 
     return AttemptDetail(
