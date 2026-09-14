@@ -53,7 +53,7 @@ Key variables:
 | `ADMIN_API_KEY` | Enables admin endpoints (`X-Admin-Key` header). If empty, admin routes return 503. |
 | `DEBUG` | Exposes stack traces and SQL query logs. Keep `false` in production. |
 | `CORS_ORIGINS` | Comma/JSON list of allowed frontend origins. Defaults to localhost only. |
-| `RATE_LIMIT_*` | Per-IP and global rate-limit windows for the open submit endpoints. |
+| `RATE_LIMIT_*` | Per-IP rate-limit windows (default, attempt creation, reports / feedback, admin sign-in). There are no app-wide buckets. |
 | `RATE_LIMIT_STORAGE_URI` | Empty = in-memory (single instance). Set to a Redis URL when scaling to 2+ instances. |
 | `TRUSTED_PROXY_HOPS` | Proxies that append to `X-Forwarded-For`; the client IP is read that many entries from the right. `1` on Railway, `0` if exposed directly. |
 | `POSTHOG_API_KEY` | Project analytics. Empty = analytics disabled (no client, no network calls). |
@@ -169,7 +169,7 @@ A [`Procfile`](Procfile) is included for platforms like Railway/Heroku:
 web: uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Behind a proxy or load balancer, set `TRUSTED_PROXY_HOPS` to the number of proxies in front of the app (`1` on Railway). When running 2+ instances, point `RATE_LIMIT_STORAGE_URI` at Redis so per-IP and global rate limits stay consistent across processes. Review [`SECURITY.md`](SECURITY.md) before going to production.
+Behind a proxy or load balancer, set `TRUSTED_PROXY_HOPS` to the number of proxies in front of the app (`1` on Railway). When running 2+ instances, point `RATE_LIMIT_STORAGE_URI` at Redis so per-IP rate limits stay consistent across processes. Review [`SECURITY.md`](SECURITY.md) before going to production.
 
 ---
 

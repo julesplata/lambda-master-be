@@ -6,7 +6,11 @@ from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.core.config import settings
-from app.core.security import decode_access_token, decode_admin_token
+from app.core.security import (
+    admin_api_unavailable_reason,
+    decode_access_token,
+    decode_admin_token,
+)
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -22,10 +26,9 @@ def require_admin(
     POST /admin/session, used by the admin console so the long-lived key is
     never stored in a browser. Either one grants the same access.
     """
-    if not settings.admin_api_key:
+    if reason := admin_api_unavailable_reason():
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Admin API not configured",
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=reason
         )
 
     if credentials is not None:

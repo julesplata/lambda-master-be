@@ -32,12 +32,24 @@ HTML-escape them on output**. A report comment containing
 
 ## Rate limiting & the proxy assumption
 
-The open submit endpoints (`POST /questions/{id}/reports`, `POST /feedback`)
-are unauthenticated and write to the database, so they are rate limited:
+Every limit is keyed **per client IP**, using a moving window. The open write
+endpoints carry their own, tighter limits:
 
-- Per-IP: `rate_limit_submit` (default `5/minute`)
-- Global backstop across all clients: `rate_limit_submit_global` (default
-  `200/hour`)
+- `POST /quiz-attempts`: `RATE_LIMIT_ATTEMPT_CREATE` (default `30/minute;500/hour`)
+- `POST /questions/{id}/reports`, `POST /feedback`: `RATE_LIMIT_SUBMIT`
+  (default `5/minute;50/hour`)
+- Everything else: `RATE_LIMIT_DEFAULT` (default `300/minute`)
+
+**There are no app-wide buckets, and none should be added.** A counter shared by
+every client is a kill switch: an attacker who sends enough requests blocks all
+real users until the window resets, and organic spikes hit the same wall. The
+hourly per-IP windows bound sustained abuse from one address. Abuse spread
+across many addresses has to be stopped at the edge (Cloudflare WAF rules, or
+Turnstile on quiz start), not with a counter real users share.
+
+Size the per-IP values for a shared address, not one person: classrooms, offices
+and mobile carrier-grade NAT put dozens of users behind one IP, and a 10-question
+quiz is ~14 API calls.
 
 Client IP is resolved in `app/core/limiter.py`. **Behind a proxy/load balancer
 (Railway) the TCP peer is the proxy**, so without special handling every request
@@ -68,7 +80,10 @@ appending to it), which is why the right-hand count is used: it is correct in
 either case as long as the hop count is.
 
 > Note: SlowAPI's default limiter store is in-memory, so limits are per-process
-> and reset on redeploy. For multi-instance deployments, back it with Redis.
+> and reset on redeploy. For multi-instance deployments, set
+> `RATE_LIMIT_STORAGE_URI` to Redis, or each instance multiplies every limit. If
+> Redis is unreachable the limiter falls back to in-memory counters rather than
+> failing requests.
 
 ## Admin endpoints
 
@@ -81,23 +96,18 @@ Admin routes (`/admin/questions*`, `/admin/reports*`, `/feedback/admin*`,
   `POST /admin/session`. For the browser console, so the long-lived key is never
   persisted in browser storage.
 
-The guard fails closed: if `ADMIN_API_KEY` is unset, all of it returns 503.
+The guard fails closed: if `ADMIN_API_KEY` is unset **or shorter than 32
+characters**, all of it returns 503. The public quiz keeps working.
 
 - Use a long, random key (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
 - Never log it; only send it over HTTPS.
-- The key exchange is rate limited two ways, and these are the only things
-  standing between the key and online guessing — there is no lockout, so do not
-  raise them casually:
-  - per IP (`RATE_LIMIT_ADMIN_SESSION`, default `5/minute`)
-  - globally (`RATE_LIMIT_ADMIN_SESSION_GLOBAL`, default `50/hour`), because a
-    per-IP limit only costs a distributed attacker more addresses
-
-  Both count every call rather than only failures, so a sustained distributed
-  attack will exhaust the global bucket and lock out real sign-ins as well.
-  That is the intended trade: consoles already holding a token keep working.
-  With the default in-memory limiter store both caps are per-process and reset
-  on redeploy — set `RATE_LIMIT_STORAGE_URI` to Redis on more than one instance
-  or the global cap is fiction.
+- There is no lockout. **The key's length is the defence against online
+  guessing**, not the rate limit: a 32+ character random key cannot be guessed
+  at any request rate, from any number of addresses.
+- The key exchange is rate limited per IP (`RATE_LIMIT_ADMIN_SESSION`, default
+  `5/minute;30/hour`), which slows guessing from one address. There is
+  deliberately no app-wide limit: one would let anyone lock every admin out by
+  sending bad keys.
 
 ### Rotating the admin key revokes live sessions
 

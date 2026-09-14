@@ -3,6 +3,11 @@ from typing import Annotated
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode
 
+# A random key this long (e.g. secrets.token_urlsafe(32), 43 chars) cannot be
+# guessed online at any request rate, which is what lets the admin endpoints
+# rely on per-IP limits alone.
+ADMIN_API_KEY_MIN_LENGTH = 32
+
 
 class Settings(BaseSettings):
     app_name: str = "Lambda API"
@@ -27,20 +32,21 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 
-    rate_limit_default: str = "60/minute"
-    # Coarse global backstop on the open, unauthenticated submit endpoints
-    # (question reports + app feedback), applied on top of the per-IP limit.
-    rate_limit_submit: str = "5/minute"
-    rate_limit_submit_global: str = "200/hour"
+    # All limits are per client IP; there are no app-wide buckets (see
+    # core/limiter.py for why). Several limits can be combined with ";", e.g.
+    # "30/minute;500/hour" enforces both. Size them for a shared IP, not one
+    # person: classrooms, offices and carrier-grade NAT put dozens of real users
+    # behind one address, and a single quiz is ~14 calls.
+    rate_limit_default: str = "300/minute"
+    # The open, unauthenticated submit endpoints (question reports + app feedback).
+    rate_limit_submit: str = "5/minute;50/hour"
 
     # Anonymous quiz-attempt creation writes one quiz_attempts row plus up to 100
-    # user_answers rows per call, so it gets its own buckets rather than sharing
-    # the reports/feedback budget. The global cap is an emergency ceiling, not a
-    # throttle: keep it well above real peak traffic, since exhausting it locks
-    # out everyone. Note an explicit per-route limit replaces rate_limit_default
-    # rather than stacking with it, so the per-IP value must be tighter on its own.
-    rate_limit_attempt_create: str = "10/minute"
-    rate_limit_attempt_global: str = "2000/hour"
+    # user_answers rows per call, so it is tighter than the default. The minute
+    # limit covers a whole class starting at once; the hourly one bounds what a
+    # single address can write over time. Note an explicit per-route limit
+    # replaces rate_limit_default rather than stacking with it.
+    rate_limit_attempt_create: str = "30/minute;500/hour"
 
     # Abandoned anonymous attempts have no owner and no expiry. The
     # scripts/purge_stale_attempts.py job deletes in-progress ones older than
@@ -65,15 +71,12 @@ class Settings(BaseSettings):
     # the long-lived key is never persisted in a browser. Long enough for an
     # editing session, short enough that a leaked token stops working the same day.
     admin_token_ttl_minutes: int = 480
-    # Limits on the admin key exchange. The key is a single shared secret with no
-    # lockout, so these are what make guessing it impractical. The per-IP limit
-    # alone only costs an attacker more addresses, so a global bucket caps the
-    # whole endpoint no matter how many IPs the guesses come from. Both count
-    # every call, not just failures: under a sustained distributed attack the
-    # global bucket will lock out real sign-ins too, which is the intended
-    # trade — already-signed-in consoles keep working on their existing token.
-    rate_limit_admin_session: str = "5/minute"
-    rate_limit_admin_session_global: str = "50/hour"
+    # Per-IP limit on the admin key exchange. It slows guessing from one address,
+    # but a distributed attacker just uses more addresses, so what actually makes
+    # guessing impractical is the key's length: admin routes refuse to run with a
+    # key shorter than ADMIN_API_KEY_MIN_LENGTH. There is no app-wide bucket here
+    # on purpose: one would let anyone lock every admin out by sending bad keys.
+    rate_limit_admin_session: str = "5/minute;30/hour"
 
     # DEV ONLY. When set (AUTH_BYPASS_USER_ID in .env), get_current_user_id skips
     # JWT validation and returns this user id. MUST be empty in production.

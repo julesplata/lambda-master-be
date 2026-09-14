@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 import bcrypt
 import jwt
 
-from app.core.config import settings
+from app.core.config import ADMIN_API_KEY_MIN_LENGTH, settings
 
 
 def hash_password(plain: str) -> str:
@@ -47,6 +47,19 @@ def decode_access_token(token: str) -> uuid.UUID:
         return uuid.UUID(sub)
     except (ValueError, TypeError) as exc:
         raise jwt.InvalidTokenError("invalid subject") from exc
+
+
+def admin_api_unavailable_reason() -> str | None:
+    """Why the admin API must refuse to run, or None if it is usable.
+
+    Fails closed on a short key rather than at startup, so a weak ADMIN_API_KEY
+    disables the admin console without taking the public quiz down with it.
+    """
+    if not settings.admin_api_key:
+        return "Admin API not configured"
+    if len(settings.admin_api_key) < ADMIN_API_KEY_MIN_LENGTH:
+        return f"Admin API disabled: ADMIN_API_KEY must be at least {ADMIN_API_KEY_MIN_LENGTH} characters"
+    return None
 
 
 def admin_key_fingerprint() -> str:

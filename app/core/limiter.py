@@ -36,41 +36,28 @@ def client_ip(request: Request) -> str:
     return get_remote_address(request)
 
 
-def submit_global_key(request: Request) -> str:
-    """Single shared bucket for a coarse, app-wide cap on open submissions."""
-    return "submit-global"
-
-
-def attempt_create_global_key(request: Request) -> str:
-    """Single shared bucket capping app-wide anonymous attempt creation.
-
-    Deliberately separate from submit_global_key: quiz starts are the app's
-    primary user action and must not compete with reports and feedback for the
-    same budget.
-    """
-    return "attempt-create-global"
-
-
-def admin_session_global_key(request: Request) -> str:
-    """Single shared bucket for the admin key exchange.
-
-    The per-IP limit is bypassed by simply using more IPs, so this caps guessing
-    across all of them. Note it is only as strong as the limiter's storage: with
-    the in-memory default the cap is per-process and resets on redeploy, so a
-    multi-instance deployment needs rate_limit_storage_uri pointed at Redis for
-    this to mean anything.
-    """
-    return "admin-session-global"
-
-
+# Every limit is keyed per client IP. There are deliberately no app-wide
+# buckets: a shared counter is a kill switch (anyone who can send N requests
+# locks every user out) and a hard ceiling on real traffic. Sustained abuse is
+# bounded by each route's per-IP hourly limit instead, and distributed abuse
+# belongs at the edge (WAF / Turnstile), not in a counter real users share.
+#
+# moving-window, not the default fixed-window: a fixed window lets a client
+# spend its whole budget at the end of one window and again at the start of the
+# next, doubling the effective burst.
+#
 # When rate_limit_storage_uri is set (e.g. a Redis URL), counters are shared
-# across instances; otherwise SlowAPI falls back to per-process in-memory state.
+# across instances; otherwise SlowAPI keeps per-process in-memory state. With
+# shared storage, an outage falls back to in-memory counters instead of failing
+# every request.
 _limiter_kwargs = {}
 if settings.rate_limit_storage_uri:
     _limiter_kwargs["storage_uri"] = settings.rate_limit_storage_uri
+    _limiter_kwargs["in_memory_fallback_enabled"] = True
 
 limiter = Limiter(
     key_func=client_ip,
     default_limits=[settings.rate_limit_default],
+    strategy="moving-window",
     **_limiter_kwargs,
 )
