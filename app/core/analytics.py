@@ -35,6 +35,11 @@ def shutdown_analytics() -> None:
         _client = None
 
 
+def analytics_enabled() -> bool:
+    """Whether events are being sent, so callers can skip building them."""
+    return _client is not None
+
+
 def capture_event(
     distinct_id: str,
     event: str,

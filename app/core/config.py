@@ -1,11 +1,22 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode
+
+# A random key this long (e.g. secrets.token_urlsafe(32), 43 chars) cannot be
+# guessed online at any request rate, which is what lets the admin endpoints
+# rely on per-IP limits alone.
+ADMIN_API_KEY_MIN_LENGTH = 32
+# HS256 is only as strong as its key; PyJWT itself warns below 32 bytes.
+JWT_SECRET_MIN_LENGTH = 32
 
 
 class Settings(BaseSettings):
     app_name: str = "Lambda API"
+    # Anything but "development" turns on the startup checks in
+    # _deployment_guards, so a deploy with a missing or dev-only setting refuses
+    # to boot instead of serving errors. Set ENV=production on Railway.
+    env: Literal["development", "staging", "production"] = "development"
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
 
@@ -27,20 +38,21 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 
-    rate_limit_default: str = "60/minute"
-    # Coarse global backstop on the open, unauthenticated submit endpoints
-    # (question reports + app feedback), applied on top of the per-IP limit.
-    rate_limit_submit: str = "5/minute"
-    rate_limit_submit_global: str = "200/hour"
+    # All limits are per client IP; there are no app-wide buckets (see
+    # core/limiter.py for why). Several limits can be combined with ";", e.g.
+    # "30/minute;500/hour" enforces both. Size them for a shared IP, not one
+    # person: classrooms, offices and carrier-grade NAT put dozens of real users
+    # behind one address, and a single quiz is ~14 calls.
+    rate_limit_default: str = "300/minute"
+    # The open, unauthenticated submit endpoints (question reports + app feedback).
+    rate_limit_submit: str = "5/minute;50/hour"
 
     # Anonymous quiz-attempt creation writes one quiz_attempts row plus up to 100
-    # user_answers rows per call, so it gets its own buckets rather than sharing
-    # the reports/feedback budget. The global cap is an emergency ceiling, not a
-    # throttle: keep it well above real peak traffic, since exhausting it locks
-    # out everyone. Note an explicit per-route limit replaces rate_limit_default
-    # rather than stacking with it, so the per-IP value must be tighter on its own.
-    rate_limit_attempt_create: str = "10/minute"
-    rate_limit_attempt_global: str = "2000/hour"
+    # user_answers rows per call, so it is tighter than the default. The minute
+    # limit covers a whole class starting at once; the hourly one bounds what a
+    # single address can write over time. Note an explicit per-route limit
+    # replaces rate_limit_default rather than stacking with it.
+    rate_limit_attempt_create: str = "30/minute;500/hour"
 
     # Abandoned anonymous attempts have no owner and no expiry. The
     # scripts/purge_stale_attempts.py job deletes in-progress ones older than
@@ -52,26 +64,25 @@ class Settings(BaseSettings):
     # instances, point this at Redis, e.g. "redis://default:pass@host:6379".
     rate_limit_storage_uri: str = ""
 
-    # Trust X-Forwarded-For to determine the client IP for rate limiting.
-    # MUST be true behind a proxy/load balancer (e.g. Railway), otherwise every
-    # request shares one rate bucket. MUST be false when the app is exposed
-    # directly, since the header is then client-spoofable.
-    trust_forwarded_for: bool = True
+    # How many proxies in front of the app append to X-Forwarded-For. The client
+    # IP is the entry this many places from the RIGHT; everything further left
+    # was written by the client and is ignored. 1 = a single platform edge
+    # (Railway). 0 = the app is exposed directly, so the header is not read at
+    # all. Too high makes the limits bypassable; too low puts every user in one
+    # bucket — so when unsure, err low. See SECURITY.md for how to verify it.
+    trusted_proxy_hops: int = Field(default=1, ge=0)
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
     # The admin console trades admin_api_key for a token with this lifetime, so
     # the long-lived key is never persisted in a browser. Long enough for an
     # editing session, short enough that a leaked token stops working the same day.
     admin_token_ttl_minutes: int = 480
-    # Limits on the admin key exchange. The key is a single shared secret with no
-    # lockout, so these are what make guessing it impractical. The per-IP limit
-    # alone only costs an attacker more addresses, so a global bucket caps the
-    # whole endpoint no matter how many IPs the guesses come from. Both count
-    # every call, not just failures: under a sustained distributed attack the
-    # global bucket will lock out real sign-ins too, which is the intended
-    # trade — already-signed-in consoles keep working on their existing token.
-    rate_limit_admin_session: str = "5/minute"
-    rate_limit_admin_session_global: str = "50/hour"
+    # Per-IP limit on the admin key exchange. It slows guessing from one address,
+    # but a distributed attacker just uses more addresses, so what actually makes
+    # guessing impractical is the key's length: admin routes refuse to run with a
+    # key shorter than ADMIN_API_KEY_MIN_LENGTH. There is no app-wide bucket here
+    # on purpose: one would let anyone lock every admin out by sending bad keys.
+    rate_limit_admin_session: str = "5/minute;30/hour"
 
     # DEV ONLY. When set (AUTH_BYPASS_USER_ID in .env), get_current_user_id skips
     # JWT validation and returns this user id. MUST be empty in production.
@@ -122,6 +133,37 @@ class Settings(BaseSettings):
     # back to a random per-process salt — still non-reversible, but anonymous
     # ids then differ per instance and reset on every redeploy.
     analytics_ip_salt: str = ""
+
+    @model_validator(mode="after")
+    def _deployment_guards(self) -> "Settings":
+        """Refuse to start a staging/production process with unsafe settings.
+
+        Every check here is something that otherwise fails open or fails per
+        request: an empty JWT_SECRET makes token verification raise on every
+        call, the auth bypass authenticates anonymous requests, and DEBUG leaks
+        stack traces and SQL. All problems are reported at once so one deploy
+        fixes them all.
+        """
+        if self.env == "development":
+            return self
+        errors = []
+        if self.debug:
+            errors.append("DEBUG must be false")
+        if self.auth_bypass_user_id:
+            errors.append("AUTH_BYPASS_USER_ID must be empty")
+        if len(self.jwt_secret) < JWT_SECRET_MIN_LENGTH:
+            errors.append(
+                f"JWT_SECRET must be at least {JWT_SECRET_MIN_LENGTH} characters"
+            )
+        if len(self.admin_api_key) < ADMIN_API_KEY_MIN_LENGTH:
+            errors.append(
+                f"ADMIN_API_KEY must be at least {ADMIN_API_KEY_MIN_LENGTH} characters"
+            )
+        if any("localhost" in o or "127.0.0.1" in o for o in self.cors_origins):
+            errors.append("CORS_ORIGINS must not include localhost origins")
+        if errors:
+            raise ValueError(f"Unsafe settings for ENV={self.env}: " + "; ".join(errors))
+        return self
 
     class Config:
         env_file = ".env"

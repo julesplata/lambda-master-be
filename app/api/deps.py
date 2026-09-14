@@ -6,7 +6,11 @@ from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.core.config import settings
-from app.core.security import decode_access_token, decode_admin_token
+from app.core.security import (
+    admin_api_unavailable_reason,
+    decode_access_token,
+    decode_admin_token,
+)
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -22,19 +26,20 @@ def require_admin(
     POST /admin/session, used by the admin console so the long-lived key is
     never stored in a browser. Either one grants the same access.
     """
-    if not settings.admin_api_key:
+    if reason := admin_api_unavailable_reason():
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Admin API not configured",
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=reason
         )
 
     if credentials is not None:
         try:
             decode_admin_token(credentials.credentials)
             return
-        except jwt.InvalidTokenError:
+        except jwt.PyJWTError:
             # Fall through to the key check — a user access token on an admin
             # route is just a missing credential, not a distinct failure.
+            # PyJWTError, not InvalidTokenError: an unusable JWT_SECRET raises
+            # InvalidKeyError, which is a sibling class and would otherwise 500.
             pass
 
     # Compared as bytes, not str: secrets.compare_digest raises TypeError on
@@ -63,7 +68,7 @@ def get_current_user_id(
         )
     try:
         return decode_access_token(credentials.credentials)
-    except jwt.InvalidTokenError as exc:
+    except jwt.PyJWTError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",

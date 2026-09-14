@@ -32,25 +32,58 @@ HTML-escape them on output**. A report comment containing
 
 ## Rate limiting & the proxy assumption
 
-The open submit endpoints (`POST /questions/{id}/reports`, `POST /feedback`)
-are unauthenticated and write to the database, so they are rate limited:
+Every limit is keyed **per client IP**, using a moving window. The open write
+endpoints carry their own, tighter limits:
 
-- Per-IP: `rate_limit_submit` (default `5/minute`)
-- Global backstop across all clients: `rate_limit_submit_global` (default
-  `200/hour`)
+- `POST /quiz-attempts`: `RATE_LIMIT_ATTEMPT_CREATE` (default `30/minute;500/hour`)
+- `POST /questions/{id}/reports`, `POST /feedback`: `RATE_LIMIT_SUBMIT`
+  (default `5/minute;50/hour`)
+- Everything else: `RATE_LIMIT_DEFAULT` (default `300/minute`)
+
+**There are no app-wide buckets, and none should be added.** A counter shared by
+every client is a kill switch: an attacker who sends enough requests blocks all
+real users until the window resets, and organic spikes hit the same wall. The
+hourly per-IP windows bound sustained abuse from one address. Abuse spread
+across many addresses has to be stopped at the edge (Cloudflare WAF rules, or
+Turnstile on quiz start), not with a counter real users share.
+
+Size the per-IP values for a shared address, not one person: classrooms, offices
+and mobile carrier-grade NAT put dozens of users behind one IP, and a 10-question
+quiz is ~14 API calls.
 
 Client IP is resolved in `app/core/limiter.py`. **Behind a proxy/load balancer
 (Railway) the TCP peer is the proxy**, so without special handling every request
-would share a single rate bucket. The `trust_forwarded_for` setting (default
-`true`) makes the limiter use the leftmost `X-Forwarded-For` entry instead.
+would share a single rate bucket. So the limiter reads `X-Forwarded-For`, but
+**never its leftmost entry**: the client writes that one, and each proxy only
+appends to the right. `TRUSTED_PROXY_HOPS` (default `1`) is how many entries,
+counted from the right, were written by proxies you control; the limiter uses
+the entry at that position and ignores everything to its left.
 
-- Deployed behind a proxy (Railway, nginx, Cloudflare): keep
-  `TRUST_FORWARDED_FOR=true`.
-- App exposed directly to clients: set `TRUST_FORWARDED_FOR=false`. The header
-  is client-spoofable when there is no trusted proxy to overwrite it.
+- Behind one platform edge (Railway): `TRUSTED_PROXY_HOPS=1`.
+- Behind Cloudflare *and* Railway, or nginx in front of the app: add one per
+  proxy that appends to the header.
+- App exposed directly to clients: `TRUSTED_PROXY_HOPS=0`. The header is not
+  read at all and the TCP peer address is used.
+
+The setting fails in two directions, so verify it after each deploy that
+changes the network path:
+
+- **Too high → the limits are bypassable.** Check: send 6 requests to
+  `POST /api/v1/admin/session`, each with a different
+  `-H "X-Forwarded-For: $RANDOM.1.1.1"`. The 6th must return 429.
+- **Too low → every user shares one bucket.** Check: exhaust that limit from
+  one network (e.g. your laptop), then call it from another (e.g. a phone on
+  mobile data). The second must not get 429.
+
+Railway's staff have described its edge both ways (stripping the header vs.
+appending to it), which is why the right-hand count is used: it is correct in
+either case as long as the hop count is.
 
 > Note: SlowAPI's default limiter store is in-memory, so limits are per-process
-> and reset on redeploy. For multi-instance deployments, back it with Redis.
+> and reset on redeploy. For multi-instance deployments, set
+> `RATE_LIMIT_STORAGE_URI` to Redis, or each instance multiplies every limit. If
+> Redis is unreachable the limiter falls back to in-memory counters rather than
+> failing requests.
 
 ## Admin endpoints
 
@@ -63,23 +96,18 @@ Admin routes (`/admin/questions*`, `/admin/reports*`, `/feedback/admin*`,
   `POST /admin/session`. For the browser console, so the long-lived key is never
   persisted in browser storage.
 
-The guard fails closed: if `ADMIN_API_KEY` is unset, all of it returns 503.
+The guard fails closed: if `ADMIN_API_KEY` is unset **or shorter than 32
+characters**, all of it returns 503. The public quiz keeps working.
 
 - Use a long, random key (e.g. `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
 - Never log it; only send it over HTTPS.
-- The key exchange is rate limited two ways, and these are the only things
-  standing between the key and online guessing — there is no lockout, so do not
-  raise them casually:
-  - per IP (`RATE_LIMIT_ADMIN_SESSION`, default `5/minute`)
-  - globally (`RATE_LIMIT_ADMIN_SESSION_GLOBAL`, default `50/hour`), because a
-    per-IP limit only costs a distributed attacker more addresses
-
-  Both count every call rather than only failures, so a sustained distributed
-  attack will exhaust the global bucket and lock out real sign-ins as well.
-  That is the intended trade: consoles already holding a token keep working.
-  With the default in-memory limiter store both caps are per-process and reset
-  on redeploy — set `RATE_LIMIT_STORAGE_URI` to Redis on more than one instance
-  or the global cap is fiction.
+- There is no lockout. **The key's length is the defence against online
+  guessing**, not the rate limit: a 32+ character random key cannot be guessed
+  at any request rate, from any number of addresses.
+- The key exchange is rate limited per IP (`RATE_LIMIT_ADMIN_SESSION`, default
+  `5/minute;30/hour`), which slows guessing from one address. There is
+  deliberately no app-wide limit: one would let anyone lock every admin out by
+  sending bad keys.
 
 ### Rotating the admin key revokes live sessions
 
@@ -109,6 +137,10 @@ Set these as Railway environment variables:
 - [ ] **Apply migration `0004` before deploying the backend.** It adds
       `questions.archived_at`, which every question query now filters on. Deploy
       the code first and reads fail against the old schema.
+- [ ] `ENV=production` — turns on the startup checks: the process refuses to
+      boot (and says why) if `DEBUG` is on, `AUTH_BYPASS_USER_ID` is set,
+      `JWT_SECRET` or `ADMIN_API_KEY` is under 32 characters, or `CORS_ORIGINS`
+      still includes localhost. Without it none of the items below are enforced.
 - [ ] `DEBUG=false` — leaving it on exposes stack traces and SQL query logs.
 - [ ] `ADMIN_API_KEY` — long random value; without it admin routes are disabled.
 - [ ] `AUTH_BYPASS_USER_ID` — must be **empty/unset**; it short-circuits JWT auth.
@@ -118,7 +150,9 @@ Set these as Railway environment variables:
       needed if user accounts are re-enabled.)
 - [ ] `CORS_ORIGINS` — set to your real frontend origin(s); the default is
       localhost-only. Do not use `*` together with `allow_credentials=true`.
-- [ ] `TRUST_FORWARDED_FOR=true` on Railway (see rate limiting above).
+- [ ] `TRUSTED_PROXY_HOPS=1` on Railway, and run both checks under rate
+      limiting above. Remove the old `TRUST_FORWARDED_FOR` variable; it is no
+      longer read.
 - [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
       is. Unauthenticated requests are reported to PostHog as
       `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside

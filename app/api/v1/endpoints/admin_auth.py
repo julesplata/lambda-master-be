@@ -3,8 +3,8 @@ import secrets
 from fastapi import APIRouter, HTTPException, Request, status
 
 from app.core.config import settings
-from app.core.limiter import admin_session_global_key, limiter
-from app.core.security import create_admin_token
+from app.core.limiter import limiter
+from app.core.security import admin_api_unavailable_reason, create_admin_token
 from app.schemas.admin import AdminSession, AdminSessionCreate
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -12,9 +12,6 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 @router.post("/session", response_model=AdminSession)
 @limiter.limit(settings.rate_limit_admin_session)
-@limiter.limit(
-    settings.rate_limit_admin_session_global, key_func=admin_session_global_key
-)
 async def create_admin_session(request: Request, body: AdminSessionCreate):
     """Exchange the admin key for a short-lived session token.
 
@@ -24,13 +21,13 @@ async def create_admin_session(request: Request, body: AdminSessionCreate):
     so rotating ADMIN_API_KEY revokes outstanding sessions immediately instead of
     leaving them valid for the rest of their TTL.
 
-    Rate limited per IP and globally: the key is a single shared secret with no
-    lockout, so the limits are what make online guessing impractical.
+    Rate limited per IP only. The key has no lockout, so resistance to online
+    guessing comes from its minimum length (see ADMIN_API_KEY_MIN_LENGTH); an
+    app-wide limit would just let anyone lock real admins out.
     """
-    if not settings.admin_api_key:
+    if reason := admin_api_unavailable_reason():
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Admin API not configured",
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=reason
         )
     if not settings.jwt_secret:
         raise HTTPException(

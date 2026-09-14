@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import require_admin
 from app.core.config import settings
-from app.core.limiter import limiter, submit_global_key
+from app.core.limiter import limiter
 from app.db.session import get_session
 from app.models import Category, Question, QuestionReport
 from app.schemas.report import (
@@ -24,7 +24,6 @@ router = APIRouter(tags=["reports"])
     status_code=status.HTTP_201_CREATED,
 )
 @limiter.limit(settings.rate_limit_submit)
-@limiter.limit(settings.rate_limit_submit_global, key_func=submit_global_key)
 async def create_report(
     request: Request,
     question_id: uuid.UUID,
