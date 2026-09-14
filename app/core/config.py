@@ -1,16 +1,22 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode
 
 # A random key this long (e.g. secrets.token_urlsafe(32), 43 chars) cannot be
 # guessed online at any request rate, which is what lets the admin endpoints
 # rely on per-IP limits alone.
 ADMIN_API_KEY_MIN_LENGTH = 32
+# HS256 is only as strong as its key; PyJWT itself warns below 32 bytes.
+JWT_SECRET_MIN_LENGTH = 32
 
 
 class Settings(BaseSettings):
     app_name: str = "Lambda API"
+    # Anything but "development" turns on the startup checks in
+    # _deployment_guards, so a deploy with a missing or dev-only setting refuses
+    # to boot instead of serving errors. Set ENV=production on Railway.
+    env: Literal["development", "staging", "production"] = "development"
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
 
@@ -127,6 +133,37 @@ class Settings(BaseSettings):
     # back to a random per-process salt — still non-reversible, but anonymous
     # ids then differ per instance and reset on every redeploy.
     analytics_ip_salt: str = ""
+
+    @model_validator(mode="after")
+    def _deployment_guards(self) -> "Settings":
+        """Refuse to start a staging/production process with unsafe settings.
+
+        Every check here is something that otherwise fails open or fails per
+        request: an empty JWT_SECRET makes token verification raise on every
+        call, the auth bypass authenticates anonymous requests, and DEBUG leaks
+        stack traces and SQL. All problems are reported at once so one deploy
+        fixes them all.
+        """
+        if self.env == "development":
+            return self
+        errors = []
+        if self.debug:
+            errors.append("DEBUG must be false")
+        if self.auth_bypass_user_id:
+            errors.append("AUTH_BYPASS_USER_ID must be empty")
+        if len(self.jwt_secret) < JWT_SECRET_MIN_LENGTH:
+            errors.append(
+                f"JWT_SECRET must be at least {JWT_SECRET_MIN_LENGTH} characters"
+            )
+        if len(self.admin_api_key) < ADMIN_API_KEY_MIN_LENGTH:
+            errors.append(
+                f"ADMIN_API_KEY must be at least {ADMIN_API_KEY_MIN_LENGTH} characters"
+            )
+        if any("localhost" in o or "127.0.0.1" in o for o in self.cors_origins):
+            errors.append("CORS_ORIGINS must not include localhost origins")
+        if errors:
+            raise ValueError(f"Unsafe settings for ENV={self.env}: " + "; ".join(errors))
+        return self
 
     class Config:
         env_file = ".env"

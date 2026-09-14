@@ -7,8 +7,12 @@ pseudonymous id otherwise. The raw IP never leaves the process: it is PII, and
 in guest-only mode every single request would carry one.
 
 Health checks and CORS preflight (OPTIONS) requests are skipped to keep the
-event stream meaningful. When PostHog is not configured ``capture_event`` is a
-no-op, so this middleware adds only a cheap header parse per request.
+event stream meaningful. When PostHog is not configured the middleware passes
+requests straight through, without timing them or parsing any header.
+
+Analytics must never fail a request: a token that cannot be verified for any
+reason — including an empty or unusable JWT_SECRET — just makes the request
+anonymous.
 """
 
 import hashlib
@@ -21,7 +25,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-from app.core.analytics import capture_event
+from app.core.analytics import analytics_enabled, capture_event
 from app.core.config import settings
 from app.core.limiter import client_ip
 from app.core.security import decode_access_token
@@ -60,14 +64,20 @@ def _distinct_id(request: Request) -> str:
     if scheme.lower() == "bearer" and token:
         try:
             return str(decode_access_token(token))
-        except jwt.InvalidTokenError:
+        except jwt.PyJWTError:
+            # Not InvalidTokenError: a missing JWT_SECRET raises InvalidKeyError,
+            # a sibling class, and this runs on every request.
             pass
     return _anonymous_id(request)
 
 
 class AnalyticsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
-        if request.method == "OPTIONS" or request.url.path in _SKIP_PATHS:
+        if (
+            not analytics_enabled()
+            or request.method == "OPTIONS"
+            or request.url.path in _SKIP_PATHS
+        ):
             return await call_next(request)
 
         start = time.perf_counter()

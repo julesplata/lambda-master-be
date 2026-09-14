@@ -137,6 +137,10 @@ Set these as Railway environment variables:
 - [ ] **Apply migration `0004` before deploying the backend.** It adds
       `questions.archived_at`, which every question query now filters on. Deploy
       the code first and reads fail against the old schema.
+- [ ] `ENV=production` — turns on the startup checks: the process refuses to
+      boot (and says why) if `DEBUG` is on, `AUTH_BYPASS_USER_ID` is set,
+      `JWT_SECRET` or `ADMIN_API_KEY` is under 32 characters, or `CORS_ORIGINS`
+      still includes localhost. Without it none of the items below are enforced.
 - [ ] `DEBUG=false` — leaving it on exposes stack traces and SQL query logs.
 - [ ] `ADMIN_API_KEY` — long random value; without it admin routes are disabled.
 - [ ] `AUTH_BYPASS_USER_ID` — must be **empty/unset**; it short-circuits JWT auth.

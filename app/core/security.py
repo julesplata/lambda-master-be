@@ -35,7 +35,9 @@ def create_access_token(user_id: uuid.UUID) -> str:
 def decode_access_token(token: str) -> uuid.UUID:
     """Verify an access token and return its subject (user id).
 
-    Raises jwt.InvalidTokenError (or a subclass) on any problem.
+    Raises jwt.PyJWTError (or a subclass) on any problem, including
+    jwt.InvalidKeyError when JWT_SECRET is empty — catch PyJWTError, not
+    InvalidTokenError, which does not cover that case.
     """
     payload = jwt.decode(
         token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
@@ -52,8 +54,9 @@ def decode_access_token(token: str) -> uuid.UUID:
 def admin_api_unavailable_reason() -> str | None:
     """Why the admin API must refuse to run, or None if it is usable.
 
-    Fails closed on a short key rather than at startup, so a weak ADMIN_API_KEY
-    disables the admin console without taking the public quiz down with it.
+    Staging and production already refuse to start with a short key (see
+    Settings._deployment_guards); this per-request check keeps development
+    fail-closed too, where a missing key is normal and must not break the app.
     """
     if not settings.admin_api_key:
         return "Admin API not configured"
@@ -96,7 +99,9 @@ def create_admin_token() -> str:
 def decode_admin_token(token: str) -> None:
     """Verify an admin session token.
 
-    Raises jwt.InvalidTokenError (or a subclass) on any problem.
+    Raises jwt.PyJWTError (or a subclass) on any problem, including
+    jwt.InvalidKeyError when JWT_SECRET is empty — catch PyJWTError, not
+    InvalidTokenError, which does not cover that case.
     """
     payload = jwt.decode(
         token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]

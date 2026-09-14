@@ -35,9 +35,11 @@ def require_admin(
         try:
             decode_admin_token(credentials.credentials)
             return
-        except jwt.InvalidTokenError:
+        except jwt.PyJWTError:
             # Fall through to the key check — a user access token on an admin
             # route is just a missing credential, not a distinct failure.
+            # PyJWTError, not InvalidTokenError: an unusable JWT_SECRET raises
+            # InvalidKeyError, which is a sibling class and would otherwise 500.
             pass
 
     # Compared as bytes, not str: secrets.compare_digest raises TypeError on
@@ -66,7 +68,7 @@ def get_current_user_id(
         )
     try:
         return decode_access_token(credentials.credentials)
-    except jwt.InvalidTokenError as exc:
+    except jwt.PyJWTError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
