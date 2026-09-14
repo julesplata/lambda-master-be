@@ -41,13 +41,31 @@ are unauthenticated and write to the database, so they are rate limited:
 
 Client IP is resolved in `app/core/limiter.py`. **Behind a proxy/load balancer
 (Railway) the TCP peer is the proxy**, so without special handling every request
-would share a single rate bucket. The `trust_forwarded_for` setting (default
-`true`) makes the limiter use the leftmost `X-Forwarded-For` entry instead.
+would share a single rate bucket. So the limiter reads `X-Forwarded-For`, but
+**never its leftmost entry**: the client writes that one, and each proxy only
+appends to the right. `TRUSTED_PROXY_HOPS` (default `1`) is how many entries,
+counted from the right, were written by proxies you control; the limiter uses
+the entry at that position and ignores everything to its left.
 
-- Deployed behind a proxy (Railway, nginx, Cloudflare): keep
-  `TRUST_FORWARDED_FOR=true`.
-- App exposed directly to clients: set `TRUST_FORWARDED_FOR=false`. The header
-  is client-spoofable when there is no trusted proxy to overwrite it.
+- Behind one platform edge (Railway): `TRUSTED_PROXY_HOPS=1`.
+- Behind Cloudflare *and* Railway, or nginx in front of the app: add one per
+  proxy that appends to the header.
+- App exposed directly to clients: `TRUSTED_PROXY_HOPS=0`. The header is not
+  read at all and the TCP peer address is used.
+
+The setting fails in two directions, so verify it after each deploy that
+changes the network path:
+
+- **Too high → the limits are bypassable.** Check: send 6 requests to
+  `POST /api/v1/admin/session`, each with a different
+  `-H "X-Forwarded-For: $RANDOM.1.1.1"`. The 6th must return 429.
+- **Too low → every user shares one bucket.** Check: exhaust that limit from
+  one network (e.g. your laptop), then call it from another (e.g. a phone on
+  mobile data). The second must not get 429.
+
+Railway's staff have described its edge both ways (stripping the header vs.
+appending to it), which is why the right-hand count is used: it is correct in
+either case as long as the hop count is.
 
 > Note: SlowAPI's default limiter store is in-memory, so limits are per-process
 > and reset on redeploy. For multi-instance deployments, back it with Redis.
@@ -118,7 +136,9 @@ Set these as Railway environment variables:
       needed if user accounts are re-enabled.)
 - [ ] `CORS_ORIGINS` — set to your real frontend origin(s); the default is
       localhost-only. Do not use `*` together with `allow_credentials=true`.
-- [ ] `TRUST_FORWARDED_FOR=true` on Railway (see rate limiting above).
+- [ ] `TRUSTED_PROXY_HOPS=1` on Railway, and run both checks under rate
+      limiting above. Remove the old `TRUST_FORWARDED_FOR` variable; it is no
+      longer read.
 - [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
       is. Unauthenticated requests are reported to PostHog as
       `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside

@@ -9,16 +9,30 @@ def client_ip(request: Request) -> str:
     """Resolve the real client IP for rate limiting.
 
     Behind a proxy/load balancer (Railway, nginx, Cloudflare) the TCP peer is
-    the proxy, so the per-IP limit would be shared across all users. When
-    ``trust_forwarded_for`` is set we use the leftmost X-Forwarded-For entry,
-    which the platform populates with the original client. This header is
-    spoofable when the app is reachable directly, so the flag must be false in
-    that case.
+    the proxy, so the per-IP limit would be shared across all users. Each proxy
+    appends the address it received the request from to X-Forwarded-For, but
+    whatever the client sent comes first, so every entry left of the ones our
+    own proxies wrote is attacker-controlled. We therefore count
+    ``trusted_proxy_hops`` entries from the right and use that one.
+
+    Getting the count wrong fails in one of two directions: too high and the
+    client picks its own IP (the limit is bypassable); too low and we pick a
+    proxy's IP (everyone shares one bucket). When the chain is shorter than
+    the hop count the request did not come through our proxies, so we fall back
+    to the TCP peer rather than trust any of it.
     """
-    if settings.trust_forwarded_for:
-        forwarded_for = request.headers.get("x-forwarded-for")
-        if forwarded_for:
-            return forwarded_for.split(",")[0].strip()
+    hops = settings.trusted_proxy_hops
+    if hops:
+        # getlist + join: a client can send its own separate X-Forwarded-For
+        # line, and .get() would return that one instead of the proxy's.
+        chain = [
+            entry.strip()
+            for header in request.headers.getlist("x-forwarded-for")
+            for entry in header.split(",")
+            if entry.strip()
+        ]
+        if len(chain) >= hops:
+            return chain[-hops]
     return get_remote_address(request)
 
 

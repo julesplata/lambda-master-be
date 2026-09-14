@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import field_validator
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode
 
 
@@ -52,11 +52,13 @@ class Settings(BaseSettings):
     # instances, point this at Redis, e.g. "redis://default:pass@host:6379".
     rate_limit_storage_uri: str = ""
 
-    # Trust X-Forwarded-For to determine the client IP for rate limiting.
-    # MUST be true behind a proxy/load balancer (e.g. Railway), otherwise every
-    # request shares one rate bucket. MUST be false when the app is exposed
-    # directly, since the header is then client-spoofable.
-    trust_forwarded_for: bool = True
+    # How many proxies in front of the app append to X-Forwarded-For. The client
+    # IP is the entry this many places from the RIGHT; everything further left
+    # was written by the client and is ignored. 1 = a single platform edge
+    # (Railway). 0 = the app is exposed directly, so the header is not read at
+    # all. Too high makes the limits bypassable; too low puts every user in one
+    # bucket — so when unsure, err low. See SECURITY.md for how to verify it.
+    trusted_proxy_hops: int = Field(default=1, ge=0)
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
     # The admin console trades admin_api_key for a token with this lifetime, so
