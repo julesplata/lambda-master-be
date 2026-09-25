@@ -1,0 +1,1354 @@
+{
+  "questions": [
+    {
+      "title": "gRPC streaming modes",
+      "description": "In gRPC, which streaming mode lets both the client and server send a stream of messages independently over a single call?",
+      "difficulty": "intermediate",
+      "explanation": "Bidirectional streaming opens one call in which both sides read and write message streams independently, unlike server- or client-streaming which stream in only one direction.",
+      "options": [
+        {
+          "text": "Client streaming",
+          "is_correct": false
+        },
+        {
+          "text": "Unary",
+          "is_correct": false
+        },
+        {
+          "text": "Server streaming",
+          "is_correct": false
+        },
+        {
+          "text": "Bidirectional streaming",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "grpc-streaming-modes",
+      "format": "recall"
+    },
+    {
+      "title": "Protobuf vs JSON wire format",
+      "description": "What is the main wire-format advantage of Protocol Buffers over JSON for service-to-service communication?",
+      "difficulty": "intermediate",
+      "explanation": "Protobuf serializes to a compact binary form using field numbers instead of repeated text keys, yielding smaller payloads and faster parse/serialize than text JSON.",
+      "options": [
+        {
+          "text": "It guarantees exactly-once delivery",
+          "is_correct": false
+        },
+        {
+          "text": "It requires no schema definition to decode",
+          "is_correct": false
+        },
+        {
+          "text": "Compact binary encoding with smaller payloads and faster parsing",
+          "is_correct": true
+        },
+        {
+          "text": "It is human-readable in a browser without tooling",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "protobuf-vs-json-wire-format",
+      "format": "recall"
+    },
+    {
+      "title": "Lambda vs Kappa system-design",
+      "description": "What distinguishes the Kappa system-design from the Lambda system-design for data processing?",
+      "difficulty": "advanced",
+      "explanation": "Kappa drops Lambda's separate batch layer and treats everything as a single stream-processing pipeline, reprocessing history by replaying the log instead of maintaining duplicated batch and speed code paths.",
+      "options": [
+        {
+          "text": "Kappa requires strong consistency across all nodes",
+          "is_correct": false
+        },
+        {
+          "text": "Kappa processes only bounded batch data and never streams",
+          "is_correct": false
+        },
+        {
+          "text": "Kappa uses a single stream pipeline and replays the log, with no separate batch layer",
+          "is_correct": true
+        },
+        {
+          "text": "Kappa adds a third serving layer on top of batch and speed layers",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "lambda-vs-kappa-system-design",
+      "format": "recall"
+    },
+    {
+      "title": "Tumbling vs sliding windows",
+      "description": "In stream processing, how does a tumbling window differ from a sliding window?",
+      "difficulty": "intermediate",
+      "explanation": "Tumbling windows are fixed-size and non-overlapping, so each event belongs to exactly one window; sliding windows overlap and can include an event in multiple windows.",
+      "options": [
+        {
+          "text": "Tumbling windows are fixed and non-overlapping; sliding windows overlap",
+          "is_correct": true
+        },
+        {
+          "text": "Tumbling windows grow without bound; sliding windows are fixed",
+          "is_correct": false
+        },
+        {
+          "text": "Sliding windows can only be used for batch jobs",
+          "is_correct": false
+        },
+        {
+          "text": "Tumbling windows are defined by gaps of inactivity",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "tumbling-vs-sliding-windows",
+      "format": "recall"
+    },
+    {
+      "title": "Session windows",
+      "description": "What defines the boundary of a session window in stream processing?",
+      "difficulty": "intermediate",
+      "explanation": "A session window groups events separated by less than a configured gap of inactivity; the window closes once no events arrive for the gap duration, so its length is data-driven.",
+      "options": [
+        {
+          "text": "A gap of inactivity longer than a configured timeout",
+          "is_correct": true
+        },
+        {
+          "text": "A fixed number of events regardless of time",
+          "is_correct": false
+        },
+        {
+          "text": "The arrival of a watermark message",
+          "is_correct": false
+        },
+        {
+          "text": "A fixed clock interval like every 60 seconds",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "session-windows",
+      "format": "recall"
+    },
+    {
+      "title": "Watermarks for late events",
+      "description": "What role does a watermark play in an event-time stream processor?",
+      "difficulty": "advanced",
+      "explanation": "A watermark is the processor's assertion that no events with a timestamp earlier than it should still arrive, letting it close windows and emit results while deciding how to handle stragglers that arrive afterward.",
+      "options": [
+        {
+          "text": "It encrypts each event with a unique signature",
+          "is_correct": false
+        },
+        {
+          "text": "It forces all events to be processed in strict arrival order",
+          "is_correct": false
+        },
+        {
+          "text": "It marks how far event time has progressed so windows can close despite out-of-order data",
+          "is_correct": true
+        },
+        {
+          "text": "It deduplicates events by content hash",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "watermarks-for-late-events",
+      "format": "recall"
+    },
+    {
+      "title": "Exactly-once stream processing",
+      "description": "How do stream processors like Flink achieve exactly-once processing semantics across failures?",
+      "difficulty": "advanced",
+      "explanation": "They take periodic consistent checkpoints (distributed snapshots) of operator state and input offsets, so on failure they roll back to the last checkpoint and replay, making the effect of each record applied exactly once.",
+      "options": [
+        {
+          "text": "By processing each record on every node simultaneously",
+          "is_correct": false
+        },
+        {
+          "text": "Periodic consistent checkpoints of state plus offset rollback and replay",
+          "is_correct": true
+        },
+        {
+          "text": "By disabling all retries so nothing is processed twice",
+          "is_correct": false
+        },
+        {
+          "text": "By requiring the network to never drop packets",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "exactly-once-stream-processing",
+      "format": "recall"
+    },
+    {
+      "title": "HyperLogLog cardinality",
+      "description": "What problem does the HyperLogLog data structure solve efficiently?",
+      "difficulty": "advanced",
+      "explanation": "HyperLogLog estimates the number of distinct elements (cardinality) in a huge stream using a tiny fixed amount of memory, trading a small error rate for not storing every element.",
+      "options": [
+        {
+          "text": "Finding the most frequent element exactly",
+          "is_correct": false
+        },
+        {
+          "text": "Storing the exact set of all elements seen",
+          "is_correct": false
+        },
+        {
+          "text": "Approximating the count of distinct elements using very little memory",
+          "is_correct": true
+        },
+        {
+          "text": "Sorting a stream of numbers in place",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "hyperloglog-cardinality",
+      "format": "recall"
+    },
+    {
+      "title": "Count-min sketch",
+      "description": "What does a count-min sketch approximate, and what is its characteristic error direction?",
+      "difficulty": "advanced",
+      "explanation": "A count-min sketch estimates the frequency of items in a stream using hashed counters; because of hash collisions it can overcount but never undercount, so its estimates are upper bounds.",
+      "options": [
+        {
+          "text": "Distinct element count, always exactly",
+          "is_correct": false
+        },
+        {
+          "text": "Item frequencies, with estimates that may overcount but never undercount",
+          "is_correct": true
+        },
+        {
+          "text": "Item frequencies that may undercount but never overcount",
+          "is_correct": false
+        },
+        {
+          "text": "The median of a numeric stream",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "count-min-sketch",
+      "format": "recall"
+    },
+    {
+      "title": "Rendezvous (HRW) hashing",
+      "description": "How does rendezvous (highest-random-weight) hashing decide which node owns a key?",
+      "difficulty": "advanced",
+      "explanation": "Rendezvous hashing computes a hash weight of (key, node) for every node and picks the node with the highest weight, giving consistent-hashing-like minimal remapping without a hash ring or virtual nodes.",
+      "options": [
+        {
+          "text": "It stores a central table mapping every key to a node",
+          "is_correct": false
+        },
+        {
+          "text": "It always assigns the key to the node with the lowest IP address",
+          "is_correct": false
+        },
+        {
+          "text": "It round-robins keys across nodes in insertion order",
+          "is_correct": false
+        },
+        {
+          "text": "It hashes (key, node) for each node and picks the highest-weight node",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "rendezvous-hrw-hashing",
+      "format": "recall"
+    },
+    {
+      "title": "Redlock distributed lock critique",
+      "description": "What is a central critique of using Redlock for distributed mutual exclusion in correctness-critical systems?",
+      "difficulty": "advanced",
+      "explanation": "Redlock relies on bounded clocks and timing assumptions; GC pauses or clock drift can let a client believe it still holds an expired lock, so it is unsafe without a fencing token to reject stale holders.",
+      "options": [
+        {
+          "text": "It blocks all reads on the locked resource",
+          "is_correct": false
+        },
+        {
+          "text": "Timing/GC pauses can let an expired lock holder still act unless fencing tokens are used",
+          "is_correct": true
+        },
+        {
+          "text": "It cannot be implemented on more than one Redis node",
+          "is_correct": false
+        },
+        {
+          "text": "It requires a relational database to store the lock",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "redlock-distributed-lock-critique",
+      "format": "recall"
+    },
+    {
+      "title": "Fencing tokens",
+      "description": "Why does a distributed lock service hand out a monotonically increasing fencing token with each lock grant?",
+      "difficulty": "advanced",
+      "explanation": "The protected resource can reject any write carrying a token lower than the highest it has seen, so a delayed or paused old lock holder cannot corrupt state even if it still thinks it owns the lock.",
+      "options": [
+        {
+          "text": "So the lock never needs to expire",
+          "is_correct": false
+        },
+        {
+          "text": "So clients can decrypt the lock contents",
+          "is_correct": false
+        },
+        {
+          "text": "So the lock can be shared by multiple holders at once",
+          "is_correct": false
+        },
+        {
+          "text": "So the resource can reject writes from a stale, previously-paused lock holder",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "fencing-tokens",
+      "format": "recall"
+    },
+    {
+      "title": "Lease-based locking",
+      "description": "What is the defining property of a lease compared to a plain lock?",
+      "difficulty": "intermediate",
+      "explanation": "A lease is a lock with a built-in expiry: if the holder crashes or is partitioned, the lease lapses automatically so the resource is not held forever, at the cost of timing assumptions.",
+      "options": [
+        {
+          "text": "It guarantees the holder unlimited renewals with no expiry",
+          "is_correct": false
+        },
+        {
+          "text": "It is stored only in the client's memory",
+          "is_correct": false
+        },
+        {
+          "text": "It automatically expires after a time bound so a crashed holder does not block others forever",
+          "is_correct": true
+        },
+        {
+          "text": "It can never be revoked once granted",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "lease-based-locking",
+      "format": "recall"
+    },
+    {
+      "title": "Leveled vs size-tiered compaction",
+      "description": "Compared to size-tiered compaction, what does leveled compaction in an LSM store optimize for?",
+      "difficulty": "advanced",
+      "explanation": "Leveled compaction keeps non-overlapping SSTables per level so a key lives in at most one SSTable per level, bounding read amplification and space overhead at the cost of more write amplification than size-tiered.",
+      "options": [
+        {
+          "text": "Removing all background I/O entirely",
+          "is_correct": false
+        },
+        {
+          "text": "Lower write amplification at the cost of unbounded reads",
+          "is_correct": false
+        },
+        {
+          "text": "Lower read and space amplification, trading higher write amplification",
+          "is_correct": true
+        },
+        {
+          "text": "Eliminating the need for a write-ahead log",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "leveled-vs-size-tiered-compaction",
+      "format": "recall"
+    },
+    {
+      "title": "Local vs global secondary indexes",
+      "description": "In a partitioned datastore, what is the trade-off of a local secondary index versus a global one?",
+      "difficulty": "advanced",
+      "explanation": "A local (document-partitioned) index lives with each partition's data, so writes are cheap but queries must scatter-gather across all partitions; a global (term-partitioned) index is partitioned by the indexed value, making reads targeted but writes cross-partition.",
+      "options": [
+        {
+          "text": "Global indexes are always faster for both reads and writes",
+          "is_correct": false
+        },
+        {
+          "text": "There is no difference once the data is sharded",
+          "is_correct": false
+        },
+        {
+          "text": "Local indexes require a two-phase commit on every read",
+          "is_correct": false
+        },
+        {
+          "text": "Local indexes make writes cheap but reads scatter-gather; global indexes make reads targeted but writes cross-partition",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "local-vs-global-secondary-indexes",
+      "format": "recall"
+    },
+    {
+      "title": "Wide-column data modeling",
+      "description": "When modeling data for a wide-column store like Cassandra, what should primarily drive your table and primary-key design?",
+      "difficulty": "advanced",
+      "explanation": "Wide-column stores are query-driven: you design one table (and its partition/clustering keys) per access pattern so each query hits a single partition, even if that means denormalizing and duplicating data.",
+      "options": [
+        {
+          "text": "Foreign-key relationships enforced by the database",
+          "is_correct": false
+        },
+        {
+          "text": "The read query patterns, designing a table per access pattern around the partition key",
+          "is_correct": true
+        },
+        {
+          "text": "Minimizing the number of tables regardless of queries",
+          "is_correct": false
+        },
+        {
+          "text": "Third-normal-form normalization to avoid any duplication",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "wide-column-data-modeling",
+      "format": "recall"
+    },
+    {
+      "title": "Capacity planning headroom",
+      "description": "Why do teams provision capacity well above measured average load rather than near peak utilization?",
+      "difficulty": "intermediate",
+      "explanation": "Headroom absorbs traffic spikes, instance failures, deploys, and autoscaler lag; running near saturation leaves no buffer, so latency degrades sharply once a queue forms at high utilization.",
+      "options": [
+        {
+          "text": "Because cloud providers bill less for idle capacity",
+          "is_correct": false
+        },
+        {
+          "text": "To absorb spikes, failures, and autoscaler lag before latency degrades",
+          "is_correct": true
+        },
+        {
+          "text": "Because higher utilization always lowers tail latency",
+          "is_correct": false
+        },
+        {
+          "text": "To guarantee exactly-once message delivery",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "capacity-planning-headroom",
+      "format": "recall"
+    },
+    {
+      "title": "Forward-fix vs revert rollback",
+      "description": "When is a forward-fix (roll forward) preferable to reverting a deployment after a bad release?",
+      "difficulty": "intermediate",
+      "explanation": "A forward-fix is preferred when a revert is unsafe or impossible — for example after an irreversible schema migration or data change — so you patch forward rather than try to undo state the old code can't read.",
+      "options": [
+        {
+          "text": "When you want the fastest possible return to the prior known-good state",
+          "is_correct": false
+        },
+        {
+          "text": "Only when there is no monitoring in place",
+          "is_correct": false
+        },
+        {
+          "text": "When a revert is unsafe, such as after an irreversible schema or data migration",
+          "is_correct": true
+        },
+        {
+          "text": "Whenever the bug is trivial and the old version is healthy",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "forward-fix-vs-revert-rollback",
+      "format": "recall"
+    },
+    {
+      "title": "Load shedding under overload",
+      "description": "What is the goal of load shedding when a service is overloaded?",
+      "difficulty": "intermediate",
+      "explanation": "Load shedding deliberately rejects or drops a portion of requests early so the service stays responsive for the rest, preventing a total collapse where every request times out under saturation.",
+      "options": [
+        {
+          "text": "Buffer all excess requests indefinitely in memory",
+          "is_correct": false
+        },
+        {
+          "text": "Reject some requests early so the system stays healthy for the remaining ones",
+          "is_correct": true
+        },
+        {
+          "text": "Permanently scale down the service to save cost",
+          "is_correct": false
+        },
+        {
+          "text": "Retry every failed request immediately to clear the backlog",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "load-shedding-under-overload",
+      "format": "recall"
+    },
+    {
+      "title": "Connection draining on shutdown",
+      "description": "What does connection draining accomplish during a graceful shutdown or deploy?",
+      "difficulty": "intermediate",
+      "explanation": "Draining stops sending new requests to an instance while letting in-flight requests finish before it terminates, so a rolling deploy or scale-in doesn't abruptly kill active connections.",
+      "options": [
+        {
+          "text": "It lets in-flight requests finish while no new requests are routed to the instance",
+          "is_correct": true
+        },
+        {
+          "text": "It flushes the database write-ahead log to disk",
+          "is_correct": false
+        },
+        {
+          "text": "It immediately kills all open sockets to free resources fast",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts connections before closing them",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "connection-draining-on-shutdown",
+      "format": "recall"
+    },
+    {
+      "title": "Multi-region failover orchestration",
+      "description": "When failing over from a primary region to a standby, what risk does an automated failover specifically need to guard against?",
+      "difficulty": "advanced",
+      "explanation": "Automated failover can cause split-brain if the old primary is only partitioned (not dead) and keeps taking writes; orchestration must fence the old primary or require quorum before promoting the standby.",
+      "options": [
+        {
+          "text": "Split-brain, where a merely-partitioned old primary keeps accepting writes alongside the new one",
+          "is_correct": true
+        },
+        {
+          "text": "DNS records propagating too quickly to clients",
+          "is_correct": false
+        },
+        {
+          "text": "Read replicas falling out of the load balancer pool",
+          "is_correct": false
+        },
+        {
+          "text": "The standby region having more capacity than needed",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "multi-region-failover-orchestration",
+      "format": "recall"
+    },
+    {
+      "title": "Idempotent leader fencing",
+      "description": "After a leader election, why might the new leader still need fencing even though the old leader 'lost' the election?",
+      "difficulty": "advanced",
+      "explanation": "The deposed leader may be in a long GC or network pause and not yet know it lost; without fencing tokens or epoch numbers, its delayed writes can still reach shared state and corrupt it.",
+      "options": [
+        {
+          "text": "A paused old leader may not yet know it lost and could still issue stale writes",
+          "is_correct": true
+        },
+        {
+          "text": "The new leader has no network connectivity",
+          "is_correct": false
+        },
+        {
+          "text": "The election protocol cannot count votes correctly",
+          "is_correct": false
+        },
+        {
+          "text": "Followers refuse to acknowledge any new leader",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "idempotent-leader-fencing",
+      "format": "recall"
+    },
+    {
+      "title": "Bcrypt for password storage",
+      "description": "Why are passwords stored with an adaptive hash like bcrypt instead of a fast hash like SHA-256?",
+      "difficulty": "intermediate",
+      "explanation": "Bcrypt is deliberately slow and has a tunable work factor plus a built-in salt, making large-scale brute-force and precomputed-table attacks far more expensive than with a fast general-purpose hash.",
+      "options": [
+        {
+          "text": "It produces shorter output that saves database space",
+          "is_correct": false
+        },
+        {
+          "text": "It avoids the need to store any salt",
+          "is_correct": false
+        },
+        {
+          "text": "It is reversible so the original password can be recovered",
+          "is_correct": false
+        },
+        {
+          "text": "It is deliberately slow with a tunable cost, raising brute-force expense",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "bcrypt-for-password-storage",
+      "format": "recall"
+    },
+    {
+      "title": "Salting password hashes",
+      "description": "What attack does adding a unique per-user salt to password hashes primarily defeat?",
+      "difficulty": "intermediate",
+      "explanation": "A unique salt makes each hash distinct even for identical passwords, defeating precomputed rainbow-table lookups and preventing one cracked hash from revealing every user who shares that password.",
+      "options": [
+        {
+          "text": "SQL injection against the login form",
+          "is_correct": false
+        },
+        {
+          "text": "Man-in-the-middle interception in transit",
+          "is_correct": false
+        },
+        {
+          "text": "Cross-site scripting in the browser",
+          "is_correct": false
+        },
+        {
+          "text": "Precomputed rainbow-table lookups and shared-password correlation",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "salting-password-hashes",
+      "format": "recall"
+    },
+    {
+      "title": "WebSocket connection scaling",
+      "description": "Why are long-lived WebSocket connections harder to scale behind a stateless load balancer than short HTTP requests?",
+      "difficulty": "advanced",
+      "explanation": "Each WebSocket pins an open connection to one server for its lifetime, so load can't be rebalanced per request; capacity is bound by concurrent connections per node and reconnect storms after a deploy can overload the fleet.",
+      "options": [
+        {
+          "text": "They are limited to one connection per server globally",
+          "is_correct": false
+        },
+        {
+          "text": "WebSockets cannot pass through a load balancer at all",
+          "is_correct": false
+        },
+        {
+          "text": "They require a new TCP handshake for every message",
+          "is_correct": false
+        },
+        {
+          "text": "Each connection is pinned to one server for its lifetime, so load can't rebalance per request",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "websocket-connection-scaling",
+      "format": "recall"
+    },
+    {
+      "title": "Presigned URLs for uploads",
+      "description": "Why do services hand clients a presigned URL to upload large files directly to object storage?",
+      "difficulty": "intermediate",
+      "explanation": "A presigned URL lets the client upload straight to the object store with time-limited, scoped credentials, so the application server never proxies the bytes — saving bandwidth and avoiding it as a throughput bottleneck.",
+      "options": [
+        {
+          "text": "So the object store can validate the file's business logic",
+          "is_correct": false
+        },
+        {
+          "text": "So the client uploads directly to storage without the app server proxying the bytes",
+          "is_correct": true
+        },
+        {
+          "text": "So the upload bypasses all authentication",
+          "is_correct": false
+        },
+        {
+          "text": "So the file is automatically compressed in transit",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "presigned-urls-for-uploads",
+      "format": "recall"
+    },
+    {
+      "title": "Resumable / chunked uploads",
+      "description": "What is the main benefit of chunked, resumable uploads for very large files over unreliable networks?",
+      "difficulty": "intermediate",
+      "explanation": "Splitting the file into chunks means a dropped connection only requires re-sending the failed chunk rather than restarting the entire upload, and chunks can be uploaded in parallel.",
+      "options": [
+        {
+          "text": "It compresses the file to a single block",
+          "is_correct": false
+        },
+        {
+          "text": "It removes the need to authenticate the upload",
+          "is_correct": false
+        },
+        {
+          "text": "A failure only re-sends the affected chunk instead of restarting the whole upload",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees the file is virus-free",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "resumable-chunked-uploads",
+      "format": "recall"
+    },
+    {
+      "title": "Read amplification",
+      "description": "What does 'read amplification' mean in a storage engine?",
+      "difficulty": "advanced",
+      "explanation": "Read amplification is the ratio of physical reads performed to satisfy one logical read; in LSM trees a single key lookup may probe multiple SSTables across levels, amplifying the I/O work.",
+      "options": [
+        {
+          "text": "Reads getting faster as the dataset grows",
+          "is_correct": false
+        },
+        {
+          "text": "One logical read triggering multiple physical reads across data structures",
+          "is_correct": true
+        },
+        {
+          "text": "Duplicating every read to a replica for safety",
+          "is_correct": false
+        },
+        {
+          "text": "Caching all reads in memory permanently",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "read-amplification",
+      "format": "recall"
+    },
+    {
+      "title": "Space amplification",
+      "description": "What is space amplification in a database storage engine?",
+      "difficulty": "intermediate",
+      "explanation": "Space amplification is the ratio of on-disk bytes used to the logical size of live data; obsolete versions, tombstones, and pending compaction can make the store occupy more disk than the live dataset requires.",
+      "options": [
+        {
+          "text": "Indexing the same column twice",
+          "is_correct": false
+        },
+        {
+          "text": "Compressing data to use less disk than its logical size",
+          "is_correct": false
+        },
+        {
+          "text": "Using more disk than the logical data size due to stale versions and pending compaction",
+          "is_correct": true
+        },
+        {
+          "text": "Replicating data to additional nodes",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "space-amplification",
+      "format": "recall"
+    },
+    {
+      "title": "Serializable isolation",
+      "description": "What does the serializable isolation level guarantee?",
+      "difficulty": "advanced",
+      "explanation": "Serializable guarantees that concurrent transactions produce a result equivalent to some serial (one-at-a-time) ordering, preventing all anomalies including write skew, at the cost of more contention or aborts.",
+      "options": [
+        {
+          "text": "Concurrent transactions behave as if run one at a time in some order",
+          "is_correct": true
+        },
+        {
+          "text": "Reads never block under any circumstance",
+          "is_correct": false
+        },
+        {
+          "text": "Transactions are guaranteed to never abort",
+          "is_correct": false
+        },
+        {
+          "text": "Only dirty reads are prevented",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "serializable-isolation",
+      "format": "recall"
+    },
+    {
+      "title": "Phantom reads",
+      "description": "What is a phantom read in transaction isolation?",
+      "difficulty": "advanced",
+      "explanation": "A phantom read occurs when a transaction re-runs a range query and sees new rows that another committed transaction inserted matching the predicate, even though existing rows it already read are unchanged.",
+      "options": [
+        {
+          "text": "The same row returning two different values in one read",
+          "is_correct": false
+        },
+        {
+          "text": "A deadlock between two writers",
+          "is_correct": false
+        },
+        {
+          "text": "A re-run range query returns new rows inserted by another committed transaction",
+          "is_correct": true
+        },
+        {
+          "text": "Reading a value that was never committed",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "phantom-reads",
+      "format": "recall"
+    },
+    {
+      "title": "MVCC concurrency",
+      "description": "How does multi-version concurrency control (MVCC) let readers avoid blocking on writers?",
+      "difficulty": "advanced",
+      "explanation": "MVCC keeps multiple versions of each row tagged by transaction timestamp, so a reader sees a consistent snapshot from its start time while writers create new versions, removing read-write locking contention.",
+      "options": [
+        {
+          "text": "Each table is limited to a single concurrent transaction",
+          "is_correct": false
+        },
+        {
+          "text": "All rows are locked for the duration of any transaction",
+          "is_correct": false
+        },
+        {
+          "text": "Readers see a consistent snapshot of older row versions while writers create new versions",
+          "is_correct": true
+        },
+        {
+          "text": "Writers are forced to wait until all readers finish",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "mvcc-concurrency",
+      "format": "recall"
+    },
+    {
+      "title": "Deadlock handling in databases",
+      "description": "How do most relational databases typically resolve a deadlock between two transactions?",
+      "difficulty": "intermediate",
+      "explanation": "The database detects the cycle in its wait-for graph and aborts one transaction (the victim), rolling it back so the other can proceed; the application is expected to retry the aborted one.",
+      "options": [
+        {
+          "text": "Detect the wait cycle and abort one transaction as the victim, expecting a retry",
+          "is_correct": true
+        },
+        {
+          "text": "Pause both transactions forever until an admin intervenes",
+          "is_correct": false
+        },
+        {
+          "text": "Silently commit both with partial results",
+          "is_correct": false
+        },
+        {
+          "text": "Merge the two transactions into one",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "deadlock-handling-in-databases",
+      "format": "recall"
+    },
+    {
+      "title": "Two-phase locking",
+      "description": "What is the defining rule of two-phase locking (2PL)?",
+      "difficulty": "advanced",
+      "explanation": "In 2PL a transaction acquires all the locks it needs in a growing phase and releases them in a shrinking phase, never acquiring a new lock after releasing any — which is what guarantees serializability.",
+      "options": [
+        {
+          "text": "Every transaction must use two separate connections",
+          "is_correct": false
+        },
+        {
+          "text": "Locks are held for exactly two seconds each",
+          "is_correct": false
+        },
+        {
+          "text": "Locks may be acquired and released in any interleaved order",
+          "is_correct": false
+        },
+        {
+          "text": "A transaction never acquires a new lock after it has released any lock",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "two-phase-locking",
+      "format": "recall"
+    },
+    {
+      "title": "Inverted index for search",
+      "description": "What is the core data structure behind a full-text search engine, and what does it map?",
+      "difficulty": "intermediate",
+      "explanation": "An inverted index maps each term (token) to the list of documents (and positions) containing it, so a search resolves by looking up posting lists rather than scanning every document.",
+      "options": [
+        {
+          "text": "A hash of each document's contents",
+          "is_correct": false
+        },
+        {
+          "text": "A B-tree mapping document IDs to their full text",
+          "is_correct": false
+        },
+        {
+          "text": "A queue of pending search requests",
+          "is_correct": false
+        },
+        {
+          "text": "An inverted index mapping each term to the documents that contain it",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "inverted-index-for-search",
+      "format": "recall"
+    },
+    {
+      "title": "Edge computing benefit",
+      "description": "What is the primary benefit of running compute at edge locations close to users rather than only in a central region?",
+      "difficulty": "beginner",
+      "explanation": "Executing logic at the edge cuts the round-trip distance to the user, reducing latency and origin load for tasks like personalization, auth checks, or caching close to the request.",
+      "options": [
+        {
+          "text": "Removing the need for TLS encryption",
+          "is_correct": false
+        },
+        {
+          "text": "Guaranteeing strong global consistency",
+          "is_correct": false
+        },
+        {
+          "text": "Eliminating the need for any central data store",
+          "is_correct": false
+        },
+        {
+          "text": "Lower latency by processing requests near the user",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "edge-computing-benefit",
+      "format": "recall"
+    },
+    {
+      "title": "Cold start in serverless",
+      "description": "What causes a 'cold start' latency spike in serverless functions?",
+      "difficulty": "intermediate",
+      "explanation": "When no warm instance is available, the platform must provision a container and initialize the runtime and code before handling the request, adding startup latency that warm invocations avoid.",
+      "options": [
+        {
+          "text": "The function ran out of disk space",
+          "is_correct": false
+        },
+        {
+          "text": "The function's database is being migrated",
+          "is_correct": false
+        },
+        {
+          "text": "The platform must spin up and initialize a new runtime before serving the request",
+          "is_correct": true
+        },
+        {
+          "text": "The CDN cache has been purged",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cold-start-in-serverless",
+      "format": "recall"
+    },
+    {
+      "title": "Modulo vs consistent hashing for cache",
+      "description": "Why is consistent hashing preferred over a simple hash(key) % N for routing keys to a cache cluster?",
+      "difficulty": "intermediate",
+      "explanation": "With modulo hashing, changing the node count N remaps almost every key, causing a mass cache miss; consistent hashing remaps only the keys near the added or removed node, preserving most of the cache.",
+      "options": [
+        {
+          "text": "Adding or removing a node remaps only a small fraction of keys instead of nearly all",
+          "is_correct": true
+        },
+        {
+          "text": "It makes every lookup O(1) with no hashing",
+          "is_correct": false
+        },
+        {
+          "text": "It guarantees every node holds exactly the same keys",
+          "is_correct": false
+        },
+        {
+          "text": "It eliminates the need for cache expiration",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "modulo-vs-consistent-hashing-for-cache",
+      "format": "recall"
+    },
+    {
+      "title": "Hot key problem in caching",
+      "description": "What is the 'hot key' problem in a sharded cache, and a common mitigation?",
+      "difficulty": "advanced",
+      "explanation": "A single extremely popular key concentrates all its traffic on one shard, overloading it; mitigations include replicating that key across nodes or adding a small local in-process cache for it.",
+      "options": [
+        {
+          "text": "One very popular key overloads its shard; mitigate by replicating or locally caching it",
+          "is_correct": true
+        },
+        {
+          "text": "Too many keys exist; mitigate by deleting old ones",
+          "is_correct": false
+        },
+        {
+          "text": "Keys are too large; mitigate by sharding each key's bytes",
+          "is_correct": false
+        },
+        {
+          "text": "Keys expire too quickly; mitigate by disabling TTLs",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "hot-key-problem-in-caching",
+      "format": "recall"
+    },
+    {
+      "title": "Geo-DNS routing",
+      "description": "How does geo-DNS (latency- or geography-based DNS routing) direct users to the nearest data center?",
+      "difficulty": "intermediate",
+      "explanation": "The authoritative DNS server returns different IP addresses based on the resolver's location or measured latency, steering each user toward the closest or fastest region at name-resolution time.",
+      "options": [
+        {
+          "text": "It returns region-specific IPs based on the resolver's location or latency",
+          "is_correct": true
+        },
+        {
+          "text": "It load-balances by rewriting the HTTP request body",
+          "is_correct": false
+        },
+        {
+          "text": "It encrypts the DNS response per user",
+          "is_correct": false
+        },
+        {
+          "text": "It caches the user's session in DNS",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "geo-dns-routing",
+      "format": "recall"
+    },
+    {
+      "title": "Anycast routing",
+      "description": "What does anycast accomplish when the same IP address is advertised from many locations?",
+      "difficulty": "advanced",
+      "explanation": "With anycast, multiple sites announce the same IP and BGP routes each client to the topologically nearest one, providing low-latency edge entry and automatic failover when a site withdraws its route.",
+      "options": [
+        {
+          "text": "Routing each client to the nearest site advertising that IP, with automatic failover",
+          "is_correct": true
+        },
+        {
+          "text": "Encrypting all traffic at the network layer",
+          "is_correct": false
+        },
+        {
+          "text": "Assigning a unique IP to every user",
+          "is_correct": false
+        },
+        {
+          "text": "Broadcasting each packet to every site simultaneously",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "anycast-routing",
+      "format": "recall"
+    },
+    {
+      "title": "Distributed global rate limiting",
+      "description": "Why is enforcing a global rate limit across many API server instances harder than on a single server?",
+      "difficulty": "advanced",
+      "explanation": "Each instance only sees its own traffic, so a correct global limit needs shared state (e.g., a central Redis counter) or coordination; otherwise N instances each allowing the limit lets through N times the intended rate.",
+      "options": [
+        {
+          "text": "Instances see only their own traffic, so a shared counter or coordination is needed for a true global limit",
+          "is_correct": true
+        },
+        {
+          "text": "The load balancer always enforces it automatically",
+          "is_correct": false
+        },
+        {
+          "text": "Each instance must store the entire request history forever",
+          "is_correct": false
+        },
+        {
+          "text": "Rate limiting cannot be done in software at all",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "distributed-global-rate-limiting",
+      "format": "recall"
+    },
+    {
+      "title": "Single-flight cache regeneration",
+      "description": "Beyond probabilistic early recomputation, what locking technique prevents many requests from recomputing the same expired cache entry at once?",
+      "difficulty": "advanced",
+      "explanation": "A request-coalescing or single-flight lock lets only the first request recompute the value while others wait for and reuse its result, so an expired hot key is regenerated once instead of by every concurrent caller.",
+      "options": [
+        {
+          "text": "Disabling the cache entirely during recomputation",
+          "is_correct": false
+        },
+        {
+          "text": "Sharding the key across more nodes",
+          "is_correct": false
+        },
+        {
+          "text": "A single-flight / request-coalescing lock so only one caller recomputes and others reuse the result",
+          "is_correct": true
+        },
+        {
+          "text": "Increasing the database connection pool to infinity",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "single-flight-cache-regeneration",
+      "format": "recall"
+    },
+    {
+      "title": "Saga vs two-phase commit",
+      "description": "Why might a microservices system choose a saga over a distributed two-phase commit for a multi-service transaction?",
+      "difficulty": "advanced",
+      "explanation": "2PC holds locks and blocks while waiting on a coordinator, hurting availability across services; a saga uses local transactions plus compensating actions, trading atomicity for availability and looser coupling.",
+      "options": [
+        {
+          "text": "Sagas eliminate the need for any rollback logic",
+          "is_correct": false
+        },
+        {
+          "text": "Sagas require a single shared database",
+          "is_correct": false
+        },
+        {
+          "text": "Sagas avoid 2PC's blocking locks by using local commits plus compensating actions",
+          "is_correct": true
+        },
+        {
+          "text": "Sagas provide stronger ACID atomicity than 2PC",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "saga-vs-two-phase-commit",
+      "format": "recall"
+    },
+    {
+      "title": "Backfilling a new feature",
+      "description": "What is a backfill in the context of rolling out a new column or derived dataset?",
+      "difficulty": "intermediate",
+      "explanation": "A backfill populates the new field or table for existing historical rows — usually as a throttled batch job — so the feature works for old data, not just records created after deployment.",
+      "options": [
+        {
+          "text": "Deleting rows that lack the new field",
+          "is_correct": false
+        },
+        {
+          "text": "Reverting the schema to its previous version",
+          "is_correct": false
+        },
+        {
+          "text": "Caching the new column in memory",
+          "is_correct": false
+        },
+        {
+          "text": "A batch job that populates the new field for pre-existing historical rows",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "backfilling-a-new-feature",
+      "format": "recall"
+    },
+    {
+      "title": "Shadow / dark traffic testing",
+      "description": "What is the purpose of shadowing (mirroring) production traffic to a new service version?",
+      "difficulty": "intermediate",
+      "explanation": "Shadow testing replays real production requests against the new version without returning its responses to users, so you can validate correctness and performance under real load with zero user-facing risk.",
+      "options": [
+        {
+          "text": "Validate a new version under real traffic without its responses reaching users",
+          "is_correct": true
+        },
+        {
+          "text": "Encrypt production traffic for compliance",
+          "is_correct": false
+        },
+        {
+          "text": "Serve half of users from the new version",
+          "is_correct": false
+        },
+        {
+          "text": "Replace load testing with synthetic data",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "shadow-dark-traffic-testing",
+      "format": "recall"
+    },
+    {
+      "title": "Poison pill message",
+      "description": "What is a 'poison pill' message in a queue-based system?",
+      "difficulty": "intermediate",
+      "explanation": "A poison pill is a message that consistently fails processing and, without handling, gets retried forever — blocking the partition or burning resources; a dead-letter queue after a retry limit is the standard remedy.",
+      "options": [
+        {
+          "text": "A message that repeatedly fails processing and must be routed to a dead-letter queue",
+          "is_correct": true
+        },
+        {
+          "text": "A duplicate message detected by an idempotency key",
+          "is_correct": false
+        },
+        {
+          "text": "A high-priority message that jumps the queue",
+          "is_correct": false
+        },
+        {
+          "text": "A message that shuts down the consumer cleanly",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "poison-pill-message",
+      "format": "recall"
+    },
+    {
+      "title": "Dead letter queue purpose",
+      "description": "What is a dead letter queue (DLQ) used for?",
+      "difficulty": "beginner",
+      "explanation": "A DLQ holds messages that could not be processed successfully after retries, isolating them so they don't block the main queue and can be inspected or replayed later.",
+      "options": [
+        {
+          "text": "To store the highest-priority messages first",
+          "is_correct": false
+        },
+        {
+          "text": "To duplicate every message for redundancy",
+          "is_correct": false
+        },
+        {
+          "text": "To hold messages that repeatedly fail processing for later inspection",
+          "is_correct": true
+        },
+        {
+          "text": "To archive successfully processed messages",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "dead-letter-queue-purpose",
+      "format": "recall"
+    },
+    {
+      "title": "Graceful shutdown signal",
+      "description": "On receiving a SIGTERM during a rolling deploy, what should a well-behaved service do before exiting?",
+      "difficulty": "beginner",
+      "explanation": "It should stop accepting new work, finish or hand off in-flight requests, flush buffers, and close resources cleanly within the grace period, rather than exiting immediately and dropping active requests.",
+      "options": [
+        {
+          "text": "Ignore the signal and keep running indefinitely",
+          "is_correct": false
+        },
+        {
+          "text": "Stop taking new requests, finish in-flight work, and close resources before exiting",
+          "is_correct": true
+        },
+        {
+          "text": "Exit immediately to free the port as fast as possible",
+          "is_correct": false
+        },
+        {
+          "text": "Restart itself in place without draining",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "graceful-shutdown-signal",
+      "format": "recall"
+    },
+    {
+      "title": "Log compaction in Kafka",
+      "description": "What does log compaction in a Kafka topic retain?",
+      "difficulty": "advanced",
+      "explanation": "Log compaction keeps at least the latest value for each key and removes older superseded values, so the topic can act as a durable changelog/snapshot of the current state per key rather than a full history.",
+      "options": [
+        {
+          "text": "Only the oldest message per partition",
+          "is_correct": false
+        },
+        {
+          "text": "A random sample of messages to save space",
+          "is_correct": false
+        },
+        {
+          "text": "Every message forever, just compressed",
+          "is_correct": false
+        },
+        {
+          "text": "The most recent value for each key, discarding older superseded ones",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "log-compaction-in-kafka",
+      "format": "recall"
+    }
+  ]
+}

@@ -1,0 +1,1354 @@
+{
+  "questions": [
+    {
+      "title": "Read-heavy blog slows at peak",
+      "description": "Your company is building a blog website. Most users spend their time reading posts, while only a few authors create or edit posts. During peak hours, the website becomes slow because the database receives too many read requests. What is the best first improvement?",
+      "difficulty": "beginner",
+      "explanation": "The workload is dominated by repeated reads of the same posts, so a cache in front of the database serves them from memory and removes most read load without changing the write path.",
+      "options": [
+        {
+          "text": "Store all blog posts in memory inside each application server",
+          "is_correct": false
+        },
+        {
+          "text": "Increase the number of application servers without changing anything else",
+          "is_correct": false
+        },
+        {
+          "text": "Add a cache (such as Redis) in front of the database to store frequently read blog posts",
+          "is_correct": true
+        },
+        {
+          "text": "Force every user to log in before viewing a blog post",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "what-a-cache-is-for",
+      "format": "situational"
+    },
+    {
+      "title": "Mobile app re-downloads unchanged data",
+      "description": "Your mobile app fetches the same product catalog on every launch, even though it rarely changes. Users on slow connections complain about long load times and high data usage. What is the most appropriate improvement?",
+      "difficulty": "beginner",
+      "explanation": "Conditional requests with ETags let the client validate its cached copy: the server replies 304 Not Modified when nothing changed, so the full payload is only transferred when the catalog actually updates.",
+      "options": [
+        {
+          "text": "Use HTTP caching with ETags so unchanged responses return 304 Not Modified instead of the full payload",
+          "is_correct": true
+        },
+        {
+          "text": "Move the catalog into the mobile app binary so it ships with each release",
+          "is_correct": false
+        },
+        {
+          "text": "Reduce the catalog size by deleting older products",
+          "is_correct": false
+        },
+        {
+          "text": "Compress the response and keep re-downloading it on every launch",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "caching-with-etags",
+      "format": "situational"
+    },
+    {
+      "title": "Flash-sale item expires from cache",
+      "description": "During a flash sale, one product page is cached with a 60-second TTL. Every time the cache entry expires, thousands of concurrent requests miss the cache at once and all hit the database together, causing brief outages. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "This is a cache stampede: on expiry, every request recomputes the same value. Request coalescing (single-flight) lets one request rebuild the entry while the others wait for the fresh value, so the database sees one query instead of thousands.",
+      "options": [
+        {
+          "text": "Shorten the TTL to 5 seconds so the data is fresher",
+          "is_correct": false
+        },
+        {
+          "text": "Let a single request recompute the expired entry while other requests wait for the refreshed value",
+          "is_correct": true
+        },
+        {
+          "text": "Add more application servers so the database receives the queries faster",
+          "is_correct": false
+        },
+        {
+          "text": "Remove the TTL so the cached page never expires",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "single-flight-cache-regeneration",
+      "format": "situational"
+    },
+    {
+      "title": "Profile edit shows old data",
+      "description": "Users edit their profile, but the profile page keeps showing the old values for up to an hour because profile responses are cached with a long TTL. Support tickets are piling up. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "When the underlying data changes, the cache entry should be invalidated or overwritten as part of the write path, so the next read fetches the fresh value instead of waiting for the TTL to lapse.",
+      "options": [
+        {
+          "text": "Invalidate or update the cached profile entry whenever the user saves a change",
+          "is_correct": true
+        },
+        {
+          "text": "Remove caching from the entire application",
+          "is_correct": false
+        },
+        {
+          "text": "Increase the TTL so the cache is more efficient",
+          "is_correct": false
+        },
+        {
+          "text": "Tell users to wait an hour after editing their profile",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cache-invalidation-on-write",
+      "format": "situational"
+    },
+    {
+      "title": "Celebrity product overloads one cache node",
+      "description": "Your cache cluster shards keys across 10 nodes. A celebrity endorses one product, and the single node holding that product's key is overwhelmed while the other 9 sit idle. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "This is a hot key problem: one key exceeds the capacity of any single node. Replicating that key across nodes or serving it from a small in-process cache on each application server spreads the read load.",
+      "options": [
+        {
+          "text": "Lower the TTL on the hot key so it expires more often",
+          "is_correct": false
+        },
+        {
+          "text": "Move all keys onto the overloaded node so the load is at least predictable",
+          "is_correct": false
+        },
+        {
+          "text": "Double the size of the cache cluster so keys are spread across 20 nodes",
+          "is_correct": false
+        },
+        {
+          "text": "Replicate the hot key across multiple cache nodes or add a small in-process cache for it on each app server",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "hot-key-problem-in-caching",
+      "format": "situational"
+    },
+    {
+      "title": "Leaderboard cache loses writes on crash",
+      "description": "A gaming leaderboard uses a write-back cache: score updates are written to the cache and flushed to the database every few minutes. After a cache node crashed, several minutes of score updates were permanently lost and players complained. What is the biggest lesson from this design?",
+      "difficulty": "advanced",
+      "explanation": "Write-back trades durability for write speed: acknowledged writes exist only in cache memory until the flush. Data that must survive a crash should be written through to durable storage before acknowledging, accepting higher write latency.",
+      "options": [
+        {
+          "text": "The database was too slow, so the cache was correct to hold the writes",
+          "is_correct": false
+        },
+        {
+          "text": "The flush interval was the problem; flushing every minute would make the design safe",
+          "is_correct": false
+        },
+        {
+          "text": "Write-back caching risks losing acknowledged writes on a crash; durable data needs write-through or a persistent log",
+          "is_correct": true
+        },
+        {
+          "text": "Caches should never be used for data that changes frequently",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "write-through-vs-write-back-cache",
+      "format": "situational"
+    },
+    {
+      "title": "Biggest server is maxed out",
+      "description": "Your API runs on a single server. You have upgraded it twice to bigger machines, and it is now the largest instance your cloud provider offers, yet CPU is again at 95% during peak traffic. What is the most appropriate next step?",
+      "difficulty": "beginner",
+      "explanation": "Vertical scaling has a hard ceiling, and this system has hit it. Scaling horizontally—running multiple instances behind a load balancer—lets capacity grow by adding machines instead of enlarging one.",
+      "options": [
+        {
+          "text": "Rewrite the whole application in a faster programming language first",
+          "is_correct": false
+        },
+        {
+          "text": "Wait for the cloud provider to release a larger instance type",
+          "is_correct": false
+        },
+        {
+          "text": "Run multiple instances of the API behind a load balancer and scale horizontally",
+          "is_correct": true
+        },
+        {
+          "text": "Increase the server's storage capacity to improve performance.",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "horizontal-vs-vertical-scaling",
+      "format": "situational"
+    },
+    {
+      "title": "Users logged out when scaling out",
+      "description": "You added a second application server behind a load balancer. Now users randomly appear logged out: their session exists in the memory of the first server, but the load balancer sometimes routes them to the second. What is the most appropriate fix?",
+      "difficulty": "beginner",
+      "explanation": "Sessions stored in one server's memory make instances non-interchangeable. Moving session state to a shared store (or stateless tokens) means any instance can serve any request, which is what horizontal scaling requires.",
+      "options": [
+        {
+          "text": "Ask users to log in again whenever they hit a different server",
+          "is_correct": false
+        },
+        {
+          "text": "Remove the second server and go back to one machine",
+          "is_correct": false
+        },
+        {
+          "text": "Copy every session between the two servers once per hour",
+          "is_correct": false
+        },
+        {
+          "text": "Move session state out of server memory into a shared store so any instance can handle any request",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "stateless-services-and-scaling",
+      "format": "situational"
+    },
+    {
+      "title": "Australian users face slow page loads",
+      "description": "Your web app is hosted only in a US data center. Users in Australia report multi-second load times, mostly spent downloading images, scripts, and stylesheets. What is the best first improvement?",
+      "difficulty": "beginner",
+      "explanation": "Static assets dominate the load time and do not change per user, so serving them from a CDN's edge locations near the users removes most of the cross-ocean round trips without re-architecting the app.",
+      "options": [
+        {
+          "text": "Upgrade the US servers to faster CPUs",
+          "is_correct": false
+        },
+        {
+          "text": "Move the database to Australia while keeping the app servers in the US",
+          "is_correct": false
+        },
+        {
+          "text": "Serve static assets from a CDN with edge locations near the users",
+          "is_correct": true
+        },
+        {
+          "text": "Require Australian users to use the mobile app instead",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cdn-primary-benefit",
+      "format": "situational"
+    },
+    {
+      "title": "Comment disappears right after posting",
+      "description": "Your app writes to a primary database and serves reads from replicas. Users post a comment, the page refreshes, and their comment is missing for a few seconds before appearing. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Replicas lag behind the primary, so a read right after a write can miss it. Read-your-writes consistency—routing a user's reads to the primary briefly after their own write—hides the lag where it matters.",
+      "options": [
+        {
+          "text": "Route a user's own reads to the primary for a short period after they write",
+          "is_correct": true
+        },
+        {
+          "text": "Switch to synchronous replication for every write across all replicas",
+          "is_correct": false
+        },
+        {
+          "text": "Remove all read replicas so every read hits the primary",
+          "is_correct": false
+        },
+        {
+          "text": "Add a client-side delay so the page refreshes after the replica catches up",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "read-your-writes-consistency",
+      "format": "situational"
+    },
+    {
+      "title": "Replicas added but writes still slow",
+      "description": "Your team added read replicas, and reads are fast now, but the database still struggles: the workload turned out to be write-heavy, and the single primary cannot keep up with insert volume. What is the most appropriate next step?",
+      "difficulty": "intermediate",
+      "explanation": "Replication copies the full write load to every node, so it scales reads, not writes. Partitioning (sharding) the data across multiple primaries divides the write volume so each node handles a subset.",
+      "options": [
+        {
+          "text": "Batch all writes into one transaction per hour",
+          "is_correct": false
+        },
+        {
+          "text": "Promote a replica to a second primary that accepts the same writes",
+          "is_correct": false
+        },
+        {
+          "text": "Partition (shard) the data so writes are divided across multiple primary nodes",
+          "is_correct": true
+        },
+        {
+          "text": "Add more read replicas until the writes speed up",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "partitioning-vs-replication",
+      "format": "situational"
+    },
+    {
+      "title": "Lunch-hour spike overwhelms fixed fleet",
+      "description": "A food-delivery API runs a fixed number of servers. Every day between 11:30 and 13:30 traffic triples, latency spikes, and the rest of the day the servers sit mostly idle. What is the most appropriate improvement?",
+      "difficulty": "intermediate",
+      "explanation": "The load is spiky but highly predictable, so autoscaling—scheduled or metric-driven—matches capacity to demand: more instances for the lunch window, fewer overnight, instead of paying for peak capacity all day.",
+      "options": [
+        {
+          "text": "Cache all order-placement requests and process them after the rush",
+          "is_correct": false
+        },
+        {
+          "text": "Use autoscaling so the instance count grows for the lunch window and shrinks afterward",
+          "is_correct": true
+        },
+        {
+          "text": "Show users a waiting page during lunch hours",
+          "is_correct": false
+        },
+        {
+          "text": "Permanently run enough servers for triple traffic around the clock",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "autoscaling-for-predictable-spikes",
+      "format": "situational"
+    },
+    {
+      "title": "One server down means total outage",
+      "description": "A startup runs its entire web app on one server. Last week the machine rebooted for maintenance and the product was completely offline for 20 minutes. The founders want the app to survive a single machine failure. What is the most appropriate change?",
+      "difficulty": "beginner",
+      "explanation": "A single server is a single point of failure. Running at least two instances behind a load balancer means the remaining instance keeps serving traffic when one fails or restarts.",
+      "options": [
+        {
+          "text": "Keep a backup server powered off and boot it manually during outages",
+          "is_correct": false
+        },
+        {
+          "text": "Schedule maintenance only at night when fewer users notice",
+          "is_correct": false
+        },
+        {
+          "text": "Buy a more reliable server with better hardware",
+          "is_correct": false
+        },
+        {
+          "text": "Run at least two instances behind a load balancer so traffic continues when one fails",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "single-point-of-failure-redundancy",
+      "format": "situational"
+    },
+    {
+      "title": "Traffic still sent to a crashed instance",
+      "description": "One of four application instances behind a load balancer crashed an hour ago, but the load balancer kept sending it a quarter of all requests, so 25% of users saw errors until someone manually removed it. What feature would have prevented this?",
+      "difficulty": "beginner",
+      "explanation": "Health checks let the load balancer probe each instance and automatically stop routing to one that fails its checks, removing the dead instance from rotation within seconds instead of waiting for a human.",
+      "options": [
+        {
+          "text": "Health checks, so the load balancer automatically stops routing to instances that fail probes",
+          "is_correct": true
+        },
+        {
+          "text": "A larger instance type, so crashes are less likely",
+          "is_correct": false
+        },
+        {
+          "text": "Sticky sessions, so each user stays on the same instance",
+          "is_correct": false
+        },
+        {
+          "text": "Round-robin routing, so requests are spread more evenly",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "health-checks-in-load-balancing",
+      "format": "situational"
+    },
+    {
+      "title": "Sticky sessions complicate every deploy",
+      "description": "Your load balancer pins each user to one instance because sessions live in instance memory. Load is uneven, and every deploy logs out the users pinned to restarted instances. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Sticky sessions are a workaround for in-memory state. Making instances stateless by moving session data to a shared store removes the pinning, evens out load, and lets instances restart without logging anyone out.",
+      "options": [
+        {
+          "text": "Make instances stateless by moving session data to a shared store, then remove session stickiness",
+          "is_correct": true
+        },
+        {
+          "text": "Increase session timeout so logouts are less noticeable",
+          "is_correct": false
+        },
+        {
+          "text": "Deploy less often so users are logged out less frequently",
+          "is_correct": false
+        },
+        {
+          "text": "Pin users to two instances instead of one for redundancy",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "sticky-sessions-trade-off",
+      "format": "situational"
+    },
+    {
+      "title": "Every microservice reimplements auth",
+      "description": "Your platform has 12 public microservices. Each one separately implements authentication, rate limiting, and request logging, and the implementations have drifted apart—one service forgot rate limiting entirely. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "An API gateway centralizes cross-cutting edge concerns—auth, rate limiting, routing, logging—in one place in front of the services, so each service implements them zero times instead of slightly differently.",
+      "options": [
+        {
+          "text": "Create a shared document instructing every team to implement the checks identically",
+          "is_correct": false
+        },
+        {
+          "text": "Put an API gateway in front of the services to handle auth, rate limiting, and routing centrally",
+          "is_correct": true
+        },
+        {
+          "text": "Merge all 12 microservices into a single service",
+          "is_correct": false
+        },
+        {
+          "text": "Let each service keep its own version since teams know their needs best",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "api-gateway-responsibilities",
+      "format": "situational"
+    },
+    {
+      "title": "Login lookup scans the whole table",
+      "description": "Logins have become slow. Investigation shows the query `SELECT * FROM users WHERE email = ?` scans all 8 million rows in the users table on every login. What is the best first improvement?",
+      "difficulty": "beginner",
+      "explanation": "A full table scan on every lookup means the query has no index to use. An index on the email column lets the database jump directly to the matching row instead of reading all 8 million.",
+      "options": [
+        {
+          "text": "Cache every user row in the application at startup",
+          "is_correct": false
+        },
+        {
+          "text": "Split logins across several copies of the same unindexed table",
+          "is_correct": false
+        },
+        {
+          "text": "Move the users table to a bigger server",
+          "is_correct": false
+        },
+        {
+          "text": "Add an index on the email column",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "database-index-purpose",
+      "format": "situational"
+    },
+    {
+      "title": "Videos stored inside the database",
+      "description": "A course platform stores lesson videos as binary blobs in its relational database. Backups now take 12 hours, the database disk is nearly full, and video playback is slow. What is the most appropriate change?",
+      "difficulty": "beginner",
+      "explanation": "Large binary files bloat the database and its backups while gaining nothing from transactions. Object storage is built for large blobs; the database should hold only a URL reference to each video.",
+      "options": [
+        {
+          "text": "Move the videos to object storage (like S3) and keep only URL references in the database",
+          "is_correct": true
+        },
+        {
+          "text": "Shard the database so each shard holds fewer videos",
+          "is_correct": false
+        },
+        {
+          "text": "Compress the videos and keep storing them in the database",
+          "is_correct": false
+        },
+        {
+          "text": "Stop backing up the database since it is too large",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "blob-in-db-vs-object-store",
+      "format": "situational"
+    },
+    {
+      "title": "Writes slowed after adding ten indexes",
+      "description": "To speed up various reports, a developer added ten indexes to the orders table over a few months. Reads are fast, but inserting new orders is now three times slower than before. What is the most likely cause?",
+      "difficulty": "intermediate",
+      "explanation": "Every index must be updated on each insert, so ten indexes turn one logical write into many physical ones. Auditing which indexes queries actually use and dropping the rest restores write speed.",
+      "options": [
+        {
+          "text": "Indexes make reads faster but corrupt write buffers over time",
+          "is_correct": false
+        },
+        {
+          "text": "The table has too many rows for inserts to remain fast",
+          "is_correct": false
+        },
+        {
+          "text": "The database license limits write speed after a certain number of indexes",
+          "is_correct": false
+        },
+        {
+          "text": "Each insert must update all ten indexes, multiplying the write work per order",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "index-write-trade-off",
+      "format": "situational"
+    },
+    {
+      "title": "Too many connections at peak",
+      "description": "Under peak load your app fails with \"too many connections\" errors from PostgreSQL. Each incoming request opens a brand-new database connection and closes it afterward. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Opening a connection per request is expensive and quickly exceeds the database's connection limit. A connection pool maintains a fixed set of reusable connections that requests borrow and return.",
+      "options": [
+        {
+          "text": "Use a connection pool so requests reuse a bounded set of long-lived connections",
+          "is_correct": true
+        },
+        {
+          "text": "Open all connections at midnight when the database is idle",
+          "is_correct": false
+        },
+        {
+          "text": "Raise the database's max_connections limit until the errors stop",
+          "is_correct": false
+        },
+        {
+          "text": "Retry each failed connection attempt until it succeeds",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "connection-pooling",
+      "format": "situational"
+    },
+    {
+      "title": "Sensor firehose overwhelms B-tree writes",
+      "description": "An IoT platform ingests two million sensor readings per minute into a traditional B-tree-based relational database. Write throughput has hit a wall, with disks saturated by random I/O. Reads are mostly recent-data queries. What storage engine choice fits this workload better?",
+      "difficulty": "intermediate",
+      "explanation": "LSM-tree storage engines batch writes in memory and flush them as sequential disk writes, which suits extreme append-heavy ingest far better than a B-tree's in-place random updates.",
+      "options": [
+        {
+          "text": "Storing each sensor reading as a separate file on disk",
+          "is_correct": false
+        },
+        {
+          "text": "An LSM-tree-based store that turns random writes into sequential disk writes",
+          "is_correct": true
+        },
+        {
+          "text": "The same B-tree database with more indexes for faster inserts",
+          "is_correct": false
+        },
+        {
+          "text": "A cache in front of the database to absorb the writes",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "lsm-tree-write-advantage",
+      "format": "situational"
+    },
+    {
+      "title": "Random UUIDs slow a huge table",
+      "description": "A billion-row table uses random UUIDv4 values as its primary key. Insert performance keeps degrading, and the DBA reports constant page splits and a cold buffer cache because new rows land at random positions in the index. What is the most appropriate fix?",
+      "difficulty": "advanced",
+      "explanation": "Random keys scatter inserts across the whole B-tree, splitting pages and evicting hot pages. Time-ordered identifiers (UUIDv7, Snowflake-style IDs) make inserts append to the right edge of the index, keeping pages full and the working set small.",
+      "options": [
+        {
+          "text": "Hash the UUIDs before inserting so they spread more evenly",
+          "is_correct": false
+        },
+        {
+          "text": "Rebuild the index weekly and keep using random UUIDv4 keys",
+          "is_correct": false
+        },
+        {
+          "text": "Remove the primary key entirely to avoid index maintenance",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to time-ordered identifiers (e.g. UUIDv7 or Snowflake IDs) so inserts append to the end of the index",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "uuidv4-primary-key-downside",
+      "format": "situational"
+    },
+    {
+      "title": "User table outgrows one machine",
+      "description": "Your users table has grown past what one database server can handle: the working set no longer fits in memory and write volume saturates the primary even with replicas taking all reads. What is the most appropriate next step?",
+      "difficulty": "intermediate",
+      "explanation": "When a dataset and its write load exceed one machine, sharding splits the data by a key (such as user ID) across multiple nodes, so each holds and writes only a fraction.",
+      "options": [
+        {
+          "text": "Add more read replicas of the full table",
+          "is_correct": false
+        },
+        {
+          "text": "Shard the table by a key such as user ID so each node stores and writes a subset of users",
+          "is_correct": true
+        },
+        {
+          "text": "Archive old users to make the table fit, and repeat every year",
+          "is_correct": false
+        },
+        {
+          "text": "Move the table to a machine with more memory and accept the write ceiling",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "sharding-definition",
+      "format": "situational"
+    },
+    {
+      "title": "One shard melts on award night",
+      "description": "A social app shards posts by author ID. During an awards show, a handful of celebrity accounts generate most of the traffic, and the two shards holding them are overloaded while the rest idle. What is the most appropriate mitigation?",
+      "difficulty": "intermediate",
+      "explanation": "A hot partition comes from skewed keys. Salting the hot keys—appending a random suffix so one celebrity's data spreads over several shards—distributes the load, at the cost of fanning out reads for those keys.",
+      "options": [
+        {
+          "text": "Add more shards while keeping author ID as the raw shard key",
+          "is_correct": false
+        },
+        {
+          "text": "Salt the hot keys so each celebrity's data and traffic spread across multiple shards",
+          "is_correct": true
+        },
+        {
+          "text": "Rate limit the celebrities so their followers see errors instead",
+          "is_correct": false
+        },
+        {
+          "text": "Move all celebrity accounts onto the same single dedicated shard",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "hot-partition-mitigation",
+      "format": "situational"
+    },
+    {
+      "title": "Adding a node remaps nearly every key",
+      "description": "A cache cluster assigns keys to nodes with `hash(key) % node_count`. When the team added an eleventh node, almost every key mapped to a different node, the hit rate collapsed, and the database was hammered for an hour. What design change prevents this next time?",
+      "difficulty": "advanced",
+      "explanation": "Modulo hashing remaps nearly all keys whenever the node count changes. Consistent hashing places nodes and keys on a ring so adding or removing one node only moves the keys adjacent to it—roughly 1/N of the total.",
+      "options": [
+        {
+          "text": "Always resize the cluster by exact powers of two",
+          "is_correct": false
+        },
+        {
+          "text": "Flush the whole cache before adding any node so the misses happen at once",
+          "is_correct": false
+        },
+        {
+          "text": "Replicate every key to every node so placement no longer matters",
+          "is_correct": false
+        },
+        {
+          "text": "Use consistent hashing so adding a node only remaps roughly 1/N of the keys",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "modulo-vs-consistent-hashing-for-cache",
+      "format": "situational"
+    },
+    {
+      "title": "Checkout waits on the email server",
+      "description": "Placing an order takes 8 seconds because the request sends a confirmation email synchronously before responding, and the email provider is slow. Orders are being abandoned. What is the most appropriate fix?",
+      "difficulty": "beginner",
+      "explanation": "The email is not needed to complete the purchase, so it should not sit on the critical path. Publishing an event to a queue lets a background worker send the email while checkout responds immediately.",
+      "options": [
+        {
+          "text": "Show a loading spinner so the 8 seconds feels shorter",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to a faster email provider and keep sending synchronously",
+          "is_correct": false
+        },
+        {
+          "text": "Put the email onto a message queue and send it from a background worker after checkout responds",
+          "is_correct": true
+        },
+        {
+          "text": "Skip sending order confirmation emails entirely",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "message-queue-purpose",
+      "format": "situational"
+    },
+    {
+      "title": "Ticket drop crushes a downstream service",
+      "description": "When concert tickets go on sale, your order service receives 50x normal traffic for two minutes and forwards each order synchronously to a fulfillment service that can only handle normal load, causing failures and lost orders. What is the most appropriate change?",
+      "difficulty": "beginner",
+      "explanation": "A queue between the services absorbs the burst: orders are accepted and enqueued at spike rate, and the fulfillment service consumes them at its own steady pace instead of being overwhelmed.",
+      "options": [
+        {
+          "text": "Have the order service retry each failed synchronous call in a tight loop",
+          "is_correct": false
+        },
+        {
+          "text": "Put a message queue between the services so the burst is buffered and fulfillment consumes at its own pace",
+          "is_correct": true
+        },
+        {
+          "text": "Scale the fulfillment service to 50x capacity permanently for the two-minute spikes",
+          "is_correct": false
+        },
+        {
+          "text": "Reject all orders above normal load with an error page",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "queue-as-burst-buffer",
+      "format": "situational"
+    },
+    {
+      "title": "Same message charged a customer twice",
+      "description": "Your billing worker consumes payment events from a queue with at-least-once delivery. After a network hiccup, one event was delivered twice and a customer was charged twice. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "At-least-once delivery guarantees duplicates will occasionally arrive, so consumers must be idempotent: track processed event IDs (or use an idempotency key) so a redelivered event is recognized and skipped.",
+      "options": [
+        {
+          "text": "Add a random delay before processing each event so duplicates spread out",
+          "is_correct": false
+        },
+        {
+          "text": "Process payments synchronously without a queue to avoid redelivery",
+          "is_correct": false
+        },
+        {
+          "text": "Make the consumer idempotent by recording processed event IDs and skipping duplicates",
+          "is_correct": true
+        },
+        {
+          "text": "Configure the queue for exactly-once delivery so duplicates are impossible end to end",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "at-least-once-delivery-implication",
+      "format": "situational"
+    },
+    {
+      "title": "One bad message blocks the queue",
+      "description": "A malformed message crashes your consumer every time it is processed. The queue redelivers it, the consumer crashes again, and this loop has blocked all messages behind it for an hour. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "This is a poison pill. After a bounded number of failed attempts, the message should be moved to a dead letter queue so the main queue keeps flowing and the bad message can be inspected separately.",
+      "options": [
+        {
+          "text": "Increase the consumer's memory so it stops crashing",
+          "is_correct": false
+        },
+        {
+          "text": "Retry the message forever since it must eventually succeed",
+          "is_correct": false
+        },
+        {
+          "text": "Delete the entire queue and start fresh",
+          "is_correct": false
+        },
+        {
+          "text": "After a retry limit, move the failing message to a dead letter queue and continue with the rest",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "poison-pill-message",
+      "format": "situational"
+    },
+    {
+      "title": "Pipeline stage keeps running out of memory",
+      "description": "In a multi-stage streaming pipeline, an enrichment stage calls a slow external API. Upstream stages keep pushing data at full speed, the enrichment stage's input buffer grows without bound, and the process dies with out-of-memory errors. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "A slow stage must be able to signal upstream to slow down. Backpressure—bounded buffers that block or slow producers when full—keeps the pipeline's memory bounded instead of letting the fastest stage set the pace.",
+      "options": [
+        {
+          "text": "Give the enrichment stage unlimited memory for its buffer",
+          "is_correct": false
+        },
+        {
+          "text": "Drop the enrichment stage's input silently whenever it is busy",
+          "is_correct": false
+        },
+        {
+          "text": "Apply backpressure with bounded buffers so upstream stages slow down when the enrichment stage falls behind",
+          "is_correct": true
+        },
+        {
+          "text": "Restart the pipeline automatically every time it runs out of memory",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "backpressure",
+      "format": "situational"
+    },
+    {
+      "title": "Order events processed out of order",
+      "description": "An order system publishes \"created\", \"paid\", and \"shipped\" events to a Kafka topic with many partitions, keyed randomly. Consumers sometimes process \"shipped\" before \"paid\" for the same order, corrupting order state. What is the most appropriate fix?",
+      "difficulty": "advanced",
+      "explanation": "Kafka guarantees ordering only within a partition. Keying events by order ID routes all events for one order to the same partition, so each consumer sees that order's events in sequence while different orders still process in parallel.",
+      "options": [
+        {
+          "text": "Add a timestamp to each event and have consumers sleep until earlier events arrive",
+          "is_correct": false
+        },
+        {
+          "text": "Partition the topic by order ID so all events for one order land in the same partition, in order",
+          "is_correct": true
+        },
+        {
+          "text": "Reduce the topic to a single consumer so ordering is global",
+          "is_correct": false
+        },
+        {
+          "text": "Publish all three events inside one large combined message per order",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kafka-partition-ordering",
+      "format": "situational"
+    },
+    {
+      "title": "Friend still sees your old username",
+      "description": "A user changes their username, and a friend browsing from another region still sees the old name for about a minute before it updates. Engineering confirms the system is working as designed with asynchronous cross-region replication. What best describes this behavior?",
+      "difficulty": "beginner",
+      "explanation": "This is eventual consistency: replicas converge to the new value after replication catches up, so briefly stale reads in other regions are expected, not a bug.",
+      "options": [
+        {
+          "text": "A race condition that will eventually corrupt the username",
+          "is_correct": false
+        },
+        {
+          "text": "A caching bug, since databases always return the latest write",
+          "is_correct": false
+        },
+        {
+          "text": "Split-brain, because two regions disagree about a value",
+          "is_correct": false
+        },
+        {
+          "text": "Eventual consistency — replicas converge shortly after the write, so briefly stale reads are expected",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "eventual-consistency-meaning",
+      "format": "situational"
+    },
+    {
+      "title": "Ledger behavior during a partition",
+      "description": "A bank's double-entry ledger is replicated across two data centers. During a network partition between them, the team must choose how the ledger behaves. Regulators require that account balances never diverge. What is the most appropriate choice?",
+      "difficulty": "intermediate",
+      "explanation": "CAP applied: since divergent balances are unacceptable, the system must choose consistency over availability during the partition—refuse writes on the minority side rather than accept conflicting ledger entries.",
+      "options": [
+        {
+          "text": "Disable replication so partitions cannot happen",
+          "is_correct": false
+        },
+        {
+          "text": "Choose availability: accept writes on both sides and merge the balances afterward",
+          "is_correct": false
+        },
+        {
+          "text": "Queue writes on both sides and apply whichever side's queue is longer",
+          "is_correct": false
+        },
+        {
+          "text": "Choose consistency: reject writes on the side that cannot reach a majority until the partition heals",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "cap-theorem-core-trade-off",
+      "format": "situational"
+    },
+    {
+      "title": "Stale reads from a leaderless store",
+      "description": "A leaderless datastore keeps 3 replicas of each key (N=3) and currently uses W=1, R=1. Users occasionally read stale values right after writing. The team wants reads to always observe the latest acknowledged write. What configuration achieves this?",
+      "difficulty": "intermediate",
+      "explanation": "Quorum overlap requires W + R > N. With N=3, settings like W=2 and R=2 guarantee the read set intersects the write set, so at least one replica in every read holds the latest write.",
+      "options": [
+        {
+          "text": "Set W=1 and R=1 but read from the fastest replica",
+          "is_correct": false
+        },
+        {
+          "text": "Keep W=1, R=1 but add more replicas (N=5)",
+          "is_correct": false
+        },
+        {
+          "text": "Set W=2 and R=2 so that W + R > N and read and write quorums always overlap",
+          "is_correct": true
+        },
+        {
+          "text": "Set W=3 and R=0 so reads are free once writes finish",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "quorum-reads-and-writes",
+      "format": "situational"
+    },
+    {
+      "title": "Paused process still holds the lock",
+      "description": "Two workers coordinate with a distributed lock that expires after 10 seconds. One worker acquired the lock, then froze in a long garbage-collection pause; the lock expired and a second worker acquired it. The first worker woke up and, still believing it held the lock, wrote over the second worker's data. What is the most appropriate fix?",
+      "difficulty": "advanced",
+      "explanation": "Lock expiry alone cannot stop a paused-but-alive former holder. Fencing tokens—a number that increases with each lock grant, checked by the storage layer—let the store reject writes carrying a stale token.",
+      "options": [
+        {
+          "text": "Issue an increasing fencing token with each lock grant and have storage reject writes with stale tokens",
+          "is_correct": true
+        },
+        {
+          "text": "Disable garbage collection on the workers",
+          "is_correct": false
+        },
+        {
+          "text": "Increase the lock timeout so garbage-collection pauses fit inside it",
+          "is_correct": false
+        },
+        {
+          "text": "Have each worker sleep briefly after acquiring the lock, in case another holder wakes up",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "fencing-tokens",
+      "format": "situational"
+    },
+    {
+      "title": "Slow payment provider takes down the site",
+      "description": "Your checkout service calls a third-party payment API. The provider had an incident and responses took 30 seconds; your request threads all sat blocked waiting, the thread pool filled, and the entire site—including pages unrelated to payments—went down. What pattern would have contained this?",
+      "difficulty": "beginner",
+      "explanation": "A circuit breaker detects that the dependency is failing and fails fast—rejecting payment calls immediately instead of letting every thread block for 30 seconds—so the failure stays contained while the rest of the site keeps working.",
+      "options": [
+        {
+          "text": "Switching payment providers whenever latency exceeds one second",
+          "is_correct": false
+        },
+        {
+          "text": "A bigger thread pool so more requests can wait simultaneously",
+          "is_correct": false
+        },
+        {
+          "text": "A circuit breaker that fails fast when the payment provider is unhealthy instead of letting threads pile up",
+          "is_correct": true
+        },
+        {
+          "text": "Retrying each slow payment call immediately on another thread",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "circuit-breaker-pattern",
+      "format": "situational"
+    },
+    {
+      "title": "Retried payment charges the card twice",
+      "description": "A user taps \"Pay\", the request times out on their flaky connection, and the app automatically retries. Both requests actually reached the server, so the card was charged twice. What is the most appropriate fix?",
+      "difficulty": "beginner",
+      "explanation": "An idempotency key—a unique client-generated ID sent with the payment—lets the server recognize the retry as the same logical operation and return the original result instead of charging again.",
+      "options": [
+        {
+          "text": "Disable retries so users must tap the button again themselves",
+          "is_correct": false
+        },
+        {
+          "text": "Make the timeout longer so retries happen less often",
+          "is_correct": false
+        },
+        {
+          "text": "Send an idempotency key with the payment so the server detects the retry and returns the original result",
+          "is_correct": true
+        },
+        {
+          "text": "Refund one charge automatically whenever two charges look similar",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "idempotency-key-in-apis",
+      "format": "situational"
+    },
+    {
+      "title": "Synchronized retries prolong the outage",
+      "description": "Your API had a 30-second outage. When it came back, every client retried at the same instant on a fixed 5-second interval, and the synchronized waves of retries kept knocking the recovering service back down. What retry strategy prevents this?",
+      "difficulty": "beginner",
+      "explanation": "Exponential backoff spreads retries over time and jitter randomizes them, so recovering services see a smooth trickle of retries instead of synchronized waves.",
+      "options": [
+        {
+          "text": "Retrying immediately in a loop until the request succeeds",
+          "is_correct": false
+        },
+        {
+          "text": "Exponential backoff with jitter, so retries spread out randomly instead of arriving in synchronized waves",
+          "is_correct": true
+        },
+        {
+          "text": "A shorter fixed retry interval so clients reconnect sooner",
+          "is_correct": false
+        },
+        {
+          "text": "Having all clients retry exactly on the minute for predictability",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "exponential-backoff",
+      "format": "situational"
+    },
+    {
+      "title": "Recommendations down, product page down",
+      "description": "Your product page calls a recommendations service to render a \"You may also like\" strip. The recommendations service crashed, and now the entire product page returns an error even though price, photos, and the buy button don't depend on it. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Graceful degradation treats non-critical features as optional: if recommendations fail, render the page without the strip (or with a cached fallback) so the core purchase flow keeps working.",
+      "options": [
+        {
+          "text": "Degrade gracefully: render the page without recommendations when that service is unavailable",
+          "is_correct": true
+        },
+        {
+          "text": "Move recommendations into the product page's own code so there is no separate service",
+          "is_correct": false
+        },
+        {
+          "text": "Retry the recommendations call until it succeeds before rendering",
+          "is_correct": false
+        },
+        {
+          "text": "Make the recommendations service highly available so it never fails",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "graceful-degradation",
+      "format": "situational"
+    },
+    {
+      "title": "One slow endpoint starves all the others",
+      "description": "One report-generation endpoint occasionally takes 60 seconds. When several report requests arrive together they occupy every thread in the service's single shared pool, and fast endpoints like login start timing out. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "The bulkhead pattern isolates resources per workload: giving the slow reports their own bounded pool means they can exhaust only their own compartment while the rest of the service stays responsive.",
+      "options": [
+        {
+          "text": "Cache the reports so they are only slow the first time",
+          "is_correct": false
+        },
+        {
+          "text": "Use bulkheads: give the slow endpoint its own bounded thread pool so it cannot starve the rest",
+          "is_correct": true
+        },
+        {
+          "text": "Double the shared thread pool so it takes longer to fill up",
+          "is_correct": false
+        },
+        {
+          "text": "Lower the report endpoint's timeout to 5 seconds and fail the reports",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "bulkhead-pattern",
+      "format": "situational"
+    },
+    {
+      "title": "Overload degrades service for everyone",
+      "description": "During a flash sale your API receives twice the traffic it can handle. Instead of some requests failing, every request slows to a crawl, timeouts cascade, and effectively no one gets served. What is the most appropriate strategy for the next sale?",
+      "difficulty": "intermediate",
+      "explanation": "Load shedding rejects excess requests early—fast and cheaply—so the requests that are accepted complete normally. Serving 100% of capacity well beats serving 200% of demand not at all.",
+      "options": [
+        {
+          "text": "Remove all timeouts so slow requests eventually finish",
+          "is_correct": false
+        },
+        {
+          "text": "Shed load: quickly reject requests beyond capacity so accepted requests still complete normally",
+          "is_correct": true
+        },
+        {
+          "text": "Slow all requests equally so the pain is distributed fairly",
+          "is_correct": false
+        },
+        {
+          "text": "Queue every incoming request no matter how long the queue grows",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "load-shedding-under-overload",
+      "format": "situational"
+    },
+    {
+      "title": "A scraper is degrading the API",
+      "description": "A single client is scraping your public API with thousands of requests per minute, degrading response times for everyone else. You want to protect the service while keeping it usable for normal clients. What is the most appropriate mechanism?",
+      "difficulty": "beginner",
+      "explanation": "Per-client rate limiting caps how many requests each client may make per window and responds with HTTP 429 when exceeded, containing abusive clients without affecting normal ones.",
+      "options": [
+        {
+          "text": "Rate limit per client and respond with HTTP 429 when a client exceeds its quota",
+          "is_correct": true
+        },
+        {
+          "text": "Add servers until the scraper's traffic no longer matters",
+          "is_correct": false
+        },
+        {
+          "text": "Block all traffic from every cloud provider's IP ranges",
+          "is_correct": false
+        },
+        {
+          "text": "Return HTTP 200 with empty bodies to clients you suspect are scrapers",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "rate-limiting-purpose",
+      "format": "situational"
+    },
+    {
+      "title": "Five requests to render one screen",
+      "description": "Your mobile app calls five different REST endpoints to render its home screen, and on slow mobile networks the sequential round trips make the screen take seconds to load. Some endpoints also return far more fields than the screen uses. What is the most appropriate improvement?",
+      "difficulty": "beginner",
+      "explanation": "An aggregated query interface—GraphQL or a backend-for-frontend endpoint—lets the client fetch exactly the fields the screen needs in one round trip, eliminating both the multiple trips and the over-fetching.",
+      "options": [
+        {
+          "text": "Cache all five responses on the device for a week",
+          "is_correct": false
+        },
+        {
+          "text": "Reduce the app's screen content until one endpoint is enough",
+          "is_correct": false
+        },
+        {
+          "text": "Expose one aggregated query (e.g. GraphQL or a backend-for-frontend) returning exactly what the screen needs",
+          "is_correct": true
+        },
+        {
+          "text": "Have the app fire the five requests in a loop with retries",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "graphql-over-fetching",
+      "format": "situational"
+    },
+    {
+      "title": "Feed pages repeat and skip items",
+      "description": "Your feed API paginates with `?offset=100&limit=20`. Users report seeing duplicate items on the next page, or missing items entirely, whenever new posts are inserted while they are browsing. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Offset pagination counts rows from the start, so inserts shift every subsequent page. Cursor pagination anchors the next page to the last item seen (e.g. its ID or timestamp), which stays stable as rows are added.",
+      "options": [
+        {
+          "text": "Block new posts from appearing while any user is paginating",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to cursor-based pagination anchored to the last item seen instead of a numeric offset",
+          "is_correct": true
+        },
+        {
+          "text": "Increase the page size so fewer pages are needed",
+          "is_correct": false
+        },
+        {
+          "text": "Sort the feed randomly so duplicates are less noticeable",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "api-pagination",
+      "format": "situational"
+    },
+    {
+      "title": "Rate limit that still allows bursts",
+      "description": "Your API should allow clients an average of 100 requests per minute, but legitimate clients occasionally send short bursts of 20 requests at once (e.g. syncing after being offline), which a rigid per-second limit rejects. What algorithm fits this requirement?",
+      "difficulty": "intermediate",
+      "explanation": "A token bucket refills at the average allowed rate while letting tokens accumulate up to the bucket size, so brief bursts spend saved tokens and pass, while the long-term average stays capped.",
+      "options": [
+        {
+          "text": "Use a strict fixed interval of one request every 600 milliseconds",
+          "is_correct": false
+        },
+        {
+          "text": "A token bucket, which enforces the average rate while allowing bursts up to the bucket size",
+          "is_correct": true
+        },
+        {
+          "text": "A fixed one-request-per-600-milliseconds rule for perfectly smooth traffic",
+          "is_correct": false
+        },
+        {
+          "text": "No rate limit, since bursts are legitimate",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "token-bucket-algorithm",
+      "format": "situational"
+    },
+    {
+      "title": "Every release is all-or-nothing",
+      "description": "Your team deploys new versions to all servers at once. Last month a bad release broke checkout for 100% of users for 15 minutes before it was rolled back. Leadership wants future bad releases to hurt far fewer users. What is the most appropriate practice?",
+      "difficulty": "beginner",
+      "explanation": "A canary release routes a small slice of traffic to the new version first; problems surface on a few percent of users, and the rollout only widens once the canary looks healthy.",
+      "options": [
+        {
+          "text": "Add a mandatory two-week manual QA cycle before every deploy",
+          "is_correct": false
+        },
+        {
+          "text": "Deploy to all servers at once but keep a finger on the rollback button",
+          "is_correct": false
+        },
+        {
+          "text": "Deploy only on weekends when traffic is lower",
+          "is_correct": false
+        },
+        {
+          "text": "Canary releases: send a small percentage of traffic to the new version and widen gradually if healthy",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "canary-release",
+      "format": "situational"
+    },
+    {
+      "title": "Which of six services made it slow?",
+      "description": "A single user request flows through six microservices. Users report intermittent 5-second responses, but each team checks its own logs and says their service looks fine. Diagnosing one slow request takes hours of correlating timestamps by hand. What is the most appropriate improvement?",
+      "difficulty": "beginner",
+      "explanation": "Distributed tracing propagates a trace ID through every hop and records per-service spans, so one trace view shows exactly where the 5 seconds went without manual log correlation.",
+      "options": [
+        {
+          "text": "More detailed logging inside each service, still without correlation IDs",
+          "is_correct": false
+        },
+        {
+          "text": "Merging the six services into one so there is only one log",
+          "is_correct": false
+        },
+        {
+          "text": "Distributed tracing, so each request carries a trace ID and shows a timed span per service",
+          "is_correct": true
+        },
+        {
+          "text": "A shared spreadsheet where teams paste their log timestamps",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "distributed-tracing",
+      "format": "situational"
+    },
+    {
+      "title": "Testing a rewrite without risking users",
+      "description": "Your team rewrote the pricing engine and it passes all unit tests, but pricing bugs in production would be costly and real traffic has patterns tests don't cover. You want production-level confidence before any user sees its output. What is the most appropriate technique?",
+      "difficulty": "intermediate",
+      "explanation": "Shadow (dark) traffic mirrors real production requests to the new implementation while users continue receiving the old system's responses; comparing outputs reveals real-traffic divergence with zero user impact.",
+      "options": [
+        {
+          "text": "Write more unit tests until confidence is high enough",
+          "is_correct": false
+        },
+        {
+          "text": "Test it manually in staging with a handful of handpicked products",
+          "is_correct": false
+        },
+        {
+          "text": "Mirror production traffic to the new engine in shadow mode and compare its outputs to the old one",
+          "is_correct": true
+        },
+        {
+          "text": "Deploy it to all users and monitor closely for pricing complaints",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "shadow-dark-traffic-testing",
+      "format": "situational"
+    },
+    {
+      "title": "Password database leaked and cracked",
+      "description": "Your user database was leaked. Passwords were stored as unsalted MD5 hashes, and within days most of them were cracked using rainbow tables and GPUs. What should the passwords have been stored with?",
+      "difficulty": "beginner",
+      "explanation": "An adaptive, deliberately slow hash like bcrypt with a per-user salt makes each guess expensive and rainbow tables useless, turning a leak from a mass compromise into an impractical cracking job.",
+      "options": [
+        {
+          "text": "MD5 applied twice for double the protection",
+          "is_correct": false
+        },
+        {
+          "text": "Reversible encryption with the key stored in the same database",
+          "is_correct": false
+        },
+        {
+          "text": "A faster hash like SHA-256 without salt, to keep logins quick",
+          "is_correct": false
+        },
+        {
+          "text": "An adaptive slow hash such as bcrypt, with a unique salt per user",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "bcrypt-for-password-storage",
+      "format": "situational"
+    },
+    {
+      "title": "Logged out but the token still works",
+      "description": "Your API uses stateless JWTs that expire after 24 hours. A user reports their laptop was stolen; they changed their password, but the thief's JWT keeps working because nothing server-side invalidates it before expiry. What is the most appropriate fix?",
+      "difficulty": "intermediate",
+      "explanation": "Stateless JWTs cannot be recalled, so revocation needs short-lived access tokens paired with revocable refresh tokens (or a server-side denylist): stolen access dies within minutes, and the refresh token is killed immediately.",
+      "options": [
+        {
+          "text": "Store the JWT in two cookies instead of one for extra safety",
+          "is_correct": false
+        },
+        {
+          "text": "Use short-lived access tokens with revocable refresh tokens, so revocation takes effect within minutes",
+          "is_correct": true
+        },
+        {
+          "text": "Extend the JWT lifetime so users need to log in less often",
+          "is_correct": false
+        },
+        {
+          "text": "Sign the JWT with a longer secret key",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "jwt-revocation-challenge",
+      "format": "situational"
+    }
+  ]
+}

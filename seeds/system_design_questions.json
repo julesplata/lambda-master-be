@@ -7,23 +7,25 @@
       "explanation": "A load balancer distributes incoming requests across multiple backend servers so no single instance is overwhelmed, improving throughput and availability.",
       "options": [
         {
-          "text": "To distribute incoming traffic across multiple servers",
-          "is_correct": true
+          "text": "To encrypt the database at rest",
+          "is_correct": false
         },
         {
-          "text": "To permanently store user session data",
-          "is_correct": false
+          "text": "To distribute incoming traffic across multiple servers",
+          "is_correct": true
         },
         {
           "text": "To compile application code before deployment",
           "is_correct": false
         },
         {
-          "text": "To encrypt the database at rest",
+          "text": "To permanently store user session data",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "purpose-of-a-load-balancer",
+      "format": "recall"
     },
     {
       "title": "Horizontal vs vertical scaling",
@@ -36,11 +38,11 @@
           "is_correct": true
         },
         {
-          "text": "Adding more CPU and RAM to a single machine",
+          "text": "Rewriting the app in a faster language",
           "is_correct": false
         },
         {
-          "text": "Rewriting the app in a faster language",
+          "text": "Adding more CPU and RAM to a single machine",
           "is_correct": false
         },
         {
@@ -48,7 +50,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "horizontal-vs-vertical-scaling",
+      "format": "recall"
     },
     {
       "title": "What a cache is for",
@@ -56,6 +60,10 @@
       "difficulty": "beginner",
       "explanation": "Caches store frequently accessed data in fast memory to reduce latency and offload repeated reads from the database.",
       "options": [
+        {
+          "text": "To replace the need for a primary database entirely",
+          "is_correct": false
+        },
         {
           "text": "To serve frequently requested data faster and reduce database load",
           "is_correct": true
@@ -65,15 +73,13 @@
           "is_correct": false
         },
         {
-          "text": "To replace the need for a primary database entirely",
-          "is_correct": false
-        },
-        {
           "text": "To increase write durability on disk",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "what-a-cache-is-for",
+      "format": "recall"
     },
     {
       "title": "Stateless services and scaling",
@@ -98,7 +104,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "stateless-services-and-scaling",
+      "format": "recall"
     },
     {
       "title": "CAP theorem core trade-off",
@@ -106,6 +114,10 @@
       "difficulty": "intermediate",
       "explanation": "During a partition you cannot have both consistency and availability; you must sacrifice one. CAP says: in the presence of a Partition, choose Consistency or Availability.",
       "options": [
+        {
+          "text": "Durability and partition tolerance",
+          "is_correct": false
+        },
         {
           "text": "Consistency and availability",
           "is_correct": true
@@ -115,15 +127,13 @@
           "is_correct": false
         },
         {
-          "text": "Durability and partition tolerance",
-          "is_correct": false
-        },
-        {
           "text": "Security and performance",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "cap-theorem-core-trade-off",
+      "format": "recall"
     },
     {
       "title": "Read replicas and scaling reads",
@@ -132,23 +142,25 @@
       "explanation": "Read replicas copy data from the primary and serve read queries, distributing read load while the primary handles writes.",
       "options": [
         {
-          "text": "Read queries are spread across replicas, offloading the primary",
-          "is_correct": true
-        },
-        {
           "text": "They allow concurrent writes to every replica",
-          "is_correct": false
-        },
-        {
-          "text": "They eliminate the need for caching",
           "is_correct": false
         },
         {
           "text": "They guarantee zero replication lag",
           "is_correct": false
+        },
+        {
+          "text": "Read queries are spread across replicas, offloading the primary",
+          "is_correct": true
+        },
+        {
+          "text": "They eliminate the need for caching",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "read-replicas-and-scaling-reads",
+      "format": "recall"
     },
     {
       "title": "Latency vs throughput",
@@ -157,23 +169,25 @@
       "explanation": "Latency is the time to complete a single operation; throughput is the number of operations completed per unit of time.",
       "options": [
         {
-          "text": "Latency is time per request; throughput is requests per unit time",
-          "is_correct": true
+          "text": "Both measure the same thing in different units",
+          "is_correct": false
         },
         {
           "text": "Latency is requests per second; throughput is time per request",
           "is_correct": false
         },
         {
-          "text": "Both measure the same thing in different units",
+          "text": "Latency measures disk space; throughput measures CPU usage",
           "is_correct": false
         },
         {
-          "text": "Latency measures disk space; throughput measures CPU usage",
-          "is_correct": false
+          "text": "Latency is time per request; throughput is requests per unit time",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "latency-vs-throughput",
+      "format": "recall"
     },
     {
       "title": "Cache eviction with LRU",
@@ -182,11 +196,7 @@
       "explanation": "LRU evicts the entry that has not been accessed for the longest time, assuming recently used items are more likely to be used again.",
       "options": [
         {
-          "text": "Evicts the entry that was accessed least recently",
-          "is_correct": true
-        },
-        {
-          "text": "Evicts the largest entry by size",
+          "text": "Evicts the most recently added entry",
           "is_correct": false
         },
         {
@@ -194,11 +204,17 @@
           "is_correct": false
         },
         {
-          "text": "Evicts the most recently added entry",
+          "text": "Evicts the entry that was accessed least recently",
+          "is_correct": true
+        },
+        {
+          "text": "Evicts the largest entry by size",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "cache-eviction-with-lru",
+      "format": "recall"
     },
     {
       "title": "Consistent hashing benefit",
@@ -207,23 +223,25 @@
       "explanation": "Consistent hashing minimizes the number of keys that must be remapped when nodes are added or removed, avoiding a full reshuffle of the keyspace.",
       "options": [
         {
-          "text": "It minimizes key remapping when nodes join or leave",
-          "is_correct": true
+          "text": "It encrypts keys before hashing",
+          "is_correct": false
         },
         {
           "text": "It guarantees perfectly even load with no virtual nodes",
           "is_correct": false
         },
         {
-          "text": "It removes the need for replication",
-          "is_correct": false
+          "text": "It minimizes key remapping when nodes join or leave",
+          "is_correct": true
         },
         {
-          "text": "It encrypts keys before hashing",
+          "text": "It removes the need for replication",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "consistent-hashing-benefit",
+      "format": "recall"
     },
     {
       "title": "Eventual consistency meaning",
@@ -231,6 +249,10 @@
       "difficulty": "intermediate",
       "explanation": "Eventual consistency guarantees that, absent new updates, all replicas will converge to the same value over time, but reads may be stale in the interim.",
       "options": [
+        {
+          "text": "Writes are rejected until all replicas agree",
+          "is_correct": false
+        },
         {
           "text": "Replicas converge to the same value given enough time without new writes",
           "is_correct": true
@@ -240,15 +262,13 @@
           "is_correct": false
         },
         {
-          "text": "Writes are rejected until all replicas agree",
-          "is_correct": false
-        },
-        {
           "text": "Data is never replicated to other nodes",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "eventual-consistency-meaning",
+      "format": "recall"
     },
     {
       "title": "Cache-aside pattern",
@@ -257,23 +277,25 @@
       "explanation": "On a miss the application reads from the database, then populates the cache so subsequent reads hit the cache.",
       "options": [
         {
-          "text": "The app loads from the database and then writes the value into the cache",
-          "is_correct": true
+          "text": "The request fails until the cache is warmed manually",
+          "is_correct": false
         },
         {
           "text": "The cache automatically queries the database itself",
           "is_correct": false
         },
         {
-          "text": "The request fails until the cache is warmed manually",
+          "text": "The write is sent only to the cache, never the database",
           "is_correct": false
         },
         {
-          "text": "The write is sent only to the cache, never the database",
-          "is_correct": false
+          "text": "The app loads from the database and then writes the value into the cache",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "cache-aside-pattern",
+      "format": "recall"
     },
     {
       "title": "Thundering herd / cache stampede",
@@ -298,7 +320,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "thundering-herd-cache-stampede",
+      "format": "recall"
     },
     {
       "title": "Write-through vs write-back cache",
@@ -306,6 +330,10 @@
       "difficulty": "advanced",
       "explanation": "Write-back acknowledges the write after updating only the cache and flushes to the store later, so a crash before the flush can lose data.",
       "options": [
+        {
+          "text": "It cannot be used with an LRU policy",
+          "is_correct": false
+        },
         {
           "text": "Data buffered in the cache can be lost if the node crashes before flushing",
           "is_correct": true
@@ -315,15 +343,13 @@
           "is_correct": false
         },
         {
-          "text": "It cannot be used with an LRU policy",
-          "is_correct": false
-        },
-        {
           "text": "It prevents the cache from ever being read",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "write-through-vs-write-back-cache",
+      "format": "recall"
     },
     {
       "title": "Availability and the 'nines'",
@@ -340,15 +366,17 @@
           "is_correct": false
         },
         {
-          "text": "About 3.65 days",
+          "text": "About 88 hours",
           "is_correct": false
         },
         {
-          "text": "About 88 hours",
+          "text": "About 3.65 days",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "availability-and-the-nines",
+      "format": "recall"
     },
     {
       "title": "Reverse proxy role",
@@ -357,23 +385,25 @@
       "explanation": "A reverse proxy sits in front of servers and can terminate TLS, route requests, cache responses, and balance load.",
       "options": [
         {
-          "text": "TLS termination and request routing to backend servers",
-          "is_correct": true
+          "text": "Generating application source code",
+          "is_correct": false
         },
         {
-          "text": "Storing the canonical copy of all user data",
-          "is_correct": false
+          "text": "TLS termination and request routing to backend servers",
+          "is_correct": true
         },
         {
           "text": "Running database migrations automatically",
           "is_correct": false
         },
         {
-          "text": "Generating application source code",
+          "text": "Storing the canonical copy of all user data",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "reverse-proxy-role",
+      "format": "recall"
     },
     {
       "title": "Idempotency definition",
@@ -382,11 +412,7 @@
       "explanation": "An idempotent operation produces the same result whether performed once or multiple times, which is important for safe retries.",
       "options": [
         {
-          "text": "Performing it multiple times has the same effect as performing it once",
-          "is_correct": true
-        },
-        {
-          "text": "It can only ever be executed a single time",
+          "text": "It must complete within a fixed time budget",
           "is_correct": false
         },
         {
@@ -394,11 +420,17 @@
           "is_correct": false
         },
         {
-          "text": "It must complete within a fixed time budget",
+          "text": "It can only ever be executed a single time",
           "is_correct": false
+        },
+        {
+          "text": "Performing it multiple times has the same effect as performing it once",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "idempotency-definition",
+      "format": "recall"
     },
     {
       "title": "Back-of-the-envelope estimation",
@@ -407,23 +439,25 @@
       "explanation": "Rough estimates of QPS, storage, and bandwidth justify architectural choices like sharding, caching, or CDN use before committing to a design.",
       "options": [
         {
-          "text": "To size the system and justify components like caches, shards, and CDNs",
-          "is_correct": true
+          "text": "To decide the programming language",
+          "is_correct": false
         },
         {
           "text": "To produce exact production capacity numbers",
           "is_correct": false
         },
         {
-          "text": "To replace load testing entirely",
-          "is_correct": false
+          "text": "To size the system and justify components like caches, shards, and CDNs",
+          "is_correct": true
         },
         {
-          "text": "To decide the programming language",
+          "text": "To replace load testing entirely",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "back-of-the-envelope-estimation",
+      "format": "recall"
     },
     {
       "title": "Sticky sessions trade-off",
@@ -436,11 +470,11 @@
           "is_correct": true
         },
         {
-          "text": "It makes all servers fully stateless",
+          "text": "It guarantees perfectly even distribution",
           "is_correct": false
         },
         {
-          "text": "It guarantees perfectly even distribution",
+          "text": "It makes all servers fully stateless",
           "is_correct": false
         },
         {
@@ -448,7 +482,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "sticky-sessions-trade-off",
+      "format": "recall"
     },
     {
       "title": "Strong consistency cost",
@@ -461,19 +497,21 @@
           "is_correct": true
         },
         {
-          "text": "Unlimited write throughput",
-          "is_correct": false
-        },
-        {
           "text": "Zero replication overhead",
           "is_correct": false
         },
         {
           "text": "Automatic conflict-free merging at no cost",
           "is_correct": false
+        },
+        {
+          "text": "Unlimited write throughput",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "strong-consistency-cost",
+      "format": "recall"
     },
     {
       "title": "CDN primary benefit",
@@ -482,23 +520,25 @@
       "explanation": "CDNs cache content at edge locations close to users, reducing latency and offloading origin servers.",
       "options": [
         {
-          "text": "Lower latency by serving content from edge locations near users",
-          "is_correct": true
+          "text": "Automatic schema migrations",
+          "is_correct": false
         },
         {
           "text": "Stronger database consistency",
           "is_correct": false
         },
         {
-          "text": "Automatic schema migrations",
-          "is_correct": false
+          "text": "Lower latency by serving content from edge locations near users",
+          "is_correct": true
         },
         {
           "text": "Guaranteed real-time write propagation",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "cdn-primary-benefit",
+      "format": "recall"
     },
     {
       "title": "Graceful degradation",
@@ -511,7 +551,7 @@
           "is_correct": true
         },
         {
-          "text": "Shutting down all services to protect data",
+          "text": "Rejecting all requests during partial failures",
           "is_correct": false
         },
         {
@@ -519,11 +559,13 @@
           "is_correct": false
         },
         {
-          "text": "Rejecting all requests during partial failures",
+          "text": "Shutting down all services to protect data",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "graceful-degradation",
+      "format": "recall"
     },
     {
       "title": "Health checks in load balancing",
@@ -531,6 +573,10 @@
       "difficulty": "beginner",
       "explanation": "Health checks let the load balancer stop routing traffic to unhealthy instances, improving availability.",
       "options": [
+        {
+          "text": "To compile new code on each instance",
+          "is_correct": false
+        },
         {
           "text": "To stop sending traffic to unhealthy instances",
           "is_correct": true
@@ -540,15 +586,13 @@
           "is_correct": false
         },
         {
-          "text": "To compile new code on each instance",
-          "is_correct": false
-        },
-        {
           "text": "To rotate TLS certificates",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "health-checks-in-load-balancing",
+      "format": "recall"
     },
     {
       "title": "Quorum reads and writes",
@@ -557,11 +601,7 @@
       "explanation": "When the write quorum plus read quorum exceeds the replica count, the read set and write set overlap on at least one node, so reads can observe the latest write.",
       "options": [
         {
-          "text": "Read and write quorums overlap, so reads can see the latest write",
-          "is_correct": true
-        },
-        {
-          "text": "All replicas are always perfectly synchronized",
+          "text": "The system can tolerate any number of failures",
           "is_correct": false
         },
         {
@@ -569,11 +609,17 @@
           "is_correct": false
         },
         {
-          "text": "The system can tolerate any number of failures",
+          "text": "Read and write quorums overlap, so reads can see the latest write",
+          "is_correct": true
+        },
+        {
+          "text": "All replicas are always perfectly synchronized",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "quorum-reads-and-writes",
+      "format": "recall"
     },
     {
       "title": "SQL vs NoSQL choice",
@@ -581,10 +627,6 @@
       "difficulty": "beginner",
       "explanation": "Workloads with complex relationships, multi-row transactions, and ad-hoc joins fit relational databases well.",
       "options": [
-        {
-          "text": "Highly relational data needing multi-row ACID transactions and joins",
-          "is_correct": true
-        },
         {
           "text": "Massive append-only logs with a simple key lookup",
           "is_correct": false
@@ -596,9 +638,15 @@
         {
           "text": "Purely in-memory ephemeral counters",
           "is_correct": false
+        },
+        {
+          "text": "Highly relational data needing multi-row ACID transactions and joins",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "sql-vs-nosql-choice",
+      "format": "recall"
     },
     {
       "title": "ACID atomicity",
@@ -607,12 +655,12 @@
       "explanation": "Atomicity ensures all operations in a transaction either complete fully or have no effect at all; partial application is impossible.",
       "options": [
         {
-          "text": "All operations commit together or none do",
-          "is_correct": true
-        },
-        {
           "text": "Transactions execute as fast as possible",
           "is_correct": false
+        },
+        {
+          "text": "All operations commit together or none do",
+          "is_correct": true
         },
         {
           "text": "Data is stored on at least two disks",
@@ -623,7 +671,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "acid-atomicity",
+      "format": "recall"
     },
     {
       "title": "Database index purpose",
@@ -636,11 +686,11 @@
           "is_correct": true
         },
         {
-          "text": "To compress the entire table",
+          "text": "To make all writes faster",
           "is_correct": false
         },
         {
-          "text": "To make all writes faster",
+          "text": "To compress the entire table",
           "is_correct": false
         },
         {
@@ -648,7 +698,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "database-index-purpose",
+      "format": "recall"
     },
     {
       "title": "Index write trade-off",
@@ -657,23 +709,25 @@
       "explanation": "Every insert/update/delete must also update each index, so write performance degrades and storage grows as index count increases.",
       "options": [
         {
-          "text": "Writes become slower because each index must be maintained",
-          "is_correct": true
+          "text": "The table can no longer be queried",
+          "is_correct": false
         },
         {
           "text": "Reads on indexed columns become slower",
           "is_correct": false
         },
         {
-          "text": "The table can no longer be queried",
-          "is_correct": false
+          "text": "Writes become slower because each index must be maintained",
+          "is_correct": true
         },
         {
           "text": "Transactions lose atomicity",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "index-write-trade-off",
+      "format": "recall"
     },
     {
       "title": "Sharding definition",
@@ -682,23 +736,25 @@
       "explanation": "Sharding horizontally partitions a dataset across multiple databases/nodes, each holding a subset of the rows, to scale beyond one machine.",
       "options": [
         {
-          "text": "Splitting data horizontally across multiple databases by a shard key",
-          "is_correct": true
+          "text": "Adding indexes to every column",
+          "is_correct": false
         },
         {
           "text": "Copying the full dataset to every node",
           "is_correct": false
         },
         {
-          "text": "Compressing old rows into archive files",
-          "is_correct": false
+          "text": "Splitting data horizontally across multiple databases by a shard key",
+          "is_correct": true
         },
         {
-          "text": "Adding indexes to every column",
+          "text": "Compressing old rows into archive files",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "sharding-definition",
+      "format": "recall"
     },
     {
       "title": "Choosing a shard key",
@@ -707,23 +763,25 @@
       "explanation": "A skewed shard key concentrates data and traffic on a few shards (hot shards), defeating the purpose of horizontal partitioning.",
       "options": [
         {
-          "text": "Hot shards: uneven data and traffic distribution",
-          "is_correct": true
-        },
-        {
-          "text": "It prevents the use of any index",
-          "is_correct": false
-        },
-        {
           "text": "It automatically violates ACID",
           "is_correct": false
         },
         {
           "text": "It doubles storage on every shard",
           "is_correct": false
+        },
+        {
+          "text": "Hot shards: uneven data and traffic distribution",
+          "is_correct": true
+        },
+        {
+          "text": "It prevents the use of any index",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "choosing-a-shard-key",
+      "format": "recall"
     },
     {
       "title": "Normalization goal",
@@ -732,11 +790,7 @@
       "explanation": "Normalization reduces data redundancy and update anomalies by organizing data into related tables with foreign keys.",
       "options": [
         {
-          "text": "Reduce redundancy and avoid update anomalies",
-          "is_correct": true
-        },
-        {
-          "text": "Maximize duplication for faster reads",
+          "text": "Store all data in a single wide table",
           "is_correct": false
         },
         {
@@ -744,11 +798,17 @@
           "is_correct": false
         },
         {
-          "text": "Store all data in a single wide table",
+          "text": "Reduce redundancy and avoid update anomalies",
+          "is_correct": true
+        },
+        {
+          "text": "Maximize duplication for faster reads",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "normalization-goal",
+      "format": "recall"
     },
     {
       "title": "Denormalization for reads",
@@ -757,11 +817,11 @@
       "explanation": "Denormalization duplicates data to avoid expensive joins at read time, trading write complexity and storage for faster reads.",
       "options": [
         {
-          "text": "To avoid expensive joins and speed up reads",
-          "is_correct": true
+          "text": "To guarantee third normal form",
+          "is_correct": false
         },
         {
-          "text": "To guarantee third normal form",
+          "text": "To make writes simpler",
           "is_correct": false
         },
         {
@@ -769,11 +829,13 @@
           "is_correct": false
         },
         {
-          "text": "To make writes simpler",
-          "is_correct": false
+          "text": "To avoid expensive joins and speed up reads",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "denormalization-for-reads",
+      "format": "recall"
     },
     {
       "title": "B-tree index strength",
@@ -786,19 +848,21 @@
           "is_correct": true
         },
         {
-          "text": "Full-text fuzzy matching across documents",
-          "is_correct": false
-        },
-        {
           "text": "Geospatial nearest-neighbor search",
           "is_correct": false
         },
         {
           "text": "Approximate set membership tests",
           "is_correct": false
+        },
+        {
+          "text": "Full-text fuzzy matching across documents",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "b-tree-index-strength",
+      "format": "recall"
     },
     {
       "title": "Object storage use case",
@@ -807,8 +871,8 @@
       "explanation": "Object stores excel at storing large, immutable blobs (images, videos, backups) accessed by key, not transactional row updates.",
       "options": [
         {
-          "text": "Storing large files like images, videos, and backups",
-          "is_correct": true
+          "text": "Sub-millisecond transactional counters",
+          "is_correct": false
         },
         {
           "text": "Running complex multi-table joins",
@@ -819,11 +883,13 @@
           "is_correct": false
         },
         {
-          "text": "Sub-millisecond transactional counters",
-          "is_correct": false
+          "text": "Storing large files like images, videos, and backups",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "object-storage-use-case",
+      "format": "recall"
     },
     {
       "title": "Connection pooling",
@@ -832,23 +898,25 @@
       "explanation": "Establishing connections is expensive; a pool reuses a bounded set of open connections, reducing latency and protecting the database from connection exhaustion.",
       "options": [
         {
+          "text": "To encrypt every query automatically",
+          "is_correct": false
+        },
+        {
           "text": "To reuse connections and limit concurrent load on the database",
           "is_correct": true
         },
         {
-          "text": "To encrypt every query automatically",
+          "text": "To cache query results in the application",
           "is_correct": false
         },
         {
           "text": "To shard data across nodes",
           "is_correct": false
-        },
-        {
-          "text": "To cache query results in the application",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "connection-pooling",
+      "format": "recall"
     },
     {
       "title": "Replication lag impact",
@@ -857,11 +925,7 @@
       "explanation": "Asynchronous replication means a replica may not yet have applied the latest write, so a read-after-write on a replica can be stale (replication lag).",
       "options": [
         {
-          "text": "Replication lag between primary and replica",
-          "is_correct": true
-        },
-        {
-          "text": "The index is corrupted",
+          "text": "The shard key was wrong",
           "is_correct": false
         },
         {
@@ -869,11 +933,17 @@
           "is_correct": false
         },
         {
-          "text": "The shard key was wrong",
+          "text": "The index is corrupted",
           "is_correct": false
+        },
+        {
+          "text": "Replication lag between primary and replica",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "replication-lag-impact",
+      "format": "recall"
     },
     {
       "title": "Write-ahead log (WAL)",
@@ -881,10 +951,6 @@
       "difficulty": "advanced",
       "explanation": "The WAL records changes durably before applying them to data files, enabling crash recovery and durability without flushing every page synchronously.",
       "options": [
-        {
-          "text": "To ensure durability and enable crash recovery",
-          "is_correct": true
-        },
         {
           "text": "To speed up read-only queries",
           "is_correct": false
@@ -894,11 +960,17 @@
           "is_correct": false
         },
         {
+          "text": "To ensure durability and enable crash recovery",
+          "is_correct": true
+        },
+        {
           "text": "To replace the need for indexes",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "write-ahead-log-wal",
+      "format": "recall"
     },
     {
       "title": "LSM tree write advantage",
@@ -907,23 +979,25 @@
       "explanation": "LSM trees buffer writes in memory and flush them sequentially to disk, turning random writes into fast sequential I/O, with compaction merging segments later.",
       "options": [
         {
-          "text": "They convert random writes into fast sequential disk writes",
-          "is_correct": true
-        },
-        {
-          "text": "They never need compaction",
-          "is_correct": false
-        },
-        {
           "text": "They store all data in a single sorted file forever",
           "is_correct": false
         },
         {
           "text": "They avoid using memory entirely",
           "is_correct": false
+        },
+        {
+          "text": "They never need compaction",
+          "is_correct": false
+        },
+        {
+          "text": "They convert random writes into fast sequential disk writes",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "lsm-tree-write-advantage",
+      "format": "recall"
     },
     {
       "title": "Isolation level: read committed",
@@ -931,6 +1005,10 @@
       "difficulty": "advanced",
       "explanation": "READ COMMITTED prevents dirty reads but allows non-repeatable reads, where re-reading a row within a transaction can return different committed values.",
       "options": [
+        {
+          "text": "No anomalies are possible",
+          "is_correct": false
+        },
         {
           "text": "Non-repeatable reads",
           "is_correct": true
@@ -942,13 +1020,11 @@
         {
           "text": "Lost updates are impossible by definition",
           "is_correct": false
-        },
-        {
-          "text": "No anomalies are possible",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "isolation-level-read-committed",
+      "format": "recall"
     },
     {
       "title": "Time-series database fit",
@@ -957,23 +1033,25 @@
       "explanation": "Time-series databases optimize for high-volume timestamped writes and time-window aggregations, like metrics and IoT sensor data.",
       "options": [
         {
-          "text": "High-volume timestamped metrics with time-range queries",
-          "is_correct": true
+          "text": "Storing large binary blobs",
+          "is_correct": false
         },
         {
-          "text": "Complex many-to-many relational joins",
-          "is_correct": false
+          "text": "High-volume timestamped metrics with time-range queries",
+          "is_correct": true
         },
         {
           "text": "Full-text document search",
           "is_correct": false
         },
         {
-          "text": "Storing large binary blobs",
+          "text": "Complex many-to-many relational joins",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "time-series-database-fit",
+      "format": "recall"
     },
     {
       "title": "Foreign key constraint role",
@@ -982,23 +1060,25 @@
       "explanation": "A foreign key ensures referential integrity: a value in the child table must reference an existing row in the parent table.",
       "options": [
         {
-          "text": "Referential integrity between related tables",
-          "is_correct": true
+          "text": "That writes are encrypted",
+          "is_correct": false
         },
         {
-          "text": "That a column value is unique",
-          "is_correct": false
+          "text": "Referential integrity between related tables",
+          "is_correct": true
         },
         {
           "text": "That a column is indexed",
           "is_correct": false
         },
         {
-          "text": "That writes are encrypted",
+          "text": "That a column value is unique",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "foreign-key-constraint-role",
+      "format": "recall"
     },
     {
       "title": "Partitioning vs replication",
@@ -1007,23 +1087,25 @@
       "explanation": "Partitioning splits data into disjoint subsets across nodes (for scale); replication copies the same data to multiple nodes (for availability/read scaling).",
       "options": [
         {
-          "text": "Partitioning splits data into subsets; replication copies the same data",
-          "is_correct": true
-        },
-        {
-          "text": "They are two names for the same thing",
-          "is_correct": false
-        },
-        {
           "text": "Replication splits data; partitioning copies it",
           "is_correct": false
         },
         {
+          "text": "Partitioning splits data into subsets; replication copies the same data",
+          "is_correct": true
+        },
+        {
           "text": "Both reduce total storage usage",
+          "is_correct": false
+        },
+        {
+          "text": "They are two names for the same thing",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "partitioning-vs-replication",
+      "format": "recall"
     },
     {
       "title": "Optimistic concurrency control",
@@ -1048,7 +1130,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "optimistic-concurrency-control",
+      "format": "recall"
     },
     {
       "title": "Materialized view",
@@ -1057,11 +1141,7 @@
       "explanation": "A materialized view stores the precomputed result of a query physically, speeding up reads at the cost of needing refresh when underlying data changes.",
       "options": [
         {
-          "text": "A precomputed, stored query result that must be refreshed",
-          "is_correct": true
-        },
-        {
-          "text": "A virtual table computed fresh on every query",
+          "text": "A backup copy of the entire database",
           "is_correct": false
         },
         {
@@ -1069,11 +1149,17 @@
           "is_correct": false
         },
         {
-          "text": "A backup copy of the entire database",
+          "text": "A precomputed, stored query result that must be refreshed",
+          "is_correct": true
+        },
+        {
+          "text": "A virtual table computed fresh on every query",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "materialized-view",
+      "format": "recall"
     },
     {
       "title": "Hot partition mitigation",
@@ -1082,23 +1168,25 @@
       "explanation": "Adding a salt/suffix to the key spreads writes for a hot key across multiple partitions, reducing the hot-partition bottleneck.",
       "options": [
         {
-          "text": "Salting the key to spread it across multiple partitions",
-          "is_correct": true
-        },
-        {
-          "text": "Removing all replicas",
-          "is_correct": false
-        },
-        {
           "text": "Increasing the isolation level",
           "is_correct": false
         },
         {
+          "text": "Salting the key to spread it across multiple partitions",
+          "is_correct": true
+        },
+        {
           "text": "Disabling the cache",
+          "is_correct": false
+        },
+        {
+          "text": "Removing all replicas",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "hot-partition-mitigation",
+      "format": "recall"
     },
     {
       "title": "Blob in DB vs object store",
@@ -1111,19 +1199,21 @@
           "is_correct": true
         },
         {
-          "text": "Object stores enforce foreign keys better",
-          "is_correct": false
-        },
-        {
           "text": "Relational databases cannot store binary data at all",
           "is_correct": false
         },
         {
           "text": "It improves transaction isolation",
           "is_correct": false
+        },
+        {
+          "text": "Object stores enforce foreign keys better",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "blob-in-db-vs-object-store",
+      "format": "recall"
     },
     {
       "title": "Two-phase commit drawback",
@@ -1148,7 +1238,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "two-phase-commit-drawback",
+      "format": "recall"
     },
     {
       "title": "Composite index column order",
@@ -1173,7 +1265,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "composite-index-column-order",
+      "format": "recall"
     },
     {
       "title": "Message queue purpose",
@@ -1190,15 +1284,17 @@
           "is_correct": false
         },
         {
-          "text": "It replaces the need for a database",
+          "text": "It encrypts all messages by default",
           "is_correct": false
         },
         {
-          "text": "It encrypts all messages by default",
+          "text": "It replaces the need for a database",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "message-queue-purpose",
+      "format": "recall"
     },
     {
       "title": "At-least-once delivery implication",
@@ -1207,23 +1303,25 @@
       "explanation": "At-least-once means a message may be delivered more than once, so consumers must be idempotent to handle duplicates safely.",
       "options": [
         {
-          "text": "Duplicate messages, by being idempotent",
-          "is_correct": true
+          "text": "Messages that are never delivered",
+          "is_correct": false
         },
         {
           "text": "Messages arriving strictly once and in order",
           "is_correct": false
         },
         {
-          "text": "Messages that are never delivered",
-          "is_correct": false
+          "text": "Duplicate messages, by being idempotent",
+          "is_correct": true
         },
         {
           "text": "Automatic deduplication with no effort",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "at-least-once-delivery-implication",
+      "format": "recall"
     },
     {
       "title": "Pub/sub vs point-to-point",
@@ -1232,23 +1330,25 @@
       "explanation": "In pub/sub, each message is delivered to all subscribers of a topic; in a point-to-point queue, each message is consumed by exactly one consumer.",
       "options": [
         {
-          "text": "Pub/sub fans a message out to all subscribers; a queue gives it to one consumer",
-          "is_correct": true
+          "text": "They behave identically",
+          "is_correct": false
         },
         {
           "text": "Pub/sub guarantees one consumer; queues fan out to all",
           "is_correct": false
         },
         {
-          "text": "They behave identically",
+          "text": "Pub/sub cannot have more than one subscriber",
           "is_correct": false
         },
         {
-          "text": "Pub/sub cannot have more than one subscriber",
-          "is_correct": false
+          "text": "Pub/sub fans a message out to all subscribers; a queue gives it to one consumer",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "pub-sub-vs-point-to-point",
+      "format": "recall"
     },
     {
       "title": "Consensus algorithm role",
@@ -1257,23 +1357,25 @@
       "explanation": "They let a group of nodes agree on a single value/log order despite failures, enabling consistent replication and leader election.",
       "options": [
         {
-          "text": "Getting multiple nodes to agree on a value despite failures",
-          "is_correct": true
-        },
-        {
-          "text": "Compressing network packets",
-          "is_correct": false
-        },
-        {
           "text": "Encrypting data at rest",
           "is_correct": false
         },
         {
           "text": "Indexing a database table",
           "is_correct": false
+        },
+        {
+          "text": "Getting multiple nodes to agree on a value despite failures",
+          "is_correct": true
+        },
+        {
+          "text": "Compressing network packets",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "consensus-algorithm-role",
+      "format": "recall"
     },
     {
       "title": "Leader election purpose",
@@ -1282,23 +1384,25 @@
       "explanation": "A single leader serializes writes and coordinates replication, simplifying consistency compared to accepting writes on any node.",
       "options": [
         {
-          "text": "To serialize writes and coordinate replication through one authority",
-          "is_correct": true
-        },
-        {
           "text": "To increase the number of single points of failure",
-          "is_correct": false
-        },
-        {
-          "text": "To allow every node to accept writes independently",
           "is_correct": false
         },
         {
           "text": "To remove the need for replication",
           "is_correct": false
+        },
+        {
+          "text": "To serialize writes and coordinate replication through one authority",
+          "is_correct": true
+        },
+        {
+          "text": "To allow every node to accept writes independently",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "leader-election-purpose",
+      "format": "recall"
     },
     {
       "title": "Split-brain problem",
@@ -1307,23 +1411,25 @@
       "explanation": "A network partition causes two subsets of nodes to each believe they are the leader/primary, risking divergent, conflicting writes.",
       "options": [
         {
-          "text": "A partition causes two nodes to both act as leader, risking conflicting writes",
-          "is_correct": true
-        },
-        {
           "text": "A single node runs out of memory",
-          "is_correct": false
-        },
-        {
-          "text": "The cache and database disagree on a value",
           "is_correct": false
         },
         {
           "text": "A query plan chooses the wrong index",
           "is_correct": false
+        },
+        {
+          "text": "A partition causes two nodes to both act as leader, risking conflicting writes",
+          "is_correct": true
+        },
+        {
+          "text": "The cache and database disagree on a value",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "split-brain-problem",
+      "format": "recall"
     },
     {
       "title": "Dead letter queue",
@@ -1348,7 +1454,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "dead-letter-queue",
+      "format": "recall"
     },
     {
       "title": "Event sourcing concept",
@@ -1357,11 +1465,7 @@
       "explanation": "Event sourcing stores state as an immutable, append-only sequence of events; current state is derived by replaying those events.",
       "options": [
         {
-          "text": "Persisting state as an append-only log of events that can be replayed",
-          "is_correct": true
-        },
-        {
-          "text": "Overwriting the current state on every change with no history",
+          "text": "Caching events in memory only",
           "is_correct": false
         },
         {
@@ -1369,11 +1473,17 @@
           "is_correct": false
         },
         {
-          "text": "Caching events in memory only",
+          "text": "Persisting state as an append-only log of events that can be replayed",
+          "is_correct": true
+        },
+        {
+          "text": "Overwriting the current state on every change with no history",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "event-sourcing-concept",
+      "format": "recall"
     },
     {
       "title": "CQRS pattern",
@@ -1382,23 +1492,25 @@
       "explanation": "CQRS separates the write model (commands) from the read model (queries), allowing each to be optimized and scaled independently.",
       "options": [
         {
-          "text": "The write (command) model from the read (query) model",
-          "is_correct": true
+          "text": "The cache from the database",
+          "is_correct": false
         },
         {
           "text": "The frontend from the backend",
           "is_correct": false
         },
         {
-          "text": "The cache from the database",
-          "is_correct": false
+          "text": "The write (command) model from the read (query) model",
+          "is_correct": true
         },
         {
           "text": "Authentication from authorization",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "cqrs-pattern",
+      "format": "recall"
     },
     {
       "title": "Saga pattern",
@@ -1407,23 +1519,25 @@
       "explanation": "A saga breaks the workflow into local transactions, each with a compensating action to undo prior steps if a later step fails, avoiding distributed locks.",
       "options": [
         {
-          "text": "As a series of local transactions with compensating actions on failure",
-          "is_correct": true
-        },
-        {
-          "text": "By holding a single global lock across all services",
-          "is_correct": false
-        },
-        {
           "text": "By using two-phase commit across every service",
           "is_correct": false
         },
         {
+          "text": "As a series of local transactions with compensating actions on failure",
+          "is_correct": true
+        },
+        {
           "text": "By disabling transactions entirely",
+          "is_correct": false
+        },
+        {
+          "text": "By holding a single global lock across all services",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "saga-pattern",
+      "format": "recall"
     },
     {
       "title": "Heartbeat mechanism",
@@ -1431,6 +1545,10 @@
       "difficulty": "intermediate",
       "explanation": "Periodic heartbeat signals let nodes detect that peers are alive; a missed heartbeat triggers failure detection and possibly failover.",
       "options": [
+        {
+          "text": "To compress messages",
+          "is_correct": false
+        },
         {
           "text": "To detect node failures by monitoring periodic liveness signals",
           "is_correct": true
@@ -1442,13 +1560,11 @@
         {
           "text": "To encrypt inter-node traffic",
           "is_correct": false
-        },
-        {
-          "text": "To compress messages",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "heartbeat-mechanism",
+      "format": "recall"
     },
     {
       "title": "Idempotency key in APIs",
@@ -1461,19 +1577,21 @@
           "is_correct": true
         },
         {
+          "text": "It speeds up the database write",
+          "is_correct": false
+        },
+        {
           "text": "It encrypts the payment amount",
           "is_correct": false
         },
         {
           "text": "It guarantees the request never fails",
           "is_correct": false
-        },
-        {
-          "text": "It speeds up the database write",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "idempotency-key-in-apis",
+      "format": "recall"
     },
     {
       "title": "Exactly-once delivery reality",
@@ -1482,23 +1600,25 @@
       "explanation": "True end-to-end exactly-once delivery over an unreliable network is generally impossible; it's approximated via at-least-once delivery plus idempotent processing or transactional deduplication.",
       "options": [
         {
-          "text": "It is typically approximated with at-least-once delivery plus idempotent consumers",
-          "is_correct": true
-        },
-        {
-          "text": "It is trivially provided by all message brokers for free",
-          "is_correct": false
-        },
-        {
           "text": "It requires no consumer-side deduplication",
           "is_correct": false
         },
         {
+          "text": "It is typically approximated with at-least-once delivery plus idempotent consumers",
+          "is_correct": true
+        },
+        {
           "text": "It is the same as at-most-once delivery",
+          "is_correct": false
+        },
+        {
+          "text": "It is trivially provided by all message brokers for free",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "exactly-once-delivery-reality",
+      "format": "recall"
     },
     {
       "title": "Backpressure",
@@ -1506,10 +1626,6 @@
       "difficulty": "advanced",
       "explanation": "Backpressure is a mechanism by which a slow consumer signals upstream producers to slow down, preventing unbounded buffering and resource exhaustion.",
       "options": [
-        {
-          "text": "A slow consumer signaling producers to slow down to avoid overload",
-          "is_correct": true
-        },
         {
           "text": "Pushing all data as fast as possible regardless of consumers",
           "is_correct": false
@@ -1521,9 +1637,15 @@
         {
           "text": "Replaying failed messages forever",
           "is_correct": false
+        },
+        {
+          "text": "A slow consumer signaling producers to slow down to avoid overload",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "backpressure",
+      "format": "recall"
     },
     {
       "title": "Vector clocks",
@@ -1540,15 +1662,17 @@
           "is_correct": false
         },
         {
-          "text": "The amount of free disk on each node",
+          "text": "The network latency between nodes",
           "is_correct": false
         },
         {
-          "text": "The network latency between nodes",
+          "text": "The amount of free disk on each node",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "vector-clocks",
+      "format": "recall"
     },
     {
       "title": "Service discovery",
@@ -1557,23 +1681,25 @@
       "explanation": "Service discovery lets services find the current network locations of other services, which change as instances scale, move, or fail.",
       "options": [
         {
-          "text": "Locating healthy instances of a service whose addresses change dynamically",
-          "is_correct": true
-        },
-        {
           "text": "Choosing which database index to use",
-          "is_correct": false
-        },
-        {
-          "text": "Compiling service code",
           "is_correct": false
         },
         {
           "text": "Encrypting service-to-service traffic",
           "is_correct": false
+        },
+        {
+          "text": "Locating healthy instances of a service whose addresses change dynamically",
+          "is_correct": true
+        },
+        {
+          "text": "Compiling service code",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "service-discovery",
+      "format": "recall"
     },
     {
       "title": "Clock skew problem",
@@ -1582,23 +1708,25 @@
       "explanation": "Server clocks drift and are only loosely synchronized (clock skew), so timestamp ordering can be wrong; logical clocks are preferred for causal ordering.",
       "options": [
         {
-          "text": "Clocks drift between machines, so timestamp ordering can be incorrect",
-          "is_correct": true
-        },
-        {
-          "text": "Timestamps consume too much storage",
-          "is_correct": false
-        },
-        {
           "text": "Wall clocks are always perfectly synchronized",
           "is_correct": false
         },
         {
           "text": "Timestamps cannot be compared at all",
           "is_correct": false
+        },
+        {
+          "text": "Timestamps consume too much storage",
+          "is_correct": false
+        },
+        {
+          "text": "Clocks drift between machines, so timestamp ordering can be incorrect",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "clock-skew-problem",
+      "format": "recall"
     },
     {
       "title": "Bulkhead pattern",
@@ -1611,7 +1739,7 @@
           "is_correct": true
         },
         {
-          "text": "It merges all thread pools into one for efficiency",
+          "text": "It caches all responses",
           "is_correct": false
         },
         {
@@ -1619,11 +1747,13 @@
           "is_correct": false
         },
         {
-          "text": "It caches all responses",
+          "text": "It merges all thread pools into one for efficiency",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "bulkhead-pattern",
+      "format": "recall"
     },
     {
       "title": "Kafka partition ordering",
@@ -1631,6 +1761,10 @@
       "difficulty": "advanced",
       "explanation": "Kafka guarantees order only within a single partition, not across partitions of a topic; keys are used to route related messages to the same partition.",
       "options": [
+        {
+          "text": "Only per consumer group with no partitions",
+          "is_correct": false
+        },
         {
           "text": "Within a single partition",
           "is_correct": true
@@ -1642,13 +1776,11 @@
         {
           "text": "Across all topics in the cluster",
           "is_correct": false
-        },
-        {
-          "text": "Only per consumer group with no partitions",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "kafka-partition-ordering",
+      "format": "recall"
     },
     {
       "title": "Choreography vs orchestration",
@@ -1657,11 +1789,11 @@
       "explanation": "In orchestration a central coordinator directs each step; in choreography services react to events independently with no central controller.",
       "options": [
         {
-          "text": "Choreography uses events with no central coordinator; orchestration uses a central controller",
-          "is_correct": true
+          "text": "They are identical patterns",
+          "is_correct": false
         },
         {
-          "text": "They are identical patterns",
+          "text": "Orchestration forbids any messaging",
           "is_correct": false
         },
         {
@@ -1669,11 +1801,13 @@
           "is_correct": false
         },
         {
-          "text": "Orchestration forbids any messaging",
-          "is_correct": false
+          "text": "Choreography uses events with no central coordinator; orchestration uses a central controller",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "choreography-vs-orchestration",
+      "format": "recall"
     },
     {
       "title": "Outbox pattern",
@@ -1682,11 +1816,11 @@
       "explanation": "It avoids the dual-write problem by writing the business change and an outbox event in one local transaction; a relay then publishes the event reliably.",
       "options": [
         {
-          "text": "Reliably publishing events without the dual-write problem",
-          "is_correct": true
+          "text": "Encrypting messages before sending",
+          "is_correct": false
         },
         {
-          "text": "Encrypting messages before sending",
+          "text": "Load balancing consumers",
           "is_correct": false
         },
         {
@@ -1694,11 +1828,13 @@
           "is_correct": false
         },
         {
-          "text": "Load balancing consumers",
-          "is_correct": false
+          "text": "Reliably publishing events without the dual-write problem",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "outbox-pattern",
+      "format": "recall"
     },
     {
       "title": "Gossip protocol",
@@ -1707,11 +1843,7 @@
       "explanation": "Nodes periodically exchange state with a few random peers; information spreads epidemically across the cluster, scaling without a central coordinator.",
       "options": [
         {
-          "text": "Each node randomly shares state with a few peers, spreading info epidemically",
-          "is_correct": true
-        },
-        {
-          "text": "A central server broadcasts to every node directly",
+          "text": "Only the leader holds all information",
           "is_correct": false
         },
         {
@@ -1719,11 +1851,17 @@
           "is_correct": false
         },
         {
-          "text": "Only the leader holds all information",
+          "text": "Each node randomly shares state with a few peers, spreading info epidemically",
+          "is_correct": true
+        },
+        {
+          "text": "A central server broadcasts to every node directly",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "gossip-protocol",
+      "format": "recall"
     },
     {
       "title": "Fan-out on write vs read",
@@ -1736,11 +1874,11 @@
           "is_correct": true
         },
         {
-          "text": "Assembling each user's feed only when they request it",
+          "text": "Replicating the database to every region",
           "is_correct": false
         },
         {
-          "text": "Replicating the database to every region",
+          "text": "Assembling each user's feed only when they request it",
           "is_correct": false
         },
         {
@@ -1748,7 +1886,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "fan-out-on-write-vs-read",
+      "format": "recall"
     },
     {
       "title": "REST statelessness",
@@ -1757,12 +1897,12 @@
       "explanation": "Each request must contain all information needed to process it; the server stores no client session context between requests.",
       "options": [
         {
-          "text": "Each request carries all needed context; the server keeps no client session state",
-          "is_correct": true
-        },
-        {
           "text": "The server remembers the client between requests",
           "is_correct": false
+        },
+        {
+          "text": "Each request carries all needed context; the server keeps no client session state",
+          "is_correct": true
         },
         {
           "text": "Responses are never cacheable",
@@ -1773,7 +1913,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "rest-statelessness",
+      "format": "recall"
     },
     {
       "title": "HTTP idempotent methods",
@@ -1782,23 +1924,25 @@
       "explanation": "GET is both safe (no state change) and idempotent. PUT and DELETE are idempotent but not safe; POST is generally neither.",
       "options": [
         {
-          "text": "GET",
-          "is_correct": true
-        },
-        {
-          "text": "POST",
-          "is_correct": false
-        },
-        {
           "text": "PATCH",
           "is_correct": false
         },
         {
           "text": "CONNECT",
           "is_correct": false
+        },
+        {
+          "text": "POST",
+          "is_correct": false
+        },
+        {
+          "text": "GET",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "http-idempotent-methods",
+      "format": "recall"
     },
     {
       "title": "Rate limiting purpose",
@@ -1807,11 +1951,11 @@
       "explanation": "Rate limiting protects the service from abuse and overload and ensures fair resource sharing across clients.",
       "options": [
         {
-          "text": "To prevent abuse/overload and ensure fair usage",
-          "is_correct": true
+          "text": "To encrypt request bodies",
+          "is_correct": false
         },
         {
-          "text": "To encrypt request bodies",
+          "text": "To replace authentication",
           "is_correct": false
         },
         {
@@ -1819,11 +1963,13 @@
           "is_correct": false
         },
         {
-          "text": "To replace authentication",
-          "is_correct": false
+          "text": "To prevent abuse/overload and ensure fair usage",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "rate-limiting-purpose",
+      "format": "recall"
     },
     {
       "title": "Token bucket algorithm",
@@ -1840,15 +1986,17 @@
           "is_correct": false
         },
         {
-          "text": "It blocks all requests once the first token is used",
+          "text": "It never refills tokens",
           "is_correct": false
         },
         {
-          "text": "It never refills tokens",
+          "text": "It blocks all requests once the first token is used",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "token-bucket-algorithm",
+      "format": "recall"
     },
     {
       "title": "gRPC vs REST",
@@ -1857,23 +2005,25 @@
       "explanation": "gRPC uses HTTP/2 and binary Protocol Buffers, giving lower latency, smaller payloads, streaming, and strongly-typed contracts.",
       "options": [
         {
-          "text": "Compact binary payloads, HTTP/2 streaming, and typed contracts",
-          "is_correct": true
-        },
-        {
           "text": "It is easier to call directly from a browser without tooling",
-          "is_correct": false
-        },
-        {
-          "text": "It requires no schema definition",
           "is_correct": false
         },
         {
           "text": "It only works over HTTP/1.0",
           "is_correct": false
+        },
+        {
+          "text": "Compact binary payloads, HTTP/2 streaming, and typed contracts",
+          "is_correct": true
+        },
+        {
+          "text": "It requires no schema definition",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "grpc-vs-rest",
+      "format": "recall"
     },
     {
       "title": "GraphQL over-fetching",
@@ -1890,15 +2040,17 @@
           "is_correct": false
         },
         {
-          "text": "Database replication lag",
+          "text": "DNS resolution time",
           "is_correct": false
         },
         {
-          "text": "DNS resolution time",
+          "text": "Database replication lag",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "graphql-over-fetching",
+      "format": "recall"
     },
     {
       "title": "API pagination",
@@ -1906,10 +2058,6 @@
       "difficulty": "advanced",
       "explanation": "Offset pagination can skip or duplicate rows when data changes between pages and gets slow at high offsets; cursors anchor to a stable position.",
       "options": [
-        {
-          "text": "It avoids skipped/duplicated rows and stays fast as the dataset grows",
-          "is_correct": true
-        },
         {
           "text": "It always returns the entire dataset at once",
           "is_correct": false
@@ -1919,11 +2067,17 @@
           "is_correct": false
         },
         {
+          "text": "It avoids skipped/duplicated rows and stays fast as the dataset grows",
+          "is_correct": true
+        },
+        {
           "text": "It encrypts the page contents",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "api-pagination",
+      "format": "recall"
     },
     {
       "title": "DNS role",
@@ -1936,19 +2090,21 @@
           "is_correct": true
         },
         {
+          "text": "Storing user sessions",
+          "is_correct": false
+        },
+        {
           "text": "Encrypting HTTP traffic",
           "is_correct": false
         },
         {
           "text": "Balancing database load",
           "is_correct": false
-        },
-        {
-          "text": "Storing user sessions",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "dns-role",
+      "format": "recall"
     },
     {
       "title": "API gateway responsibilities",
@@ -1957,23 +2113,25 @@
       "explanation": "Gateways centralize cross-cutting concerns like authentication, rate limiting, routing, and request aggregation in front of microservices.",
       "options": [
         {
-          "text": "Authentication, rate limiting, and routing for backend services",
-          "is_correct": true
+          "text": "Storing the primary copy of business data",
+          "is_correct": false
         },
         {
           "text": "Running database migrations",
           "is_correct": false
         },
         {
-          "text": "Storing the primary copy of business data",
-          "is_correct": false
+          "text": "Authentication, rate limiting, and routing for backend services",
+          "is_correct": true
         },
         {
           "text": "Compiling backend source code",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "api-gateway-responsibilities",
+      "format": "recall"
     },
     {
       "title": "Circuit breaker pattern",
@@ -1982,23 +2140,25 @@
       "explanation": "After a failure threshold, the breaker 'opens' and fails fast (or returns a fallback) instead of waiting on the failing dependency, giving it time to recover.",
       "options": [
         {
+          "text": "It retries the dependency as fast as possible forever",
+          "is_correct": false
+        },
+        {
           "text": "It trips open and fails fast to avoid hammering the failing dependency",
           "is_correct": true
         },
         {
-          "text": "It retries the dependency as fast as possible forever",
+          "text": "It caches all successful responses permanently",
           "is_correct": false
         },
         {
           "text": "It restarts the database",
           "is_correct": false
-        },
-        {
-          "text": "It caches all successful responses permanently",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "circuit-breaker-pattern",
+      "format": "recall"
     },
     {
       "title": "Exponential backoff",
@@ -2006,10 +2166,6 @@
       "difficulty": "intermediate",
       "explanation": "Increasing delays reduce load on a struggling server, and jitter prevents many clients from retrying in synchronized waves (the retry storm).",
       "options": [
-        {
-          "text": "To reduce load on a recovering server and avoid synchronized retry storms",
-          "is_correct": true
-        },
         {
           "text": "To retry immediately and repeatedly with no delay",
           "is_correct": false
@@ -2019,11 +2175,17 @@
           "is_correct": false
         },
         {
+          "text": "To reduce load on a recovering server and avoid synchronized retry storms",
+          "is_correct": true
+        },
+        {
           "text": "To encrypt the retry payload",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "exponential-backoff",
+      "format": "recall"
     },
     {
       "title": "HTTP 429 meaning",
@@ -2032,23 +2194,25 @@
       "explanation": "429 Too Many Requests means the client has been rate limited and should slow down, often respecting a Retry-After header.",
       "options": [
         {
-          "text": "Too Many Requests \u2014 the client is being rate limited",
-          "is_correct": true
-        },
-        {
-          "text": "The server crashed",
-          "is_correct": false
-        },
-        {
           "text": "The resource was not found",
           "is_correct": false
         },
         {
           "text": "Authentication failed",
           "is_correct": false
+        },
+        {
+          "text": "The server crashed",
+          "is_correct": false
+        },
+        {
+          "text": "Too Many Requests — the client is being rate limited",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "http-429-meaning",
+      "format": "recall"
     },
     {
       "title": "Microservices vs monolith trade-off",
@@ -2057,23 +2221,25 @@
       "explanation": "Microservices enable independent deployment and scaling but add operational complexity: networking, distributed debugging, and data consistency across services.",
       "options": [
         {
-          "text": "Independent scaling/deploys at the cost of operational and consistency complexity",
-          "is_correct": true
-        },
-        {
           "text": "They eliminate all network calls",
-          "is_correct": false
-        },
-        {
-          "text": "They always reduce total infrastructure cost",
           "is_correct": false
         },
         {
           "text": "They make distributed transactions trivial",
           "is_correct": false
+        },
+        {
+          "text": "Independent scaling/deploys at the cost of operational and consistency complexity",
+          "is_correct": true
+        },
+        {
+          "text": "They always reduce total infrastructure cost",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "microservices-vs-monolith-trade-off",
+      "format": "recall"
     },
     {
       "title": "TLS termination location",
@@ -2086,7 +2252,7 @@
           "is_correct": true
         },
         {
-          "text": "Only inside the database",
+          "text": "It is never terminated anywhere",
           "is_correct": false
         },
         {
@@ -2094,11 +2260,13 @@
           "is_correct": false
         },
         {
-          "text": "It is never terminated anywhere",
+          "text": "Only inside the database",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "tls-termination-location",
+      "format": "recall"
     },
     {
       "title": "Observability pillars",
@@ -2107,12 +2275,12 @@
       "explanation": "Logs, metrics, and traces together let operators understand system behavior and diagnose issues.",
       "options": [
         {
-          "text": "Logs, metrics, and traces",
-          "is_correct": true
-        },
-        {
           "text": "CPU, RAM, and disk",
           "is_correct": false
+        },
+        {
+          "text": "Logs, metrics, and traces",
+          "is_correct": true
         },
         {
           "text": "Users, sessions, and cookies",
@@ -2123,7 +2291,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "observability-pillars",
+      "format": "recall"
     },
     {
       "title": "Distributed tracing",
@@ -2132,11 +2302,11 @@
       "explanation": "A trace follows a single request across services via a propagated trace/span context, revealing where latency and errors occur in the call chain.",
       "options": [
         {
-          "text": "Follow one request across services to locate latency and errors",
-          "is_correct": true
+          "text": "Measure only total CPU usage of the cluster",
+          "is_correct": false
         },
         {
-          "text": "Measure only total CPU usage of the cluster",
+          "text": "Back up the database",
           "is_correct": false
         },
         {
@@ -2144,11 +2314,13 @@
           "is_correct": false
         },
         {
-          "text": "Back up the database",
-          "is_correct": false
+          "text": "Follow one request across services to locate latency and errors",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "distributed-tracing",
+      "format": "recall"
     },
     {
       "title": "Blue-green deployment",
@@ -2157,23 +2329,25 @@
       "explanation": "Two identical environments let you switch traffic to the new version instantly and roll back quickly by switching back, minimizing downtime.",
       "options": [
         {
-          "text": "Near-instant cutover and easy rollback by switching environments",
-          "is_correct": true
+          "text": "It removes the need for testing",
+          "is_correct": false
         },
         {
           "text": "It requires only one environment",
           "is_correct": false
         },
         {
-          "text": "It removes the need for testing",
+          "text": "It shards the database automatically",
           "is_correct": false
         },
         {
-          "text": "It shards the database automatically",
-          "is_correct": false
+          "text": "Near-instant cutover and easy rollback by switching environments",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "blue-green-deployment",
+      "format": "recall"
     },
     {
       "title": "Canary release",
@@ -2181,6 +2355,10 @@
       "difficulty": "intermediate",
       "explanation": "A canary routes a small percentage of traffic to the new version first to catch problems before a full rollout.",
       "options": [
+        {
+          "text": "Rolling back to the previous version",
+          "is_correct": false
+        },
         {
           "text": "Rolling out a new version to a small subset of traffic first",
           "is_correct": true
@@ -2190,15 +2368,13 @@
           "is_correct": false
         },
         {
-          "text": "Rolling back to the previous version",
-          "is_correct": false
-        },
-        {
           "text": "Disabling monitoring during deploys",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "canary-release",
+      "format": "recall"
     },
     {
       "title": "Idempotent infrastructure (IaC)",
@@ -2207,11 +2383,7 @@
       "explanation": "Applying the same configuration repeatedly converges to the same desired state without unintended duplicate resources or drift.",
       "options": [
         {
-          "text": "Re-applying the same config yields the same end state without duplication",
-          "is_correct": true
-        },
-        {
-          "text": "It guarantees zero-downtime deploys",
+          "text": "It removes the need for version control",
           "is_correct": false
         },
         {
@@ -2219,11 +2391,17 @@
           "is_correct": false
         },
         {
-          "text": "It removes the need for version control",
+          "text": "Re-applying the same config yields the same end state without duplication",
+          "is_correct": true
+        },
+        {
+          "text": "It guarantees zero-downtime deploys",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "idempotent-infrastructure-iac",
+      "format": "recall"
     },
     {
       "title": "Authentication vs authorization",
@@ -2232,23 +2410,25 @@
       "explanation": "Authentication verifies who you are; authorization decides what you are allowed to do.",
       "options": [
         {
-          "text": "Authentication verifies identity; authorization grants permissions",
-          "is_correct": true
+          "text": "Authentication happens on the server, while authorization happens on the client",
+          "is_correct": false
+        },
+        {
+          "text": "Authentication determines what you're allowed to do, while authorization verifies who you are",
+          "is_correct": false
         },
         {
           "text": "They are the same thing",
           "is_correct": false
         },
         {
-          "text": "Authentication grants permissions; authorization verifies identity",
-          "is_correct": false
-        },
-        {
-          "text": "Both only apply to databases",
-          "is_correct": false
+          "text": "Authentication verifies who you are, while authorization determines what you're allowed to do",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "authentication-vs-authorization",
+      "format": "recall"
     },
     {
       "title": "JWT stateless auth",
@@ -2256,6 +2436,10 @@
       "difficulty": "intermediate",
       "explanation": "A signed JWT carries the claims and can be verified without a database/session lookup, enabling stateless auth across services.",
       "options": [
+        {
+          "text": "The payload is automatically encrypted and hidden",
+          "is_correct": false
+        },
         {
           "text": "Servers can verify the token without a central session store lookup",
           "is_correct": true
@@ -2265,15 +2449,13 @@
           "is_correct": false
         },
         {
-          "text": "The payload is automatically encrypted and hidden",
-          "is_correct": false
-        },
-        {
           "text": "They never expire",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "jwt-stateless-auth",
+      "format": "recall"
     },
     {
       "title": "JWT revocation challenge",
@@ -2290,15 +2472,17 @@
           "is_correct": false
         },
         {
-          "text": "They require a session lookup on every request",
+          "text": "They cannot be signed",
           "is_correct": false
         },
         {
-          "text": "They cannot be signed",
+          "text": "They require a session lookup on every request",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "jwt-revocation-challenge",
+      "format": "recall"
     },
     {
       "title": "Webhook reliability",
@@ -2311,7 +2495,7 @@
           "is_correct": true
         },
         {
-          "text": "Assume each event is delivered exactly once",
+          "text": "Ignore retries entirely",
           "is_correct": false
         },
         {
@@ -2319,11 +2503,13 @@
           "is_correct": false
         },
         {
-          "text": "Ignore retries entirely",
+          "text": "Assume each event is delivered exactly once",
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "webhook-reliability",
+      "format": "recall"
     },
     {
       "title": "Caching with ETags",
@@ -2332,23 +2518,25 @@
       "explanation": "The client sends the ETag via If-None-Match; if unchanged, the server returns 304 Not Modified with no body, saving transfer of the full resource.",
       "options": [
         {
-          "text": "The server can return 304 Not Modified with no body if the ETag matches",
-          "is_correct": true
-        },
-        {
-          "text": "It compresses the response body",
-          "is_correct": false
-        },
-        {
           "text": "It encrypts the response",
           "is_correct": false
         },
         {
           "text": "It forces the client to always re-download",
           "is_correct": false
+        },
+        {
+          "text": "It compresses the response body",
+          "is_correct": false
+        },
+        {
+          "text": "The server can return 304 Not Modified with no body if the ETag matches",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "caching-with-etags",
+      "format": "recall"
     },
     {
       "title": "Zero-downtime schema migration",
@@ -2361,19 +2549,21 @@
           "is_correct": true
         },
         {
-          "text": "Rename the column in place during peak traffic",
-          "is_correct": false
-        },
-        {
           "text": "Take the database offline and rename it",
           "is_correct": false
         },
         {
           "text": "Drop the column first, then recreate it",
           "is_correct": false
+        },
+        {
+          "text": "Rename the column in place during peak traffic",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "zero-downtime-schema-migration",
+      "format": "recall"
     },
     {
       "title": "Read-your-writes consistency",
@@ -2386,19 +2576,21 @@
           "is_correct": true
         },
         {
-          "text": "Disable replication entirely",
-          "is_correct": false
-        },
-        {
           "text": "Always read from the most lagging replica",
           "is_correct": false
         },
         {
           "text": "Cache the write only on the client and never persist it",
           "is_correct": false
+        },
+        {
+          "text": "Disable replication entirely",
+          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "read-your-writes-consistency",
+      "format": "recall"
     },
     {
       "title": "Bloom filter use",
@@ -2411,19 +2603,21 @@
           "is_correct": true
         },
         {
+          "text": "It sorts data on disk",
+          "is_correct": false
+        },
+        {
           "text": "It guarantees a key is present with no false positives",
           "is_correct": false
         },
         {
           "text": "It stores the full value of each key",
           "is_correct": false
-        },
-        {
-          "text": "It sorts data on disk",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "bloom-filter-use",
+      "format": "recall"
     },
     {
       "title": "Multi-region active-active",
@@ -2432,11 +2626,7 @@
       "explanation": "Concurrent writes in different regions can conflict; resolving these conflicts (last-writer-wins, CRDTs, app logic) while keeping low latency is the core difficulty.",
       "options": [
         {
-          "text": "Resolving conflicting concurrent writes across regions",
-          "is_correct": true
-        },
-        {
-          "text": "Translating domain names to IPs",
+          "text": "Compressing log files",
           "is_correct": false
         },
         {
@@ -2444,11 +2634,17 @@
           "is_correct": false
         },
         {
-          "text": "Compressing log files",
+          "text": "Translating domain names to IPs",
           "is_correct": false
+        },
+        {
+          "text": "Resolving conflicting concurrent writes across regions",
+          "is_correct": true
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "multi-region-active-active",
+      "format": "recall"
     },
     {
       "title": "Sidecar pattern",
@@ -2461,19 +2657,21 @@
           "is_correct": true
         },
         {
+          "text": "A queue for failed messages",
+          "is_correct": false
+        },
+        {
           "text": "A backup copy of the database",
           "is_correct": false
         },
         {
           "text": "A second region for failover",
           "is_correct": false
-        },
-        {
-          "text": "A queue for failed messages",
-          "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "sidecar-pattern",
+      "format": "recall"
     },
     {
       "title": "Hot vs cold storage tiering",
@@ -2486,11 +2684,11 @@
           "is_correct": true
         },
         {
-          "text": "To make that data faster to access",
+          "text": "To enforce ACID transactions",
           "is_correct": false
         },
         {
-          "text": "To enforce ACID transactions",
+          "text": "To make that data faster to access",
           "is_correct": false
         },
         {
@@ -2498,7 +2696,9 @@
           "is_correct": false
         }
       ],
-      "category": "system-design"
+      "category": "system-design",
+      "concept": "hot-vs-cold-storage-tiering",
+      "format": "recall"
     }
   ]
 }
