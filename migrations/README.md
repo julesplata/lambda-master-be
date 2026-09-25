@@ -29,3 +29,5 @@ psql "$DATABASE_URL" -f 0001_init_schema.down.sql
 | 0001 | init_schema | Consolidated baseline: users (with gamification), categories (seeded), questions, options, tags, attempts (guest-mode), answers, refresh_tokens, user_question_stats, question_reports, app_feedback |
 | 0002 | question_title_unique_per_category | Replaces the global unique question title with a `(title, category_id)` unique constraint |
 | 0003 | quiz_attempts_retention_index | Partial index on `quiz_attempts(started_at) WHERE completed_at IS NULL`, backing the abandoned-attempt purge job |
+| 0004 | questions_archived_at | Adds `questions.archived_at` (soft delete) and a partial index on live rows |
+| 0005 | shuffle_option_positions | One-off data migration: randomises `question_options.position`, which had the correct answer first for almost every seeded question. The down migration is a no-op |

@@ -83,8 +83,6 @@ All routes are mounted under `/api/v1`. Currently active routers:
 |---------------|-------------|
 | `GET /health` | Liveness check |
 | `GET /categories` | List question categories |
-| `GET /questions` | List questions (summaries) |
-| `GET /questions/{id}` | Get a single question (options strip `is_correct`) |
 | `POST /questions/bulk` | Bulk-create questions (admin) |
 | `GET /tags` | List all tags |
 | `POST /quiz-attempts` | Start a quiz attempt |
