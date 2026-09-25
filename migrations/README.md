@@ -31,3 +31,4 @@ psql "$DATABASE_URL" -f 0001_init_schema.down.sql
 | 0003 | quiz_attempts_retention_index | Partial index on `quiz_attempts(started_at) WHERE completed_at IS NULL`, backing the abandoned-attempt purge job |
 | 0004 | questions_archived_at | Adds `questions.archived_at` (soft delete) and a partial index on live rows |
 | 0005 | shuffle_option_positions | One-off data migration: randomises `question_options.position`, which had the correct answer first for almost every seeded question. The down migration is a no-op |
+| 0006 | balance_option_lengths | One-off data migration: applies the seed rewrite that stopped the correct option being the longest (329 of 350 questions). Matches each option on (category, title, old text), so admin-edited options are skipped and a rerun is a no-op; the down migration restores the old text the same way |

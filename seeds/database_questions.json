@@ -7,11 +7,11 @@
       "explanation": "A primary key uniquely identifies each row in a table and cannot contain NULL values.",
       "options": [
         {
-          "text": "To store the largest column value",
+          "text": "To store the largest value from each column",
           "is_correct": false
         },
         {
-          "text": "To encrypt the table contents",
+          "text": "To encrypt the table contents on disk",
           "is_correct": false
         },
         {
@@ -19,7 +19,7 @@
           "is_correct": true
         },
         {
-          "text": "To sort rows alphabetically",
+          "text": "To keep the rows sorted alphabetically by name",
           "is_correct": false
         }
       ],
@@ -61,7 +61,7 @@
       "explanation": "A foreign key enforces referential integrity by ensuring a value in one table matches a primary/unique key in another.",
       "options": [
         {
-          "text": "Faster disk writes",
+          "text": "Faster disk writes for rows in the child table",
           "is_correct": false
         },
         {
@@ -69,11 +69,11 @@
           "is_correct": true
         },
         {
-          "text": "Automatic encryption of joined rows",
+          "text": "Automatic encryption of rows read through joins",
           "is_correct": false
         },
         {
-          "text": "Uniqueness of every column",
+          "text": "Uniqueness of values in every referencing column",
           "is_correct": false
         }
       ],
@@ -88,11 +88,11 @@
       "explanation": "The WHERE clause filters rows, returning only those that satisfy the given condition.",
       "options": [
         {
-          "text": "To rename a column",
+          "text": "To rename a column in the output",
           "is_correct": false
         },
         {
-          "text": "To define a new table",
+          "text": "To define a new table from a result set",
           "is_correct": false
         },
         {
@@ -100,7 +100,7 @@
           "is_correct": true
         },
         {
-          "text": "To group aggregated results",
+          "text": "To group rows before aggregating them",
           "is_correct": false
         }
       ],
@@ -115,15 +115,15 @@
       "explanation": "An index speeds up read queries that filter or sort on the indexed column, at the cost of slower writes and extra storage.",
       "options": [
         {
-          "text": "Automatic data backups",
+          "text": "Automatic backups of the indexed data",
           "is_correct": false
         },
         {
-          "text": "Faster INSERT performance",
+          "text": "Faster INSERT and UPDATE performance",
           "is_correct": false
         },
         {
-          "text": "Smaller table size on disk",
+          "text": "A smaller table size on disk after compaction",
           "is_correct": false
         },
         {
@@ -173,11 +173,11 @@
           "is_correct": false
         },
         {
-          "text": "They are identical",
+          "text": "They are identical apart from the keyword; both remove rows",
           "is_correct": false
         },
         {
-          "text": "DROP only works on indexes",
+          "text": "DROP only works on indexes, never on tables",
           "is_correct": false
         },
         {
@@ -204,11 +204,11 @@
           "is_correct": true
         },
         {
-          "text": "Filters duplicate rows",
+          "text": "Filters duplicate rows out of the result set",
           "is_correct": false
         },
         {
-          "text": "Joins two tables",
+          "text": "Joins two tables on their matching columns",
           "is_correct": false
         }
       ],
@@ -223,11 +223,11 @@
       "explanation": "NULL represents an unknown or missing value; it is not the same as zero or an empty string.",
       "options": [
         {
-          "text": "An empty string",
+          "text": "An empty string with no characters",
           "is_correct": false
         },
         {
-          "text": "A boolean false",
+          "text": "The boolean value false",
           "is_correct": false
         },
         {
@@ -235,7 +235,7 @@
           "is_correct": true
         },
         {
-          "text": "The number zero",
+          "text": "The number zero for numeric columns",
           "is_correct": false
         }
       ],
@@ -281,11 +281,11 @@
           "is_correct": false
         },
         {
-          "text": "Key-value pairs only",
+          "text": "Key-value pairs with no fixed schema",
           "is_correct": false
         },
         {
-          "text": "Graph nodes and edges",
+          "text": "Graph nodes and weighted edges",
           "is_correct": false
         },
         {
@@ -339,11 +339,11 @@
           "is_correct": false
         },
         {
-          "text": "Counts the rows",
+          "text": "Counts the rows in the result",
           "is_correct": false
         },
         {
-          "text": "Sorts the rows",
+          "text": "Sorts the rows by the first column",
           "is_correct": false
         }
       ],
@@ -358,7 +358,7 @@
       "explanation": "A schema defines the structure of the database: tables, columns, types, and the relationships between them.",
       "options": [
         {
-          "text": "The list of currently connected users",
+          "text": "The users currently connected to it",
           "is_correct": false
         },
         {
@@ -370,7 +370,7 @@
           "is_correct": false
         },
         {
-          "text": "The backup retention policy",
+          "text": "The backup retention policy for each table",
           "is_correct": false
         }
       ],
@@ -389,15 +389,15 @@
           "is_correct": true
         },
         {
-          "text": "Limits column width",
+          "text": "Limits how wide each column can be",
           "is_correct": false
         },
         {
-          "text": "Caps the table size",
+          "text": "Caps the number of rows a table can hold",
           "is_correct": false
         },
         {
-          "text": "Sets a query timeout",
+          "text": "Sets a timeout on how long the query runs",
           "is_correct": false
         }
       ],
@@ -424,7 +424,7 @@
           "is_correct": false
         },
         {
-          "text": "The whole table",
+          "text": "The whole table and its schema",
           "is_correct": false
         }
       ],
@@ -443,11 +443,11 @@
           "is_correct": false
         },
         {
-          "text": "Backs up a table",
+          "text": "Backs up an existing table to disk",
           "is_correct": false
         },
         {
-          "text": "Deletes a table",
+          "text": "Deletes a table and all its rows",
           "is_correct": false
         },
         {
@@ -466,11 +466,11 @@
       "explanation": "A JOIN combines rows from two or more tables based on a related column between them.",
       "options": [
         {
-          "text": "Duplicates a table",
+          "text": "Duplicates a table under a new name in the schema",
           "is_correct": false
         },
         {
-          "text": "Appends one table's rows below another's",
+          "text": "Appends one table's rows below another's, like stacking them",
           "is_correct": false
         },
         {
@@ -478,7 +478,7 @@
           "is_correct": true
         },
         {
-          "text": "Merges two databases into one",
+          "text": "Merges two databases into one combined database file",
           "is_correct": false
         }
       ],
@@ -493,11 +493,11 @@
       "explanation": "A UNIQUE constraint ensures no two rows share the same value in that column (NULLs may be allowed depending on the engine).",
       "options": [
         {
-          "text": "The column stores only numbers",
+          "text": "The column stores only numbers, never text",
           "is_correct": false
         },
         {
-          "text": "No two rows have the same value in that column",
+          "text": "No two rows share a value in that column",
           "is_correct": true
         },
         {
@@ -505,7 +505,7 @@
           "is_correct": false
         },
         {
-          "text": "The column cannot be queried",
+          "text": "The column cannot be read by ordinary queries",
           "is_correct": false
         }
       ],
@@ -520,19 +520,19 @@
       "explanation": "A DBMS provides an organized, reliable way to store, retrieve, and manage data with concurrency and integrity controls.",
       "options": [
         {
-          "text": "To store, retrieve, and manage data reliably",
+          "text": "To store and manage data reliably",
           "is_correct": true
         },
         {
-          "text": "To render web pages",
+          "text": "To render web pages from HTML templates",
           "is_correct": false
         },
         {
-          "text": "To compile source code",
+          "text": "To compile source code into executables",
           "is_correct": false
         },
         {
-          "text": "To route network packets",
+          "text": "To route network packets between hosts on a LAN",
           "is_correct": false
         }
       ],
@@ -547,19 +547,19 @@
       "explanation": "GROUP BY groups rows that share a value so aggregate functions can be applied per group.",
       "options": [
         {
-          "text": "Joins multiple tables",
+          "text": "Joins multiple tables on their shared key columns",
           "is_correct": false
         },
         {
-          "text": "Removes NULL values",
+          "text": "Removes NULL values from the selected columns",
           "is_correct": false
         },
         {
-          "text": "Sorts rows in descending order",
+          "text": "Sorts rows in descending order of the chosen columns",
           "is_correct": false
         },
         {
-          "text": "Groups rows so aggregates can be computed per group",
+          "text": "Groups rows so aggregates run per group",
           "is_correct": true
         }
       ],
@@ -574,11 +574,11 @@
       "explanation": "No. A primary key must be unique across all rows and cannot be NULL.",
       "options": [
         {
-          "text": "Only if the table is empty",
+          "text": "Only if the table is still empty",
           "is_correct": false
         },
         {
-          "text": "Yes, duplicates are allowed",
+          "text": "Yes, duplicates are allowed like any column",
           "is_correct": false
         },
         {
@@ -586,7 +586,7 @@
           "is_correct": true
         },
         {
-          "text": "Only for text columns",
+          "text": "Only for text columns, not numeric ones",
           "is_correct": false
         }
       ],
@@ -605,15 +605,15 @@
           "is_correct": true
         },
         {
-          "text": "The most frequent value",
+          "text": "The most frequent value in the column",
           "is_correct": false
         },
         {
-          "text": "The smallest value",
+          "text": "The smallest value in the column",
           "is_correct": false
         },
         {
-          "text": "The number of rows",
+          "text": "The number of non-NULL rows",
           "is_correct": false
         }
       ],
@@ -628,19 +628,19 @@
       "explanation": "Relational databases enforce a predefined schema and support SQL with relationships and joins.",
       "options": [
         {
-          "text": "It uses a predefined schema with tables and relationships",
+          "text": "It uses a predefined schema of related tables",
           "is_correct": true
         },
         {
-          "text": "It can never use indexes",
+          "text": "It can never use indexes, so every read is a full scan",
           "is_correct": false
         },
         {
-          "text": "It cannot store text",
+          "text": "It cannot store text values, only numbers and dates",
           "is_correct": false
         },
         {
-          "text": "It requires no structure at all",
+          "text": "It requires no structure at all and accepts any document shape",
           "is_correct": false
         }
       ],
@@ -655,7 +655,7 @@
       "explanation": "A transaction is a unit of work that is executed as a whole; it either fully completes (commit) or has no effect (rollback).",
       "options": [
         {
-          "text": "A single column in a table",
+          "text": "A single column in a table that records every change",
           "is_correct": false
         },
         {
@@ -663,11 +663,11 @@
           "is_correct": true
         },
         {
-          "text": "A backup of the database",
+          "text": "A full backup of the database taken at a point in time",
           "is_correct": false
         },
         {
-          "text": "A user login event",
+          "text": "A user login event that opens a session with the server",
           "is_correct": false
         }
       ],
@@ -682,19 +682,19 @@
       "explanation": "ALTER TABLE changes an existing table's structure, such as adding, modifying, or dropping columns.",
       "options": [
         {
-          "text": "Modify the structure of an existing table",
+          "text": "Change a table's structure",
           "is_correct": true
         },
         {
-          "text": "Encrypt the table",
+          "text": "Encrypt the table's data files at rest",
           "is_correct": false
         },
         {
-          "text": "Run a backup",
+          "text": "Run a backup of the table to a file",
           "is_correct": false
         },
         {
-          "text": "Insert many rows quickly",
+          "text": "Insert many rows quickly in a single statement",
           "is_correct": false
         }
       ],
@@ -709,19 +709,19 @@
       "explanation": "COMMIT permanently saves all changes made during the transaction so they become visible to others.",
       "options": [
         {
-          "text": "Creates a new table",
+          "text": "Creates a new table to hold the changes",
           "is_correct": false
         },
         {
-          "text": "Discards all changes",
+          "text": "Discards all changes made since it began",
           "is_correct": false
         },
         {
-          "text": "Locks the whole database forever",
+          "text": "Locks the whole database until the next restart",
           "is_correct": false
         },
         {
-          "text": "Permanently saves the transaction's changes",
+          "text": "Makes the changes permanent",
           "is_correct": true
         }
       ],
@@ -736,19 +736,19 @@
       "explanation": "ROLLBACK undoes all changes made in the current transaction, returning the data to its prior state.",
       "options": [
         {
-          "text": "Saves changes permanently",
+          "text": "Saves the transaction's changes permanently to disk",
           "is_correct": false
         },
         {
-          "text": "Deletes the table",
+          "text": "Deletes the table the transaction last modified",
           "is_correct": false
         },
         {
-          "text": "Undoes the changes made in the current transaction",
+          "text": "Undoes the current transaction's changes",
           "is_correct": true
         },
         {
-          "text": "Speeds up the next query",
+          "text": "Speeds up the next query by clearing the cache",
           "is_correct": false
         }
       ],
@@ -763,7 +763,7 @@
       "explanation": "SUM adds up all the numeric values in the specified column across the selected rows.",
       "options": [
         {
-          "text": "The average value",
+          "text": "The average of all values in the column",
           "is_correct": false
         },
         {
@@ -771,11 +771,11 @@
           "is_correct": true
         },
         {
-          "text": "The maximum value",
+          "text": "The maximum value in the column",
           "is_correct": false
         },
         {
-          "text": "The count of rows",
+          "text": "The count of non-NULL values in the column",
           "is_correct": false
         }
       ],
@@ -817,19 +817,19 @@
       "explanation": "Data types constrain what kind of values a column can store and how they are stored and compared.",
       "options": [
         {
-          "text": "It sets the table's name",
+          "text": "It sets the name the table is stored under",
           "is_correct": false
         },
         {
-          "text": "It constrains and describes the kind of values allowed",
+          "text": "It constrains which values are allowed",
           "is_correct": true
         },
         {
-          "text": "It defines user permissions",
+          "text": "It defines which users may read the column",
           "is_correct": false
         },
         {
-          "text": "It controls backup frequency",
+          "text": "It controls how often the column's data is backed up to disk",
           "is_correct": false
         }
       ],
@@ -844,7 +844,7 @@
       "explanation": "AS assigns an alias (alternate name) to a column or table in the result, improving readability.",
       "options": [
         {
-          "text": "Adds a new permanent column",
+          "text": "Adds a new permanent column to the table's schema",
           "is_correct": false
         },
         {
@@ -852,7 +852,7 @@
           "is_correct": true
         },
         {
-          "text": "Filters rows",
+          "text": "Filters rows that match a given name",
           "is_correct": false
         },
         {
@@ -871,19 +871,19 @@
       "explanation": "TRUNCATE quickly removes all rows from a table while keeping its structure intact.",
       "options": [
         {
-          "text": "Renames the table",
+          "text": "Renames the table and keeps its rows",
           "is_correct": false
         },
         {
-          "text": "Removes a single row",
+          "text": "Removes a single row matching a condition",
           "is_correct": false
         },
         {
-          "text": "Deletes the table definition",
+          "text": "Deletes the table definition along with its rows",
           "is_correct": false
         },
         {
-          "text": "Removes all rows but keeps the table structure",
+          "text": "Removes all rows, keeping the table",
           "is_correct": true
         }
       ],
@@ -898,15 +898,15 @@
       "explanation": "A query is a request to retrieve or manipulate data, typically expressed in SQL.",
       "options": [
         {
-          "text": "A database user account",
+          "text": "A database user account with login rights",
           "is_correct": false
         },
         {
-          "text": "A physical storage block",
+          "text": "A physical storage block on disk",
           "is_correct": false
         },
         {
-          "text": "A network protocol",
+          "text": "A network protocol for talking to the server",
           "is_correct": false
         },
         {
@@ -929,7 +929,7 @@
           "is_correct": true
         },
         {
-          "text": "The middle value",
+          "text": "The middle value when the rows are sorted",
           "is_correct": false
         },
         {
@@ -937,7 +937,7 @@
           "is_correct": false
         },
         {
-          "text": "The sum of the values",
+          "text": "The sum of the values in the column",
           "is_correct": false
         }
       ],
@@ -952,15 +952,15 @@
       "explanation": "NOT NULL requires that a column always contain a value; it cannot be left empty/NULL.",
       "options": [
         {
-          "text": "The column must be unique",
+          "text": "The column's values must be unique",
           "is_correct": false
         },
         {
-          "text": "The column is indexed",
+          "text": "The column is indexed automatically",
           "is_correct": false
         },
         {
-          "text": "The column is auto-incremented",
+          "text": "The column is auto-incremented on insert",
           "is_correct": false
         },
         {
@@ -979,7 +979,7 @@
       "explanation": "LIKE performs pattern matching on text using wildcards such as % and _.",
       "options": [
         {
-          "text": "Sorting results",
+          "text": "Sorting results by similarity to a string",
           "is_correct": false
         },
         {
@@ -987,11 +987,11 @@
           "is_correct": true
         },
         {
-          "text": "Joining tables",
+          "text": "Joining tables whose columns look alike",
           "is_correct": false
         },
         {
-          "text": "Exact numeric comparison",
+          "text": "Exact numeric comparison of two values",
           "is_correct": false
         }
       ],
@@ -1006,7 +1006,7 @@
       "explanation": "Table names must be unique within their schema so the database can resolve references unambiguously.",
       "options": [
         {
-          "text": "Numeric only",
+          "text": "Made of numeric characters only",
           "is_correct": false
         },
         {
@@ -1018,7 +1018,7 @@
           "is_correct": false
         },
         {
-          "text": "All uppercase",
+          "text": "Written in all uppercase",
           "is_correct": false
         }
       ],
@@ -1033,11 +1033,11 @@
       "explanation": "MIN returns the smallest value found in the specified column.",
       "options": [
         {
-          "text": "The average value",
+          "text": "The average value in the column",
           "is_correct": false
         },
         {
-          "text": "The largest value",
+          "text": "The largest value stored in the column",
           "is_correct": false
         },
         {
@@ -1045,7 +1045,7 @@
           "is_correct": true
         },
         {
-          "text": "The number of rows",
+          "text": "The number of rows with a value",
           "is_correct": false
         }
       ],
@@ -1060,19 +1060,19 @@
       "explanation": "IN tests whether a value matches any value in a given list or subquery result.",
       "options": [
         {
-          "text": "Whether two tables share rows",
+          "text": "Whether two tables share any rows with matching keys",
           "is_correct": false
         },
         {
-          "text": "Whether a string matches a pattern",
+          "text": "Whether a string matches a pattern with wildcards",
           "is_correct": false
         },
         {
-          "text": "Whether a value is NULL",
+          "text": "Whether a value is NULL or missing in the row",
           "is_correct": false
         },
         {
-          "text": "Whether a value is within a specified set of values",
+          "text": "Whether a value is in a given list",
           "is_correct": true
         }
       ],
@@ -1087,19 +1087,19 @@
       "explanation": "BETWEEN checks whether a value falls within an inclusive range (low AND high).",
       "options": [
         {
-          "text": "Counts distinct values",
+          "text": "Counts the distinct values between two rows",
           "is_correct": false
         },
         {
-          "text": "Removes duplicates",
+          "text": "Removes duplicates that fall between two keys",
           "is_correct": false
         },
         {
-          "text": "Joins two tables",
+          "text": "Joins two tables whose key columns fall in a shared range",
           "is_correct": false
         },
         {
-          "text": "Tests if a value falls within an inclusive range",
+          "text": "Tests for a value in an inclusive range",
           "is_correct": true
         }
       ],
@@ -1141,11 +1141,11 @@
       "explanation": "An auto-increment column automatically generates a new sequential number for each inserted row, often used for surrogate primary keys.",
       "options": [
         {
-          "text": "Limit row count",
+          "text": "Limit how many rows the table is allowed to hold before inserts fail",
           "is_correct": false
         },
         {
-          "text": "Encrypt the row",
+          "text": "Encrypt each new row with a sequential key",
           "is_correct": false
         },
         {
@@ -1153,7 +1153,7 @@
           "is_correct": true
         },
         {
-          "text": "Sort the table",
+          "text": "Keep the table sorted by insertion time on disk",
           "is_correct": false
         }
       ],
@@ -1168,11 +1168,11 @@
       "explanation": "HAVING filters results, like WHERE, but it filters groups produced by GROUP BY rather than individual rows.",
       "options": [
         {
-          "text": "ORDER BY",
+          "text": "ORDER BY (it sorts the grouped rows)",
           "is_correct": false
         },
         {
-          "text": "JOIN",
+          "text": "JOIN (it combines groups from tables)",
           "is_correct": false
         },
         {
@@ -1180,7 +1180,7 @@
           "is_correct": true
         },
         {
-          "text": "INSERT",
+          "text": "INSERT (it adds rows to groups)",
           "is_correct": false
         }
       ],
@@ -1195,19 +1195,19 @@
       "explanation": "Backups allow data to be restored after accidental loss, corruption, or hardware failure.",
       "options": [
         {
-          "text": "To create indexes",
+          "text": "To create indexes that speed up future reads",
           "is_correct": false
         },
         {
-          "text": "To normalize tables",
+          "text": "To normalize tables and remove redundant data",
           "is_correct": false
         },
         {
-          "text": "To speed up queries",
+          "text": "To speed up queries by caching results on a second disk",
           "is_correct": false
         },
         {
-          "text": "To recover data after loss, corruption, or failure",
+          "text": "To recover data after loss or corruption",
           "is_correct": true
         }
       ],
@@ -1253,15 +1253,15 @@
           "is_correct": true
         },
         {
-          "text": "A database user",
+          "text": "A database user with read-only permissions",
           "is_correct": false
         },
         {
-          "text": "A physical copy of a table",
+          "text": "A physical copy of a table made at backup time",
           "is_correct": false
         },
         {
-          "text": "A type of index",
+          "text": "A type of index that stores precomputed columns",
           "is_correct": false
         }
       ],
@@ -1276,15 +1276,15 @@
       "explanation": "Without WHERE, DELETE removes every row in the table; WHERE restricts deletion to the intended rows.",
       "options": [
         {
-          "text": "It is required syntax in all databases",
+          "text": "It is required syntax in every SQL database",
           "is_correct": false
         },
         {
-          "text": "It makes the delete faster",
+          "text": "It makes the delete faster on large tables",
           "is_correct": false
         },
         {
-          "text": "It encrypts the deleted rows",
+          "text": "It encrypts the deleted rows before removal",
           "is_correct": false
         },
         {
@@ -1303,11 +1303,11 @@
       "explanation": "A composite primary key is a primary key made up of two or more columns whose combination is unique.",
       "options": [
         {
-          "text": "A foreign key pointing to itself",
+          "text": "A foreign key pointing to its own table",
           "is_correct": false
         },
         {
-          "text": "A key that is encrypted",
+          "text": "A key stored in encrypted form",
           "is_correct": false
         },
         {
@@ -1315,7 +1315,7 @@
           "is_correct": true
         },
         {
-          "text": "A key that allows NULLs",
+          "text": "A key that allows NULLs in some of its columns",
           "is_correct": false
         }
       ],
@@ -1334,15 +1334,15 @@
           "is_correct": false
         },
         {
-          "text": "Encrypts the column",
+          "text": "Encrypts the column's value on insert",
           "is_correct": false
         },
         {
-          "text": "Provides a value when none is given on insert",
+          "text": "Supplies a value if none is given",
           "is_correct": true
         },
         {
-          "text": "Makes the column a primary key",
+          "text": "Makes the column part of the table's primary key",
           "is_correct": false
         }
       ],
@@ -1357,11 +1357,11 @@
       "explanation": "Atomicity ensures a transaction is all-or-nothing: either every operation succeeds, or none of them are applied.",
       "options": [
         {
-          "text": "Transactions never block each other",
+          "text": "Transactions never block each other, even on the same rows",
           "is_correct": false
         },
         {
-          "text": "Every query returns the newest data",
+          "text": "Every query returns the newest committed data",
           "is_correct": false
         },
         {
@@ -1369,7 +1369,7 @@
           "is_correct": true
         },
         {
-          "text": "Data is always stored in RAM",
+          "text": "Data is always kept in RAM until the commit finishes",
           "is_correct": false
         }
       ],
@@ -1384,19 +1384,19 @@
       "explanation": "Consistency ensures a transaction moves the database from one valid state to another, preserving all defined rules and constraints.",
       "options": [
         {
-          "text": "The database remains in a valid state, respecting constraints",
+          "text": "Data stays valid under all defined constraints",
           "is_correct": true
         },
         {
-          "text": "Queries always run in parallel",
+          "text": "Queries always run in parallel across all available cores",
           "is_correct": false
         },
         {
-          "text": "All reads happen before writes",
+          "text": "All reads in a transaction are executed before any of its writes",
           "is_correct": false
         },
         {
-          "text": "Data is replicated to all nodes instantly",
+          "text": "Data is replicated to every node instantly on each commit",
           "is_correct": false
         }
       ],
@@ -1411,19 +1411,19 @@
       "explanation": "Isolation ensures concurrent transactions do not interfere with each other; results should be as if transactions ran serially.",
       "options": [
         {
-          "text": "How indexes are built",
+          "text": "How indexes are built and kept balanced over time",
           "is_correct": false
         },
         {
-          "text": "How concurrent transactions are kept from interfering",
+          "text": "How concurrent transactions avoid interfering",
           "is_correct": true
         },
         {
-          "text": "How data is encrypted on disk",
+          "text": "How data files are encrypted on disk and in backups",
           "is_correct": false
         },
         {
-          "text": "How backups are scheduled",
+          "text": "How backups are scheduled so they never overlap with writes",
           "is_correct": false
         }
       ],
@@ -1438,11 +1438,11 @@
       "explanation": "Durability ensures that once a transaction is committed, its changes survive even a crash or power loss.",
       "options": [
         {
-          "text": "Data is compressed automatically",
+          "text": "Data is compressed automatically on write",
           "is_correct": false
         },
         {
-          "text": "Queries never time out",
+          "text": "Queries never hit a timeout of any kind",
           "is_correct": false
         },
         {
@@ -1450,7 +1450,7 @@
           "is_correct": true
         },
         {
-          "text": "Transactions can always be rolled back",
+          "text": "Transactions can always be rolled back later",
           "is_correct": false
         }
       ],
@@ -1469,15 +1469,15 @@
           "is_correct": true
         },
         {
-          "text": "All rows from the left table",
+          "text": "All rows from the left table, matched or not",
           "is_correct": false
         },
         {
-          "text": "All rows from both tables",
+          "text": "All rows from both tables combined",
           "is_correct": false
         },
         {
-          "text": "Rows with no match in either table",
+          "text": "Only rows with no match in either table",
           "is_correct": false
         }
       ],
@@ -1492,15 +1492,15 @@
       "explanation": "A LEFT JOIN returns all rows from the left table plus matching rows from the right; unmatched right-side columns are NULL.",
       "options": [
         {
-          "text": "All right-table rows only",
+          "text": "All right-table rows, with NULLs wherever the left has no match",
           "is_correct": false
         },
         {
-          "text": "Only matching rows",
+          "text": "Only the rows that match in both tables",
           "is_correct": false
         },
         {
-          "text": "The intersection of both tables",
+          "text": "The intersection of both tables, without duplicates",
           "is_correct": false
         },
         {
@@ -1519,19 +1519,19 @@
       "explanation": "1NF requires that each column hold atomic (indivisible) values and that there are no repeating groups or arrays in a column.",
       "options": [
         {
-          "text": "Every table has a foreign key",
+          "text": "Every table has a foreign key to at least one other table",
           "is_correct": false
         },
         {
-          "text": "Each column holds atomic values with no repeating groups",
+          "text": "Atomic column values, no repeating groups",
           "is_correct": true
         },
         {
-          "text": "All columns are indexed",
+          "text": "All columns are indexed so lookups stay fast",
           "is_correct": false
         },
         {
-          "text": "Tables are joined automatically",
+          "text": "Tables are joined automatically when queried together",
           "is_correct": false
         }
       ],
@@ -1546,19 +1546,19 @@
       "explanation": "2NF requires 1NF plus that every non-key column depends on the whole primary key, eliminating partial dependencies on part of a composite key.",
       "options": [
         {
-          "text": "No transitive dependencies",
+          "text": "No transitive dependencies between non-key columns",
           "is_correct": false
         },
         {
-          "text": "No partial dependency on part of a composite key",
+          "text": "No partial dependency on a composite key",
           "is_correct": true
         },
         {
-          "text": "All columns must be unique",
+          "text": "All columns must hold unique values in every row",
           "is_correct": false
         },
         {
-          "text": "Every column must be NOT NULL",
+          "text": "Every column must be declared NOT NULL",
           "is_correct": false
         }
       ],
@@ -1573,11 +1573,11 @@
       "explanation": "3NF requires 2NF plus removing transitive dependencies, so non-key columns depend only on the primary key, not on other non-key columns.",
       "options": [
         {
-          "text": "All indexes",
+          "text": "All indexes except the primary key index",
           "is_correct": false
         },
         {
-          "text": "All foreign keys",
+          "text": "All foreign keys pointing into the table",
           "is_correct": false
         },
         {
@@ -1585,7 +1585,7 @@
           "is_correct": true
         },
         {
-          "text": "The need for a primary key",
+          "text": "The need for a primary key on tables with a unique column",
           "is_correct": false
         }
       ],
@@ -1600,19 +1600,19 @@
       "explanation": "Normalization reduces data redundancy and avoids update anomalies by organizing data into related tables.",
       "options": [
         {
-          "text": "Remove all relationships",
+          "text": "Remove all relationships between tables",
           "is_correct": false
         },
         {
-          "text": "Increase duplicate data for speed",
+          "text": "Increase duplicate data so reads never need a join",
           "is_correct": false
         },
         {
-          "text": "Reduce redundancy and prevent update anomalies",
+          "text": "Reduce redundancy and anomalies",
           "is_correct": true
         },
         {
-          "text": "Eliminate the need for indexes",
+          "text": "Eliminate the need for indexes on foreign keys",
           "is_correct": false
         }
       ],
@@ -1627,7 +1627,7 @@
       "explanation": "Denormalization adds controlled redundancy to reduce expensive joins and speed up reads, at the cost of more complex writes and potential inconsistency.",
       "options": [
         {
-          "text": "To speed up reads by avoiding costly joins",
+          "text": "To speed up reads by avoiding joins",
           "is_correct": true
         },
         {
@@ -1635,11 +1635,11 @@
           "is_correct": false
         },
         {
-          "text": "To remove all indexes",
+          "text": "To remove all indexes from hot tables",
           "is_correct": false
         },
         {
-          "text": "To enforce stricter constraints",
+          "text": "To enforce stricter constraints on every write",
           "is_correct": false
         }
       ],
@@ -1654,7 +1654,7 @@
       "explanation": "Indexes must be updated on every write, so they slow down INSERT/UPDATE/DELETE and consume extra storage.",
       "options": [
         {
-          "text": "Automatic data deletion",
+          "text": "Automatic deletion of rows that are rarely read",
           "is_correct": false
         },
         {
@@ -1662,7 +1662,7 @@
           "is_correct": false
         },
         {
-          "text": "Slower reads on indexed columns",
+          "text": "Slower reads on the indexed columns",
           "is_correct": false
         },
         {
@@ -1681,19 +1681,19 @@
       "explanation": "B-tree indexes efficiently support equality and range queries (e.g., <, >, BETWEEN) and ordered scans.",
       "options": [
         {
-          "text": "Geospatial proximity only",
+          "text": "Geospatial proximity searches only",
           "is_correct": false
         },
         {
-          "text": "Random hashing only",
+          "text": "Random hash lookups only, never ranges",
           "is_correct": false
         },
         {
-          "text": "Equality and range lookups on ordered data",
+          "text": "Equality and range lookups",
           "is_correct": true
         },
         {
-          "text": "Full-text search only",
+          "text": "Full-text search over long free-form documents only",
           "is_correct": false
         }
       ],
@@ -1708,19 +1708,19 @@
       "explanation": "HAVING filters groups after GROUP BY has aggregated rows, allowing conditions on aggregate values like COUNT or SUM.",
       "options": [
         {
-          "text": "Before any rows are read",
+          "text": "Before any rows are read from the table",
           "is_correct": false
         },
         {
-          "text": "After grouping, to filter aggregated groups",
+          "text": "After grouping, to filter groups",
           "is_correct": true
         },
         {
-          "text": "After ORDER BY sorts the rows",
+          "text": "After ORDER BY has sorted the final rows",
           "is_correct": false
         },
         {
-          "text": "Only on indexed columns",
+          "text": "Only on indexed columns, before grouping starts",
           "is_correct": false
         }
       ],
@@ -1735,7 +1735,7 @@
       "explanation": "A subquery is a query nested inside another query, whose result is used by the outer query.",
       "options": [
         {
-          "text": "A query that runs on a backup",
+          "text": "A query that runs against a backup copy",
           "is_correct": false
         },
         {
@@ -1747,7 +1747,7 @@
           "is_correct": false
         },
         {
-          "text": "A query without a WHERE clause",
+          "text": "A query written without a WHERE clause",
           "is_correct": false
         }
       ],
@@ -1762,19 +1762,19 @@
       "explanation": "A correlated subquery references columns from the outer query and is re-evaluated for each outer row.",
       "options": [
         {
-          "text": "It references the outer query and runs per outer row",
+          "text": "It references the outer query per row",
           "is_correct": true
         },
         {
-          "text": "It cannot use WHERE",
+          "text": "It cannot use a WHERE clause of its own",
           "is_correct": false
         },
         {
-          "text": "It only works on views",
+          "text": "It only works on views, not on base tables",
           "is_correct": false
         },
         {
-          "text": "It always returns a single constant",
+          "text": "It always returns a single constant value for the whole query",
           "is_correct": false
         }
       ],
@@ -1789,19 +1789,19 @@
       "explanation": "Opening connections is expensive; a pool reuses a set of established connections to reduce latency and limit concurrent load on the database.",
       "options": [
         {
-          "text": "To encrypt all queries",
+          "text": "To encrypt all queries sent to the database",
           "is_correct": false
         },
         {
-          "text": "To reuse established connections and limit overhead",
+          "text": "To reuse open connections",
           "is_correct": true
         },
         {
-          "text": "To replace indexes",
+          "text": "To replace indexes with in-memory lookups",
           "is_correct": false
         },
         {
-          "text": "To store query results permanently",
+          "text": "To store query results permanently for later requests",
           "is_correct": false
         }
       ],
@@ -1816,19 +1816,19 @@
       "explanation": "Read replicas copy data from a primary to offload read traffic, improving read scalability and availability.",
       "options": [
         {
-          "text": "To shard data across nodes",
+          "text": "To shard data across nodes by key range",
           "is_correct": false
         },
         {
-          "text": "To accept all writes directly",
+          "text": "To accept all writes directly from clients",
           "is_correct": false
         },
         {
-          "text": "To serve read queries and offload the primary",
+          "text": "To serve reads and offload the primary",
           "is_correct": true
         },
         {
-          "text": "To replace backups entirely",
+          "text": "To replace backups entirely with a live copy of the data",
           "is_correct": false
         }
       ],
@@ -1843,7 +1843,7 @@
       "explanation": "Writes go to the primary, which then replicates changes to the read replicas.",
       "options": [
         {
-          "text": "To a cache only",
+          "text": "To a cache only, which flushes to disk later",
           "is_correct": false
         },
         {
@@ -1855,7 +1855,7 @@
           "is_correct": false
         },
         {
-          "text": "To any replica directly",
+          "text": "To any replica, which forwards it on",
           "is_correct": false
         }
       ],
@@ -1870,19 +1870,19 @@
       "explanation": "Replication lag is the delay between a write committing on the primary and that change appearing on a replica, which can cause stale reads.",
       "options": [
         {
-          "text": "The delay before a replica reflects the primary's writes",
+          "text": "How far a replica trails the primary",
           "is_correct": true
         },
         {
-          "text": "The latency of an index rebuild",
+          "text": "The latency of rebuilding an index on the replica",
           "is_correct": false
         },
         {
-          "text": "The size of the transaction log",
+          "text": "The size of the transaction log waiting to be archived",
           "is_correct": false
         },
         {
-          "text": "The time to open a connection",
+          "text": "The time it takes a client to open a new connection to the primary",
           "is_correct": false
         }
       ],
@@ -1897,7 +1897,7 @@
       "explanation": "Sharding partitions rows across multiple database nodes by a shard key, so each node holds a subset of the data.",
       "options": [
         {
-          "text": "Combines many tables into one",
+          "text": "Combines many tables into one wide table",
           "is_correct": false
         },
         {
@@ -1905,11 +1905,11 @@
           "is_correct": false
         },
         {
-          "text": "Compresses the data",
+          "text": "Compresses the data so more rows fit on each node",
           "is_correct": false
         },
         {
-          "text": "Splits rows across multiple nodes by a shard key",
+          "text": "Splits rows across nodes by a key",
           "is_correct": true
         }
       ],
@@ -1924,19 +1924,19 @@
       "explanation": "A stored procedure is a precompiled set of SQL statements stored in the database and executed by name, often with parameters.",
       "options": [
         {
-          "text": "A backup format",
+          "text": "A backup format for exporting a whole schema",
           "is_correct": false
         },
         {
-          "text": "A type of index",
+          "text": "A type of index built from a stored expression",
           "is_correct": false
         },
         {
-          "text": "Saved SQL logic stored and executed in the database",
+          "text": "SQL logic stored and run in the database",
           "is_correct": true
         },
         {
-          "text": "A client-side cache",
+          "text": "A client-side cache of query results kept in the application",
           "is_correct": false
         }
       ],
@@ -1951,19 +1951,19 @@
       "explanation": "A trigger is code that automatically executes in response to events such as INSERT, UPDATE, or DELETE on a table.",
       "options": [
         {
-          "text": "A type of join",
+          "text": "A type of join between a table and its history",
           "is_correct": false
         },
         {
-          "text": "Code that runs automatically on data-change events",
+          "text": "Code that runs when data changes",
           "is_correct": true
         },
         {
-          "text": "A scheduled backup job",
+          "text": "A scheduled backup job that runs every night",
           "is_correct": false
         },
         {
-          "text": "A foreign key constraint",
+          "text": "A foreign key constraint that blocks invalid rows on insert",
           "is_correct": false
         }
       ],
@@ -1982,15 +1982,15 @@
           "is_correct": true
         },
         {
-          "text": "UNION ALL sorts results; UNION does not",
+          "text": "UNION ALL sorts the results; UNION leaves them unsorted",
           "is_correct": false
         },
         {
-          "text": "UNION joins tables side by side",
+          "text": "UNION joins tables side by side on a key",
           "is_correct": false
         },
         {
-          "text": "They are identical",
+          "text": "They are identical; ALL is optional syntax",
           "is_correct": false
         }
       ],
@@ -2005,11 +2005,11 @@
       "explanation": "EXPLAIN shows the query planner's execution strategy, including join types, index usage, and estimated costs.",
       "options": [
         {
-          "text": "The raw bytes of the table on disk",
+          "text": "The raw bytes of the table as stored on disk",
           "is_correct": false
         },
         {
-          "text": "The backup schedule",
+          "text": "The backup schedule for the queried tables",
           "is_correct": false
         },
         {
@@ -2017,7 +2017,7 @@
           "is_correct": true
         },
         {
-          "text": "A list of database users",
+          "text": "A list of database users allowed to run the query",
           "is_correct": false
         }
       ],
@@ -2032,19 +2032,19 @@
       "explanation": "A full table scan reads every row in the table, often because no suitable index exists; it can be slow on large tables.",
       "options": [
         {
-          "text": "The table was locked",
+          "text": "The table was locked for the duration of the query",
           "is_correct": false
         },
         {
-          "text": "The query returned no rows",
+          "text": "The query returned no rows from the table",
           "is_correct": false
         },
         {
-          "text": "The query used an index efficiently",
+          "text": "The query used an index efficiently for every row it read",
           "is_correct": false
         },
         {
-          "text": "The database reads every row, often missing an index",
+          "text": "Every row is read, often due to no index",
           "is_correct": true
         }
       ],
@@ -2059,15 +2059,15 @@
       "explanation": "A composite index is most useful when queries filter on a leftmost prefix of its columns; order determines which queries can use it.",
       "options": [
         {
-          "text": "Order has no effect",
+          "text": "Order has no effect; any column can be used on its own",
           "is_correct": false
         },
         {
-          "text": "Only the last column is used",
+          "text": "Only the last column in the index is used for lookups",
           "is_correct": false
         },
         {
-          "text": "It changes the table's row order",
+          "text": "It changes the physical order in which the table's rows are stored on disk",
           "is_correct": false
         },
         {
@@ -2090,15 +2090,15 @@
           "is_correct": true
         },
         {
-          "text": "It locks rows for the entire transaction",
+          "text": "It locks rows for the entire transaction so no conflict can occur",
           "is_correct": false
         },
         {
-          "text": "It disables transactions",
+          "text": "It disables transactions to avoid locking overhead",
           "is_correct": false
         },
         {
-          "text": "It always blocks readers",
+          "text": "It always blocks readers while a write is in progress",
           "is_correct": false
         }
       ],
@@ -2113,11 +2113,11 @@
       "explanation": "A deadlock occurs when two or more transactions each hold a lock the other needs, so none can proceed; the database usually aborts one to break it.",
       "options": [
         {
-          "text": "A query that runs forever due to a missing index",
+          "text": "A query that runs forever because it is missing an index",
           "is_correct": false
         },
         {
-          "text": "A full disk",
+          "text": "A full disk that blocks every new write",
           "is_correct": false
         },
         {
@@ -2125,7 +2125,7 @@
           "is_correct": true
         },
         {
-          "text": "A crashed replica",
+          "text": "A crashed replica that stops acknowledging commits",
           "is_correct": false
         }
       ],
@@ -2140,11 +2140,11 @@
       "explanation": "A surrogate key is an artificial, system-generated identifier (like an auto-increment ID or UUID) with no business meaning, used as the primary key.",
       "options": [
         {
-          "text": "A temporary key for a session",
+          "text": "A temporary key issued for a user session",
           "is_correct": false
         },
         {
-          "text": "A foreign key to another database",
+          "text": "A foreign key that points to a table in another database",
           "is_correct": false
         },
         {
@@ -2167,7 +2167,7 @@
       "explanation": "A natural key is a primary key formed from existing, meaningful business data (such as an ISBN or email), rather than a generated value.",
       "options": [
         {
-          "text": "An auto-incrementing integer",
+          "text": "An auto-incrementing integer assigned on insert",
           "is_correct": false
         },
         {
@@ -2175,11 +2175,11 @@
           "is_correct": true
         },
         {
-          "text": "A randomly generated UUID",
+          "text": "A randomly generated UUID with no meaning",
           "is_correct": false
         },
         {
-          "text": "A hidden internal row id",
+          "text": "A hidden internal row id managed by the database engine",
           "is_correct": false
         }
       ],
@@ -2194,11 +2194,11 @@
       "explanation": "A CHECK constraint enforces that a column's values satisfy a boolean expression, e.g., price > 0.",
       "options": [
         {
-          "text": "Encrypts the column",
+          "text": "Encrypts the column when a condition is met",
           "is_correct": false
         },
         {
-          "text": "Links two tables",
+          "text": "Links two tables through a checked reference",
           "is_correct": false
         },
         {
@@ -2206,7 +2206,7 @@
           "is_correct": true
         },
         {
-          "text": "Indexes the column",
+          "text": "Indexes the column for faster checks",
           "is_correct": false
         }
       ],
@@ -2221,11 +2221,11 @@
       "explanation": "When the referenced parent row is deleted, the child rows that reference it are automatically deleted too.",
       "options": [
         {
-          "text": "Nothing happens to child rows",
+          "text": "Nothing happens to child rows; they keep the old parent id",
           "is_correct": false
         },
         {
-          "text": "Deletion of the parent is blocked",
+          "text": "Deletion of the parent is blocked while children exist",
           "is_correct": false
         },
         {
@@ -2233,7 +2233,7 @@
           "is_correct": true
         },
         {
-          "text": "Child rows are set to NULL",
+          "text": "Child rows have their foreign key set to NULL instead",
           "is_correct": false
         }
       ],
@@ -2248,15 +2248,15 @@
       "explanation": "A materialized view stores the query result physically and must be refreshed, whereas a regular view computes results on each access.",
       "options": [
         {
-          "text": "It is always faster to write to",
+          "text": "It is always faster to write to than a base table",
           "is_correct": false
         },
         {
-          "text": "It cannot be queried",
+          "text": "It cannot be queried directly, only refreshed",
           "is_correct": false
         },
         {
-          "text": "It never goes stale",
+          "text": "It never goes stale because it reads live data",
           "is_correct": false
         },
         {
@@ -2275,11 +2275,11 @@
       "explanation": "A dirty read occurs when a transaction reads data written by another transaction that has not yet committed and might be rolled back.",
       "options": [
         {
-          "text": "Reading from a corrupted disk block",
+          "text": "Reading from a corrupted disk block after a crash",
           "is_correct": false
         },
         {
-          "text": "Reading from a replica",
+          "text": "Reading from a replica that is behind the primary",
           "is_correct": false
         },
         {
@@ -2287,7 +2287,7 @@
           "is_correct": true
         },
         {
-          "text": "Reading a deleted row",
+          "text": "Reading a row that was deleted and vacuumed",
           "is_correct": false
         }
       ],
@@ -2306,11 +2306,11 @@
           "is_correct": false
         },
         {
-          "text": "A table can have many primary keys",
+          "text": "A table can have many primary keys but only one unique index",
           "is_correct": false
         },
         {
-          "text": "They are exactly the same",
+          "text": "They are exactly the same; primary key is only a naming convention",
           "is_correct": false
         },
         {
@@ -2329,7 +2329,7 @@
       "explanation": "A CROSS JOIN produces the Cartesian product: every row of the first table paired with every row of the second.",
       "options": [
         {
-          "text": "Only matching rows",
+          "text": "Only rows that match on the join condition",
           "is_correct": false
         },
         {
@@ -2341,7 +2341,7 @@
           "is_correct": true
         },
         {
-          "text": "Distinct rows from both tables",
+          "text": "Distinct rows that appear in both tables",
           "is_correct": false
         }
       ],
@@ -2360,15 +2360,15 @@
           "is_correct": true
         },
         {
-          "text": "They must be primary keys",
+          "text": "They must be part of the table's primary key",
           "is_correct": false
         },
         {
-          "text": "They must be NULL",
+          "text": "They must be NULL in every grouped row",
           "is_correct": false
         },
         {
-          "text": "They must be indexed",
+          "text": "They must be indexed for grouping to work",
           "is_correct": false
         }
       ],
@@ -2383,15 +2383,15 @@
       "explanation": "A covering index includes all columns a query needs, so the query can be answered from the index alone without reading the table rows.",
       "options": [
         {
-          "text": "A backup of the index",
+          "text": "A backup of an index kept for fast recovery",
           "is_correct": false
         },
         {
-          "text": "An index on every column of a table",
+          "text": "An index built on every column of a table",
           "is_correct": false
         },
         {
-          "text": "An index shared across tables",
+          "text": "An index shared across several tables",
           "is_correct": false
         },
         {
@@ -2410,15 +2410,15 @@
       "explanation": "High-cardinality columns (many distinct values) make indexes more selective and useful; low-cardinality columns yield less benefit.",
       "options": [
         {
-          "text": "Indexes only help boolean columns",
+          "text": "Indexes only help on boolean columns with two values",
           "is_correct": false
         },
         {
-          "text": "Cardinality has no effect on indexes",
+          "text": "Cardinality has no effect on how useful an index is",
           "is_correct": false
         },
         {
-          "text": "Low cardinality always makes the best indexes",
+          "text": "Low cardinality always makes the best and most selective indexes",
           "is_correct": false
         },
         {
@@ -2437,15 +2437,15 @@
       "explanation": "A WAL records changes before they are applied to the data files, enabling crash recovery and durability.",
       "options": [
         {
-          "text": "Store user passwords",
+          "text": "Store user passwords in an append-only file",
           "is_correct": false
         },
         {
-          "text": "Cache query results",
+          "text": "Cache query results so repeated reads skip the disk",
           "is_correct": false
         },
         {
-          "text": "Compress old rows",
+          "text": "Compress old rows before they are moved to archive storage",
           "is_correct": false
         },
         {
@@ -2468,11 +2468,11 @@
           "is_correct": false
         },
         {
-          "text": "Writes are never replicated",
+          "text": "Writes are never replicated to other nodes",
           "is_correct": false
         },
         {
-          "text": "Data is never consistent",
+          "text": "Data is never consistent across replicas",
           "is_correct": false
         },
         {
@@ -2499,7 +2499,7 @@
           "is_correct": false
         },
         {
-          "text": "Batch report generation only",
+          "text": "Batch report generation only, run overnight",
           "is_correct": false
         },
         {
@@ -2526,11 +2526,11 @@
           "is_correct": true
         },
         {
-          "text": "It indexes the parent table",
+          "text": "It builds an index on the parent table's key",
           "is_correct": false
         },
         {
-          "text": "It duplicates parent rows",
+          "text": "It duplicates parent rows into each child table",
           "is_correct": false
         }
       ],
@@ -2549,15 +2549,15 @@
           "is_correct": true
         },
         {
-          "text": "The last argument always",
+          "text": "The last argument, whatever its value",
           "is_correct": false
         },
         {
-          "text": "The sum of all arguments",
+          "text": "The sum of all non-NULL arguments",
           "is_correct": false
         },
         {
-          "text": "NULL if any argument is NULL",
+          "text": "NULL if any argument in the list is NULL",
           "is_correct": false
         }
       ],
@@ -2572,7 +2572,7 @@
       "explanation": "A self join joins a table to itself, typically using aliases, to relate rows within the same table (e.g., employees to their managers).",
       "options": [
         {
-          "text": "A join across two databases",
+          "text": "A join across tables in two databases",
           "is_correct": false
         },
         {
@@ -2584,7 +2584,7 @@
           "is_correct": false
         },
         {
-          "text": "A join that returns no rows",
+          "text": "A join that always returns no rows",
           "is_correct": false
         }
       ],
@@ -2599,11 +2599,11 @@
       "explanation": "When a column has few distinct values, each value matches many rows, so the planner may prefer a full scan over the index.",
       "options": [
         {
-          "text": "Boolean columns cannot be indexed",
+          "text": "Boolean columns cannot be indexed by a B-tree",
           "is_correct": false
         },
         {
-          "text": "It forces NULLs everywhere",
+          "text": "It forces NULLs into every non-matching row",
           "is_correct": false
         },
         {
@@ -2611,7 +2611,7 @@
           "is_correct": true
         },
         {
-          "text": "It corrupts the table",
+          "text": "It corrupts the table over time",
           "is_correct": false
         }
       ],
@@ -2626,15 +2626,15 @@
       "explanation": "A foreign key references the primary key (or a unique key) of the parent table.",
       "options": [
         {
-          "text": "Any column of the parent",
+          "text": "Any column of the parent, indexed or not",
           "is_correct": false
         },
         {
-          "text": "An index name",
+          "text": "The name of an index on the parent table",
           "is_correct": false
         },
         {
-          "text": "The child's own primary key",
+          "text": "The child table's own primary key column",
           "is_correct": false
         },
         {
@@ -2653,7 +2653,7 @@
       "explanation": "MVCC keeps old row versions for concurrent readers; VACUUM reclaims space from dead tuples that are no longer visible to any transaction.",
       "options": [
         {
-          "text": "Encrypting all rows",
+          "text": "Encrypting rows that are rarely read",
           "is_correct": false
         },
         {
@@ -2661,11 +2661,11 @@
           "is_correct": true
         },
         {
-          "text": "Creating new indexes",
+          "text": "Creating new indexes for frequent queries",
           "is_correct": false
         },
         {
-          "text": "Adding foreign keys",
+          "text": "Adding missing foreign keys between tables",
           "is_correct": false
         }
       ],
@@ -2680,11 +2680,11 @@
       "explanation": "OFFSET still scans and discards all skipped rows, so deep offsets read progressively more rows; keyset (seek) pagination avoids this by filtering on the last seen key.",
       "options": [
         {
-          "text": "OFFSET disables indexes",
+          "text": "OFFSET disables every index on the queried table",
           "is_correct": false
         },
         {
-          "text": "OFFSET locks the whole table",
+          "text": "OFFSET locks the whole table until the client reads the final page",
           "is_correct": false
         },
         {
@@ -2692,7 +2692,7 @@
           "is_correct": true
         },
         {
-          "text": "OFFSET duplicates rows",
+          "text": "OFFSET duplicates rows that appear on earlier pages",
           "is_correct": false
         }
       ],
@@ -2711,15 +2711,15 @@
           "is_correct": true
         },
         {
-          "text": "Reads of uncommitted data are allowed",
+          "text": "Reads of uncommitted data are allowed for higher throughput",
           "is_correct": false
         },
         {
-          "text": "No locking is ever used",
+          "text": "No locking is ever used, so readers never wait",
           "is_correct": false
         },
         {
-          "text": "Transactions can never roll back",
+          "text": "Transactions can never roll back once they have started",
           "is_correct": false
         }
       ],
@@ -2734,7 +2734,7 @@
       "explanation": "A phantom read happens when a transaction re-runs a range query and sees new rows inserted by another committed transaction that match the predicate.",
       "options": [
         {
-          "text": "Reading an uncommitted value",
+          "text": "Reading a value another transaction has not committed yet",
           "is_correct": false
         },
         {
@@ -2742,11 +2742,11 @@
           "is_correct": true
         },
         {
-          "text": "Reading a row that no longer exists physically",
+          "text": "Reading a row that no longer exists physically on disk",
           "is_correct": false
         },
         {
-          "text": "A read from a stale cache",
+          "text": "A read served from a stale cache after an update",
           "is_correct": false
         }
       ],
@@ -2761,15 +2761,15 @@
       "explanation": "A non-repeatable read occurs when a transaction reads the same row twice and gets different values because another committed transaction modified it in between.",
       "options": [
         {
-          "text": "Reading from two tables at once",
+          "text": "Reading from two tables at once in a single statement",
           "is_correct": false
         },
         {
-          "text": "A query that cannot be run twice",
+          "text": "A query that cannot be run twice because it holds a lock",
           "is_correct": false
         },
         {
-          "text": "A read that returns NULL",
+          "text": "A read that returns NULL because the row was vacuumed between two statements",
           "is_correct": false
         },
         {
@@ -2788,7 +2788,7 @@
       "explanation": "MVCC keeps multiple versions of a row so readers see a consistent snapshot from their transaction's start, while writers create new versions without blocking those readers.",
       "options": [
         {
-          "text": "Writes are queued until all reads finish",
+          "text": "Writes are queued in a buffer until every in-flight read has finished",
           "is_correct": false
         },
         {
@@ -2796,11 +2796,11 @@
           "is_correct": true
         },
         {
-          "text": "Only one transaction runs at a time",
+          "text": "Only one transaction runs at a time, so nothing ever conflicts",
           "is_correct": false
         },
         {
-          "text": "Readers always acquire exclusive locks",
+          "text": "Readers always acquire exclusive locks that writers skip over",
           "is_correct": false
         }
       ],
@@ -2815,7 +2815,7 @@
       "explanation": "2PC coordinates an atomic commit across multiple nodes/resources: a prepare phase followed by a commit phase ensures all participants commit or all abort.",
       "options": [
         {
-          "text": "Index rebuilding",
+          "text": "Rebuilding indexes on every node after a crash",
           "is_correct": false
         },
         {
@@ -2823,11 +2823,11 @@
           "is_correct": true
         },
         {
-          "text": "Compressing the WAL",
+          "text": "Compressing the WAL before it is shipped to replicas",
           "is_correct": false
         },
         {
-          "text": "Faster single-node reads",
+          "text": "Faster single-node reads via prepared plans",
           "is_correct": false
         }
       ],
@@ -2842,11 +2842,11 @@
       "explanation": "If the coordinator fails after participants have prepared, they may block indefinitely holding locks while awaiting the final decision.",
       "options": [
         {
-          "text": "It cannot guarantee atomicity",
+          "text": "It cannot guarantee atomicity when all nodes are healthy",
           "is_correct": false
         },
         {
-          "text": "It removes the need for a WAL",
+          "text": "It removes the need for a WAL on each participant node",
           "is_correct": false
         },
         {
@@ -2854,7 +2854,7 @@
           "is_correct": true
         },
         {
-          "text": "It only works on a single machine",
+          "text": "It only works when every participant runs on the same physical machine",
           "is_correct": false
         }
       ],
@@ -2869,7 +2869,7 @@
       "explanation": "A saga breaks a distributed transaction into a series of local transactions, each with a compensating action to undo prior steps on failure.",
       "options": [
         {
-          "text": "A single ACID transaction across services",
+          "text": "A single ACID transaction that spans every participating service",
           "is_correct": false
         },
         {
@@ -2877,11 +2877,11 @@
           "is_correct": true
         },
         {
-          "text": "A global lock across all services",
+          "text": "A global lock held across all services until the end",
           "is_correct": false
         },
         {
-          "text": "Disabling all writes",
+          "text": "Disabling all writes until every service agrees",
           "is_correct": false
         }
       ],
@@ -2896,7 +2896,7 @@
       "explanation": "Background compaction repeatedly rewrites data as it merges SSTables across levels, so a single logical write results in multiple physical writes.",
       "options": [
         {
-          "text": "Reads block all writes",
+          "text": "Reads block all writes while a memtable is flushed",
           "is_correct": false
         },
         {
@@ -2904,11 +2904,11 @@
           "is_correct": true
         },
         {
-          "text": "The WAL is disabled",
+          "text": "The WAL is disabled, so every write goes to disk directly",
           "is_correct": false
         },
         {
-          "text": "Indexes are never updated",
+          "text": "Indexes are never updated, so they are rebuilt on each write",
           "is_correct": false
         }
       ],
@@ -2923,7 +2923,7 @@
       "explanation": "LSM trees optimize writes but a read may need to check several SSTables (and bloom filters) across levels, potentially increasing read amplification.",
       "options": [
         {
-          "text": "Reads are always faster than B-trees",
+          "text": "Reads are always faster than on B-trees because every SSTable is sorted",
           "is_correct": false
         },
         {
@@ -2931,11 +2931,11 @@
           "is_correct": true
         },
         {
-          "text": "Writes are slower than B-trees",
+          "text": "Writes are slower than B-trees since every write is in place",
           "is_correct": false
         },
         {
-          "text": "Reads cannot use bloom filters",
+          "text": "Reads cannot use bloom filters, so every lookup hits disk",
           "is_correct": false
         }
       ],
@@ -2954,15 +2954,15 @@
           "is_correct": true
         },
         {
-          "text": "To compress row data",
+          "text": "To compress row data before it is written to disk",
           "is_correct": false
         },
         {
-          "text": "To enforce uniqueness",
+          "text": "To enforce uniqueness of keys across all files",
           "is_correct": false
         },
         {
-          "text": "To guarantee a key exists in a file",
+          "text": "To guarantee a key exists in a given file",
           "is_correct": false
         }
       ],
@@ -3008,7 +3008,7 @@
           "is_correct": false
         },
         {
-          "text": "Hashing eliminates the need for a shard key",
+          "text": "Hashing eliminates the need to choose a shard key at all",
           "is_correct": false
         },
         {
@@ -3031,7 +3031,7 @@
       "explanation": "Consistent hashing minimizes the number of keys that must move when nodes are added or removed, avoiding a full reshuffle.",
       "options": [
         {
-          "text": "Guaranteeing strong consistency",
+          "text": "Guaranteeing strong consistency across all replicas",
           "is_correct": false
         },
         {
@@ -3039,11 +3039,11 @@
           "is_correct": true
         },
         {
-          "text": "Removing the need for a hash function",
+          "text": "Removing the need for a hash function on each key",
           "is_correct": false
         },
         {
-          "text": "Eliminating replication",
+          "text": "Eliminating replication by giving each key exactly one node",
           "is_correct": false
         }
       ],
@@ -3062,15 +3062,15 @@
           "is_correct": true
         },
         {
-          "text": "The query uses no WHERE clause",
+          "text": "The query uses no WHERE clause, so every row is read",
           "is_correct": false
         },
         {
-          "text": "The index is on a boolean column",
+          "text": "The index is on a boolean column with few distinct values",
           "is_correct": false
         },
         {
-          "text": "The table has no primary key",
+          "text": "The table has no primary key, so the index is the only access path",
           "is_correct": false
         }
       ],
@@ -3112,11 +3112,11 @@
       "explanation": "Gap locks lock the space between index records to prevent other transactions from inserting into that range, which blocks phantom rows under repeatable read.",
       "options": [
         {
-          "text": "To replicate rows to replicas",
+          "text": "To replicate locked rows to replicas in order",
           "is_correct": false
         },
         {
-          "text": "To speed up sequential scans",
+          "text": "To speed up sequential scans over a key range",
           "is_correct": false
         },
         {
@@ -3124,7 +3124,7 @@
           "is_correct": true
         },
         {
-          "text": "To compress index pages",
+          "text": "To compress index pages that have gaps between keys",
           "is_correct": false
         }
       ],
@@ -3143,15 +3143,15 @@
           "is_correct": true
         },
         {
-          "text": "Writes always wait for every replica",
+          "text": "Writes always wait for every replica to acknowledge them",
           "is_correct": false
         },
         {
-          "text": "It eliminates replication lag",
+          "text": "It eliminates replication lag on the replicas",
           "is_correct": false
         },
         {
-          "text": "It guarantees zero data loss",
+          "text": "It guarantees zero data loss, even if the primary fails",
           "is_correct": false
         }
       ],
@@ -3166,7 +3166,7 @@
       "explanation": "Split-brain occurs when a network partition causes two nodes to each believe they are the primary, accepting conflicting writes.",
       "options": [
         {
-          "text": "The cluster runs out of disk",
+          "text": "The cluster runs out of disk on both of its nodes at once",
           "is_correct": false
         },
         {
@@ -3174,11 +3174,11 @@
           "is_correct": true
         },
         {
-          "text": "An index is built on two columns",
+          "text": "An index is built on two columns and split across nodes",
           "is_correct": false
         },
         {
-          "text": "A replica falls permanently behind",
+          "text": "A replica falls permanently behind the primary",
           "is_correct": false
         }
       ],
@@ -3197,15 +3197,15 @@
           "is_correct": true
         },
         {
-          "text": "They speed up the new leader",
+          "text": "They speed up the new leader by skipping log replay",
           "is_correct": false
         },
         {
-          "text": "They encrypt all writes",
+          "text": "They encrypt all writes so a stale leader cannot read them",
           "is_correct": false
         },
         {
-          "text": "They disable replication",
+          "text": "They disable replication until the old leader rejoins the cluster",
           "is_correct": false
         }
       ],
@@ -3220,7 +3220,7 @@
       "explanation": "Because the index holds every column the query needs, the engine avoids random heap/row lookups, turning many scattered reads into a single ordered index scan.",
       "options": [
         {
-          "text": "It compresses the table",
+          "text": "It compresses the table so fewer pages are read",
           "is_correct": false
         },
         {
@@ -3228,11 +3228,11 @@
           "is_correct": true
         },
         {
-          "text": "It caches results permanently",
+          "text": "It caches query results permanently",
           "is_correct": false
         },
         {
-          "text": "It removes the WHERE clause cost",
+          "text": "It removes the cost of the WHERE clause",
           "is_correct": false
         }
       ],
@@ -3247,7 +3247,7 @@
       "explanation": "A skewed shard key concentrates data and traffic on a few shards (hotspots), undermining the scalability benefit of sharding.",
       "options": [
         {
-          "text": "Stronger consistency",
+          "text": "Stronger consistency that slows down every write",
           "is_correct": false
         },
         {
@@ -3255,11 +3255,11 @@
           "is_correct": true
         },
         {
-          "text": "Automatic resharding",
+          "text": "Automatic resharding that runs during peak traffic",
           "is_correct": false
         },
         {
-          "text": "Perfectly even data distribution",
+          "text": "Perfectly even data distribution across shards",
           "is_correct": false
         }
       ],
@@ -3274,11 +3274,11 @@
       "explanation": "After a timeout the client cannot know if the write applied; an idempotent operation (e.g., keyed by a unique request id) ensures retries do not duplicate effects.",
       "options": [
         {
-          "text": "It removes the need for transactions",
+          "text": "It removes the need for transactions around the write",
           "is_correct": false
         },
         {
-          "text": "It speeds up the network",
+          "text": "It speeds up the network round trip",
           "is_correct": false
         },
         {
@@ -3286,7 +3286,7 @@
           "is_correct": true
         },
         {
-          "text": "It guarantees lower latency",
+          "text": "It guarantees lower latency on the second attempt",
           "is_correct": false
         }
       ],
@@ -3305,7 +3305,7 @@
           "is_correct": false
         },
         {
-          "text": "Atomicity",
+          "text": "Transaction atomicity",
           "is_correct": false
         },
         {
@@ -3313,7 +3313,7 @@
           "is_correct": true
         },
         {
-          "text": "Durability",
+          "text": "Write durability",
           "is_correct": false
         }
       ],
@@ -3328,7 +3328,7 @@
       "explanation": "PACELC states that besides the partition (P) trade-off of availability vs consistency, Else (E) — when the system is running normally — there is a trade-off between latency (L) and consistency (C).",
       "options": [
         {
-          "text": "Availability is impossible",
+          "text": "Availability is impossible once any partition has occurred",
           "is_correct": false
         },
         {
@@ -3336,11 +3336,11 @@
           "is_correct": true
         },
         {
-          "text": "Consistency is always free",
+          "text": "Consistency is always free when the network is healthy",
           "is_correct": false
         },
         {
-          "text": "Partitions never happen in practice",
+          "text": "Partitions never happen in practice, so the CAP trade-off can be ignored",
           "is_correct": false
         }
       ],
@@ -3355,7 +3355,7 @@
       "explanation": "A hot backup is taken while the database is online and serving traffic; a cold backup requires the database to be stopped/offline.",
       "options": [
         {
-          "text": "They are identical",
+          "text": "They are identical apart from the tool used",
           "is_correct": false
         },
         {
@@ -3382,15 +3382,15 @@
       "explanation": "PITR combines a base backup with the continuous transaction/WAL log so the database can be replayed to any chosen moment before a failure.",
       "options": [
         {
-          "text": "Only a single nightly full dump",
+          "text": "Only a single nightly full dump of the whole database",
           "is_correct": false
         },
         {
-          "text": "A read replica with no logs",
+          "text": "A read replica kept running with its logs turned off",
           "is_correct": false
         },
         {
-          "text": "An in-memory cache",
+          "text": "An in-memory cache that holds every recent write until restart",
           "is_correct": false
         },
         {
@@ -3413,15 +3413,15 @@
           "is_correct": true
         },
         {
-          "text": "An index missing one column",
+          "text": "An index that is missing one column needed by N queries",
           "is_correct": false
         },
         {
-          "text": "A query that returns one extra row",
+          "text": "A query that returns one extra row beyond the requested page size",
           "is_correct": false
         },
         {
-          "text": "A transaction with N rollbacks",
+          "text": "A transaction that is rolled back N times before one attempt finally succeeds",
           "is_correct": false
         }
       ],
@@ -3436,7 +3436,7 @@
       "explanation": "If the predicate matches a large fraction of rows, the planner estimates that scanning sequentially is cheaper than many random index lookups.",
       "options": [
         {
-          "text": "Because the index is encrypted",
+          "text": "Because the index is encrypted on disk",
           "is_correct": false
         },
         {
@@ -3444,11 +3444,11 @@
           "is_correct": true
         },
         {
-          "text": "Because sequential scans are always faster",
+          "text": "Because sequential scans are always faster than index scans",
           "is_correct": false
         },
         {
-          "text": "Indexes are never used by planners",
+          "text": "Because indexes are never used by planners for WHERE clauses",
           "is_correct": false
         }
       ],
@@ -3463,11 +3463,11 @@
       "explanation": "Lock escalation converts many fine-grained locks (e.g., row locks) into a single coarser lock (e.g., a table lock) to reduce lock-management overhead, at the cost of concurrency.",
       "options": [
         {
-          "text": "Encrypting locked rows",
+          "text": "Encrypting locked rows so others cannot read them",
           "is_correct": false
         },
         {
-          "text": "Promoting a replica to primary",
+          "text": "Promoting a replica to primary when locks pile up",
           "is_correct": false
         },
         {
@@ -3475,7 +3475,7 @@
           "is_correct": true
         },
         {
-          "text": "Releasing all locks at once",
+          "text": "Releasing all locks at once when a transaction commits",
           "is_correct": false
         }
       ],
@@ -3490,15 +3490,15 @@
       "explanation": "Without an index on the child's foreign key, operations like deleting or updating a parent key can trigger slow full scans of the child table to check references.",
       "options": [
         {
-          "text": "To encrypt the relationship",
+          "text": "To encrypt the relationship between parent and child rows",
           "is_correct": false
         },
         {
-          "text": "To enforce NOT NULL",
+          "text": "To enforce NOT NULL on the foreign key column",
           "is_correct": false
         },
         {
-          "text": "Because foreign keys cannot exist without an index",
+          "text": "Because foreign keys cannot be declared without an index on the child",
           "is_correct": false
         },
         {
@@ -3517,15 +3517,15 @@
       "explanation": "Read-your-writes ensures that after a client makes a write, that same client's subsequent reads will reflect the write, even if other clients might not yet.",
       "options": [
         {
-          "text": "Writes are never visible to the writer",
+          "text": "Writes are never visible to the client that made them",
           "is_correct": false
         },
         {
-          "text": "Reads bypass the write log",
+          "text": "Reads bypass the write log and go straight to disk",
           "is_correct": false
         },
         {
-          "text": "All clients see all writes instantly",
+          "text": "All clients see all writes instantly, whichever replica they use",
           "is_correct": false
         },
         {
@@ -3544,11 +3544,11 @@
       "explanation": "A partial index indexes only rows satisfying a predicate (e.g., WHERE active = true), saving space and speeding queries that target that subset.",
       "options": [
         {
-          "text": "An index on half of each value",
+          "text": "An index on the first half of each column value",
           "is_correct": false
         },
         {
-          "text": "An index spanning multiple tables",
+          "text": "An index spanning several tables that share a common key column",
           "is_correct": false
         },
         {
@@ -3556,7 +3556,7 @@
           "is_correct": true
         },
         {
-          "text": "An index that is rebuilt every night",
+          "text": "An index that is rebuilt every night to stay compact",
           "is_correct": false
         }
       ],
@@ -3575,15 +3575,15 @@
           "is_correct": true
         },
         {
-          "text": "A clustered index is always smaller",
+          "text": "A clustered index is always smaller than any non-clustered one",
           "is_correct": false
         },
         {
-          "text": "They are functionally identical",
+          "text": "They are functionally identical; the name is vendor-specific",
           "is_correct": false
         },
         {
-          "text": "Non-clustered indexes store the full rows",
+          "text": "Non-clustered indexes store the full rows; you can have only one per table",
           "is_correct": false
         }
       ],
@@ -3598,15 +3598,15 @@
       "explanation": "CDC streams row-level changes (often from the transaction log) so downstream systems like search indexes, caches, or data warehouses stay in sync.",
       "options": [
         {
-          "text": "Compressing the database",
+          "text": "Compressing the database files during quiet periods",
           "is_correct": false
         },
         {
-          "text": "Rebuilding indexes nightly",
+          "text": "Rebuilding indexes nightly from the latest changes",
           "is_correct": false
         },
         {
-          "text": "Encrypting the WAL",
+          "text": "Encrypting the WAL before it is archived",
           "is_correct": false
         },
         {
@@ -3629,15 +3629,15 @@
           "is_correct": true
         },
         {
-          "text": "It is the only level that supports indexes",
+          "text": "It is the only isolation level that can make use of secondary indexes",
           "is_correct": false
         },
         {
-          "text": "It allows dirty reads for speed",
+          "text": "It allows dirty reads, which makes queries run faster",
           "is_correct": false
         },
         {
-          "text": "It disables transactions",
+          "text": "It disables transactions for single-statement queries",
           "is_correct": false
         }
       ],
@@ -3652,15 +3652,15 @@
       "explanation": "Adding a hash prefix or salt to the partition key spreads sequential writes across multiple partitions, relieving the hotspot.",
       "options": [
         {
-          "text": "Using a single global lock",
+          "text": "Using a single global lock so that writes land in timestamp order",
           "is_correct": false
         },
         {
-          "text": "Removing all indexes",
+          "text": "Removing all indexes from the partitioned table",
           "is_correct": false
         },
         {
-          "text": "Lowering the isolation level",
+          "text": "Lowering the isolation level on every writing transaction",
           "is_correct": false
         },
         {
@@ -3679,11 +3679,11 @@
       "explanation": "Application-level enforcement can scale across sharded/distributed stores that lack cross-node FKs, but it risks inconsistency if any code path or concurrent write bypasses the check.",
       "options": [
         {
-          "text": "It guarantees stronger integrity than FKs",
+          "text": "It guarantees stronger integrity than foreign keys can",
           "is_correct": false
         },
         {
-          "text": "It removes the need for primary keys",
+          "text": "It removes the need for primary keys on child tables",
           "is_correct": false
         },
         {
@@ -3691,7 +3691,7 @@
           "is_correct": true
         },
         {
-          "text": "It is always faster and safer",
+          "text": "It is always faster and safer than database constraints",
           "is_correct": false
         }
       ],
@@ -3706,11 +3706,11 @@
       "explanation": "Raft (or Paxos) lets a cluster agree on a single leader and a consistent, ordered log of operations despite failures, underpinning consistent replication.",
       "options": [
         {
-          "text": "Compressing table data",
+          "text": "Compressing table data before it is replicated",
           "is_correct": false
         },
         {
-          "text": "Building secondary indexes",
+          "text": "Building secondary indexes on every node in parallel",
           "is_correct": false
         },
         {
@@ -3718,7 +3718,7 @@
           "is_correct": true
         },
         {
-          "text": "Encrypting client connections",
+          "text": "Encrypting client connections using session keys that all nodes agree on",
           "is_correct": false
         }
       ],
@@ -3733,11 +3733,11 @@
       "explanation": "A tombstone is a marker that a key was deleted; it must propagate to all replicas before being purged, and accumulating tombstones can slow reads and range scans.",
       "options": [
         {
-          "text": "A type of primary key",
+          "text": "A type of primary key that is reused after a row is deleted",
           "is_correct": false
         },
         {
-          "text": "An encrypted backup",
+          "text": "An encrypted backup of deleted rows kept for compliance",
           "is_correct": false
         },
         {
@@ -3745,7 +3745,7 @@
           "is_correct": true
         },
         {
-          "text": "A corrupted data page",
+          "text": "A corrupted data page that must be skipped during compaction and reads",
           "is_correct": false
         }
       ],
@@ -3760,11 +3760,11 @@
       "explanation": "When all pooled connections are in use, new requests wait for a free connection and may time out, even though the database itself has spare capacity.",
       "options": [
         {
-          "text": "Indexes are dropped automatically",
+          "text": "Indexes are dropped automatically to free up connections",
           "is_correct": false
         },
         {
-          "text": "Queries return wrong results",
+          "text": "Queries return results from other sessions",
           "is_correct": false
         },
         {
@@ -3772,7 +3772,7 @@
           "is_correct": true
         },
         {
-          "text": "The schema changes by itself",
+          "text": "The schema changes by itself to shed extra load",
           "is_correct": false
         }
       ],
@@ -3787,15 +3787,15 @@
       "explanation": "Two on-call doctors each check that at least one other doctor is on duty and both go off-call simultaneously under snapshot isolation, violating the constraint that one must remain.",
       "options": [
         {
-          "text": "A single transaction updating one row twice",
+          "text": "A single transaction updating the same row twice, losing its first write",
           "is_correct": false
         },
         {
-          "text": "Reading uncommitted data",
+          "text": "Reading data that another transaction has written but not committed yet",
           "is_correct": false
         },
         {
-          "text": "A query returning duplicate rows",
+          "text": "A query returning duplicate rows because two writers inserted the same key at once",
           "is_correct": false
         },
         {
@@ -3814,11 +3814,11 @@
       "explanation": "Index bloat is wasted space from dead entries left by many updates/deletes under MVCC; it inflates index size and slows scans until the index is rebuilt or vacuumed.",
       "options": [
         {
-          "text": "An index without a primary key",
+          "text": "An index built on a table that has no primary key defined",
           "is_correct": false
         },
         {
-          "text": "An index that is too small to use",
+          "text": "An index that is too small for the planner to consider using",
           "is_correct": false
         },
         {
@@ -3826,7 +3826,7 @@
           "is_correct": true
         },
         {
-          "text": "An index encrypted twice",
+          "text": "An index encrypted twice by overlapping backup jobs",
           "is_correct": false
         }
       ],
@@ -3853,7 +3853,7 @@
           "is_correct": false
         },
         {
-          "text": "Logical replication requires identical disk layouts",
+          "text": "Logical replication requires identical disk layouts on both servers",
           "is_correct": false
         }
       ],
@@ -3868,7 +3868,7 @@
       "explanation": "SKIP LOCKED lets concurrent workers grab different unlocked rows without blocking on rows another worker already locked, enabling parallel queue consumption.",
       "options": [
         {
-          "text": "It disables transactions for speed",
+          "text": "It disables transactions so workers can dequeue jobs faster",
           "is_correct": false
         },
         {
@@ -3876,11 +3876,11 @@
           "is_correct": true
         },
         {
-          "text": "It locks the entire table for one worker",
+          "text": "It locks the entire table for one worker until its job is done",
           "is_correct": false
         },
         {
-          "text": "It guarantees FIFO ordering",
+          "text": "It guarantees strict FIFO ordering of jobs across every worker in the pool",
           "is_correct": false
         }
       ],
@@ -3895,15 +3895,15 @@
       "explanation": "Duplicated data must be kept in sync on every write; missing an update path leads to inconsistent copies (update anomalies).",
       "options": [
         {
-          "text": "Indexes stop working",
+          "text": "Indexes stop working on the duplicated columns",
           "is_correct": false
         },
         {
-          "text": "Reads become impossible",
+          "text": "Reads become impossible without a join",
           "is_correct": false
         },
         {
-          "text": "The schema can no longer be queried",
+          "text": "The schema can no longer be queried with standard SQL",
           "is_correct": false
         },
         {
@@ -3922,11 +3922,11 @@
       "explanation": "Partitioning by time lets queries prune to relevant partitions and makes dropping old data a fast partition-drop instead of a slow bulk DELETE.",
       "options": [
         {
-          "text": "It guarantees strong consistency",
+          "text": "It guarantees strong consistency across all time ranges",
           "is_correct": false
         },
         {
-          "text": "It removes the need for indexes",
+          "text": "It removes the need for indexes on the timestamp column",
           "is_correct": false
         },
         {
@@ -3934,7 +3934,7 @@
           "is_correct": true
         },
         {
-          "text": "It encrypts older partitions",
+          "text": "It encrypts older partitions automatically",
           "is_correct": false
         }
       ],
@@ -3949,7 +3949,7 @@
       "explanation": "Inserting/updating a child row takes a shared lock on the referenced parent row to ensure it still exists, which can serialize transactions touching popular parent rows.",
       "options": [
         {
-          "text": "They never affect concurrency",
+          "text": "They never affect concurrency because checks happen after commit",
           "is_correct": false
         },
         {
@@ -3957,11 +3957,11 @@
           "is_correct": true
         },
         {
-          "text": "They disable all indexes",
+          "text": "They disable all indexes on the child table during writes",
           "is_correct": false
         },
         {
-          "text": "They duplicate the parent table",
+          "text": "They duplicate the parent table into every transaction that touches it",
           "is_correct": false
         }
       ],
@@ -3976,15 +3976,15 @@
       "explanation": "The planner estimates row counts from collected statistics; if they are outdated after large data changes, it may misjudge selectivity and pick an inefficient plan.",
       "options": [
         {
-          "text": "Statistics encrypt the data",
+          "text": "Statistics encrypt the data, so the planner cannot read it",
           "is_correct": false
         },
         {
-          "text": "Stale stats drop indexes",
+          "text": "Stale statistics cause the planner to drop indexes",
           "is_correct": false
         },
         {
-          "text": "They have no effect on planning",
+          "text": "They have no effect on planning; only the SQL text matters",
           "is_correct": false
         },
         {
@@ -4003,7 +4003,7 @@
       "explanation": "Append-only writes avoid in-place updates and locks on existing rows, simplifying concurrency, enabling full history/audit, and pairing well with log-structured storage.",
       "options": [
         {
-          "text": "It makes reads impossible",
+          "text": "It makes reads impossible until the table is compacted",
           "is_correct": false
         },
         {
@@ -4011,11 +4011,11 @@
           "is_correct": true
         },
         {
-          "text": "It guarantees zero disk usage",
+          "text": "It guarantees zero disk growth as rows are added",
           "is_correct": false
         },
         {
-          "text": "It removes the need for storage",
+          "text": "It removes the need for storage beyond memory",
           "is_correct": false
         }
       ],
@@ -4034,15 +4034,15 @@
           "is_correct": true
         },
         {
-          "text": "Only updates inside a serializable transaction",
+          "text": "Only updates inside a serializable transaction, since they skip locking",
           "is_correct": false
         },
         {
-          "text": "Updates that move the row to another partition",
+          "text": "Updates that move the row to another partition with free space",
           "is_correct": false
         },
         {
-          "text": "Any update where a primary key changes",
+          "text": "Any update where the primary key changes, so indexes stay valid",
           "is_correct": false
         }
       ],

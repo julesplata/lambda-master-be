@@ -7,7 +7,7 @@
       "explanation": "A load balancer distributes incoming requests across multiple backend servers so no single instance is overwhelmed, improving throughput and availability.",
       "options": [
         {
-          "text": "To encrypt the database at rest",
+          "text": "To encrypt the database and its backups at rest",
           "is_correct": false
         },
         {
@@ -15,11 +15,11 @@
           "is_correct": true
         },
         {
-          "text": "To compile application code before deployment",
+          "text": "To compile application code before each deployment",
           "is_correct": false
         },
         {
-          "text": "To permanently store user session data",
+          "text": "To permanently store user session data for every server in the pool",
           "is_correct": false
         }
       ],
@@ -61,7 +61,7 @@
       "explanation": "Caches store frequently accessed data in fast memory to reduce latency and offload repeated reads from the database.",
       "options": [
         {
-          "text": "To replace the need for a primary database entirely",
+          "text": "To replace the need for a primary database entirely, even for writes",
           "is_correct": false
         },
         {
@@ -69,11 +69,11 @@
           "is_correct": true
         },
         {
-          "text": "To guarantee strong consistency for all writes",
+          "text": "To guarantee strong consistency for all writes across every replica",
           "is_correct": false
         },
         {
-          "text": "To increase write durability on disk",
+          "text": "To increase write durability by persisting every write to disk twice",
           "is_correct": false
         }
       ],
@@ -92,15 +92,15 @@
           "is_correct": true
         },
         {
-          "text": "They never need a database connection",
+          "text": "They never need a database connection, so requests finish faster",
           "is_correct": false
         },
         {
-          "text": "They automatically encrypt all traffic",
+          "text": "They automatically encrypt all traffic between instances",
           "is_correct": false
         },
         {
-          "text": "They use less disk because they store all data in RAM",
+          "text": "They use less disk because they keep all their data in RAM",
           "is_correct": false
         }
       ],
@@ -142,11 +142,11 @@
       "explanation": "Read replicas copy data from the primary and serve read queries, distributing read load while the primary handles writes.",
       "options": [
         {
-          "text": "They allow concurrent writes to every replica",
+          "text": "They allow concurrent writes to every replica without coordination",
           "is_correct": false
         },
         {
-          "text": "They guarantee zero replication lag",
+          "text": "They guarantee zero replication lag between primary and replicas",
           "is_correct": false
         },
         {
@@ -154,7 +154,7 @@
           "is_correct": true
         },
         {
-          "text": "They eliminate the need for caching",
+          "text": "They eliminate the need for caching in front of the database",
           "is_correct": false
         }
       ],
@@ -196,11 +196,11 @@
       "explanation": "LRU evicts the entry that has not been accessed for the longest time, assuming recently used items are more likely to be used again.",
       "options": [
         {
-          "text": "Evicts the most recently added entry",
+          "text": "Evicts the most recently added entry to make room",
           "is_correct": false
         },
         {
-          "text": "Evicts a random entry",
+          "text": "Evicts a random entry, regardless of how often it is used",
           "is_correct": false
         },
         {
@@ -208,7 +208,7 @@
           "is_correct": true
         },
         {
-          "text": "Evicts the largest entry by size",
+          "text": "Evicts the largest entry by size so more entries fit",
           "is_correct": false
         }
       ],
@@ -223,7 +223,7 @@
       "explanation": "Consistent hashing minimizes the number of keys that must be remapped when nodes are added or removed, avoiding a full reshuffle of the keyspace.",
       "options": [
         {
-          "text": "It encrypts keys before hashing",
+          "text": "It encrypts keys before hashing them onto the ring",
           "is_correct": false
         },
         {
@@ -235,7 +235,7 @@
           "is_correct": true
         },
         {
-          "text": "It removes the need for replication",
+          "text": "It removes the need for replication of each key",
           "is_correct": false
         }
       ],
@@ -250,7 +250,7 @@
       "explanation": "Eventual consistency guarantees that, absent new updates, all replicas will converge to the same value over time, but reads may be stale in the interim.",
       "options": [
         {
-          "text": "Writes are rejected until all replicas agree",
+          "text": "Writes are rejected until all replicas agree on the new value",
           "is_correct": false
         },
         {
@@ -262,7 +262,7 @@
           "is_correct": false
         },
         {
-          "text": "Data is never replicated to other nodes",
+          "text": "Data is never replicated to other nodes, so there is nothing to reconcile",
           "is_correct": false
         }
       ],
@@ -277,15 +277,15 @@
       "explanation": "On a miss the application reads from the database, then populates the cache so subsequent reads hit the cache.",
       "options": [
         {
-          "text": "The request fails until the cache is warmed manually",
+          "text": "The request fails until an operator warms the cache manually",
           "is_correct": false
         },
         {
-          "text": "The cache automatically queries the database itself",
+          "text": "The cache automatically queries the database itself on the app's behalf",
           "is_correct": false
         },
         {
-          "text": "The write is sent only to the cache, never the database",
+          "text": "The write is sent only to the cache and never reaches the database",
           "is_correct": false
         },
         {
@@ -308,11 +308,11 @@
           "is_correct": true
         },
         {
-          "text": "A split-brain",
+          "text": "A split-brain between two cache nodes",
           "is_correct": false
         },
         {
-          "text": "A cold start",
+          "text": "A cold start of the database connection pool",
           "is_correct": false
         },
         {
@@ -331,7 +331,7 @@
       "explanation": "Write-back acknowledges the write after updating only the cache and flushes to the store later, so a crash before the flush can lose data.",
       "options": [
         {
-          "text": "It cannot be used with an LRU policy",
+          "text": "It cannot be used together with an LRU eviction policy",
           "is_correct": false
         },
         {
@@ -339,11 +339,11 @@
           "is_correct": true
         },
         {
-          "text": "It always has higher write latency than write-through",
+          "text": "It always has higher write latency than write-through, even for small writes",
           "is_correct": false
         },
         {
-          "text": "It prevents the cache from ever being read",
+          "text": "It prevents the cache from being read at all until the next flush has completed",
           "is_correct": false
         }
       ],
@@ -385,7 +385,7 @@
       "explanation": "A reverse proxy sits in front of servers and can terminate TLS, route requests, cache responses, and balance load.",
       "options": [
         {
-          "text": "Generating application source code",
+          "text": "Generating application source code from API definitions",
           "is_correct": false
         },
         {
@@ -393,7 +393,7 @@
           "is_correct": true
         },
         {
-          "text": "Running database migrations automatically",
+          "text": "Running database migrations automatically on each deploy",
           "is_correct": false
         },
         {
@@ -412,15 +412,15 @@
       "explanation": "An idempotent operation produces the same result whether performed once or multiple times, which is important for safe retries.",
       "options": [
         {
-          "text": "It must complete within a fixed time budget",
+          "text": "It must complete within a fixed time budget or be rolled back",
           "is_correct": false
         },
         {
-          "text": "It always returns a different result each call",
+          "text": "It always returns a different result each time it is called",
           "is_correct": false
         },
         {
-          "text": "It can only ever be executed a single time",
+          "text": "It can only ever be executed a single time per client session",
           "is_correct": false
         },
         {
@@ -439,11 +439,11 @@
       "explanation": "Rough estimates of QPS, storage, and bandwidth justify architectural choices like sharding, caching, or CDN use before committing to a design.",
       "options": [
         {
-          "text": "To decide the programming language",
+          "text": "To decide which programming language the system is written in",
           "is_correct": false
         },
         {
-          "text": "To produce exact production capacity numbers",
+          "text": "To produce exact production capacity numbers for procurement",
           "is_correct": false
         },
         {
@@ -451,7 +451,7 @@
           "is_correct": true
         },
         {
-          "text": "To replace load testing entirely",
+          "text": "To replace load testing entirely, since estimates are precise enough to trust",
           "is_correct": false
         }
       ],
@@ -470,15 +470,15 @@
           "is_correct": true
         },
         {
-          "text": "It guarantees perfectly even distribution",
+          "text": "It guarantees a perfectly even distribution of load across every server",
           "is_correct": false
         },
         {
-          "text": "It makes all servers fully stateless",
+          "text": "It makes all servers fully stateless, so any of them can serve any request",
           "is_correct": false
         },
         {
-          "text": "It removes the need for a load balancer",
+          "text": "It removes the need for a load balancer after the first request",
           "is_correct": false
         }
       ],
@@ -497,15 +497,15 @@
           "is_correct": true
         },
         {
-          "text": "Zero replication overhead",
+          "text": "Zero replication overhead, since replicas are updated lazily",
           "is_correct": false
         },
         {
-          "text": "Automatic conflict-free merging at no cost",
+          "text": "Automatic conflict-free merging of writes at no extra cost",
           "is_correct": false
         },
         {
-          "text": "Unlimited write throughput",
+          "text": "Unlimited write throughput because every region accepts writes",
           "is_correct": false
         }
       ],
@@ -520,11 +520,11 @@
       "explanation": "CDNs cache content at edge locations close to users, reducing latency and offloading origin servers.",
       "options": [
         {
-          "text": "Automatic schema migrations",
+          "text": "Automatic schema migrations applied at each edge location worldwide",
           "is_correct": false
         },
         {
-          "text": "Stronger database consistency",
+          "text": "Stronger database consistency, because edges read from the primary",
           "is_correct": false
         },
         {
@@ -532,7 +532,7 @@
           "is_correct": true
         },
         {
-          "text": "Guaranteed real-time write propagation",
+          "text": "Guaranteed real-time write propagation from users to the origin database",
           "is_correct": false
         }
       ],
@@ -551,15 +551,15 @@
           "is_correct": true
         },
         {
-          "text": "Rejecting all requests during partial failures",
+          "text": "Rejecting all requests during partial failures to protect correctness",
           "is_correct": false
         },
         {
-          "text": "Automatically scaling up to infinite capacity",
+          "text": "Automatically scaling up to infinite capacity when load increases",
           "is_correct": false
         },
         {
-          "text": "Shutting down all services to protect data",
+          "text": "Shutting down all services at once to protect data integrity",
           "is_correct": false
         }
       ],
@@ -574,7 +574,7 @@
       "explanation": "Health checks let the load balancer stop routing traffic to unhealthy instances, improving availability.",
       "options": [
         {
-          "text": "To compile new code on each instance",
+          "text": "To compile new code on each instance before routing",
           "is_correct": false
         },
         {
@@ -582,11 +582,11 @@
           "is_correct": true
         },
         {
-          "text": "To back up the database",
+          "text": "To back up the database attached to each instance",
           "is_correct": false
         },
         {
-          "text": "To rotate TLS certificates",
+          "text": "To rotate TLS certificates on each backend",
           "is_correct": false
         }
       ],
@@ -601,11 +601,11 @@
       "explanation": "When the write quorum plus read quorum exceeds the replica count, the read set and write set overlap on at least one node, so reads can observe the latest write.",
       "options": [
         {
-          "text": "The system can tolerate any number of failures",
+          "text": "The system can tolerate any number of node failures without losing data",
           "is_correct": false
         },
         {
-          "text": "Writes never need to contact more than one node",
+          "text": "Writes never need to contact more than one node to be considered durable",
           "is_correct": false
         },
         {
@@ -613,7 +613,7 @@
           "is_correct": true
         },
         {
-          "text": "All replicas are always perfectly synchronized",
+          "text": "All replicas are always perfectly synchronized after every single write",
           "is_correct": false
         }
       ],
@@ -628,15 +628,15 @@
       "explanation": "Workloads with complex relationships, multi-row transactions, and ad-hoc joins fit relational databases well.",
       "options": [
         {
-          "text": "Massive append-only logs with a simple key lookup",
+          "text": "Massive append-only logs that are read with a simple key lookup",
           "is_correct": false
         },
         {
-          "text": "Schema-less documents that change shape frequently",
+          "text": "Schema-less documents that change their shape frequently",
           "is_correct": false
         },
         {
-          "text": "Purely in-memory ephemeral counters",
+          "text": "Purely in-memory ephemeral counters that tolerate data loss",
           "is_correct": false
         },
         {
@@ -686,15 +686,15 @@
           "is_correct": true
         },
         {
-          "text": "To make all writes faster",
+          "text": "To make every write to the table faster, including bulk inserts",
           "is_correct": false
         },
         {
-          "text": "To compress the entire table",
+          "text": "To compress the entire table so it takes less space",
           "is_correct": false
         },
         {
-          "text": "To enforce that the column is encrypted",
+          "text": "To enforce that the column's values are encrypted on disk",
           "is_correct": false
         }
       ],
@@ -709,11 +709,11 @@
       "explanation": "Every insert/update/delete must also update each index, so write performance degrades and storage grows as index count increases.",
       "options": [
         {
-          "text": "The table can no longer be queried",
+          "text": "The table can no longer be queried while indexes are rebuilt",
           "is_correct": false
         },
         {
-          "text": "Reads on indexed columns become slower",
+          "text": "Reads on indexed columns become slower as more indexes are added",
           "is_correct": false
         },
         {
@@ -721,7 +721,7 @@
           "is_correct": true
         },
         {
-          "text": "Transactions lose atomicity",
+          "text": "Transactions lose atomicity when they touch indexed columns",
           "is_correct": false
         }
       ],
@@ -736,11 +736,11 @@
       "explanation": "Sharding horizontally partitions a dataset across multiple databases/nodes, each holding a subset of the rows, to scale beyond one machine.",
       "options": [
         {
-          "text": "Adding indexes to every column",
+          "text": "Adding indexes to every column so any query can use one",
           "is_correct": false
         },
         {
-          "text": "Copying the full dataset to every node",
+          "text": "Copying the full dataset to every node for read scaling",
           "is_correct": false
         },
         {
@@ -748,7 +748,7 @@
           "is_correct": true
         },
         {
-          "text": "Compressing old rows into archive files",
+          "text": "Compressing old rows into archive files on cheaper storage",
           "is_correct": false
         }
       ],
@@ -763,11 +763,11 @@
       "explanation": "A skewed shard key concentrates data and traffic on a few shards (hot shards), defeating the purpose of horizontal partitioning.",
       "options": [
         {
-          "text": "It automatically violates ACID",
+          "text": "It automatically violates ACID guarantees on every shard",
           "is_correct": false
         },
         {
-          "text": "It doubles storage on every shard",
+          "text": "It doubles storage on every shard that holds a replica",
           "is_correct": false
         },
         {
@@ -775,7 +775,7 @@
           "is_correct": true
         },
         {
-          "text": "It prevents the use of any index",
+          "text": "It prevents the use of any index on the sharded table",
           "is_correct": false
         }
       ],
@@ -794,7 +794,7 @@
           "is_correct": false
         },
         {
-          "text": "Eliminate the need for primary keys",
+          "text": "Eliminate the need for primary keys on each table",
           "is_correct": false
         },
         {
@@ -802,7 +802,7 @@
           "is_correct": true
         },
         {
-          "text": "Maximize duplication for faster reads",
+          "text": "Maximize duplication so reads are faster",
           "is_correct": false
         }
       ],
@@ -817,15 +817,15 @@
       "explanation": "Denormalization duplicates data to avoid expensive joins at read time, trading write complexity and storage for faster reads.",
       "options": [
         {
-          "text": "To guarantee third normal form",
+          "text": "To guarantee the schema stays in third normal form",
           "is_correct": false
         },
         {
-          "text": "To make writes simpler",
+          "text": "To make writes simpler and faster to apply",
           "is_correct": false
         },
         {
-          "text": "To reduce total storage used",
+          "text": "To reduce the total storage the database uses",
           "is_correct": false
         },
         {
@@ -848,15 +848,15 @@
           "is_correct": true
         },
         {
-          "text": "Geospatial nearest-neighbor search",
+          "text": "Geospatial nearest-neighbor search across map coordinates",
           "is_correct": false
         },
         {
-          "text": "Approximate set membership tests",
+          "text": "Approximate set membership tests over very large key sets",
           "is_correct": false
         },
         {
-          "text": "Full-text fuzzy matching across documents",
+          "text": "Full-text fuzzy matching across large collections of documents",
           "is_correct": false
         }
       ],
@@ -871,15 +871,15 @@
       "explanation": "Object stores excel at storing large, immutable blobs (images, videos, backups) accessed by key, not transactional row updates.",
       "options": [
         {
-          "text": "Sub-millisecond transactional counters",
+          "text": "Sub-millisecond counters updated inside transactions",
           "is_correct": false
         },
         {
-          "text": "Running complex multi-table joins",
+          "text": "Running complex multi-table joins over live data",
           "is_correct": false
         },
         {
-          "text": "Enforcing foreign key constraints",
+          "text": "Enforcing foreign key constraints between records",
           "is_correct": false
         },
         {
@@ -898,7 +898,7 @@
       "explanation": "Establishing connections is expensive; a pool reuses a bounded set of open connections, reducing latency and protecting the database from connection exhaustion.",
       "options": [
         {
-          "text": "To encrypt every query automatically",
+          "text": "To encrypt every query automatically before it is sent",
           "is_correct": false
         },
         {
@@ -906,11 +906,11 @@
           "is_correct": true
         },
         {
-          "text": "To cache query results in the application",
+          "text": "To cache query results in the application between requests",
           "is_correct": false
         },
         {
-          "text": "To shard data across nodes",
+          "text": "To shard data across nodes based on which connection a request uses",
           "is_correct": false
         }
       ],
@@ -925,15 +925,15 @@
       "explanation": "Asynchronous replication means a replica may not yet have applied the latest write, so a read-after-write on a replica can be stale (replication lag).",
       "options": [
         {
-          "text": "The shard key was wrong",
+          "text": "The shard key was chosen badly for the read pattern",
           "is_correct": false
         },
         {
-          "text": "The transaction was not atomic",
+          "text": "The transaction was not atomic across both statements",
           "is_correct": false
         },
         {
-          "text": "The index is corrupted",
+          "text": "The index on the replica is corrupted",
           "is_correct": false
         },
         {
@@ -952,11 +952,11 @@
       "explanation": "The WAL records changes durably before applying them to data files, enabling crash recovery and durability without flushing every page synchronously.",
       "options": [
         {
-          "text": "To speed up read-only queries",
+          "text": "To speed up read-only queries by caching their plans",
           "is_correct": false
         },
         {
-          "text": "To compress historical data",
+          "text": "To compress historical data that is rarely queried",
           "is_correct": false
         },
         {
@@ -964,7 +964,7 @@
           "is_correct": true
         },
         {
-          "text": "To replace the need for indexes",
+          "text": "To replace the need for indexes on frequently read tables",
           "is_correct": false
         }
       ],
@@ -979,15 +979,15 @@
       "explanation": "LSM trees buffer writes in memory and flush them sequentially to disk, turning random writes into fast sequential I/O, with compaction merging segments later.",
       "options": [
         {
-          "text": "They store all data in a single sorted file forever",
+          "text": "They store all data in one sorted file that is never rewritten",
           "is_correct": false
         },
         {
-          "text": "They avoid using memory entirely",
+          "text": "They avoid using memory entirely, writing straight to disk",
           "is_correct": false
         },
         {
-          "text": "They never need compaction",
+          "text": "They never need compaction, so writes are never repeated",
           "is_correct": false
         },
         {
@@ -1033,7 +1033,7 @@
       "explanation": "Time-series databases optimize for high-volume timestamped writes and time-window aggregations, like metrics and IoT sensor data.",
       "options": [
         {
-          "text": "Storing large binary blobs",
+          "text": "Storing large binary blobs such as video files and images",
           "is_correct": false
         },
         {
@@ -1041,11 +1041,11 @@
           "is_correct": true
         },
         {
-          "text": "Full-text document search",
+          "text": "Full-text document search with relevance ranking",
           "is_correct": false
         },
         {
-          "text": "Complex many-to-many relational joins",
+          "text": "Complex many-to-many relational joins across normalized tables",
           "is_correct": false
         }
       ],
@@ -1060,7 +1060,7 @@
       "explanation": "A foreign key ensures referential integrity: a value in the child table must reference an existing row in the parent table.",
       "options": [
         {
-          "text": "That writes are encrypted",
+          "text": "That writes to both tables are encrypted in transit",
           "is_correct": false
         },
         {
@@ -1068,11 +1068,11 @@
           "is_correct": true
         },
         {
-          "text": "That a column is indexed",
+          "text": "That the referencing column is automatically indexed",
           "is_correct": false
         },
         {
-          "text": "That a column value is unique",
+          "text": "That a column value is unique across the whole table",
           "is_correct": false
         }
       ],
@@ -1087,7 +1087,7 @@
       "explanation": "Partitioning splits data into disjoint subsets across nodes (for scale); replication copies the same data to multiple nodes (for availability/read scaling).",
       "options": [
         {
-          "text": "Replication splits data; partitioning copies it",
+          "text": "Replication splits data into subsets; partitioning copies all of it",
           "is_correct": false
         },
         {
@@ -1095,11 +1095,11 @@
           "is_correct": true
         },
         {
-          "text": "Both reduce total storage usage",
+          "text": "Both reduce total storage usage by removing duplicate rows",
           "is_correct": false
         },
         {
-          "text": "They are two names for the same thing",
+          "text": "They are two names for the same technique used by different vendors",
           "is_correct": false
         }
       ],
@@ -1118,15 +1118,15 @@
           "is_correct": true
         },
         {
-          "text": "By locking the row for the entire transaction",
+          "text": "By locking the row for the entire duration of the transaction",
           "is_correct": false
         },
         {
-          "text": "By disabling all other connections",
+          "text": "By disabling all other connections while it writes",
           "is_correct": false
         },
         {
-          "text": "By replicating the row before writing",
+          "text": "By replicating the row to a backup before writing",
           "is_correct": false
         }
       ],
@@ -1141,11 +1141,11 @@
       "explanation": "A materialized view stores the precomputed result of a query physically, speeding up reads at the cost of needing refresh when underlying data changes.",
       "options": [
         {
-          "text": "A backup copy of the entire database",
+          "text": "A backup copy of the entire database kept on another server",
           "is_correct": false
         },
         {
-          "text": "An in-memory cache managed by the OS",
+          "text": "An in-memory cache managed by the operating system",
           "is_correct": false
         },
         {
@@ -1153,7 +1153,7 @@
           "is_correct": true
         },
         {
-          "text": "A virtual table computed fresh on every query",
+          "text": "A virtual table computed fresh from base tables on every query",
           "is_correct": false
         }
       ],
@@ -1168,7 +1168,7 @@
       "explanation": "Adding a salt/suffix to the key spreads writes for a hot key across multiple partitions, reducing the hot-partition bottleneck.",
       "options": [
         {
-          "text": "Increasing the isolation level",
+          "text": "Increasing the isolation level on writes to the busy partition",
           "is_correct": false
         },
         {
@@ -1176,11 +1176,11 @@
           "is_correct": true
         },
         {
-          "text": "Disabling the cache",
+          "text": "Disabling the cache so requests reach every partition evenly",
           "is_correct": false
         },
         {
-          "text": "Removing all replicas",
+          "text": "Removing all replicas so the partition has less work to do",
           "is_correct": false
         }
       ],
@@ -1199,15 +1199,15 @@
           "is_correct": true
         },
         {
-          "text": "Relational databases cannot store binary data at all",
+          "text": "Relational databases cannot store binary data of any kind at all",
           "is_correct": false
         },
         {
-          "text": "It improves transaction isolation",
+          "text": "It improves transaction isolation for queries on media rows",
           "is_correct": false
         },
         {
-          "text": "Object stores enforce foreign keys better",
+          "text": "Object stores enforce foreign keys between files better than databases",
           "is_correct": false
         }
       ],
@@ -1226,15 +1226,15 @@
           "is_correct": true
         },
         {
-          "text": "It cannot guarantee atomicity",
+          "text": "It cannot guarantee atomicity when every participant is healthy",
           "is_correct": false
         },
         {
-          "text": "It requires no coordinator",
+          "text": "It requires no coordinator, so nobody tracks the outcome",
           "is_correct": false
         },
         {
-          "text": "It eliminates network communication",
+          "text": "It eliminates network communication between the participating nodes",
           "is_correct": false
         }
       ],
@@ -1253,15 +1253,15 @@
           "is_correct": true
         },
         {
-          "text": "A query filtering only on column b",
+          "text": "A query filtering only on column b, without column a",
           "is_correct": false
         },
         {
-          "text": "Any query regardless of columns used",
+          "text": "Any query, regardless of which columns it filters on",
           "is_correct": false
         },
         {
-          "text": "Only queries that select all columns",
+          "text": "Only queries that select every column in the table",
           "is_correct": false
         }
       ],
@@ -1280,15 +1280,15 @@
           "is_correct": true
         },
         {
-          "text": "It guarantees synchronous responses to the producer",
+          "text": "It guarantees synchronous responses to the producer for every message",
           "is_correct": false
         },
         {
-          "text": "It encrypts all messages by default",
+          "text": "It encrypts all messages by default before they leave the producer",
           "is_correct": false
         },
         {
-          "text": "It replaces the need for a database",
+          "text": "It replaces the need for a database to store the application's state",
           "is_correct": false
         }
       ],
@@ -1303,11 +1303,11 @@
       "explanation": "At-least-once means a message may be delivered more than once, so consumers must be idempotent to handle duplicates safely.",
       "options": [
         {
-          "text": "Messages that are never delivered",
+          "text": "Messages that are never delivered, even after retries",
           "is_correct": false
         },
         {
-          "text": "Messages arriving strictly once and in order",
+          "text": "Messages arriving strictly once and in the order sent",
           "is_correct": false
         },
         {
@@ -1315,7 +1315,7 @@
           "is_correct": true
         },
         {
-          "text": "Automatic deduplication with no effort",
+          "text": "Automatic deduplication done by the broker with no effort",
           "is_correct": false
         }
       ],
@@ -1330,15 +1330,15 @@
       "explanation": "In pub/sub, each message is delivered to all subscribers of a topic; in a point-to-point queue, each message is consumed by exactly one consumer.",
       "options": [
         {
-          "text": "They behave identically",
+          "text": "They behave identically; only the API names differ",
           "is_correct": false
         },
         {
-          "text": "Pub/sub guarantees one consumer; queues fan out to all",
+          "text": "Pub/sub guarantees one consumer per message; queues fan out to all of them",
           "is_correct": false
         },
         {
-          "text": "Pub/sub cannot have more than one subscriber",
+          "text": "Pub/sub cannot have more than one subscriber per topic, while a queue can have many",
           "is_correct": false
         },
         {
@@ -1357,11 +1357,11 @@
       "explanation": "They let a group of nodes agree on a single value/log order despite failures, enabling consistent replication and leader election.",
       "options": [
         {
-          "text": "Encrypting data at rest",
+          "text": "Encrypting data at rest on every node in the cluster",
           "is_correct": false
         },
         {
-          "text": "Indexing a database table",
+          "text": "Indexing a database table that is spread across many machines",
           "is_correct": false
         },
         {
@@ -1369,7 +1369,7 @@
           "is_correct": true
         },
         {
-          "text": "Compressing network packets",
+          "text": "Compressing network packets sent between replicas",
           "is_correct": false
         }
       ],
@@ -1384,11 +1384,11 @@
       "explanation": "A single leader serializes writes and coordinates replication, simplifying consistency compared to accepting writes on any node.",
       "options": [
         {
-          "text": "To increase the number of single points of failure",
+          "text": "To increase the number of single points of failure across the cluster",
           "is_correct": false
         },
         {
-          "text": "To remove the need for replication",
+          "text": "To remove the need for replication, since one node holds all the data",
           "is_correct": false
         },
         {
@@ -1411,11 +1411,11 @@
       "explanation": "A network partition causes two subsets of nodes to each believe they are the leader/primary, risking divergent, conflicting writes.",
       "options": [
         {
-          "text": "A single node runs out of memory",
+          "text": "A single node runs out of memory and drops half of its client connections",
           "is_correct": false
         },
         {
-          "text": "A query plan chooses the wrong index",
+          "text": "A query plan picks the wrong index on half of the nodes after a failover",
           "is_correct": false
         },
         {
@@ -1423,7 +1423,7 @@
           "is_correct": true
         },
         {
-          "text": "The cache and database disagree on a value",
+          "text": "The cache and the database disagree on a value after a failed invalidation",
           "is_correct": false
         }
       ],
@@ -1442,15 +1442,15 @@
           "is_correct": true
         },
         {
-          "text": "Storing successfully processed messages permanently",
+          "text": "Storing successfully processed messages permanently for auditing",
           "is_correct": false
         },
         {
-          "text": "Encrypting messages in transit",
+          "text": "Encrypting messages in transit between producers and brokers",
           "is_correct": false
         },
         {
-          "text": "Load balancing across consumers",
+          "text": "Load balancing messages across consumers that have spare capacity to take more",
           "is_correct": false
         }
       ],
@@ -1465,7 +1465,7 @@
       "explanation": "Event sourcing stores state as an immutable, append-only sequence of events; current state is derived by replaying those events.",
       "options": [
         {
-          "text": "Caching events in memory only",
+          "text": "Caching every event in memory only, discarding each once it is applied",
           "is_correct": false
         },
         {
@@ -1477,7 +1477,7 @@
           "is_correct": true
         },
         {
-          "text": "Overwriting the current state on every change with no history",
+          "text": "Overwriting the current state on every change, keeping no history of it",
           "is_correct": false
         }
       ],
@@ -1492,11 +1492,11 @@
       "explanation": "CQRS separates the write model (commands) from the read model (queries), allowing each to be optimized and scaled independently.",
       "options": [
         {
-          "text": "The cache from the database",
+          "text": "The cache layer from the database that it sits in front of",
           "is_correct": false
         },
         {
-          "text": "The frontend from the backend",
+          "text": "The frontend code from the backend services that it calls",
           "is_correct": false
         },
         {
@@ -1504,7 +1504,7 @@
           "is_correct": true
         },
         {
-          "text": "Authentication from authorization",
+          "text": "Authentication of users from authorization of their actions",
           "is_correct": false
         }
       ],
@@ -1519,7 +1519,7 @@
       "explanation": "A saga breaks the workflow into local transactions, each with a compensating action to undo prior steps if a later step fails, avoiding distributed locks.",
       "options": [
         {
-          "text": "By using two-phase commit across every service",
+          "text": "By using two-phase commit across every participating service",
           "is_correct": false
         },
         {
@@ -1527,11 +1527,11 @@
           "is_correct": true
         },
         {
-          "text": "By disabling transactions entirely",
+          "text": "By disabling transactions entirely and accepting partial failure",
           "is_correct": false
         },
         {
-          "text": "By holding a single global lock across all services",
+          "text": "By holding a single global lock across all services until the end",
           "is_correct": false
         }
       ],
@@ -1546,7 +1546,7 @@
       "explanation": "Periodic heartbeat signals let nodes detect that peers are alive; a missed heartbeat triggers failure detection and possibly failover.",
       "options": [
         {
-          "text": "To compress messages",
+          "text": "To compress messages exchanged between nodes in the cluster",
           "is_correct": false
         },
         {
@@ -1554,11 +1554,11 @@
           "is_correct": true
         },
         {
-          "text": "To synchronize database schemas",
+          "text": "To synchronize database schemas across every node",
           "is_correct": false
         },
         {
-          "text": "To encrypt inter-node traffic",
+          "text": "To encrypt inter-node traffic with keys that are rotated on every beat",
           "is_correct": false
         }
       ],
@@ -1577,15 +1577,15 @@
           "is_correct": true
         },
         {
-          "text": "It speeds up the database write",
+          "text": "It speeds up the database write by skipping validation of the payment",
           "is_correct": false
         },
         {
-          "text": "It encrypts the payment amount",
+          "text": "It encrypts the payment amount so a retried request cannot be tampered with",
           "is_correct": false
         },
         {
-          "text": "It guarantees the request never fails",
+          "text": "It guarantees the request never fails, so the client never has to retry it",
           "is_correct": false
         }
       ],
@@ -1600,7 +1600,7 @@
       "explanation": "True end-to-end exactly-once delivery over an unreliable network is generally impossible; it's approximated via at-least-once delivery plus idempotent processing or transactional deduplication.",
       "options": [
         {
-          "text": "It requires no consumer-side deduplication",
+          "text": "It requires no deduplication on the consumer side, since the broker handles all of it",
           "is_correct": false
         },
         {
@@ -1608,7 +1608,7 @@
           "is_correct": true
         },
         {
-          "text": "It is the same as at-most-once delivery",
+          "text": "It is the same as at-most-once delivery, with messages dropped rather than repeated",
           "is_correct": false
         },
         {
@@ -1627,15 +1627,15 @@
       "explanation": "Backpressure is a mechanism by which a slow consumer signals upstream producers to slow down, preventing unbounded buffering and resource exhaustion.",
       "options": [
         {
-          "text": "Pushing all data as fast as possible regardless of consumers",
+          "text": "Pushing all data as fast as possible regardless of how fast consumers are",
           "is_correct": false
         },
         {
-          "text": "Encrypting the data stream",
+          "text": "Encrypting the data stream so that slow consumers are not overwhelmed",
           "is_correct": false
         },
         {
-          "text": "Replaying failed messages forever",
+          "text": "Replaying failed messages forever until every consumer has acknowledged them",
           "is_correct": false
         },
         {
@@ -1658,15 +1658,15 @@
           "is_correct": true
         },
         {
-          "text": "The exact wall-clock time of every event",
+          "text": "The exact wall-clock time at which every event occurred",
           "is_correct": false
         },
         {
-          "text": "The network latency between nodes",
+          "text": "The network latency measured between each pair of nodes",
           "is_correct": false
         },
         {
-          "text": "The amount of free disk on each node",
+          "text": "The amount of free disk left on each node in the cluster",
           "is_correct": false
         }
       ],
@@ -1681,11 +1681,11 @@
       "explanation": "Service discovery lets services find the current network locations of other services, which change as instances scale, move, or fail.",
       "options": [
         {
-          "text": "Choosing which database index to use",
+          "text": "Choosing which database index each service query should use",
           "is_correct": false
         },
         {
-          "text": "Encrypting service-to-service traffic",
+          "text": "Encrypting service-to-service traffic with mutual TLS certificates",
           "is_correct": false
         },
         {
@@ -1693,7 +1693,7 @@
           "is_correct": true
         },
         {
-          "text": "Compiling service code",
+          "text": "Compiling service code into containers and pushing them to every host in the cluster",
           "is_correct": false
         }
       ],
@@ -1708,15 +1708,15 @@
       "explanation": "Server clocks drift and are only loosely synchronized (clock skew), so timestamp ordering can be wrong; logical clocks are preferred for causal ordering.",
       "options": [
         {
-          "text": "Wall clocks are always perfectly synchronized",
+          "text": "Wall clocks are always perfectly synchronized, so there is no real risk",
           "is_correct": false
         },
         {
-          "text": "Timestamps cannot be compared at all",
+          "text": "Timestamps cannot be compared at all once they come from different servers",
           "is_correct": false
         },
         {
-          "text": "Timestamps consume too much storage",
+          "text": "Timestamps consume too much storage on each event",
           "is_correct": false
         },
         {
@@ -1739,15 +1739,15 @@
           "is_correct": true
         },
         {
-          "text": "It caches all responses",
+          "text": "It caches all responses so a failing component is never called",
           "is_correct": false
         },
         {
-          "text": "It retries failed requests indefinitely",
+          "text": "It retries failed requests indefinitely until the component recovers",
           "is_correct": false
         },
         {
-          "text": "It merges all thread pools into one for efficiency",
+          "text": "It merges all thread pools into one shared pool so no capacity is ever left idle",
           "is_correct": false
         }
       ],
@@ -1789,15 +1789,15 @@
       "explanation": "In orchestration a central coordinator directs each step; in choreography services react to events independently with no central controller.",
       "options": [
         {
-          "text": "They are identical patterns",
+          "text": "They are identical patterns; the names differ only between vendors",
           "is_correct": false
         },
         {
-          "text": "Orchestration forbids any messaging",
+          "text": "Orchestration forbids any messaging, so services call each other directly",
           "is_correct": false
         },
         {
-          "text": "Choreography always uses a central controller",
+          "text": "Choreography always uses a central controller; orchestration has no coordinator at all",
           "is_correct": false
         },
         {
@@ -1816,15 +1816,15 @@
       "explanation": "It avoids the dual-write problem by writing the business change and an outbox event in one local transaction; a relay then publishes the event reliably.",
       "options": [
         {
-          "text": "Encrypting messages before sending",
+          "text": "Encrypting messages before they are sent to the message broker",
           "is_correct": false
         },
         {
-          "text": "Load balancing consumers",
+          "text": "Load balancing consumers so each one reads from its own outbox",
           "is_correct": false
         },
         {
-          "text": "Sharding the database",
+          "text": "Sharding the database so each service writes to its own table",
           "is_correct": false
         },
         {
@@ -1843,11 +1843,11 @@
       "explanation": "Nodes periodically exchange state with a few random peers; information spreads epidemically across the cluster, scaling without a central coordinator.",
       "options": [
         {
-          "text": "Only the leader holds all information",
+          "text": "Only the leader holds all of the information, and other nodes must ask it for updates",
           "is_correct": false
         },
         {
-          "text": "Nodes never communicate state to each other",
+          "text": "Nodes never communicate state to each other, relying on a shared disk instead",
           "is_correct": false
         },
         {
@@ -1874,7 +1874,7 @@
           "is_correct": true
         },
         {
-          "text": "Replicating the database to every region",
+          "text": "Replicating the database to every region as posts arrive",
           "is_correct": false
         },
         {
@@ -1882,7 +1882,7 @@
           "is_correct": false
         },
         {
-          "text": "Sharding the user table by ID",
+          "text": "Sharding the user table by ID so feeds load in parallel",
           "is_correct": false
         }
       ],
@@ -1897,7 +1897,7 @@
       "explanation": "Each request must contain all information needed to process it; the server stores no client session context between requests.",
       "options": [
         {
-          "text": "The server remembers the client between requests",
+          "text": "The server remembers the client between requests using a session it stores",
           "is_correct": false
         },
         {
@@ -1905,11 +1905,11 @@
           "is_correct": true
         },
         {
-          "text": "Responses are never cacheable",
+          "text": "Responses are never cacheable, because every request is handled from scratch",
           "is_correct": false
         },
         {
-          "text": "The client cannot send any data",
+          "text": "The client cannot send any data in the request body, only in the query string of the URL",
           "is_correct": false
         }
       ],
@@ -1951,15 +1951,15 @@
       "explanation": "Rate limiting protects the service from abuse and overload and ensures fair resource sharing across clients.",
       "options": [
         {
-          "text": "To encrypt request bodies",
+          "text": "To encrypt request bodies that exceed a size limit",
           "is_correct": false
         },
         {
-          "text": "To replace authentication",
+          "text": "To replace authentication for anonymous clients",
           "is_correct": false
         },
         {
-          "text": "To guarantee responses are cached",
+          "text": "To guarantee responses are cached for repeated calls",
           "is_correct": false
         },
         {
@@ -2005,11 +2005,11 @@
       "explanation": "gRPC uses HTTP/2 and binary Protocol Buffers, giving lower latency, smaller payloads, streaming, and strongly-typed contracts.",
       "options": [
         {
-          "text": "It is easier to call directly from a browser without tooling",
+          "text": "It is easier to call directly from a browser without any extra tooling",
           "is_correct": false
         },
         {
-          "text": "It only works over HTTP/1.0",
+          "text": "It only works over HTTP/1.0, which keeps every connection simple",
           "is_correct": false
         },
         {
@@ -2017,7 +2017,7 @@
           "is_correct": true
         },
         {
-          "text": "It requires no schema definition",
+          "text": "It requires no schema definition, so services can change freely",
           "is_correct": false
         }
       ],
@@ -2036,15 +2036,15 @@
           "is_correct": true
         },
         {
-          "text": "TLS certificate management",
+          "text": "TLS certificate management across services",
           "is_correct": false
         },
         {
-          "text": "DNS resolution time",
+          "text": "DNS resolution time for the API host",
           "is_correct": false
         },
         {
-          "text": "Database replication lag",
+          "text": "Database replication lag behind the API",
           "is_correct": false
         }
       ],
@@ -2059,11 +2059,11 @@
       "explanation": "Offset pagination can skip or duplicate rows when data changes between pages and gets slow at high offsets; cursors anchor to a stable position.",
       "options": [
         {
-          "text": "It always returns the entire dataset at once",
+          "text": "It always returns the entire dataset at once in a single page",
           "is_correct": false
         },
         {
-          "text": "It removes the need for any ordering",
+          "text": "It removes the need for any ordering on the queried columns",
           "is_correct": false
         },
         {
@@ -2071,7 +2071,7 @@
           "is_correct": true
         },
         {
-          "text": "It encrypts the page contents",
+          "text": "It encrypts the page contents so clients cannot tamper with them",
           "is_correct": false
         }
       ],
@@ -2090,15 +2090,15 @@
           "is_correct": true
         },
         {
-          "text": "Storing user sessions",
+          "text": "Storing user sessions for the web servers behind it",
           "is_correct": false
         },
         {
-          "text": "Encrypting HTTP traffic",
+          "text": "Encrypting HTTP traffic between browsers and servers",
           "is_correct": false
         },
         {
-          "text": "Balancing database load",
+          "text": "Balancing database load across replicas",
           "is_correct": false
         }
       ],
@@ -2113,11 +2113,11 @@
       "explanation": "Gateways centralize cross-cutting concerns like authentication, rate limiting, routing, and request aggregation in front of microservices.",
       "options": [
         {
-          "text": "Storing the primary copy of business data",
+          "text": "Storing the primary copy of business data for every backend service",
           "is_correct": false
         },
         {
-          "text": "Running database migrations",
+          "text": "Running database migrations for each backend service before deploys",
           "is_correct": false
         },
         {
@@ -2125,7 +2125,7 @@
           "is_correct": true
         },
         {
-          "text": "Compiling backend source code",
+          "text": "Compiling backend source code and publishing the resulting artifacts",
           "is_correct": false
         }
       ],
@@ -2140,7 +2140,7 @@
       "explanation": "After a failure threshold, the breaker 'opens' and fails fast (or returns a fallback) instead of waiting on the failing dependency, giving it time to recover.",
       "options": [
         {
-          "text": "It retries the dependency as fast as possible forever",
+          "text": "It retries the dependency as fast as possible, forever, until it responds",
           "is_correct": false
         },
         {
@@ -2148,11 +2148,11 @@
           "is_correct": true
         },
         {
-          "text": "It caches all successful responses permanently",
+          "text": "It caches all successful responses permanently for later calls",
           "is_correct": false
         },
         {
-          "text": "It restarts the database",
+          "text": "It restarts the database behind the failing dependency",
           "is_correct": false
         }
       ],
@@ -2167,11 +2167,11 @@
       "explanation": "Increasing delays reduce load on a struggling server, and jitter prevents many clients from retrying in synchronized waves (the retry storm).",
       "options": [
         {
-          "text": "To retry immediately and repeatedly with no delay",
+          "text": "To retry immediately and repeatedly with no delay between attempts",
           "is_correct": false
         },
         {
-          "text": "To guarantee the request eventually succeeds",
+          "text": "To guarantee the request eventually succeeds, however long it takes",
           "is_correct": false
         },
         {
@@ -2179,7 +2179,7 @@
           "is_correct": true
         },
         {
-          "text": "To encrypt the retry payload",
+          "text": "To encrypt the retry payload so repeated attempts cannot be replayed",
           "is_correct": false
         }
       ],
@@ -2198,11 +2198,11 @@
           "is_correct": false
         },
         {
-          "text": "Authentication failed",
+          "text": "Authentication failed because the client's token has expired",
           "is_correct": false
         },
         {
-          "text": "The server crashed",
+          "text": "The server crashed while it was processing the request",
           "is_correct": false
         },
         {
@@ -2221,11 +2221,11 @@
       "explanation": "Microservices enable independent deployment and scaling but add operational complexity: networking, distributed debugging, and data consistency across services.",
       "options": [
         {
-          "text": "They eliminate all network calls",
+          "text": "They eliminate all network calls between components of the system",
           "is_correct": false
         },
         {
-          "text": "They make distributed transactions trivial",
+          "text": "They make distributed transactions trivial to implement across services",
           "is_correct": false
         },
         {
@@ -2233,7 +2233,7 @@
           "is_correct": true
         },
         {
-          "text": "They always reduce total infrastructure cost",
+          "text": "They always reduce total infrastructure cost, since each service runs on smaller hosts",
           "is_correct": false
         }
       ],
@@ -2252,11 +2252,11 @@
           "is_correct": true
         },
         {
-          "text": "It is never terminated anywhere",
+          "text": "It is never terminated anywhere, so traffic stays encrypted",
           "is_correct": false
         },
         {
-          "text": "In the browser's local storage",
+          "text": "In the browser's local storage, before requests are sent",
           "is_correct": false
         },
         {
@@ -2302,15 +2302,15 @@
       "explanation": "A trace follows a single request across services via a propagated trace/span context, revealing where latency and errors occur in the call chain.",
       "options": [
         {
-          "text": "Measure only total CPU usage of the cluster",
+          "text": "Measure only the total CPU usage of the whole cluster",
           "is_correct": false
         },
         {
-          "text": "Back up the database",
+          "text": "Back up the database state at the moment a request failed",
           "is_correct": false
         },
         {
-          "text": "Encrypt traffic between services",
+          "text": "Encrypt the traffic that flows between services",
           "is_correct": false
         },
         {
@@ -2329,15 +2329,15 @@
       "explanation": "Two identical environments let you switch traffic to the new version instantly and roll back quickly by switching back, minimizing downtime.",
       "options": [
         {
-          "text": "It removes the need for testing",
+          "text": "It removes the need for testing because both environments stay identical",
           "is_correct": false
         },
         {
-          "text": "It requires only one environment",
+          "text": "It requires only one environment, so infrastructure costs are halved",
           "is_correct": false
         },
         {
-          "text": "It shards the database automatically",
+          "text": "It shards the database automatically across the blue and green stacks",
           "is_correct": false
         },
         {
@@ -2356,7 +2356,7 @@
       "explanation": "A canary routes a small percentage of traffic to the new version first to catch problems before a full rollout.",
       "options": [
         {
-          "text": "Rolling back to the previous version",
+          "text": "Rolling back to the previous version when errors start to rise",
           "is_correct": false
         },
         {
@@ -2364,11 +2364,11 @@
           "is_correct": true
         },
         {
-          "text": "Deploying to 100% of users instantly",
+          "text": "Deploying to 100% of users instantly with no staged rollout",
           "is_correct": false
         },
         {
-          "text": "Disabling monitoring during deploys",
+          "text": "Disabling monitoring during deploys to reduce alert noise",
           "is_correct": false
         }
       ],
@@ -2383,11 +2383,11 @@
       "explanation": "Applying the same configuration repeatedly converges to the same desired state without unintended duplicate resources or drift.",
       "options": [
         {
-          "text": "It removes the need for version control",
+          "text": "It removes the need for version control of the infrastructure definitions",
           "is_correct": false
         },
         {
-          "text": "It encrypts all secrets automatically",
+          "text": "It encrypts all secrets automatically before they are written into state files",
           "is_correct": false
         },
         {
@@ -2437,7 +2437,7 @@
       "explanation": "A signed JWT carries the claims and can be verified without a database/session lookup, enabling stateless auth across services.",
       "options": [
         {
-          "text": "The payload is automatically encrypted and hidden",
+          "text": "The payload is automatically encrypted and hidden from anyone who holds it",
           "is_correct": false
         },
         {
@@ -2445,11 +2445,11 @@
           "is_correct": true
         },
         {
-          "text": "Tokens can be revoked instantly with no extra mechanism",
+          "text": "Tokens can be revoked instantly with no extra server-side mechanism at all",
           "is_correct": false
         },
         {
-          "text": "They never expire",
+          "text": "They never expire, so clients never have to request a replacement token",
           "is_correct": false
         }
       ],
@@ -2468,15 +2468,15 @@
           "is_correct": true
         },
         {
-          "text": "They cannot carry any user claims",
+          "text": "They cannot carry any user claims beyond the subject identifier",
           "is_correct": false
         },
         {
-          "text": "They cannot be signed",
+          "text": "They cannot be signed, so anyone can forge them",
           "is_correct": false
         },
         {
-          "text": "They require a session lookup on every request",
+          "text": "They require a session lookup in the database on every request",
           "is_correct": false
         }
       ],
@@ -2495,11 +2495,11 @@
           "is_correct": true
         },
         {
-          "text": "Ignore retries entirely",
+          "text": "Ignore retries entirely, since the first delivery always succeeds",
           "is_correct": false
         },
         {
-          "text": "Respond with 500 to acknowledge success",
+          "text": "Respond with 500 to acknowledge a successful delivery",
           "is_correct": false
         },
         {
@@ -2518,11 +2518,11 @@
       "explanation": "The client sends the ETag via If-None-Match; if unchanged, the server returns 304 Not Modified with no body, saving transfer of the full resource.",
       "options": [
         {
-          "text": "It encrypts the response",
+          "text": "It encrypts the response so that intermediaries can neither cache nor alter it",
           "is_correct": false
         },
         {
-          "text": "It forces the client to always re-download",
+          "text": "It forces the client to re-download the full body on every request to stay fresh",
           "is_correct": false
         },
         {
@@ -2549,15 +2549,15 @@
           "is_correct": true
         },
         {
-          "text": "Take the database offline and rename it",
+          "text": "Take the database offline during a maintenance window and rename it",
           "is_correct": false
         },
         {
-          "text": "Drop the column first, then recreate it",
+          "text": "Drop the column first, then recreate it under the new name",
           "is_correct": false
         },
         {
-          "text": "Rename the column in place during peak traffic",
+          "text": "Rename the column in place during peak traffic so the change is seen quickly",
           "is_correct": false
         }
       ],
@@ -2576,15 +2576,15 @@
           "is_correct": true
         },
         {
-          "text": "Always read from the most lagging replica",
+          "text": "Always read from the most lagging replica so results are consistent",
           "is_correct": false
         },
         {
-          "text": "Cache the write only on the client and never persist it",
+          "text": "Cache the write only on the client and never persist it to the database",
           "is_correct": false
         },
         {
-          "text": "Disable replication entirely",
+          "text": "Disable replication entirely so every replica stops serving stale data",
           "is_correct": false
         }
       ],
@@ -2603,7 +2603,7 @@
           "is_correct": true
         },
         {
-          "text": "It sorts data on disk",
+          "text": "It sorts data on disk so keys can be found by binary search",
           "is_correct": false
         },
         {
@@ -2611,7 +2611,7 @@
           "is_correct": false
         },
         {
-          "text": "It stores the full value of each key",
+          "text": "It stores the full value of each key in a compact in-memory form",
           "is_correct": false
         }
       ],
@@ -2626,15 +2626,15 @@
       "explanation": "Concurrent writes in different regions can conflict; resolving these conflicts (last-writer-wins, CRDTs, app logic) while keeping low latency is the core difficulty.",
       "options": [
         {
-          "text": "Compressing log files",
+          "text": "Compressing log files before they are shipped between regions",
           "is_correct": false
         },
         {
-          "text": "Choosing a programming language",
+          "text": "Choosing a programming language for each region",
           "is_correct": false
         },
         {
-          "text": "Translating domain names to IPs",
+          "text": "Translating domain names to IPs in each region",
           "is_correct": false
         },
         {
@@ -2657,15 +2657,15 @@
           "is_correct": true
         },
         {
-          "text": "A queue for failed messages",
+          "text": "A queue for failed messages that the main service can replay after errors",
           "is_correct": false
         },
         {
-          "text": "A backup copy of the database",
+          "text": "A backup copy of the database kept next to each service instance for recovery",
           "is_correct": false
         },
         {
-          "text": "A second region for failover",
+          "text": "A second region kept on standby for failover",
           "is_correct": false
         }
       ],
@@ -2684,15 +2684,15 @@
           "is_correct": true
         },
         {
-          "text": "To enforce ACID transactions",
+          "text": "To enforce ACID transactions on data that is no longer frequently updated",
           "is_correct": false
         },
         {
-          "text": "To make that data faster to access",
+          "text": "To make that data faster to access by moving it away from heavily used disks",
           "is_correct": false
         },
         {
-          "text": "To improve write consistency",
+          "text": "To improve write consistency for records that are no longer edited often",
           "is_correct": false
         }
       ],

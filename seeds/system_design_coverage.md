@@ -31,7 +31,8 @@ When adding new questions:
 1. **Regenerate and check [`coverage_report.md`](coverage_report.md)** before writing a question. If the concept already appears in your target format, either skip it or make sure your new question tests a *distinct angle* under a new concept slug (e.g. existing "LRU eviction" vs. a new "LFU eviction" is fine; a second "what does LRU evict" is a dup).
 2. **Pull from the Gap List** at the bottom — those are concepts with little or no coverage, so they're the safest expansion targets. Strike gaps off the list as you cover them.
 3. **Match the existing schema** (see template at the end) including `concept` and `format`.
-4. **Rerun `python seeds/generate_coverage.py`** — it fails loudly on schema errors and duplicates, and refreshes the report.
+4. **Keep option lengths comparable.** Write distractors as carefully as the answer: the generator fails if the correct option is more than 1.3x the median distractor length, or if one length rank (longest, second longest, ...) holds more than 40% of a file's correct answers. Vary which option is longest.
+5. **Rerun `python seeds/generate_coverage.py`** — it fails loudly on schema errors and duplicates, and refreshes the report.
 
 ### Dedup rule of thumb
 A question is a duplicate if a learner who can answer an existing question can answer the new one without learning anything new. Same concept + different scenario wording = still a dup. Different concept (even adjacent) = keep.

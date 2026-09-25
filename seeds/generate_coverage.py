@@ -8,7 +8,8 @@ adding or editing seed questions:
 It validates every file against the API schema, checks for duplicate
 (title, category) pairs (the bulk endpoint rejects those) and duplicate
 (concept, format, category) triples (the dedup rule), checks that correct
-answers are spread across option positions, then rewrites
+answers are spread across option positions and do not stand out by length,
+then rewrites
 seeds/coverage_report.md. Never edit coverage_report.md by hand.
 """
 
@@ -17,6 +18,7 @@ import sys
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
+from statistics import median
 
 REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPOSITORY_ROOT))
@@ -32,6 +34,18 @@ REPORT_PATH = SEEDS_DIRECTORY / "coverage_report.md"
 # too small for the share to mean anything and are only counted in the total.
 MAX_CORRECT_POSITION_SHARE = 0.40
 MIN_QUESTIONS_FOR_BALANCE_CHECK = 10
+
+# Authors tend to write the correct option with more care, and so more words,
+# than the distractors. When that goes unchecked "pick the longest option"
+# scores well with no knowledge (it once scored 94% on this bank). Two checks
+# guard against it:
+# - per question, the correct option may be at most this many times the length
+#   of the median distractor, so no single answer stands out;
+# - per file, no length rank (longest, second longest, ...) may hold more than
+#   this share of correct answers, which also catches the overcorrection where
+#   the answer is never the longest or never the shortest.
+MAX_CORRECT_LENGTH_RATIO = 1.3
+MAX_CORRECT_LENGTH_RANK_SHARE = 0.40
 
 
 def load_seed_files() -> dict[str, list[dict]]:
@@ -120,6 +134,75 @@ def check_answer_positions(seed_files: dict[str, list[dict]]) -> list[str]:
     return problems
 
 
+def split_option_lengths(question: dict) -> tuple[int, list[int]] | None:
+    """Return (correct length, distractor lengths), or None when the question
+    does not have exactly one correct option and at least one distractor."""
+    options = question["options"]
+    correct = [len(option["text"]) for option in options if option.get("is_correct")]
+    distractors = [
+        len(option["text"]) for option in options if not option.get("is_correct")
+    ]
+    if len(correct) != 1 or not distractors:
+        return None
+    return correct[0], distractors
+
+
+def correct_length_ratio_problems(filename: str, questions: list[dict]) -> list[str]:
+    problems = []
+    for question in questions:
+        lengths = split_option_lengths(question)
+        if lengths is None:
+            continue
+        correct_length, distractor_lengths = lengths
+        ratio = correct_length / median(distractor_lengths)
+        if ratio > MAX_CORRECT_LENGTH_RATIO:
+            problems.append(
+                f"{filename}: '{question['title']}' correct option is {ratio:.2f}x "
+                f"the median distractor length; lengthen the distractors or "
+                f"tighten the answer (limit {MAX_CORRECT_LENGTH_RATIO}x)"
+            )
+    return problems
+
+
+def correct_length_rank_problem(label: str, questions: list[dict]) -> str | None:
+    # Rank 0 means no option is longer; ties count in the correct option's favour.
+    ranks = Counter()
+    for question in questions:
+        lengths = split_option_lengths(question)
+        if lengths is not None:
+            correct_length, distractor_lengths = lengths
+            longer = sum(1 for length in distractor_lengths if length > correct_length)
+            ranks[longer] += 1
+    if not ranks:
+        return None
+    rank, count = ranks.most_common(1)[0]
+    share = count / sum(ranks.values())
+    if share <= MAX_CORRECT_LENGTH_RANK_SHARE:
+        return None
+    return (
+        f"{label}: {count} of {sum(ranks.values())} correct answers ({share:.0%}) "
+        f"are at length rank {rank + 1} (1 = longest); vary option lengths "
+        f"(limit {MAX_CORRECT_LENGTH_RANK_SHARE:.0%})"
+    )
+
+
+def check_answer_lengths(seed_files: dict[str, list[dict]]) -> list[str]:
+    problems = []
+    for filename, questions in seed_files.items():
+        problems.extend(correct_length_ratio_problems(filename, questions))
+        if len(questions) >= MIN_QUESTIONS_FOR_BALANCE_CHECK:
+            problem = correct_length_rank_problem(filename, questions)
+            if problem:
+                problems.append(problem)
+    all_questions = [
+        question for questions in seed_files.values() for question in questions
+    ]
+    problem = correct_length_rank_problem("all seed files", all_questions)
+    if problem:
+        problems.append(problem)
+    return problems
+
+
 def render_category_section(category: str, questions: list[dict]) -> list[str]:
     lines = [f"## {category} ({len(questions)} questions)", ""]
     format_counts = Counter(question["format"] for question in questions)
@@ -198,6 +281,7 @@ def main() -> None:
         validate(seed_files)
         + find_duplicates(seed_files)
         + check_answer_positions(seed_files)
+        + check_answer_lengths(seed_files)
     )
     if problems:
         print("PROBLEMS FOUND:")

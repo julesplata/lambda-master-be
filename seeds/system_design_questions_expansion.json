@@ -7,11 +7,11 @@
       "explanation": "Bidirectional streaming opens one call in which both sides read and write message streams independently, unlike server- or client-streaming which stream in only one direction.",
       "options": [
         {
-          "text": "Client streaming",
+          "text": "Client streaming only",
           "is_correct": false
         },
         {
-          "text": "Unary",
+          "text": "Unary over a shared channel",
           "is_correct": false
         },
         {
@@ -34,11 +34,11 @@
       "explanation": "Protobuf serializes to a compact binary form using field numbers instead of repeated text keys, yielding smaller payloads and faster parse/serialize than text JSON.",
       "options": [
         {
-          "text": "It guarantees exactly-once delivery",
+          "text": "It guarantees exactly-once delivery between services on every call",
           "is_correct": false
         },
         {
-          "text": "It requires no schema definition to decode",
+          "text": "It requires no schema definition for either side to decode a message",
           "is_correct": false
         },
         {
@@ -46,7 +46,7 @@
           "is_correct": true
         },
         {
-          "text": "It is human-readable in a browser without tooling",
+          "text": "It is human-readable in a browser, so no tooling is needed to debug it",
           "is_correct": false
         }
       ],
@@ -61,11 +61,11 @@
       "explanation": "Kappa drops Lambda's separate batch layer and treats everything as a single stream-processing pipeline, reprocessing history by replaying the log instead of maintaining duplicated batch and speed code paths.",
       "options": [
         {
-          "text": "Kappa requires strong consistency across all nodes",
+          "text": "Kappa requires strong consistency across all nodes of the processing cluster",
           "is_correct": false
         },
         {
-          "text": "Kappa processes only bounded batch data and never streams",
+          "text": "Kappa processes only bounded batch data and never handles unbounded streams",
           "is_correct": false
         },
         {
@@ -73,7 +73,7 @@
           "is_correct": true
         },
         {
-          "text": "Kappa adds a third serving layer on top of batch and speed layers",
+          "text": "Kappa adds a third serving layer on top of the batch and speed layers",
           "is_correct": false
         }
       ],
@@ -92,15 +92,15 @@
           "is_correct": true
         },
         {
-          "text": "Tumbling windows grow without bound; sliding windows are fixed",
+          "text": "Tumbling windows grow without bound; sliding windows have a fixed length",
           "is_correct": false
         },
         {
-          "text": "Sliding windows can only be used for batch jobs",
+          "text": "Sliding windows can only be used for batch jobs, never for live streams",
           "is_correct": false
         },
         {
-          "text": "Tumbling windows are defined by gaps of inactivity",
+          "text": "Tumbling windows are defined by gaps of inactivity between events",
           "is_correct": false
         }
       ],
@@ -119,15 +119,15 @@
           "is_correct": true
         },
         {
-          "text": "A fixed number of events regardless of time",
+          "text": "A fixed number of events, regardless of the time between them",
           "is_correct": false
         },
         {
-          "text": "The arrival of a watermark message",
+          "text": "The arrival of a watermark message from the source",
           "is_correct": false
         },
         {
-          "text": "A fixed clock interval like every 60 seconds",
+          "text": "A fixed clock interval such as every 60 seconds",
           "is_correct": false
         }
       ],
@@ -142,11 +142,11 @@
       "explanation": "A watermark is the processor's assertion that no events with a timestamp earlier than it should still arrive, letting it close windows and emit results while deciding how to handle stragglers that arrive afterward.",
       "options": [
         {
-          "text": "It encrypts each event with a unique signature",
+          "text": "It encrypts each event with a unique signature so late events can be verified",
           "is_correct": false
         },
         {
-          "text": "It forces all events to be processed in strict arrival order",
+          "text": "It forces all events to be processed in strict arrival order across partitions",
           "is_correct": false
         },
         {
@@ -154,7 +154,7 @@
           "is_correct": true
         },
         {
-          "text": "It deduplicates events by content hash",
+          "text": "It deduplicates events by content hash before they enter a window",
           "is_correct": false
         }
       ],
@@ -169,7 +169,7 @@
       "explanation": "They take periodic consistent checkpoints (distributed snapshots) of operator state and input offsets, so on failure they roll back to the last checkpoint and replay, making the effect of each record applied exactly once.",
       "options": [
         {
-          "text": "By processing each record on every node simultaneously",
+          "text": "By processing each record on every node simultaneously and keeping the first result",
           "is_correct": false
         },
         {
@@ -177,7 +177,7 @@
           "is_correct": true
         },
         {
-          "text": "By disabling all retries so nothing is processed twice",
+          "text": "By disabling all retries so nothing is ever processed twice after a failure",
           "is_correct": false
         },
         {
@@ -196,11 +196,11 @@
       "explanation": "HyperLogLog estimates the number of distinct elements (cardinality) in a huge stream using a tiny fixed amount of memory, trading a small error rate for not storing every element.",
       "options": [
         {
-          "text": "Finding the most frequent element exactly",
+          "text": "Finding the most frequent element in a stream exactly, with zero error",
           "is_correct": false
         },
         {
-          "text": "Storing the exact set of all elements seen",
+          "text": "Storing the exact set of every element seen, using a compressed bitmap",
           "is_correct": false
         },
         {
@@ -208,7 +208,7 @@
           "is_correct": true
         },
         {
-          "text": "Sorting a stream of numbers in place",
+          "text": "Sorting an unbounded stream of numbers in place with a small fixed buffer",
           "is_correct": false
         }
       ],
@@ -223,7 +223,7 @@
       "explanation": "A count-min sketch estimates the frequency of items in a stream using hashed counters; because of hash collisions it can overcount but never undercount, so its estimates are upper bounds.",
       "options": [
         {
-          "text": "Distinct element count, always exactly",
+          "text": "Distinct element count, always exactly and with no extra memory",
           "is_correct": false
         },
         {
@@ -231,11 +231,11 @@
           "is_correct": true
         },
         {
-          "text": "Item frequencies that may undercount but never overcount",
+          "text": "Item frequencies, with estimates that may undercount but never overcount",
           "is_correct": false
         },
         {
-          "text": "The median of a numeric stream",
+          "text": "The median of a numeric stream, within a fixed error bound",
           "is_correct": false
         }
       ],
@@ -258,7 +258,7 @@
           "is_correct": false
         },
         {
-          "text": "It round-robins keys across nodes in insertion order",
+          "text": "It round-robins keys across nodes in the order they were inserted",
           "is_correct": false
         },
         {
@@ -277,7 +277,7 @@
       "explanation": "Redlock relies on bounded clocks and timing assumptions; GC pauses or clock drift can let a client believe it still holds an expired lock, so it is unsafe without a fencing token to reject stale holders.",
       "options": [
         {
-          "text": "It blocks all reads on the locked resource",
+          "text": "It blocks all reads on the locked resource for as long as any client holds it",
           "is_correct": false
         },
         {
@@ -285,11 +285,11 @@
           "is_correct": true
         },
         {
-          "text": "It cannot be implemented on more than one Redis node",
+          "text": "It cannot be implemented on more than one Redis node, so it has no redundancy",
           "is_correct": false
         },
         {
-          "text": "It requires a relational database to store the lock",
+          "text": "It requires a relational database to store the lock state for every resource",
           "is_correct": false
         }
       ],
@@ -304,15 +304,15 @@
       "explanation": "The protected resource can reject any write carrying a token lower than the highest it has seen, so a delayed or paused old lock holder cannot corrupt state even if it still thinks it owns the lock.",
       "options": [
         {
-          "text": "So the lock never needs to expire",
+          "text": "So the lock never needs to expire, even if its holder crashes",
           "is_correct": false
         },
         {
-          "text": "So clients can decrypt the lock contents",
+          "text": "So clients can decrypt the lock contents with the token as their key",
           "is_correct": false
         },
         {
-          "text": "So the lock can be shared by multiple holders at once",
+          "text": "So the lock can be shared by multiple holders at once without any conflicts",
           "is_correct": false
         },
         {
@@ -331,11 +331,11 @@
       "explanation": "A lease is a lock with a built-in expiry: if the holder crashes or is partitioned, the lease lapses automatically so the resource is not held forever, at the cost of timing assumptions.",
       "options": [
         {
-          "text": "It guarantees the holder unlimited renewals with no expiry",
+          "text": "It guarantees the holder unlimited renewals, so it never has to expire",
           "is_correct": false
         },
         {
-          "text": "It is stored only in the client's memory",
+          "text": "It is stored only in the client's memory, so the lock server never tracks it",
           "is_correct": false
         },
         {
@@ -343,7 +343,7 @@
           "is_correct": true
         },
         {
-          "text": "It can never be revoked once granted",
+          "text": "It can never be revoked once it has been granted, even by the service that issued it",
           "is_correct": false
         }
       ],
@@ -358,11 +358,11 @@
       "explanation": "Leveled compaction keeps non-overlapping SSTables per level so a key lives in at most one SSTable per level, bounding read amplification and space overhead at the cost of more write amplification than size-tiered.",
       "options": [
         {
-          "text": "Removing all background I/O entirely",
+          "text": "Removing all background I/O entirely, so compaction never competes with reads",
           "is_correct": false
         },
         {
-          "text": "Lower write amplification at the cost of unbounded reads",
+          "text": "Lower write amplification, accepting unbounded read amplification in exchange",
           "is_correct": false
         },
         {
@@ -370,7 +370,7 @@
           "is_correct": true
         },
         {
-          "text": "Eliminating the need for a write-ahead log",
+          "text": "Eliminating the need for a write-ahead log by compacting writes immediately",
           "is_correct": false
         }
       ],
@@ -385,19 +385,19 @@
       "explanation": "A local (document-partitioned) index lives with each partition's data, so writes are cheap but queries must scatter-gather across all partitions; a global (term-partitioned) index is partitioned by the indexed value, making reads targeted but writes cross-partition.",
       "options": [
         {
-          "text": "Global indexes are always faster for both reads and writes",
+          "text": "Global indexes are always faster for both reads and writes in every workload",
           "is_correct": false
         },
         {
-          "text": "There is no difference once the data is sharded",
+          "text": "There is no difference between them once the data has been sharded",
           "is_correct": false
         },
         {
-          "text": "Local indexes require a two-phase commit on every read",
+          "text": "Local indexes require a two-phase commit on every read, while global indexes never need one",
           "is_correct": false
         },
         {
-          "text": "Local indexes make writes cheap but reads scatter-gather; global indexes make reads targeted but writes cross-partition",
+          "text": "Local indexes keep writes cheap but make reads scatter-gather; global indexes do the reverse",
           "is_correct": true
         }
       ],
@@ -412,7 +412,7 @@
       "explanation": "Wide-column stores are query-driven: you design one table (and its partition/clustering keys) per access pattern so each query hits a single partition, even if that means denormalizing and duplicating data.",
       "options": [
         {
-          "text": "Foreign-key relationships enforced by the database",
+          "text": "Foreign-key relationships between tables, which the database enforces on write",
           "is_correct": false
         },
         {
@@ -420,11 +420,11 @@
           "is_correct": true
         },
         {
-          "text": "Minimizing the number of tables regardless of queries",
+          "text": "Minimizing the number of tables, regardless of which queries will run against them",
           "is_correct": false
         },
         {
-          "text": "Third-normal-form normalization to avoid any duplication",
+          "text": "Third-normal-form normalization so that no data is ever duplicated across tables",
           "is_correct": false
         }
       ],
@@ -439,7 +439,7 @@
       "explanation": "Headroom absorbs traffic spikes, instance failures, deploys, and autoscaler lag; running near saturation leaves no buffer, so latency degrades sharply once a queue forms at high utilization.",
       "options": [
         {
-          "text": "Because cloud providers bill less for idle capacity",
+          "text": "Because cloud providers bill less for capacity that sits idle",
           "is_correct": false
         },
         {
@@ -447,11 +447,11 @@
           "is_correct": true
         },
         {
-          "text": "Because higher utilization always lowers tail latency",
+          "text": "Because higher utilization always lowers tail latency for every request",
           "is_correct": false
         },
         {
-          "text": "To guarantee exactly-once message delivery",
+          "text": "To guarantee exactly-once delivery of messages during spikes",
           "is_correct": false
         }
       ],
@@ -466,11 +466,11 @@
       "explanation": "A forward-fix is preferred when a revert is unsafe or impossible — for example after an irreversible schema migration or data change — so you patch forward rather than try to undo state the old code can't read.",
       "options": [
         {
-          "text": "When you want the fastest possible return to the prior known-good state",
+          "text": "When you want the fastest possible return to the previous known-good state of the service",
           "is_correct": false
         },
         {
-          "text": "Only when there is no monitoring in place",
+          "text": "Only when there is no monitoring in place to confirm that a revert worked",
           "is_correct": false
         },
         {
@@ -478,7 +478,7 @@
           "is_correct": true
         },
         {
-          "text": "Whenever the bug is trivial and the old version is healthy",
+          "text": "Whenever the bug is trivial and the old version is still healthy and available to deploy",
           "is_correct": false
         }
       ],
@@ -493,7 +493,7 @@
       "explanation": "Load shedding deliberately rejects or drops a portion of requests early so the service stays responsive for the rest, preventing a total collapse where every request times out under saturation.",
       "options": [
         {
-          "text": "Buffer all excess requests indefinitely in memory",
+          "text": "Buffer all excess requests indefinitely in memory until the load finally subsides",
           "is_correct": false
         },
         {
@@ -501,11 +501,11 @@
           "is_correct": true
         },
         {
-          "text": "Permanently scale down the service to save cost",
+          "text": "Permanently scale down the service to save money while the overload continues",
           "is_correct": false
         },
         {
-          "text": "Retry every failed request immediately to clear the backlog",
+          "text": "Retry every failed request immediately so that the backlog clears as fast as possible",
           "is_correct": false
         }
       ],
@@ -524,15 +524,15 @@
           "is_correct": true
         },
         {
-          "text": "It flushes the database write-ahead log to disk",
+          "text": "It flushes the database write-ahead log to disk before the instance stops",
           "is_correct": false
         },
         {
-          "text": "It immediately kills all open sockets to free resources fast",
+          "text": "It immediately kills all open sockets so resources are freed as fast as possible",
           "is_correct": false
         },
         {
-          "text": "It encrypts connections before closing them",
+          "text": "It encrypts open connections before closing them, protecting in-flight data",
           "is_correct": false
         }
       ],
@@ -547,19 +547,19 @@
       "explanation": "Automated failover can cause split-brain if the old primary is only partitioned (not dead) and keeps taking writes; orchestration must fence the old primary or require quorum before promoting the standby.",
       "options": [
         {
-          "text": "Split-brain, where a merely-partitioned old primary keeps accepting writes alongside the new one",
+          "text": "Split-brain, where a partitioned old primary keeps accepting writes alongside the new one",
           "is_correct": true
         },
         {
-          "text": "DNS records propagating too quickly to clients",
+          "text": "DNS records propagating too quickly to clients, so they switch regions too early",
           "is_correct": false
         },
         {
-          "text": "Read replicas falling out of the load balancer pool",
+          "text": "Read replicas falling out of the load balancer pool while the standby warms up",
           "is_correct": false
         },
         {
-          "text": "The standby region having more capacity than needed",
+          "text": "The standby region having far more capacity than it needs, which wastes money on idle hosts",
           "is_correct": false
         }
       ],
@@ -578,11 +578,11 @@
           "is_correct": true
         },
         {
-          "text": "The new leader has no network connectivity",
+          "text": "The new leader has no network connectivity to the followers that just elected it",
           "is_correct": false
         },
         {
-          "text": "The election protocol cannot count votes correctly",
+          "text": "The election protocol cannot count votes correctly when more than two nodes take part",
           "is_correct": false
         },
         {
@@ -601,15 +601,15 @@
       "explanation": "Bcrypt is deliberately slow and has a tunable work factor plus a built-in salt, making large-scale brute-force and precomputed-table attacks far more expensive than with a fast general-purpose hash.",
       "options": [
         {
-          "text": "It produces shorter output that saves database space",
+          "text": "It produces shorter output, which saves space in the users table of the database",
           "is_correct": false
         },
         {
-          "text": "It avoids the need to store any salt",
+          "text": "It avoids the need to store any salt alongside each password hash in the table",
           "is_correct": false
         },
         {
-          "text": "It is reversible so the original password can be recovered",
+          "text": "It is reversible, so the original password can be recovered if a user forgets it",
           "is_correct": false
         },
         {
@@ -628,15 +628,15 @@
       "explanation": "A unique salt makes each hash distinct even for identical passwords, defeating precomputed rainbow-table lookups and preventing one cracked hash from revealing every user who shares that password.",
       "options": [
         {
-          "text": "SQL injection against the login form",
+          "text": "SQL injection against the login form and its password field",
           "is_correct": false
         },
         {
-          "text": "Man-in-the-middle interception in transit",
+          "text": "Man-in-the-middle interception of passwords in transit",
           "is_correct": false
         },
         {
-          "text": "Cross-site scripting in the browser",
+          "text": "Cross-site scripting that steals passwords in the browser",
           "is_correct": false
         },
         {
@@ -655,15 +655,15 @@
       "explanation": "Each WebSocket pins an open connection to one server for its lifetime, so load can't be rebalanced per request; capacity is bound by concurrent connections per node and reconnect storms after a deploy can overload the fleet.",
       "options": [
         {
-          "text": "They are limited to one connection per server globally",
+          "text": "They are limited to one connection per server globally, so capacity is capped",
           "is_correct": false
         },
         {
-          "text": "WebSockets cannot pass through a load balancer at all",
+          "text": "WebSockets cannot pass through a load balancer at all and need a separate network path",
           "is_correct": false
         },
         {
-          "text": "They require a new TCP handshake for every message",
+          "text": "They require a new TCP handshake for every message, which overloads the balancer",
           "is_correct": false
         },
         {
@@ -682,7 +682,7 @@
       "explanation": "A presigned URL lets the client upload straight to the object store with time-limited, scoped credentials, so the application server never proxies the bytes — saving bandwidth and avoiding it as a throughput bottleneck.",
       "options": [
         {
-          "text": "So the object store can validate the file's business logic",
+          "text": "So the object store can validate the file's business logic before accepting the upload",
           "is_correct": false
         },
         {
@@ -690,7 +690,7 @@
           "is_correct": true
         },
         {
-          "text": "So the upload bypasses all authentication",
+          "text": "So the upload can bypass all authentication checks on the storage side and the app side",
           "is_correct": false
         },
         {
@@ -709,11 +709,11 @@
       "explanation": "Splitting the file into chunks means a dropped connection only requires re-sending the failed chunk rather than restarting the entire upload, and chunks can be uploaded in parallel.",
       "options": [
         {
-          "text": "It compresses the file to a single block",
+          "text": "It compresses the file into a single block, so it is transferred in one quick request",
           "is_correct": false
         },
         {
-          "text": "It removes the need to authenticate the upload",
+          "text": "It removes the need to authenticate each part of the upload with the storage service",
           "is_correct": false
         },
         {
@@ -721,7 +721,7 @@
           "is_correct": true
         },
         {
-          "text": "It guarantees the file is virus-free",
+          "text": "It guarantees the file is virus-free, because each chunk is scanned before being stored",
           "is_correct": false
         }
       ],
@@ -736,7 +736,7 @@
       "explanation": "Read amplification is the ratio of physical reads performed to satisfy one logical read; in LSM trees a single key lookup may probe multiple SSTables across levels, amplifying the I/O work.",
       "options": [
         {
-          "text": "Reads getting faster as the dataset grows",
+          "text": "Reads getting faster as the dataset grows and more of it is cached",
           "is_correct": false
         },
         {
@@ -744,11 +744,11 @@
           "is_correct": true
         },
         {
-          "text": "Duplicating every read to a replica for safety",
+          "text": "Duplicating every read to a replica for safety against corruption",
           "is_correct": false
         },
         {
-          "text": "Caching all reads in memory permanently",
+          "text": "Caching all reads in memory permanently so disks are never touched",
           "is_correct": false
         }
       ],
@@ -763,11 +763,11 @@
       "explanation": "Space amplification is the ratio of on-disk bytes used to the logical size of live data; obsolete versions, tombstones, and pending compaction can make the store occupy more disk than the live dataset requires.",
       "options": [
         {
-          "text": "Indexing the same column twice",
+          "text": "Indexing the same column twice, which doubles the size of each index on disk",
           "is_correct": false
         },
         {
-          "text": "Compressing data to use less disk than its logical size",
+          "text": "Compressing data so that it uses less disk space than its logical size",
           "is_correct": false
         },
         {
@@ -775,7 +775,7 @@
           "is_correct": true
         },
         {
-          "text": "Replicating data to additional nodes",
+          "text": "Replicating data to additional nodes, so each extra copy consumes more total cluster storage",
           "is_correct": false
         }
       ],
@@ -794,11 +794,11 @@
           "is_correct": true
         },
         {
-          "text": "Reads never block under any circumstance",
+          "text": "Reads never block under any circumstance, even while rows are being written",
           "is_correct": false
         },
         {
-          "text": "Transactions are guaranteed to never abort",
+          "text": "Transactions are guaranteed to never abort, so clients never have to retry",
           "is_correct": false
         },
         {
@@ -817,11 +817,11 @@
       "explanation": "A phantom read occurs when a transaction re-runs a range query and sees new rows that another committed transaction inserted matching the predicate, even though existing rows it already read are unchanged.",
       "options": [
         {
-          "text": "The same row returning two different values in one read",
+          "text": "The same row returning two different values within one read operation",
           "is_correct": false
         },
         {
-          "text": "A deadlock between two writers",
+          "text": "A deadlock between two writers that each hold a lock on part of a range",
           "is_correct": false
         },
         {
@@ -829,7 +829,7 @@
           "is_correct": true
         },
         {
-          "text": "Reading a value that was never committed",
+          "text": "Reading a value that was written but never committed by another transaction",
           "is_correct": false
         }
       ],
@@ -844,11 +844,11 @@
       "explanation": "MVCC keeps multiple versions of each row tagged by transaction timestamp, so a reader sees a consistent snapshot from its start time while writers create new versions, removing read-write locking contention.",
       "options": [
         {
-          "text": "Each table is limited to a single concurrent transaction",
+          "text": "Each table is limited to one concurrent transaction, so readers never overlap a writer",
           "is_correct": false
         },
         {
-          "text": "All rows are locked for the duration of any transaction",
+          "text": "All rows are locked for the duration of any transaction, including read-only ones",
           "is_correct": false
         },
         {
@@ -856,7 +856,7 @@
           "is_correct": true
         },
         {
-          "text": "Writers are forced to wait until all readers finish",
+          "text": "Writers are forced to wait until all readers have finished, so readers never see a write in progress",
           "is_correct": false
         }
       ],
@@ -875,11 +875,11 @@
           "is_correct": true
         },
         {
-          "text": "Pause both transactions forever until an admin intervenes",
+          "text": "Pause both transactions indefinitely until an administrator steps in to resolve the conflict",
           "is_correct": false
         },
         {
-          "text": "Silently commit both with partial results",
+          "text": "Silently commit both transactions with whatever partial results they had produced",
           "is_correct": false
         },
         {
@@ -898,15 +898,15 @@
       "explanation": "In 2PL a transaction acquires all the locks it needs in a growing phase and releases them in a shrinking phase, never acquiring a new lock after releasing any — which is what guarantees serializability.",
       "options": [
         {
-          "text": "Every transaction must use two separate connections",
+          "text": "Every transaction must use two separate connections, one for reads and one for writes",
           "is_correct": false
         },
         {
-          "text": "Locks are held for exactly two seconds each",
+          "text": "Locks are held for exactly two seconds each before they are released automatically",
           "is_correct": false
         },
         {
-          "text": "Locks may be acquired and released in any interleaved order",
+          "text": "Locks may be acquired and released in any interleaved order during the transaction",
           "is_correct": false
         },
         {
@@ -925,15 +925,15 @@
       "explanation": "An inverted index maps each term (token) to the list of documents (and positions) containing it, so a search resolves by looking up posting lists rather than scanning every document.",
       "options": [
         {
-          "text": "A hash of each document's contents",
+          "text": "A hash of each document's contents, used to spot exact duplicates",
           "is_correct": false
         },
         {
-          "text": "A B-tree mapping document IDs to their full text",
+          "text": "A B-tree mapping document IDs to the full text of each document",
           "is_correct": false
         },
         {
-          "text": "A queue of pending search requests",
+          "text": "A queue of pending search requests ordered by their priority",
           "is_correct": false
         },
         {
@@ -952,11 +952,11 @@
       "explanation": "Executing logic at the edge cuts the round-trip distance to the user, reducing latency and origin load for tasks like personalization, auth checks, or caching close to the request.",
       "options": [
         {
-          "text": "Removing the need for TLS encryption",
+          "text": "Removing the need for TLS encryption on user traffic",
           "is_correct": false
         },
         {
-          "text": "Guaranteeing strong global consistency",
+          "text": "Guaranteeing strong consistency across regions",
           "is_correct": false
         },
         {
@@ -979,11 +979,11 @@
       "explanation": "When no warm instance is available, the platform must provision a container and initialize the runtime and code before handling the request, adding startup latency that warm invocations avoid.",
       "options": [
         {
-          "text": "The function ran out of disk space",
+          "text": "The function ran out of disk space and had to wait while old logs were cleaned up",
           "is_correct": false
         },
         {
-          "text": "The function's database is being migrated",
+          "text": "The function's database is being migrated, so every query must wait on a schema lock",
           "is_correct": false
         },
         {
@@ -1010,15 +1010,15 @@
           "is_correct": true
         },
         {
-          "text": "It makes every lookup O(1) with no hashing",
+          "text": "It makes every lookup O(1) because keys no longer need to be hashed",
           "is_correct": false
         },
         {
-          "text": "It guarantees every node holds exactly the same keys",
+          "text": "It guarantees every node holds exactly the same set of keys as its peers",
           "is_correct": false
         },
         {
-          "text": "It eliminates the need for cache expiration",
+          "text": "It eliminates the need for cache expiration because keys never move",
           "is_correct": false
         }
       ],
@@ -1037,11 +1037,11 @@
           "is_correct": true
         },
         {
-          "text": "Too many keys exist; mitigate by deleting old ones",
+          "text": "Too many keys exist across the whole cluster; mitigate by regularly deleting the oldest ones",
           "is_correct": false
         },
         {
-          "text": "Keys are too large; mitigate by sharding each key's bytes",
+          "text": "Keys are too large for one node; mitigate by sharding each key's bytes across several shards",
           "is_correct": false
         },
         {
@@ -1064,15 +1064,15 @@
           "is_correct": true
         },
         {
-          "text": "It load-balances by rewriting the HTTP request body",
+          "text": "It load-balances users by rewriting the body of each HTTP request at the edge",
           "is_correct": false
         },
         {
-          "text": "It encrypts the DNS response per user",
+          "text": "It encrypts the DNS response separately for each user based on their location",
           "is_correct": false
         },
         {
-          "text": "It caches the user's session in DNS",
+          "text": "It caches the user's session inside DNS records so requests return to one region",
           "is_correct": false
         }
       ],
@@ -1091,11 +1091,11 @@
           "is_correct": true
         },
         {
-          "text": "Encrypting all traffic at the network layer",
+          "text": "Encrypting all traffic at the network layer between each client and whichever site it reaches",
           "is_correct": false
         },
         {
-          "text": "Assigning a unique IP to every user",
+          "text": "Assigning a unique IP address to every user so that their traffic can be traced to one site",
           "is_correct": false
         },
         {
@@ -1114,19 +1114,19 @@
       "explanation": "Each instance only sees its own traffic, so a correct global limit needs shared state (e.g., a central Redis counter) or coordination; otherwise N instances each allowing the limit lets through N times the intended rate.",
       "options": [
         {
-          "text": "Instances see only their own traffic, so a shared counter or coordination is needed for a true global limit",
+          "text": "Each instance sees only its own traffic, so a true global limit needs shared state",
           "is_correct": true
         },
         {
-          "text": "The load balancer always enforces it automatically",
+          "text": "The load balancer always enforces it automatically, so the servers never need to count anything",
           "is_correct": false
         },
         {
-          "text": "Each instance must store the entire request history forever",
+          "text": "Each instance must keep the entire request history forever in order to compute the limit",
           "is_correct": false
         },
         {
-          "text": "Rate limiting cannot be done in software at all",
+          "text": "Rate limiting cannot be done in software at all and always needs dedicated hardware",
           "is_correct": false
         }
       ],
@@ -1141,19 +1141,19 @@
       "explanation": "A request-coalescing or single-flight lock lets only the first request recompute the value while others wait for and reuse its result, so an expired hot key is regenerated once instead of by every concurrent caller.",
       "options": [
         {
-          "text": "Disabling the cache entirely during recomputation",
+          "text": "Disabling the cache entirely while the entry is being recomputed by the database",
           "is_correct": false
         },
         {
-          "text": "Sharding the key across more nodes",
+          "text": "Sharding the key across more nodes so each recomputes only part of it",
           "is_correct": false
         },
         {
-          "text": "A single-flight / request-coalescing lock so only one caller recomputes and others reuse the result",
+          "text": "A single-flight lock: one caller recomputes and the others wait for its result",
           "is_correct": true
         },
         {
-          "text": "Increasing the database connection pool to infinity",
+          "text": "Increasing the database connection pool to infinity so every request can recompute",
           "is_correct": false
         }
       ],
@@ -1168,11 +1168,11 @@
       "explanation": "2PC holds locks and blocks while waiting on a coordinator, hurting availability across services; a saga uses local transactions plus compensating actions, trading atomicity for availability and looser coupling.",
       "options": [
         {
-          "text": "Sagas eliminate the need for any rollback logic",
+          "text": "Sagas eliminate the need for any rollback logic, since each step commits independently",
           "is_correct": false
         },
         {
-          "text": "Sagas require a single shared database",
+          "text": "Sagas require a single shared database, which makes every commit atomic across services",
           "is_correct": false
         },
         {
@@ -1180,7 +1180,7 @@
           "is_correct": true
         },
         {
-          "text": "Sagas provide stronger ACID atomicity than 2PC",
+          "text": "Sagas provide stronger ACID atomicity than 2PC because they commit each step locally",
           "is_correct": false
         }
       ],
@@ -1195,15 +1195,15 @@
       "explanation": "A backfill populates the new field or table for existing historical rows — usually as a throttled batch job — so the feature works for old data, not just records created after deployment.",
       "options": [
         {
-          "text": "Deleting rows that lack the new field",
+          "text": "Deleting rows that lack the new field so the table stays consistent",
           "is_correct": false
         },
         {
-          "text": "Reverting the schema to its previous version",
+          "text": "Reverting the schema to its previous version when a rollout fails",
           "is_correct": false
         },
         {
-          "text": "Caching the new column in memory",
+          "text": "Caching the new column in memory until the application has read it from every single row",
           "is_correct": false
         },
         {
@@ -1226,15 +1226,15 @@
           "is_correct": true
         },
         {
-          "text": "Encrypt production traffic for compliance",
+          "text": "Encrypting production traffic for compliance audits before it reaches the new version",
           "is_correct": false
         },
         {
-          "text": "Serve half of users from the new version",
+          "text": "Serving half of all users from the new version, then comparing the business metrics",
           "is_correct": false
         },
         {
-          "text": "Replace load testing with synthetic data",
+          "text": "Replacing load testing with synthetic data generated from recorded production requests",
           "is_correct": false
         }
       ],
@@ -1253,11 +1253,11 @@
           "is_correct": true
         },
         {
-          "text": "A duplicate message detected by an idempotency key",
+          "text": "A duplicate message that was detected by its idempotency key and then discarded by the consumer",
           "is_correct": false
         },
         {
-          "text": "A high-priority message that jumps the queue",
+          "text": "A high-priority message that jumps to the front of the queue ahead of every other message",
           "is_correct": false
         },
         {
@@ -1276,11 +1276,11 @@
       "explanation": "A DLQ holds messages that could not be processed successfully after retries, isolating them so they don't block the main queue and can be inspected or replayed later.",
       "options": [
         {
-          "text": "To store the highest-priority messages first",
+          "text": "To store the highest-priority messages so they are delivered before all the others",
           "is_correct": false
         },
         {
-          "text": "To duplicate every message for redundancy",
+          "text": "To duplicate every message for redundancy in case the primary queue loses one",
           "is_correct": false
         },
         {
@@ -1288,7 +1288,7 @@
           "is_correct": true
         },
         {
-          "text": "To archive successfully processed messages",
+          "text": "To archive messages that were processed successfully, for later audits",
           "is_correct": false
         }
       ],
@@ -1303,7 +1303,7 @@
       "explanation": "It should stop accepting new work, finish or hand off in-flight requests, flush buffers, and close resources cleanly within the grace period, rather than exiting immediately and dropping active requests.",
       "options": [
         {
-          "text": "Ignore the signal and keep running indefinitely",
+          "text": "Ignore the signal and keep running until the orchestrator gives up on it",
           "is_correct": false
         },
         {
@@ -1311,11 +1311,11 @@
           "is_correct": true
         },
         {
-          "text": "Exit immediately to free the port as fast as possible",
+          "text": "Exit immediately to free the port as fast as possible for the new instance",
           "is_correct": false
         },
         {
-          "text": "Restart itself in place without draining",
+          "text": "Restart itself in place without draining, so the new code loads as quickly as possible",
           "is_correct": false
         }
       ],
@@ -1330,15 +1330,15 @@
       "explanation": "Log compaction keeps at least the latest value for each key and removes older superseded values, so the topic can act as a durable changelog/snapshot of the current state per key rather than a full history.",
       "options": [
         {
-          "text": "Only the oldest message per partition",
+          "text": "Only the oldest message in each partition, discarding all newer messages",
           "is_correct": false
         },
         {
-          "text": "A random sample of messages to save space",
+          "text": "A random sample of messages, chosen to keep the topic within its size limit",
           "is_correct": false
         },
         {
-          "text": "Every message forever, just compressed",
+          "text": "Every message ever written, forever, stored in a compressed on-disk format",
           "is_correct": false
         },
         {

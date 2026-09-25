@@ -7,11 +7,11 @@
       "explanation": "The workload is dominated by repeated reads of the same posts, so a cache in front of the database serves them from memory and removes most read load without changing the write path.",
       "options": [
         {
-          "text": "Store all blog posts in memory inside each application server",
+          "text": "Store all blog posts in memory inside each application server's own process",
           "is_correct": false
         },
         {
-          "text": "Increase the number of application servers without changing anything else",
+          "text": "Increase the number of application servers without changing the database at all",
           "is_correct": false
         },
         {
@@ -19,7 +19,7 @@
           "is_correct": true
         },
         {
-          "text": "Force every user to log in before viewing a blog post",
+          "text": "Force every user to log in before viewing a blog post, so anonymous readers stop loading pages",
           "is_correct": false
         }
       ],
@@ -34,15 +34,15 @@
       "explanation": "Conditional requests with ETags let the client validate its cached copy: the server replies 304 Not Modified when nothing changed, so the full payload is only transferred when the catalog actually updates.",
       "options": [
         {
-          "text": "Use HTTP caching with ETags so unchanged responses return 304 Not Modified instead of the full payload",
+          "text": "Use HTTP caching with ETags so an unchanged catalog returns 304 Not Modified",
           "is_correct": true
         },
         {
-          "text": "Move the catalog into the mobile app binary so it ships with each release",
+          "text": "Move the catalog into the mobile app binary so it ships with each app store release",
           "is_correct": false
         },
         {
-          "text": "Reduce the catalog size by deleting older products",
+          "text": "Reduce the catalog size by deleting older products that few users still browse",
           "is_correct": false
         },
         {
@@ -61,19 +61,19 @@
       "explanation": "This is a cache stampede: on expiry, every request recomputes the same value. Request coalescing (single-flight) lets one request rebuild the entry while the others wait for the fresh value, so the database sees one query instead of thousands.",
       "options": [
         {
-          "text": "Shorten the TTL to 5 seconds so the data is fresher",
+          "text": "Shorten the TTL to 5 seconds so the cached page is always fresher and each miss costs less",
           "is_correct": false
         },
         {
-          "text": "Let a single request recompute the expired entry while other requests wait for the refreshed value",
+          "text": "Let one request recompute the expired entry while the others wait for the refreshed value",
           "is_correct": true
         },
         {
-          "text": "Add more application servers so the database receives the queries faster",
+          "text": "Add more application servers so the database receives the queries faster during each spike",
           "is_correct": false
         },
         {
-          "text": "Remove the TTL so the cached page never expires",
+          "text": "Remove the TTL so the cached page never expires, even after prices change during the sale",
           "is_correct": false
         }
       ],
@@ -92,15 +92,15 @@
           "is_correct": true
         },
         {
-          "text": "Remove caching from the entire application",
+          "text": "Remove caching from the entire application so every read hits the database",
           "is_correct": false
         },
         {
-          "text": "Increase the TTL so the cache is more efficient",
+          "text": "Increase the TTL so the cache is more efficient and database load drops",
           "is_correct": false
         },
         {
-          "text": "Tell users to wait an hour after editing their profile",
+          "text": "Tell users to wait an hour after editing their profile before checking it",
           "is_correct": false
         }
       ],
@@ -115,19 +115,19 @@
       "explanation": "This is a hot key problem: one key exceeds the capacity of any single node. Replicating that key across nodes or serving it from a small in-process cache on each application server spreads the read load.",
       "options": [
         {
-          "text": "Lower the TTL on the hot key so it expires more often",
+          "text": "Lower the TTL on the hot key so it expires more often and gets reloaded elsewhere",
           "is_correct": false
         },
         {
-          "text": "Move all keys onto the overloaded node so the load is at least predictable",
+          "text": "Move all keys onto the overloaded node so that the load is at least predictable",
           "is_correct": false
         },
         {
-          "text": "Double the size of the cache cluster so keys are spread across 20 nodes",
+          "text": "Double the size of the cache cluster so that keys are spread across 20 nodes instead of just 10",
           "is_correct": false
         },
         {
-          "text": "Replicate the hot key across multiple cache nodes or add a small in-process cache for it on each app server",
+          "text": "Replicate the hot key across several cache nodes, or cache it in-process on each app server",
           "is_correct": true
         }
       ],
@@ -142,15 +142,15 @@
       "explanation": "Write-back trades durability for write speed: acknowledged writes exist only in cache memory until the flush. Data that must survive a crash should be written through to durable storage before acknowledging, accepting higher write latency.",
       "options": [
         {
-          "text": "The database was too slow, so the cache was correct to hold the writes",
+          "text": "The database was too slow, so the cache was right to hold the writes for several minutes at a time",
           "is_correct": false
         },
         {
-          "text": "The flush interval was the problem; flushing every minute would make the design safe",
+          "text": "The flush interval was the problem; flushing every minute instead would make the design safe",
           "is_correct": false
         },
         {
-          "text": "Write-back caching risks losing acknowledged writes on a crash; durable data needs write-through or a persistent log",
+          "text": "Write-back can lose acknowledged writes in a crash; durable data needs write-through or a log",
           "is_correct": true
         },
         {
@@ -169,11 +169,11 @@
       "explanation": "Vertical scaling has a hard ceiling, and this system has hit it. Scaling horizontally—running multiple instances behind a load balancer—lets capacity grow by adding machines instead of enlarging one.",
       "options": [
         {
-          "text": "Rewrite the whole application in a faster programming language first",
+          "text": "Rewrite the whole application in a faster programming language before scaling out",
           "is_correct": false
         },
         {
-          "text": "Wait for the cloud provider to release a larger instance type",
+          "text": "Wait for the cloud provider to release a larger instance type, then upgrade again",
           "is_correct": false
         },
         {
@@ -181,7 +181,7 @@
           "is_correct": true
         },
         {
-          "text": "Increase the server's storage capacity to improve performance.",
+          "text": "Increase the server's storage capacity and disk throughput to improve CPU performance",
           "is_correct": false
         }
       ],
@@ -196,19 +196,19 @@
       "explanation": "Sessions stored in one server's memory make instances non-interchangeable. Moving session state to a shared store (or stateless tokens) means any instance can serve any request, which is what horizontal scaling requires.",
       "options": [
         {
-          "text": "Ask users to log in again whenever they hit a different server",
+          "text": "Ask users to log in again whenever they land on a different server",
           "is_correct": false
         },
         {
-          "text": "Remove the second server and go back to one machine",
+          "text": "Remove the second server and go back to running on one larger machine",
           "is_correct": false
         },
         {
-          "text": "Copy every session between the two servers once per hour",
+          "text": "Copy every session between the two servers once per hour in a batch job",
           "is_correct": false
         },
         {
-          "text": "Move session state out of server memory into a shared store so any instance can handle any request",
+          "text": "Move sessions out of server memory into a shared store that every instance can read",
           "is_correct": true
         }
       ],
@@ -277,11 +277,11 @@
       "explanation": "Replication copies the full write load to every node, so it scales reads, not writes. Partitioning (sharding) the data across multiple primaries divides the write volume so each node handles a subset.",
       "options": [
         {
-          "text": "Batch all writes into one transaction per hour",
+          "text": "Batch all writes into one large transaction per hour so the primary does less work",
           "is_correct": false
         },
         {
-          "text": "Promote a replica to a second primary that accepts the same writes",
+          "text": "Promote a replica to a second primary that accepts the same writes as the first one",
           "is_correct": false
         },
         {
@@ -289,7 +289,7 @@
           "is_correct": true
         },
         {
-          "text": "Add more read replicas until the writes speed up",
+          "text": "Add more read replicas until the primary's write throughput eventually speeds up",
           "is_correct": false
         }
       ],
@@ -304,7 +304,7 @@
       "explanation": "The load is spiky but highly predictable, so autoscaling—scheduled or metric-driven—matches capacity to demand: more instances for the lunch window, fewer overnight, instead of paying for peak capacity all day.",
       "options": [
         {
-          "text": "Cache all order-placement requests and process them after the rush",
+          "text": "Cache all order-placement requests and process them once the lunch rush is over",
           "is_correct": false
         },
         {
@@ -312,11 +312,11 @@
           "is_correct": true
         },
         {
-          "text": "Show users a waiting page during lunch hours",
+          "text": "Show users a waiting page during lunch hours until capacity frees up",
           "is_correct": false
         },
         {
-          "text": "Permanently run enough servers for triple traffic around the clock",
+          "text": "Permanently run enough servers for triple traffic around the clock, every day of the year",
           "is_correct": false
         }
       ],
@@ -331,11 +331,11 @@
       "explanation": "A single server is a single point of failure. Running at least two instances behind a load balancer means the remaining instance keeps serving traffic when one fails or restarts.",
       "options": [
         {
-          "text": "Keep a backup server powered off and boot it manually during outages",
+          "text": "Keep a backup server powered off and boot it by hand whenever the main server goes down",
           "is_correct": false
         },
         {
-          "text": "Schedule maintenance only at night when fewer users notice",
+          "text": "Schedule maintenance only at night, when fewer users will notice that the app is offline",
           "is_correct": false
         },
         {
@@ -358,19 +358,19 @@
       "explanation": "Health checks let the load balancer probe each instance and automatically stop routing to one that fails its checks, removing the dead instance from rotation within seconds instead of waiting for a human.",
       "options": [
         {
-          "text": "Health checks, so the load balancer automatically stops routing to instances that fail probes",
+          "text": "Health checks, so the load balancer stops routing to instances that fail their probes",
           "is_correct": true
         },
         {
-          "text": "A larger instance type, so crashes are less likely",
+          "text": "A larger instance type, so that crashes like this one become much less likely to happen",
           "is_correct": false
         },
         {
-          "text": "Sticky sessions, so each user stays on the same instance",
+          "text": "Sticky sessions, so each user stays on the same instance and only some of them see errors",
           "is_correct": false
         },
         {
-          "text": "Round-robin routing, so requests are spread more evenly",
+          "text": "Round-robin routing, so that requests are spread more evenly across all four of the instances",
           "is_correct": false
         }
       ],
@@ -385,19 +385,19 @@
       "explanation": "Sticky sessions are a workaround for in-memory state. Making instances stateless by moving session data to a shared store removes the pinning, evens out load, and lets instances restart without logging anyone out.",
       "options": [
         {
-          "text": "Make instances stateless by moving session data to a shared store, then remove session stickiness",
+          "text": "Move session data to a shared store so instances are stateless, then turn off stickiness",
           "is_correct": true
         },
         {
-          "text": "Increase session timeout so logouts are less noticeable",
+          "text": "Increase the session timeout so logouts after each deploy are less noticeable",
           "is_correct": false
         },
         {
-          "text": "Deploy less often so users are logged out less frequently",
+          "text": "Deploy less often so users are logged out less frequently by restarts",
           "is_correct": false
         },
         {
-          "text": "Pin users to two instances instead of one for redundancy",
+          "text": "Pin users to two instances instead of one so a restart logs out fewer people",
           "is_correct": false
         }
       ],
@@ -416,15 +416,15 @@
           "is_correct": false
         },
         {
-          "text": "Put an API gateway in front of the services to handle auth, rate limiting, and routing centrally",
+          "text": "Put an API gateway in front to handle auth, rate limiting, and routing centrally",
           "is_correct": true
         },
         {
-          "text": "Merge all 12 microservices into a single service",
+          "text": "Merge all 12 microservices into a single service so the checks exist in only one place",
           "is_correct": false
         },
         {
-          "text": "Let each service keep its own version since teams know their needs best",
+          "text": "Let each service keep its own version, since the teams know their own needs best",
           "is_correct": false
         }
       ],
@@ -470,15 +470,15 @@
           "is_correct": true
         },
         {
-          "text": "Shard the database so each shard holds fewer videos",
+          "text": "Shard the database so each shard holds fewer videos and backs up faster",
           "is_correct": false
         },
         {
-          "text": "Compress the videos and keep storing them in the database",
+          "text": "Compress the videos and keep storing them in the database as smaller blobs",
           "is_correct": false
         },
         {
-          "text": "Stop backing up the database since it is too large",
+          "text": "Stop backing up the database because it is too large, and rely on disk redundancy instead",
           "is_correct": false
         }
       ],
@@ -493,11 +493,11 @@
       "explanation": "Every index must be updated on each insert, so ten indexes turn one logical write into many physical ones. Auditing which indexes queries actually use and dropping the rest restores write speed.",
       "options": [
         {
-          "text": "Indexes make reads faster but corrupt write buffers over time",
+          "text": "Indexes make reads faster but gradually corrupt the write buffers of the table",
           "is_correct": false
         },
         {
-          "text": "The table has too many rows for inserts to remain fast",
+          "text": "The table has too many rows for inserts to stay fast, regardless of its indexes",
           "is_correct": false
         },
         {
@@ -524,7 +524,7 @@
           "is_correct": true
         },
         {
-          "text": "Open all connections at midnight when the database is idle",
+          "text": "Open all connections at midnight, when the database is idle, and keep them",
           "is_correct": false
         },
         {
@@ -532,7 +532,7 @@
           "is_correct": false
         },
         {
-          "text": "Retry each failed connection attempt until it succeeds",
+          "text": "Retry each failed connection attempt until it eventually succeeds",
           "is_correct": false
         }
       ],
@@ -547,7 +547,7 @@
       "explanation": "LSM-tree storage engines batch writes in memory and flush them as sequential disk writes, which suits extreme append-heavy ingest far better than a B-tree's in-place random updates.",
       "options": [
         {
-          "text": "Storing each sensor reading as a separate file on disk",
+          "text": "Storing each sensor reading as a separate file on disk, in one folder per device",
           "is_correct": false
         },
         {
@@ -555,11 +555,11 @@
           "is_correct": true
         },
         {
-          "text": "The same B-tree database with more indexes for faster inserts",
+          "text": "The same B-tree database with more indexes added so that inserts run faster",
           "is_correct": false
         },
         {
-          "text": "A cache in front of the database to absorb the writes",
+          "text": "A cache in front of the database to absorb the writes before they reach the disk",
           "is_correct": false
         }
       ],
@@ -574,7 +574,7 @@
       "explanation": "Random keys scatter inserts across the whole B-tree, splitting pages and evicting hot pages. Time-ordered identifiers (UUIDv7, Snowflake-style IDs) make inserts append to the right edge of the index, keeping pages full and the working set small.",
       "options": [
         {
-          "text": "Hash the UUIDs before inserting so they spread more evenly",
+          "text": "Hash the UUIDs before inserting them so that they spread more evenly",
           "is_correct": false
         },
         {
@@ -582,11 +582,11 @@
           "is_correct": false
         },
         {
-          "text": "Remove the primary key entirely to avoid index maintenance",
+          "text": "Remove the primary key entirely so there is no index to maintain on each insert",
           "is_correct": false
         },
         {
-          "text": "Switch to time-ordered identifiers (e.g. UUIDv7 or Snowflake IDs) so inserts append to the end of the index",
+          "text": "Use time-ordered IDs such as UUIDv7 so new rows append to the end of the index",
           "is_correct": true
         }
       ],
@@ -609,11 +609,11 @@
           "is_correct": true
         },
         {
-          "text": "Archive old users to make the table fit, and repeat every year",
+          "text": "Archive old users so the table fits in memory again, and repeat that every year as it grows",
           "is_correct": false
         },
         {
-          "text": "Move the table to a machine with more memory and accept the write ceiling",
+          "text": "Move the table to a machine with far more memory and simply accept the write ceiling for now",
           "is_correct": false
         }
       ],
@@ -628,7 +628,7 @@
       "explanation": "A hot partition comes from skewed keys. Salting the hot keys—appending a random suffix so one celebrity's data spreads over several shards—distributes the load, at the cost of fanning out reads for those keys.",
       "options": [
         {
-          "text": "Add more shards while keeping author ID as the raw shard key",
+          "text": "Add more shards while keeping the raw author ID as the only shard key",
           "is_correct": false
         },
         {
@@ -636,11 +636,11 @@
           "is_correct": true
         },
         {
-          "text": "Rate limit the celebrities so their followers see errors instead",
+          "text": "Rate limit the celebrities so that their followers see errors instead",
           "is_correct": false
         },
         {
-          "text": "Move all celebrity accounts onto the same single dedicated shard",
+          "text": "Move all celebrity accounts onto one single dedicated shard",
           "is_correct": false
         }
       ],
@@ -655,15 +655,15 @@
       "explanation": "Modulo hashing remaps nearly all keys whenever the node count changes. Consistent hashing places nodes and keys on a ring so adding or removing one node only moves the keys adjacent to it—roughly 1/N of the total.",
       "options": [
         {
-          "text": "Always resize the cluster by exact powers of two",
+          "text": "Always resize the cluster by exact powers of two so that keys move in predictable groups",
           "is_correct": false
         },
         {
-          "text": "Flush the whole cache before adding any node so the misses happen at once",
+          "text": "Flush the whole cache before adding any node so all of the misses happen at once",
           "is_correct": false
         },
         {
-          "text": "Replicate every key to every node so placement no longer matters",
+          "text": "Replicate every key to every node so that placement no longer matters at all",
           "is_correct": false
         },
         {
@@ -682,19 +682,19 @@
       "explanation": "The email is not needed to complete the purchase, so it should not sit on the critical path. Publishing an event to a queue lets a background worker send the email while checkout responds immediately.",
       "options": [
         {
-          "text": "Show a loading spinner so the 8 seconds feels shorter",
+          "text": "Show a loading spinner so the 8-second wait feels shorter to the customer",
           "is_correct": false
         },
         {
-          "text": "Switch to a faster email provider and keep sending synchronously",
+          "text": "Switch to a faster email provider and keep sending the email synchronously",
           "is_correct": false
         },
         {
-          "text": "Put the email onto a message queue and send it from a background worker after checkout responds",
+          "text": "Put the email on a message queue and send it from a background worker after responding",
           "is_correct": true
         },
         {
-          "text": "Skip sending order confirmation emails entirely",
+          "text": "Skip sending order confirmation emails entirely and show the details on the order page instead",
           "is_correct": false
         }
       ],
@@ -709,19 +709,19 @@
       "explanation": "A queue between the services absorbs the burst: orders are accepted and enqueued at spike rate, and the fulfillment service consumes them at its own steady pace instead of being overwhelmed.",
       "options": [
         {
-          "text": "Have the order service retry each failed synchronous call in a tight loop",
+          "text": "Have the order service retry each failed synchronous call in a tight loop until it goes through",
           "is_correct": false
         },
         {
-          "text": "Put a message queue between the services so the burst is buffered and fulfillment consumes at its own pace",
+          "text": "Put a queue between the services so the burst is buffered and consumed at fulfillment's pace",
           "is_correct": true
         },
         {
-          "text": "Scale the fulfillment service to 50x capacity permanently for the two-minute spikes",
+          "text": "Scale the fulfillment service to 50x capacity permanently to cover the two-minute spikes",
           "is_correct": false
         },
         {
-          "text": "Reject all orders above normal load with an error page",
+          "text": "Reject all orders above normal load with an error page and ask customers to try again later",
           "is_correct": false
         }
       ],
@@ -736,11 +736,11 @@
       "explanation": "At-least-once delivery guarantees duplicates will occasionally arrive, so consumers must be idempotent: track processed event IDs (or use an idempotency key) so a redelivered event is recognized and skipped.",
       "options": [
         {
-          "text": "Add a random delay before processing each event so duplicates spread out",
+          "text": "Add a random delay before processing each event so that duplicate deliveries spread out",
           "is_correct": false
         },
         {
-          "text": "Process payments synchronously without a queue to avoid redelivery",
+          "text": "Process payments synchronously without a queue, so the broker can never redeliver an event",
           "is_correct": false
         },
         {
@@ -748,7 +748,7 @@
           "is_correct": true
         },
         {
-          "text": "Configure the queue for exactly-once delivery so duplicates are impossible end to end",
+          "text": "Configure the queue for exactly-once delivery so that duplicates are impossible end to end",
           "is_correct": false
         }
       ],
@@ -763,19 +763,19 @@
       "explanation": "This is a poison pill. After a bounded number of failed attempts, the message should be moved to a dead letter queue so the main queue keeps flowing and the bad message can be inspected separately.",
       "options": [
         {
-          "text": "Increase the consumer's memory so it stops crashing",
+          "text": "Increase the consumer's memory so that it stops crashing on the message",
           "is_correct": false
         },
         {
-          "text": "Retry the message forever since it must eventually succeed",
+          "text": "Retry the message forever, since it must eventually succeed on some attempt",
           "is_correct": false
         },
         {
-          "text": "Delete the entire queue and start fresh",
+          "text": "Delete the entire queue and start fresh with a new one",
           "is_correct": false
         },
         {
-          "text": "After a retry limit, move the failing message to a dead letter queue and continue with the rest",
+          "text": "After a retry limit, move the failing message to a dead letter queue and carry on",
           "is_correct": true
         }
       ],
@@ -790,19 +790,19 @@
       "explanation": "A slow stage must be able to signal upstream to slow down. Backpressure—bounded buffers that block or slow producers when full—keeps the pipeline's memory bounded instead of letting the fastest stage set the pace.",
       "options": [
         {
-          "text": "Give the enrichment stage unlimited memory for its buffer",
+          "text": "Give the enrichment stage unlimited memory for its buffer so it can never run out",
           "is_correct": false
         },
         {
-          "text": "Drop the enrichment stage's input silently whenever it is busy",
+          "text": "Drop the enrichment stage's input silently whenever that stage is too busy to keep up",
           "is_correct": false
         },
         {
-          "text": "Apply backpressure with bounded buffers so upstream stages slow down when the enrichment stage falls behind",
+          "text": "Apply backpressure with bounded buffers so upstream stages slow down when enrichment lags",
           "is_correct": true
         },
         {
-          "text": "Restart the pipeline automatically every time it runs out of memory",
+          "text": "Restart the pipeline automatically every time it runs out of memory, replaying from the last offset",
           "is_correct": false
         }
       ],
@@ -817,15 +817,15 @@
       "explanation": "Kafka guarantees ordering only within a partition. Keying events by order ID routes all events for one order to the same partition, so each consumer sees that order's events in sequence while different orders still process in parallel.",
       "options": [
         {
-          "text": "Add a timestamp to each event and have consumers sleep until earlier events arrive",
+          "text": "Add a timestamp to each event and have every consumer sleep until the earlier events arrive",
           "is_correct": false
         },
         {
-          "text": "Partition the topic by order ID so all events for one order land in the same partition, in order",
+          "text": "Partition the topic by order ID so each order's events land in one partition, in order",
           "is_correct": true
         },
         {
-          "text": "Reduce the topic to a single consumer so ordering is global",
+          "text": "Reduce the topic to a single consumer so that ordering becomes global across all partitions",
           "is_correct": false
         },
         {
@@ -844,19 +844,19 @@
       "explanation": "This is eventual consistency: replicas converge to the new value after replication catches up, so briefly stale reads in other regions are expected, not a bug.",
       "options": [
         {
-          "text": "A race condition that will eventually corrupt the username",
+          "text": "A race condition that will eventually corrupt the stored username in both regions if left alone",
           "is_correct": false
         },
         {
-          "text": "A caching bug, since databases always return the latest write",
+          "text": "A caching bug, since a correctly working database always returns the latest write to every reader",
           "is_correct": false
         },
         {
-          "text": "Split-brain, because two regions disagree about a value",
+          "text": "Split-brain, because the two regions disagree about the value and both believe they are correct",
           "is_correct": false
         },
         {
-          "text": "Eventual consistency — replicas converge shortly after the write, so briefly stale reads are expected",
+          "text": "Eventual consistency: replicas converge soon after the write, so brief stale reads are expected",
           "is_correct": true
         }
       ],
@@ -871,7 +871,7 @@
       "explanation": "CAP applied: since divergent balances are unacceptable, the system must choose consistency over availability during the partition—refuse writes on the minority side rather than accept conflicting ledger entries.",
       "options": [
         {
-          "text": "Disable replication so partitions cannot happen",
+          "text": "Disable replication between the data centers so that partitions cannot happen",
           "is_correct": false
         },
         {
@@ -883,7 +883,7 @@
           "is_correct": false
         },
         {
-          "text": "Choose consistency: reject writes on the side that cannot reach a majority until the partition heals",
+          "text": "Choose consistency: reject writes on the side that cannot reach a majority until it heals",
           "is_correct": true
         }
       ],
@@ -898,11 +898,11 @@
       "explanation": "Quorum overlap requires W + R > N. With N=3, settings like W=2 and R=2 guarantee the read set intersects the write set, so at least one replica in every read holds the latest write.",
       "options": [
         {
-          "text": "Set W=1 and R=1 but read from the fastest replica",
+          "text": "Set W=1 and R=1 but always read from whichever replica responds fastest",
           "is_correct": false
         },
         {
-          "text": "Keep W=1, R=1 but add more replicas (N=5)",
+          "text": "Keep W=1 and R=1, but add more replicas so that N=5 covers more nodes",
           "is_correct": false
         },
         {
@@ -910,7 +910,7 @@
           "is_correct": true
         },
         {
-          "text": "Set W=3 and R=0 so reads are free once writes finish",
+          "text": "Set W=3 and R=0 so that reads cost nothing once every replica has the write",
           "is_correct": false
         }
       ],
@@ -925,15 +925,15 @@
       "explanation": "Lock expiry alone cannot stop a paused-but-alive former holder. Fencing tokens—a number that increases with each lock grant, checked by the storage layer—let the store reject writes carrying a stale token.",
       "options": [
         {
-          "text": "Issue an increasing fencing token with each lock grant and have storage reject writes with stale tokens",
+          "text": "Issue an increasing fencing token with each lock and have storage reject stale tokens",
           "is_correct": true
         },
         {
-          "text": "Disable garbage collection on the workers",
+          "text": "Disable garbage collection on the workers so that pauses like this one can never happen again",
           "is_correct": false
         },
         {
-          "text": "Increase the lock timeout so garbage-collection pauses fit inside it",
+          "text": "Increase the lock timeout so that even long garbage-collection pauses always fit inside it",
           "is_correct": false
         },
         {
@@ -952,19 +952,19 @@
       "explanation": "A circuit breaker detects that the dependency is failing and fails fast—rejecting payment calls immediately instead of letting every thread block for 30 seconds—so the failure stays contained while the rest of the site keeps working.",
       "options": [
         {
-          "text": "Switching payment providers whenever latency exceeds one second",
+          "text": "Switching payment providers automatically whenever latency exceeds one second",
           "is_correct": false
         },
         {
-          "text": "A bigger thread pool so more requests can wait simultaneously",
+          "text": "A bigger thread pool so that more requests can wait simultaneously for the provider",
           "is_correct": false
         },
         {
-          "text": "A circuit breaker that fails fast when the payment provider is unhealthy instead of letting threads pile up",
+          "text": "A circuit breaker that fails fast while the provider is unhealthy, so threads do not pile up",
           "is_correct": true
         },
         {
-          "text": "Retrying each slow payment call immediately on another thread",
+          "text": "Retrying each slow payment call immediately on another thread, taken from a separate backup pool",
           "is_correct": false
         }
       ],
@@ -979,15 +979,15 @@
       "explanation": "An idempotency key—a unique client-generated ID sent with the payment—lets the server recognize the retry as the same logical operation and return the original result instead of charging again.",
       "options": [
         {
-          "text": "Disable retries so users must tap the button again themselves",
+          "text": "Disable retries so users must tap the button again themselves after a timeout",
           "is_correct": false
         },
         {
-          "text": "Make the timeout longer so retries happen less often",
+          "text": "Make the timeout much longer so that automatic retries happen less often",
           "is_correct": false
         },
         {
-          "text": "Send an idempotency key with the payment so the server detects the retry and returns the original result",
+          "text": "Send an idempotency key so the server recognizes the retry and returns the original result",
           "is_correct": true
         },
         {
@@ -1006,15 +1006,15 @@
       "explanation": "Exponential backoff spreads retries over time and jitter randomizes them, so recovering services see a smooth trickle of retries instead of synchronized waves.",
       "options": [
         {
-          "text": "Retrying immediately in a loop until the request succeeds",
+          "text": "Retrying immediately in a tight loop until the request succeeds, so clients recover sooner",
           "is_correct": false
         },
         {
-          "text": "Exponential backoff with jitter, so retries spread out randomly instead of arriving in synchronized waves",
+          "text": "Exponential backoff with jitter, so retries spread out randomly instead of arriving together",
           "is_correct": true
         },
         {
-          "text": "A shorter fixed retry interval so clients reconnect sooner",
+          "text": "A shorter fixed retry interval, so that each client reconnects sooner once the service is back",
           "is_correct": false
         },
         {
@@ -1037,15 +1037,15 @@
           "is_correct": true
         },
         {
-          "text": "Move recommendations into the product page's own code so there is no separate service",
+          "text": "Move recommendations into the product page's own code so that there is no separate service to fail",
           "is_correct": false
         },
         {
-          "text": "Retry the recommendations call until it succeeds before rendering",
+          "text": "Retry the recommendations call until it succeeds, and only then render the rest of the product page",
           "is_correct": false
         },
         {
-          "text": "Make the recommendations service highly available so it never fails",
+          "text": "Make the recommendations service highly available with extra replicas so that it never fails",
           "is_correct": false
         }
       ],
@@ -1060,7 +1060,7 @@
       "explanation": "The bulkhead pattern isolates resources per workload: giving the slow reports their own bounded pool means they can exhaust only their own compartment while the rest of the service stays responsive.",
       "options": [
         {
-          "text": "Cache the reports so they are only slow the first time",
+          "text": "Cache the reports so that they are only slow the very first time they are generated",
           "is_correct": false
         },
         {
@@ -1068,11 +1068,11 @@
           "is_correct": true
         },
         {
-          "text": "Double the shared thread pool so it takes longer to fill up",
+          "text": "Double the shared thread pool so it takes longer for the report requests to fill it",
           "is_correct": false
         },
         {
-          "text": "Lower the report endpoint's timeout to 5 seconds and fail the reports",
+          "text": "Lower the report endpoint's timeout to 5 seconds and fail the slow reports instead",
           "is_correct": false
         }
       ],
@@ -1087,7 +1087,7 @@
       "explanation": "Load shedding rejects excess requests early—fast and cheaply—so the requests that are accepted complete normally. Serving 100% of capacity well beats serving 200% of demand not at all.",
       "options": [
         {
-          "text": "Remove all timeouts so slow requests eventually finish",
+          "text": "Remove all timeouts so that slow requests are eventually allowed to finish",
           "is_correct": false
         },
         {
@@ -1095,11 +1095,11 @@
           "is_correct": true
         },
         {
-          "text": "Slow all requests equally so the pain is distributed fairly",
+          "text": "Slow all requests equally so the pain of the overload is distributed fairly",
           "is_correct": false
         },
         {
-          "text": "Queue every incoming request no matter how long the queue grows",
+          "text": "Queue every incoming request, no matter how long the queue grows or how long each request ends up waiting",
           "is_correct": false
         }
       ],
@@ -1118,11 +1118,11 @@
           "is_correct": true
         },
         {
-          "text": "Add servers until the scraper's traffic no longer matters",
+          "text": "Add servers until the scraper's traffic no longer affects any of the other clients",
           "is_correct": false
         },
         {
-          "text": "Block all traffic from every cloud provider's IP ranges",
+          "text": "Block all traffic from every cloud provider's IP ranges to stop automated clients",
           "is_correct": false
         },
         {
@@ -1141,19 +1141,19 @@
       "explanation": "An aggregated query interface—GraphQL or a backend-for-frontend endpoint—lets the client fetch exactly the fields the screen needs in one round trip, eliminating both the multiple trips and the over-fetching.",
       "options": [
         {
-          "text": "Cache all five responses on the device for a week",
+          "text": "Cache all five responses on the device for a week, even though some of the data changes daily",
           "is_correct": false
         },
         {
-          "text": "Reduce the app's screen content until one endpoint is enough",
+          "text": "Reduce the home screen's content until a single existing endpoint is enough to render all of it",
           "is_correct": false
         },
         {
-          "text": "Expose one aggregated query (e.g. GraphQL or a backend-for-frontend) returning exactly what the screen needs",
+          "text": "Add one aggregated endpoint, such as GraphQL or a BFF, returning just what the screen needs",
           "is_correct": true
         },
         {
-          "text": "Have the app fire the five requests in a loop with retries",
+          "text": "Have the app fire the five requests in a loop with retries until every one of them succeeds",
           "is_correct": false
         }
       ],
@@ -1168,19 +1168,19 @@
       "explanation": "Offset pagination counts rows from the start, so inserts shift every subsequent page. Cursor pagination anchors the next page to the last item seen (e.g. its ID or timestamp), which stays stable as rows are added.",
       "options": [
         {
-          "text": "Block new posts from appearing while any user is paginating",
+          "text": "Block new posts from appearing while any user is paginating through the feed",
           "is_correct": false
         },
         {
-          "text": "Switch to cursor-based pagination anchored to the last item seen instead of a numeric offset",
+          "text": "Switch to cursor-based pagination anchored to the last item seen, not a numeric offset",
           "is_correct": true
         },
         {
-          "text": "Increase the page size so fewer pages are needed",
+          "text": "Increase the page size so fewer pages are needed and fewer items shift",
           "is_correct": false
         },
         {
-          "text": "Sort the feed randomly so duplicates are less noticeable",
+          "text": "Sort the feed randomly so that duplicates are less noticeable to users",
           "is_correct": false
         }
       ],
@@ -1195,7 +1195,7 @@
       "explanation": "A token bucket refills at the average allowed rate while letting tokens accumulate up to the bucket size, so brief bursts spend saved tokens and pass, while the long-term average stays capped.",
       "options": [
         {
-          "text": "Use a strict fixed interval of one request every 600 milliseconds",
+          "text": "Use a strict fixed interval of one request every 600 milliseconds for each client",
           "is_correct": false
         },
         {
@@ -1207,7 +1207,7 @@
           "is_correct": false
         },
         {
-          "text": "No rate limit, since bursts are legitimate",
+          "text": "No rate limit at all, since the bursts come from legitimate clients and should never be rejected",
           "is_correct": false
         }
       ],
@@ -1222,11 +1222,11 @@
       "explanation": "A canary release routes a small slice of traffic to the new version first; problems surface on a few percent of users, and the rollout only widens once the canary looks healthy.",
       "options": [
         {
-          "text": "Add a mandatory two-week manual QA cycle before every deploy",
+          "text": "Add a mandatory two-week manual QA cycle before every single deploy to catch bad releases early",
           "is_correct": false
         },
         {
-          "text": "Deploy to all servers at once but keep a finger on the rollback button",
+          "text": "Deploy to all servers at once, but keep a finger on the rollback button throughout every deploy",
           "is_correct": false
         },
         {
@@ -1234,7 +1234,7 @@
           "is_correct": false
         },
         {
-          "text": "Canary releases: send a small percentage of traffic to the new version and widen gradually if healthy",
+          "text": "Canary releases: send a small share of traffic to the new version, widening it if healthy",
           "is_correct": true
         }
       ],
@@ -1249,11 +1249,11 @@
       "explanation": "Distributed tracing propagates a trace ID through every hop and records per-service spans, so one trace view shows exactly where the 5 seconds went without manual log correlation.",
       "options": [
         {
-          "text": "More detailed logging inside each service, still without correlation IDs",
+          "text": "More detailed logging inside each of the services, still without any correlation IDs between them",
           "is_correct": false
         },
         {
-          "text": "Merging the six services into one so there is only one log",
+          "text": "Merging the six services into a single service so that there is only one log file to search",
           "is_correct": false
         },
         {
@@ -1261,7 +1261,7 @@
           "is_correct": true
         },
         {
-          "text": "A shared spreadsheet where teams paste their log timestamps",
+          "text": "A shared spreadsheet where every team pastes its log timestamps for each slow request it sees",
           "is_correct": false
         }
       ],
@@ -1276,7 +1276,7 @@
       "explanation": "Shadow (dark) traffic mirrors real production requests to the new implementation while users continue receiving the old system's responses; comparing outputs reveals real-traffic divergence with zero user impact.",
       "options": [
         {
-          "text": "Write more unit tests until confidence is high enough",
+          "text": "Write more unit tests until the team's confidence is high enough to ship",
           "is_correct": false
         },
         {
@@ -1284,11 +1284,11 @@
           "is_correct": false
         },
         {
-          "text": "Mirror production traffic to the new engine in shadow mode and compare its outputs to the old one",
+          "text": "Mirror production traffic to the new engine in shadow mode and compare its outputs",
           "is_correct": true
         },
         {
-          "text": "Deploy it to all users and monitor closely for pricing complaints",
+          "text": "Deploy it to all users at once and monitor closely for incoming pricing complaints",
           "is_correct": false
         }
       ],
@@ -1330,15 +1330,15 @@
       "explanation": "Stateless JWTs cannot be recalled, so revocation needs short-lived access tokens paired with revocable refresh tokens (or a server-side denylist): stolen access dies within minutes, and the refresh token is killed immediately.",
       "options": [
         {
-          "text": "Store the JWT in two cookies instead of one for extra safety",
+          "text": "Store the JWT in two separate cookies instead of one, so a thief would need to steal both of them",
           "is_correct": false
         },
         {
-          "text": "Use short-lived access tokens with revocable refresh tokens, so revocation takes effect within minutes",
+          "text": "Use short-lived access tokens with revocable refresh tokens, so revocation applies in minutes",
           "is_correct": true
         },
         {
-          "text": "Extend the JWT lifetime so users need to log in less often",
+          "text": "Extend the JWT lifetime so that users need to log in less often, which reduces token exposure",
           "is_correct": false
         },
         {
