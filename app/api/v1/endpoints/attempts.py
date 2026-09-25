@@ -6,6 +6,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.core.analytics import track
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.db.session import get_session
@@ -168,6 +169,15 @@ async def create_attempt(
 
     await session.commit()
     await session.refresh(attempt)
+    track(
+        request,
+        "quiz_started",
+        {
+            "question_count": len(question_ids),
+            "difficulty": body.difficulty,
+            "category": body.category,
+        },
+    )
     return AttemptCreateResponse(attempt_id=attempt.id, started_at=attempt.started_at)
 
 
@@ -286,6 +296,7 @@ async def submit_answer(
 
 @router.post("/{attempt_id}/complete", response_model=AttemptComplete)
 async def complete_attempt(
+    request: Request,
     attempt_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
 ):
@@ -311,9 +322,14 @@ async def complete_attempt(
     await session.commit()
 
     total = attempt.total_questions
-    percentage = (score / total * 100) if total else 0.0
+    percentage = round((score / total * 100) if total else 0.0, 2)
+    track(
+        request,
+        "quiz_completed",
+        {"score": score, "total_questions": total, "percentage": percentage},
+    )
     return AttemptComplete(
         score=score,
         total_questions=total,
-        percentage=round(percentage, 2),
+        percentage=percentage,
     )

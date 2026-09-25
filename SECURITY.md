@@ -154,7 +154,7 @@ Set these as Railway environment variables:
       limiting above. Remove the old `TRUST_FORWARDED_FOR` variable; it is no
       longer read.
 - [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
-      is. Unauthenticated requests are reported to PostHog as
+      is. Unauthenticated visitors are reported to PostHog as
       `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside
       your infrastructure. Unset falls back to a random per-process salt:
       still non-reversible, but anonymous ids then differ per instance and
