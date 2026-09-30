@@ -23,8 +23,17 @@ def test_health_check_returns_ok():
 def test_openapi_schema_builds():
     schema = app.openapi()
 
-    assert f"{settings.api_v1_prefix}/questions" in schema["paths"]
+    assert f"{settings.api_v1_prefix}/questions/bulk" in schema["paths"]
     assert f"{settings.api_v1_prefix}/quiz-attempts" in schema["paths"]
+
+
+def test_public_question_reads_are_not_mounted():
+    # GET /questions/{id} returned options in stored order, which leaked the
+    # answer key. Questions are served only through attempts, which shuffle.
+    paths = app.openapi()["paths"]
+
+    assert "get" not in paths.get(f"{settings.api_v1_prefix}/questions", {})
+    assert "get" not in paths.get(f"{settings.api_v1_prefix}/questions/{{question_id}}", {})
 
 
 def test_unknown_route_is_not_found():

@@ -122,14 +122,14 @@ class Settings(BaseSettings):
     streak_timezone: str = "UTC"
 
     # PostHog product analytics. When posthog_api_key is empty the analytics
-    # middleware is a no-op (no client, no network calls) so local dev and tests
+    # helpers are no-ops (no client, no network calls) so local dev and tests
     # stay quiet. posthog_host is the ingestion endpoint (US Cloud by default).
     posthog_api_key: str = ""
     posthog_host: str = "https://us.i.posthog.com"
-    # Server-side salt for the anonymous distinct_id. Unauthenticated requests
+    # Server-side salt for the anonymous distinct_id. Unauthenticated visitors
     # are identified to PostHog by HMAC(salt, client_ip) rather than by the raw
     # IP, so no address leaves this process. Keep it secret and stable: changing
-    # it re-buckets every anonymous visitor. When empty, the middleware falls
+    # it re-buckets every anonymous visitor. When empty, analytics falls
     # back to a random per-process salt — still non-reversible, but anonymous
     # ids then differ per instance and reset on every redeploy.
     analytics_ip_salt: str = ""

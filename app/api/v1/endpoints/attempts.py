@@ -6,6 +6,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.core.analytics import track
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.db.session import get_session
@@ -82,11 +83,15 @@ def _attempt_question(
     )
 
 
-async def _load_attempt(session: AsyncSession, attempt_id: uuid.UUID) -> QuizAttempt:
+async def _load_attempt(
+    session: AsyncSession, attempt_id: uuid.UUID, *, for_update: bool = False
+) -> QuizAttempt:
     # Guest-only mode: attempts are anonymous, so they're looked up by id alone.
     # Anyone holding an attempt id can read it — acceptable for this no-stakes,
     # self-directed tool (see the deferred-decisions note in CLAUDE.md).
     stmt = select(QuizAttempt).where(QuizAttempt.id == attempt_id)
+    if for_update:
+        stmt = stmt.with_for_update()
     attempt = (await session.execute(stmt)).scalar_one_or_none()
     if attempt is None:
         raise HTTPException(
@@ -168,6 +173,15 @@ async def create_attempt(
 
     await session.commit()
     await session.refresh(attempt)
+    track(
+        request,
+        "quiz_started",
+        {
+            "question_count": len(question_ids),
+            "difficulty": body.difficulty,
+            "category": body.category,
+        },
+    )
     return AttemptCreateResponse(attempt_id=attempt.id, started_at=attempt.started_at)
 
 
@@ -226,15 +240,24 @@ async def submit_answer(
     body: AnswerSubmit,
     session: AsyncSession = Depends(get_session),
 ):
-    attempt = await _load_attempt(session, attempt_id)
-    if attempt.completed_at is not None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Attempt already completed"
-        )
+    """Record the answer to one question and return its result.
 
-    answer_stmt = select(UserAnswer).where(
-        UserAnswer.attempt_id == attempt.id,
-        UserAnswer.question_id == body.question_id,
+    Idempotent for the same option: a client whose response was lost in transit
+    retries with the answer it already sent, and gets the stored result back
+    instead of a 409 it has no way past. Only a *different* option on an
+    answered question conflicts.
+    """
+    attempt = await _load_attempt(session, attempt_id)
+
+    # Locked so two in-flight submits for the same question (a double tap, a
+    # retry racing the original) can't both see it unanswered and both write.
+    answer_stmt = (
+        select(UserAnswer)
+        .where(
+            UserAnswer.attempt_id == attempt.id,
+            UserAnswer.question_id == body.question_id,
+        )
+        .with_for_update()
     )
     answer = (await session.execute(answer_stmt)).scalar_one_or_none()
     if answer is None:
@@ -242,10 +265,18 @@ async def submit_answer(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Question is not part of this attempt",
         )
-    if answer.selected_option_id is not None:
+
+    replay = answer.selected_option_id is not None
+    if replay and answer.selected_option_id != body.selected_option_id:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Question already answered",
+        )
+    # Checked after the replay case: a retried answer is still owed its result
+    # even if the attempt was completed in between.
+    if not replay and attempt.completed_at is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Attempt already completed"
         )
 
     # One query for everything the response needs: every option of the question
@@ -269,16 +300,21 @@ async def submit_answer(
             detail="Option does not belong to the question",
         )
 
-    answer.selected_option_id = selected.id
-    answer.is_correct = selected.is_correct
+    if not replay:
+        answer.selected_option_id = selected.id
+        answer.is_correct = selected.is_correct
+    # A replay reports the verdict as stored, which is what the score counts,
+    # even if the answer key has been edited since.
+    is_correct = answer.is_correct
 
     correct_option_id = None
-    if not selected.is_correct:
+    if not is_correct:
         correct_option_id = next((o.id for o in options if o.is_correct), None)
 
+    # Commits the write, or on a replay just releases the row lock.
     await session.commit()
     return AnswerResult(
-        correct=selected.is_correct,
+        correct=is_correct,
         explanation=explanation,
         correct_option_id=correct_option_id,
     )
@@ -286,13 +322,25 @@ async def submit_answer(
 
 @router.post("/{attempt_id}/complete", response_model=AttemptComplete)
 async def complete_attempt(
+    request: Request,
     attempt_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
 ):
-    attempt = await _load_attempt(session, attempt_id)
+    """Score and close the attempt.
+
+    Idempotent: completing an attempt that is already complete returns the
+    stored score, so a client whose response was lost can simply retry.
+    """
+    # Locked so concurrent completes serialise: the second one then sees
+    # completed_at set and replays, rather than scoring (and tracking) twice.
+    attempt = await _load_attempt(session, attempt_id, for_update=True)
+    total = attempt.total_questions
     if attempt.completed_at is not None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Attempt already completed"
+        score = attempt.score or 0
+        return AttemptComplete(
+            score=score,
+            total_questions=total,
+            percentage=round((score / total * 100) if total else 0.0, 2),
         )
 
     answers = (
@@ -310,10 +358,14 @@ async def complete_attempt(
     attempt.completed_at = func.now()
     await session.commit()
 
-    total = attempt.total_questions
-    percentage = (score / total * 100) if total else 0.0
+    percentage = round((score / total * 100) if total else 0.0, 2)
+    track(
+        request,
+        "quiz_completed",
+        {"score": score, "total_questions": total, "percentage": percentage},
+    )
     return AttemptComplete(
         score=score,
         total_questions=total,
-        percentage=round(percentage, 2),
+        percentage=percentage,
     )

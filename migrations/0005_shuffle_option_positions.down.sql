@@ -1,0 +1,3 @@
+-- Intentionally a no-op: the original option order is not recorded, and
+-- restoring it would only re-leak the answer key. Nothing depends on a
+-- particular order, so there is nothing to revert.

@@ -137,6 +137,9 @@ Set these as Railway environment variables:
 - [ ] **Apply migration `0004` before deploying the backend.** It adds
       `questions.archived_at`, which every question query now filters on. Deploy
       the code first and reads fail against the old schema.
+- [ ] **Apply migration `0005`** (any time; order-independent of the deploy).
+      It shuffles stored option positions, which had the correct answer first
+      for almost every seeded question.
 - [ ] `ENV=production` — turns on the startup checks: the process refuses to
       boot (and says why) if `DEBUG` is on, `AUTH_BYPASS_USER_ID` is set,
       `JWT_SECRET` or `ADMIN_API_KEY` is under 32 characters, or `CORS_ORIGINS`
@@ -154,7 +157,7 @@ Set these as Railway environment variables:
       limiting above. Remove the old `TRUST_FORWARDED_FOR` variable; it is no
       longer read.
 - [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
-      is. Unauthenticated requests are reported to PostHog as
+      is. Unauthenticated visitors are reported to PostHog as
       `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside
       your infrastructure. Unset falls back to a random per-process salt:
       still non-reversible, but anonymous ids then differ per instance and

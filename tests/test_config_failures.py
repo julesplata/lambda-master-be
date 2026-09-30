@@ -9,13 +9,12 @@ import jwt
 import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
-from fastapi.testclient import TestClient
 from pydantic import ValidationError
+from starlette.requests import Request
 
 from app.api import deps
 from app.core import analytics
 from app.core.config import Settings, settings
-from app.main import app
 
 STRONG = "s" * 32
 PRODUCTION_OK = {
@@ -43,31 +42,26 @@ def no_jwt_secret(monkeypatch):
     monkeypatch.setattr(settings, "jwt_secret", "")
 
 
-class RecordingClient:
-    def __init__(self):
-        self.events = []
-
-    def capture(self, **event):
-        self.events.append(event)
-
-    def shutdown(self):
-        pass
-
-
 def test_analytics_treats_unverifiable_token_as_anonymous(
     monkeypatch, no_jwt_secret, stale_token
 ):
-    recorder = RecordingClient()
-    monkeypatch.setattr(analytics, "_client", recorder)
+    events = []
+    monkeypatch.setattr(
+        analytics, "_client", type("C", (), {"capture": lambda _, **e: events.append(e)})()
+    )
+    request = Request(
+        {
+            "type": "http",
+            "method": "POST",
+            "path": "/",
+            "headers": [(b"authorization", f"Bearer {stale_token}".encode())],
+            "client": ("203.0.113.7", 1234),
+        }
+    )
 
-    with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get(
-            f"{settings.api_v1_prefix}/no-such-endpoint",
-            headers={"Authorization": f"Bearer {stale_token}"},
-        )
+    analytics.track(request, "quiz_started")
 
-    assert response.status_code == 404
-    assert [e["distinct_id"][:5] for e in recorder.events] == ["anon-"]
+    assert [e["distinct_id"][:5] for e in events] == ["anon-"]
 
 
 def test_user_auth_without_jwt_secret_is_401(

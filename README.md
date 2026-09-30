@@ -83,8 +83,6 @@ All routes are mounted under `/api/v1`. Currently active routers:
 |---------------|-------------|
 | `GET /health` | Liveness check |
 | `GET /categories` | List question categories |
-| `GET /questions` | List questions (summaries) |
-| `GET /questions/{id}` | Get a single question (options strip `is_correct`) |
 | `POST /questions/bulk` | Bulk-create questions (admin) |
 | `GET /tags` | List all tags |
 | `POST /quiz-attempts` | Start a quiz attempt |
@@ -105,7 +103,7 @@ All routes are mounted under `/api/v1`. Currently active routers:
 ### Request flow
 
 ```
-Request → SlowAPI rate-limit middleware → Analytics middleware → CORS middleware
+Request → SlowAPI rate-limit middleware → CORS middleware
         → app/api/v1/routes.py (health + sub-routers)
             → endpoints/{questions,attempts,categories,tags,reports,feedback}.py
         → deps.py (auth guards)
@@ -129,7 +127,7 @@ app/
 │   ├── leveling.py         # Pure XP/level math
 │   ├── spaced_repetition.py# Pure Leitner scheduler
 │   ├── limiter.py          # SlowAPI rate limiter
-│   └── analytics*.py       # PostHog client + middleware
+│   └── analytics.py        # PostHog client + product events (track)
 ├── db/                     # Async engine + session
 ├── models/models.py        # SQLAlchemy ORM (single file)
 └── schemas/                # Pydantic request/response schemas (one file per domain)

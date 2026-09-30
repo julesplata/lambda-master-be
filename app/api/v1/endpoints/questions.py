@@ -1,24 +1,19 @@
-import uuid
-
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from app.api.deps import require_admin
 from app.db.session import get_session
 from app.models import Category, Question, QuestionOption
-from app.schemas.question import (
-    BulkCreateResponse,
-    BulkQuestionCreate,
-    CategoryPublic,
-    Difficulty,
-    OptionPublic,
-    QuestionDetail,
-    QuestionSummary,
-)
+from app.schemas.question import BulkCreateResponse, BulkQuestionCreate
 
+# Only the admin bulk import lives here. The public GET /questions and
+# GET /questions/{id} reads were removed: nothing called them, and the detail
+# route returned options in stored position order, which for the seed bank put
+# the correct answer first almost every time. Learners get questions through
+# quiz attempts, which shuffle options per attempt (attempts._shuffled_options).
+# If a public read comes back, it must shuffle the same way.
 router = APIRouter(prefix="/questions", tags=["questions"])
 
 
@@ -121,64 +116,3 @@ async def bulk_create_questions(
     await session.commit()
     return BulkCreateResponse(created=len(question_ids), question_ids=question_ids)
 
-
-def _category_public(c: Category) -> CategoryPublic:
-    return CategoryPublic(id=c.id, name=c.name, slug=c.slug, position=c.position)
-
-
-@router.get("", response_model=list[QuestionSummary])
-async def list_questions(
-    limit: int = Query(default=20, ge=1, le=100),
-    offset: int = Query(default=0, ge=0),
-    difficulty: Difficulty | None = Query(default=None),
-    category: str | None = Query(default=None),
-    session: AsyncSession = Depends(get_session),
-):
-    stmt = (
-        select(Question)
-        .options(selectinload(Question.category))
-        .where(Question.archived_at.is_(None))
-    )
-    if difficulty:
-        stmt = stmt.where(Question.difficulty == difficulty)
-    if category:
-        stmt = stmt.join(Question.category).where(Category.slug == category)
-    stmt = stmt.order_by(Question.created_at.desc()).limit(limit).offset(offset)
-
-    result = await session.execute(stmt)
-    questions = result.scalars().unique().all()
-    return [
-        QuestionSummary(
-            id=q.id,
-            title=q.title,
-            difficulty=q.difficulty,
-            category=_category_public(q.category),
-        )
-        for q in questions
-    ]
-
-
-@router.get("/{question_id}", response_model=QuestionDetail)
-async def get_question(
-    question_id: uuid.UUID,
-    session: AsyncSession = Depends(get_session),
-):
-    stmt = (
-        select(Question)
-        .where(Question.id == question_id, Question.archived_at.is_(None))
-        .options(selectinload(Question.options), selectinload(Question.category))
-    )
-    question = (await session.execute(stmt)).scalar_one_or_none()
-    if question is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Question not found"
-        )
-
-    return QuestionDetail(
-        id=question.id,
-        title=question.title,
-        description=question.description,
-        difficulty=question.difficulty,
-        category=_category_public(question.category),
-        options=[OptionPublic(id=o.id, text=o.option_text) for o in question.options],
-    )
