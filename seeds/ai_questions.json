@@ -1,0 +1,2704 @@
+{
+  "questions": [
+    {
+      "title": "What a token is",
+      "description": "In the context of large language models, what is a token?",
+      "difficulty": "beginner",
+      "explanation": "Models read and write tokens produced by a tokenizer such as byte-pair encoding: common words are often one token, while rare words split into several pieces. In English a token averages about four characters.",
+      "options": [
+        {
+          "text": "A full sentence, which the model reads and writes as one unit of meaning",
+          "is_correct": false
+        },
+        {
+          "text": "A single character, because models process text one letter at a time",
+          "is_correct": false
+        },
+        {
+          "text": "A whole word, because tokenizers split text only at spaces and punctuation",
+          "is_correct": false
+        },
+        {
+          "text": "A chunk of text, often a piece of a word, that the model reads and writes",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "what-a-token-is",
+      "format": "recall"
+    },
+    {
+      "title": "Context window",
+      "description": "What does an LLM's context window limit?",
+      "difficulty": "beginner",
+      "explanation": "The context window is the maximum number of tokens the model can attend to in one request, covering the system prompt, history, documents, and the tokens it generates. Anything outside it is invisible to the model.",
+      "options": [
+        {
+          "text": "How many requests an API key may send to the model in each minute",
+          "is_correct": false
+        },
+        {
+          "text": "How much training data the model learned from before its knowledge cutoff",
+          "is_correct": false
+        },
+        {
+          "text": "How many past conversations the model remembers between sessions",
+          "is_correct": false
+        },
+        {
+          "text": "How many tokens of input and output the model can handle in one request",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "context-window",
+      "format": "recall"
+    },
+    {
+      "title": "Sampling temperature",
+      "description": "What generally happens when you raise an LLM's sampling temperature?",
+      "difficulty": "beginner",
+      "explanation": "Temperature rescales the next-token probability distribution. Higher values flatten it so less likely tokens are sampled more often and outputs vary more; lower values concentrate probability on the most likely tokens.",
+      "options": [
+        {
+          "text": "Outputs arrive faster, because the model skips over unlikely tokens",
+          "is_correct": false
+        },
+        {
+          "text": "Outputs vary more, because less likely tokens are picked more often",
+          "is_correct": true
+        },
+        {
+          "text": "Outputs get longer, because the model is allowed more tokens to generate",
+          "is_correct": false
+        },
+        {
+          "text": "Outputs get more accurate, because the model double-checks each token",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "sampling-temperature",
+      "format": "recall"
+    },
+    {
+      "title": "LLM hallucination",
+      "description": "What does it mean when an LLM hallucinates?",
+      "difficulty": "beginner",
+      "explanation": "A hallucination is fluent output that is not grounded in fact or in the provided sources. Models generate plausible text rather than verified facts, which is why grounding answers in retrieved documents and asking for citations help.",
+      "options": [
+        {
+          "text": "It states false or unsupported information as if it were fact",
+          "is_correct": true
+        },
+        {
+          "text": "It refuses to answer because a safety filter blocked the request",
+          "is_correct": false
+        },
+        {
+          "text": "It copies a long passage from its training data word for word",
+          "is_correct": false
+        },
+        {
+          "text": "It loses track of earlier messages once its context window is full",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "llm-hallucination",
+      "format": "recall"
+    },
+    {
+      "title": "Assistant unaware of a recent release",
+      "description": "A developer asks a chat model about a library version released two months ago. The model confidently describes an older API that no longer exists. No tools or documents were included in the request. What is the most likely cause?",
+      "difficulty": "beginner",
+      "explanation": "A model only knows what was in its training data, which ends at a knowledge cutoff. For anything newer, put the facts in the prompt or give the model a search or retrieval tool.",
+      "options": [
+        {
+          "text": "The provider served a cached answer that another user received earlier",
+          "is_correct": false
+        },
+        {
+          "text": "The release came after the cutoff date of the model's training data",
+          "is_correct": true
+        },
+        {
+          "text": "The model's context window was too small to hold the release notes",
+          "is_correct": false
+        },
+        {
+          "text": "The temperature was set too low for the model to recall rare facts",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "knowledge-cutoff",
+      "format": "situational"
+    },
+    {
+      "title": "Chatbot forgets the user's name",
+      "description": "A developer builds a chatbot on the Claude Messages API, and each request sends only the user's newest message. When a user gives their name and later asks 'What is my name?', the bot has no idea. What is the fix?",
+      "difficulty": "beginner",
+      "explanation": "The Messages API is stateless: the model sees only what is in the current request. Chat apps resend the conversation history, or a summary of it, on every turn.",
+      "options": [
+        {
+          "text": "Reuse one API key so the server links the requests into a session",
+          "is_correct": false
+        },
+        {
+          "text": "Raise max_tokens so the model can keep more of the chat in memory",
+          "is_correct": false
+        },
+        {
+          "text": "Turn on prompt caching so the API stores the conversation state",
+          "is_correct": false
+        },
+        {
+          "text": "Send the earlier turns of the conversation with every request",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "stateless-chat-api",
+      "format": "situational"
+    },
+    {
+      "title": "Few-shot prompting",
+      "description": "What is few-shot prompting?",
+      "difficulty": "beginner",
+      "explanation": "Few-shot prompting shows the model a few examples of the task inside the prompt so it can infer the expected format and behavior without any change to its weights. Zero-shot prompting gives instructions with no examples.",
+      "options": [
+        {
+          "text": "Fine-tuning the model on a small labeled dataset before deploying it",
+          "is_correct": false
+        },
+        {
+          "text": "Putting a handful of worked input and output examples in the prompt",
+          "is_correct": true
+        },
+        {
+          "text": "Sending the same prompt several times and keeping the best response",
+          "is_correct": false
+        },
+        {
+          "text": "Splitting a task into a few prompts that run one after another",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "few-shot-prompting",
+      "format": "recall"
+    },
+    {
+      "title": "Purpose of the system prompt",
+      "description": "In a chat-style LLM API, what is the system prompt typically used for?",
+      "difficulty": "beginner",
+      "explanation": "The system prompt carries instructions that frame every turn, such as persona, task rules, output format, and background context. It is sent with each request; it does not create memory on the server.",
+      "options": [
+        {
+          "text": "Recording each request so the provider can audit the conversation later",
+          "is_correct": false
+        },
+        {
+          "text": "Choosing which model version and data center region serves the request",
+          "is_correct": false
+        },
+        {
+          "text": "Storing the user's earlier messages so the API can remember them later",
+          "is_correct": false
+        },
+        {
+          "text": "Setting the model's role, rules, and context for the whole conversation",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "purpose-of-the-system-prompt",
+      "format": "recall"
+    },
+    {
+      "title": "Chain-of-thought prompting",
+      "description": "Why does asking a model to reason step by step before answering often improve accuracy on multi-step problems?",
+      "difficulty": "beginner",
+      "explanation": "A model does a fixed amount of computation per token, so writing out intermediate reasoning gives it more computation and lets later steps build on earlier ones. Reasoning models build this in as a thinking phase before the answer.",
+      "options": [
+        {
+          "text": "It works out intermediate steps in text before committing to an answer",
+          "is_correct": true
+        },
+        {
+          "text": "It expands the context window so more of the problem fits at once",
+          "is_correct": false
+        },
+        {
+          "text": "It switches the request over to a larger, slower version of the same model",
+          "is_correct": false
+        },
+        {
+          "text": "It makes the model search the web for each step before it gives an answer",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "chain-of-thought-prompting",
+      "format": "recall"
+    },
+    {
+      "title": "Structuring prompts with XML tags",
+      "description": "Anthropic's prompting guide suggests wrapping parts of a prompt in XML tags such as <instructions> and <document>. What is the main benefit?",
+      "difficulty": "beginner",
+      "explanation": "Clear delimiters separate the parts of a prompt, so the model is less likely to confuse instructions with content, and tagged output is easier to parse. To the API the tags are ordinary text: nothing is validated, and every token is billed.",
+      "options": [
+        {
+          "text": "The model can tell instructions, examples, and input data apart",
+          "is_correct": true
+        },
+        {
+          "text": "Text inside the tags is excluded from the token count and is not billed",
+          "is_correct": false
+        },
+        {
+          "text": "The model is forced to reply in valid XML instead of plain prose",
+          "is_correct": false
+        },
+        {
+          "text": "The API validates each tagged section against a schema before sending",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "structuring-prompts-with-xml-tags",
+      "format": "recall"
+    },
+    {
+      "title": "What an embedding is",
+      "description": "In AI applications, what is a text embedding?",
+      "difficulty": "beginner",
+      "explanation": "An embedding model maps text to a fixed-length vector so that semantically similar texts land near each other. It is lossy: you compare embeddings, you do not decode them back into the original text.",
+      "options": [
+        {
+          "text": "A short summary the model writes so that long text fits in its context",
+          "is_correct": false
+        },
+        {
+          "text": "The sequence of token IDs that a tokenizer produces for the text",
+          "is_correct": false
+        },
+        {
+          "text": "A compressed copy of the text that can be decoded back word for word",
+          "is_correct": false
+        },
+        {
+          "text": "A list of numbers placing texts with similar meaning close together",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "what-an-embedding-is",
+      "format": "recall"
+    },
+    {
+      "title": "Cosine similarity",
+      "description": "What does cosine similarity measure between two embedding vectors?",
+      "difficulty": "beginner",
+      "explanation": "Cosine similarity is the cosine of the angle between two vectors: 1 means the same direction and 0 means unrelated. Because it ignores magnitude, it compares direction (meaning) rather than vector length.",
+      "options": [
+        {
+          "text": "How many dimensions in the two vectors hold exactly the same value",
+          "is_correct": false
+        },
+        {
+          "text": "The straight-line distance between the end points of the two vectors",
+          "is_correct": false
+        },
+        {
+          "text": "How many tokens the two original texts have in common with each other",
+          "is_correct": false
+        },
+        {
+          "text": "How closely they point in the same direction, regardless of length",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "cosine-similarity",
+      "format": "recall"
+    },
+    {
+      "title": "Purpose of a vector database",
+      "description": "What does a vector database such as Pinecone, Qdrant, or Postgres with pgvector mainly add to an AI application?",
+      "difficulty": "beginner",
+      "explanation": "A vector database indexes embeddings so the nearest neighbors of a query vector can be found quickly, usually with approximate indexes such as HNSW, alongside metadata filtering. Creating the embeddings is still the embedding model's job.",
+      "options": [
+        {
+          "text": "Fast nearest-neighbor search over large numbers of stored embeddings",
+          "is_correct": true
+        },
+        {
+          "text": "Fine-tuning the model on the stored documents so it learns their content",
+          "is_correct": false
+        },
+        {
+          "text": "Turning text into embeddings without calling any embedding model",
+          "is_correct": false
+        },
+        {
+          "text": "Hosting the model's weights next to the data so prompts stay private",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "purpose-of-a-vector-database",
+      "format": "recall"
+    },
+    {
+      "title": "Search returns unrelated documents",
+      "description": "A team embedded its documents with one embedding model. To cut costs, they switch only the query side to a cheaper model that outputs vectors of the same size, leaving the stored document vectors as they were. Search results now look random. What is the cause?",
+      "difficulty": "beginner",
+      "explanation": "Each embedding model learns its own vector space, so even same-sized vectors from two models do not line up. Changing embedding models means re-embedding the whole corpus with the new one.",
+      "options": [
+        {
+          "text": "The cheaper model's vectors must be normalized before each search",
+          "is_correct": false
+        },
+        {
+          "text": "The index has to be rebuilt whenever query traffic patterns change",
+          "is_correct": false
+        },
+        {
+          "text": "Cheaper models produce vectors too sparse for cosine similarity",
+          "is_correct": false
+        },
+        {
+          "text": "Vectors from two different embedding models are not comparable",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "embedding-model-mismatch",
+      "format": "situational"
+    },
+    {
+      "title": "What RAG does",
+      "description": "What does retrieval-augmented generation (RAG) do?",
+      "difficulty": "beginner",
+      "explanation": "RAG retrieves passages relevant to the query, usually from a vector or keyword index, and inserts them into the prompt so the model answers from that context. The model's weights never change.",
+      "options": [
+        {
+          "text": "Finds relevant documents and adds them to the prompt before generating",
+          "is_correct": true
+        },
+        {
+          "text": "Retrains the model on new documents nightly so its knowledge stays fresh",
+          "is_correct": false
+        },
+        {
+          "text": "Lets the model search its own training data for passages it memorized",
+          "is_correct": false
+        },
+        {
+          "text": "Saves past answers so the same question never reaches the model twice",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "what-rag-does",
+      "format": "recall"
+    },
+    {
+      "title": "Top-k in retrieval",
+      "description": "In a RAG pipeline, what does the retriever's top-k setting control?",
+      "difficulty": "beginner",
+      "explanation": "Retrieval top-k sets how many of the highest-scoring chunks go into the prompt: too few can miss the answer, too many add noise and cost. It is unrelated to top-k sampling, which limits the candidate tokens during generation.",
+      "options": [
+        {
+          "text": "How many of the best-matching chunks are passed to the model",
+          "is_correct": true
+        },
+        {
+          "text": "How many tokens the model may write when it generates the answer",
+          "is_correct": false
+        },
+        {
+          "text": "How many candidate tokens the model samples from at each step",
+          "is_correct": false
+        },
+        {
+          "text": "How many documents are re-embedded whenever the index updates",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "top-k-in-retrieval",
+      "format": "recall"
+    },
+    {
+      "title": "Why documents are chunked",
+      "description": "Why do RAG pipelines split documents into chunks before embedding them?",
+      "difficulty": "beginner",
+      "explanation": "A single vector for a whole document blurs many topics together, and whole documents waste context. Chunks of a few hundred tokens let retrieval return just the passages that answer the query.",
+      "options": [
+        {
+          "text": "Embedding models reject any input that is longer than one paragraph",
+          "is_correct": false
+        },
+        {
+          "text": "Chunks let the vector database compress documents to save disk space",
+          "is_correct": false
+        },
+        {
+          "text": "Splitting removes repeated sentences that would confuse the model",
+          "is_correct": false
+        },
+        {
+          "text": "Smaller passages match queries precisely and fit into the prompt",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "why-documents-are-chunked",
+      "format": "recall"
+    },
+    {
+      "title": "Chunk overlap",
+      "description": "Why do many RAG pipelines make neighboring chunks overlap by a few sentences?",
+      "difficulty": "beginner",
+      "explanation": "Fixed-size splitting can cut a sentence or argument in half. Overlap repeats a little text across each boundary so that context is not lost, at the cost of some extra storage and near-duplicate results.",
+      "options": [
+        {
+          "text": "So duplicate chunks can be found and removed before indexing",
+          "is_correct": false
+        },
+        {
+          "text": "So an idea cut at a chunk boundary still appears whole in one chunk",
+          "is_correct": true
+        },
+        {
+          "text": "So each chunk can be returned for two different user queries at once",
+          "is_correct": false
+        },
+        {
+          "text": "So the index holds fewer chunks overall and takes up less disk space",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "chunk-overlap",
+      "format": "recall"
+    },
+    {
+      "title": "Bot quotes the old returns policy",
+      "description": "A support assistant answers from the company help center using RAG. The returns policy page was edited last week, but the assistant still quotes the old 30-day window. The model has not changed. What is the most likely cause?",
+      "difficulty": "beginner",
+      "explanation": "A RAG system is only as fresh as its index. Edited or deleted documents must be re-chunked and re-embedded, and stale vectors removed, by an ingestion pipeline that tracks changes.",
+      "options": [
+        {
+          "text": "The model memorized the old 30-day policy in training and still prefers it",
+          "is_correct": false
+        },
+        {
+          "text": "The embedding model was updated last week and now ranks old pages higher",
+          "is_correct": false
+        },
+        {
+          "text": "The edited page was never re-embedded, so the index has the old text",
+          "is_correct": true
+        },
+        {
+          "text": "The temperature is so low that the model repeats its earlier answers",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "stale-rag-index",
+      "format": "situational"
+    },
+    {
+      "title": "What MCP is",
+      "description": "What is the Model Context Protocol (MCP)?",
+      "difficulty": "beginner",
+      "explanation": "MCP standardizes how AI applications discover and use tools, data, and prompts from external servers, using JSON-RPC messages, so one server works with any MCP-capable host instead of needing a custom integration for each app.",
+      "options": [
+        {
+          "text": "An open protocol for connecting AI applications to tools and data",
+          "is_correct": true
+        },
+        {
+          "text": "A file format for packaging model weights so any runtime can load them",
+          "is_correct": false
+        },
+        {
+          "text": "A hosted Anthropic service that runs agents on its own infrastructure",
+          "is_correct": false
+        },
+        {
+          "text": "A compression method that fits more context into a model's window",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "what-mcp-is",
+      "format": "recall"
+    },
+    {
+      "title": "MCP roles",
+      "description": "In MCP terms, what role does an AI application such as Claude Desktop or an AI-enabled IDE play when it lets a model use a GitHub integration?",
+      "difficulty": "beginner",
+      "explanation": "The host is the LLM application the user interacts with. It runs MCP clients, the connectors that talk to servers, while servers such as a GitHub server provide the tools, resources, and prompts.",
+      "options": [
+        {
+          "text": "The transport, because it carries MCP messages to and from the tools",
+          "is_correct": false
+        },
+        {
+          "text": "The host, which runs MCP clients that connect to servers",
+          "is_correct": true
+        },
+        {
+          "text": "The registry, because it lists which servers users may install",
+          "is_correct": false
+        },
+        {
+          "text": "The server, because it serves the model's answers to the user",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-roles",
+      "format": "recall"
+    },
+    {
+      "title": "MCP server primitives",
+      "description": "Which three primitives can an MCP server expose to clients?",
+      "difficulty": "beginner",
+      "explanation": "Servers offer tools (functions the model can call), resources (data such as files or records that give context), and prompts (reusable templates a user can invoke).",
+      "options": [
+        {
+          "text": "Agents, memories, and workflows",
+          "is_correct": false
+        },
+        {
+          "text": "Tools, resources, and prompts",
+          "is_correct": true
+        },
+        {
+          "text": "Endpoints, schemas, and webhooks",
+          "is_correct": false
+        },
+        {
+          "text": "Models, embeddings, and vector indexes",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-server-primitives",
+      "format": "recall"
+    },
+    {
+      "title": "MCP transports",
+      "description": "Which two standard transports does the MCP specification define?",
+      "difficulty": "beginner",
+      "explanation": "With stdio the client launches the server as a subprocess and they exchange newline-delimited JSON-RPC over stdin and stdout. Streamable HTTP serves remote clients from a single HTTP endpoint and replaced the older HTTP+SSE transport.",
+      "options": [
+        {
+          "text": "Unix sockets for desktop apps and MQTT for cloud-hosted servers",
+          "is_correct": false
+        },
+        {
+          "text": "gRPC for local servers and WebSockets for remote, hosted servers",
+          "is_correct": false
+        },
+        {
+          "text": "stdio for local subprocesses and Streamable HTTP for remote servers",
+          "is_correct": true
+        },
+        {
+          "text": "REST for calling tools and GraphQL for reading server resources",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-transports",
+      "format": "recall"
+    },
+    {
+      "title": "Who runs a tool call",
+      "description": "When you give an LLM API a custom tool definition and the model decides to use it, who actually runs the function?",
+      "difficulty": "beginner",
+      "explanation": "For custom (client) tools the model only emits a structured request naming the tool and its arguments. Your code executes it and returns the result; provider-hosted server tools such as web search are the exception.",
+      "options": [
+        {
+          "text": "Your application, which then sends the result back to the model",
+          "is_correct": true
+        },
+        {
+          "text": "The model itself, by executing the function inside its own weights",
+          "is_correct": false
+        },
+        {
+          "text": "The model provider, which runs your code in a sandbox for the model",
+          "is_correct": false
+        },
+        {
+          "text": "The user's browser, which runs it and posts the output to the API",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "who-runs-a-tool-call",
+      "format": "recall"
+    },
+    {
+      "title": "Returning a tool result to Claude",
+      "description": "Claude responds with stop_reason 'tool_use' and a tool_use block. After your code runs the tool, how do you send the output back?",
+      "difficulty": "beginner",
+      "explanation": "Append Claude's assistant turn, then a user message containing a tool_result block whose tool_use_id matches the request, and call the API again. The id is how Claude pairs each result with the call that asked for it.",
+      "options": [
+        {
+          "text": "In the system prompt, which Claude rereads before every new turn",
+          "is_correct": false
+        },
+        {
+          "text": "As a tool_use block in a new assistant message that holds the output",
+          "is_correct": false
+        },
+        {
+          "text": "As a tool_result block with the matching tool_use_id in a user message",
+          "is_correct": true
+        },
+        {
+          "text": "As a new tool definition whose description field holds the output",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "returning-a-tool-result-to-claude",
+      "format": "recall"
+    },
+    {
+      "title": "What makes an LLM an agent",
+      "description": "What generally distinguishes an LLM agent from a single LLM call?",
+      "difficulty": "beginner",
+      "explanation": "An agent is a model using tools in a loop, directing its own process based on feedback from the environment until the task is done. A workflow, by contrast, follows code paths you define in advance.",
+      "options": [
+        {
+          "text": "It needs no prompt, because its instructions are built into the model",
+          "is_correct": false
+        },
+        {
+          "text": "It keeps its own memory on the provider's servers between requests",
+          "is_correct": false
+        },
+        {
+          "text": "It loops: the model picks tools, sees results, and decides what to do next",
+          "is_correct": true
+        },
+        {
+          "text": "It runs on a larger model that was trained only for agentic tasks",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "what-makes-an-llm-an-agent",
+      "format": "recall"
+    },
+    {
+      "title": "Agent keeps calling the same tool",
+      "description": "A research agent sometimes repeats the same failing search call dozens of times, burning tokens until someone kills the process. What safeguard should the team add first?",
+      "difficulty": "beginner",
+      "explanation": "Agent loops need hard stopping conditions such as maximum iterations, token or cost budgets, and timeouts. Informative tool errors also help the model change course instead of retrying blindly.",
+      "options": [
+        {
+          "text": "A cap on loop iterations or spend that ends the run and reports why",
+          "is_correct": true
+        },
+        {
+          "text": "A larger context window so the agent can hold more failed attempts",
+          "is_correct": false
+        },
+        {
+          "text": "A higher temperature so the agent eventually tries a new query",
+          "is_correct": false
+        },
+        {
+          "text": "A faster model so that each repeated call costs less time and money",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "agent-stopping-conditions",
+      "format": "situational"
+    },
+    {
+      "title": "Purpose of an eval set",
+      "description": "Why do teams build an eval set of representative inputs before changing an LLM app's prompt or model?",
+      "difficulty": "beginner",
+      "explanation": "LLM outputs vary and a fix for one case can break others. A fixed set of cases, scored the same way on every change, turns 'seems better' into a measurement and catches regressions.",
+      "options": [
+        {
+          "text": "To cut costs by caching the model's answers to the common inputs",
+          "is_correct": false
+        },
+        {
+          "text": "To give the provider the data it needs to approve the app for launch",
+          "is_correct": false
+        },
+        {
+          "text": "To measure whether a change helps or hurts across many real cases",
+          "is_correct": true
+        },
+        {
+          "text": "To fine-tune the model on those cases so it learns the right answers",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "purpose-of-an-eval-set",
+      "format": "recall"
+    },
+    {
+      "title": "LLM tracing tools",
+      "description": "What do tracing tools such as LangSmith or Langfuse record for an LLM application?",
+      "difficulty": "beginner",
+      "explanation": "Tracing captures the tree of calls behind each request, including inputs, outputs, tool invocations, token counts, and timings, so you can debug failures and turn real traces into eval cases.",
+      "options": [
+        {
+          "text": "The model's internal attention weights for each token it generates",
+          "is_correct": false
+        },
+        {
+          "text": "Each step of a run: prompts, outputs, tool calls, latency, and cost",
+          "is_correct": true
+        },
+        {
+          "text": "Only the final answer of each run and the user's rating of it",
+          "is_correct": false
+        },
+        {
+          "text": "The training data the provider used to build the underlying model",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "llm-tracing-tools",
+      "format": "recall"
+    },
+    {
+      "title": "Prompt injection",
+      "description": "What is a prompt injection attack?",
+      "difficulty": "beginner",
+      "explanation": "Prompt injection exploits the fact that LLMs cannot reliably separate instructions from data: text containing instructions, typed by a user or hidden in a document, can hijack the application. OWASP ranks it first among LLM application risks.",
+      "options": [
+        {
+          "text": "Guessing an API key by sending many requests with different keys",
+          "is_correct": false
+        },
+        {
+          "text": "Input that smuggles in instructions which override the app's own",
+          "is_correct": true
+        },
+        {
+          "text": "Flooding an LLM API with requests until the service stops responding",
+          "is_correct": false
+        },
+        {
+          "text": "Altering a model's training data so it learns a hidden behavior",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "prompt-injection",
+      "format": "recall"
+    },
+    {
+      "title": "API key in the system prompt",
+      "description": "To let a chatbot call an internal service, a developer pastes the service's API key into the system prompt with the instruction 'Never reveal this key.' Why is this a problem?",
+      "difficulty": "beginner",
+      "explanation": "System prompts are not a secure store: extraction tricks and injection can leak them, a risk OWASP lists as system prompt leakage. Keep credentials in your backend and let tools use them server-side.",
+      "options": [
+        {
+          "text": "Users can often talk the model into repeating its system prompt",
+          "is_correct": true
+        },
+        {
+          "text": "The key makes every request longer, which slows each response",
+          "is_correct": false
+        },
+        {
+          "text": "Models refuse to run when a system prompt contains credentials",
+          "is_correct": false
+        },
+        {
+          "text": "System prompts are cached in plain text in the user's browser",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "secrets-in-the-system-prompt",
+      "format": "situational"
+    },
+    {
+      "title": "Why stream responses",
+      "description": "What is the main user-facing benefit of streaming an LLM's response token by token?",
+      "difficulty": "beginner",
+      "explanation": "Streaming shortens the time to first token, so users see progress at once; total generation time and cost stay about the same. It also avoids HTTP timeouts on long outputs.",
+      "options": [
+        {
+          "text": "The full reply finishes sooner, because tokens are made in parallel",
+          "is_correct": false
+        },
+        {
+          "text": "The first words appear sooner, though the total time stays similar",
+          "is_correct": true
+        },
+        {
+          "text": "Each reply costs less, because streamed tokens are billed at a discount",
+          "is_correct": false
+        },
+        {
+          "text": "Replies get more accurate, because the model can revise earlier tokens",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "why-stream-responses",
+      "format": "recall"
+    },
+    {
+      "title": "When to use a batch API",
+      "description": "Anthropic's Message Batches API and OpenAI's Batch API cost about half the normal price. What is the catch?",
+      "difficulty": "beginner",
+      "explanation": "Batch APIs trade latency for price: requests are processed asynchronously (most Anthropic batches finish within an hour, with a 24-hour limit), which suits evals, backfills, and bulk classification rather than live chat.",
+      "options": [
+        {
+          "text": "Batched requests run on smaller models that give weaker answers",
+          "is_correct": false
+        },
+        {
+          "text": "Results arrive asynchronously, within hours rather than seconds",
+          "is_correct": true
+        },
+        {
+          "text": "Each response is capped at a few hundred tokens to keep costs low",
+          "is_correct": false
+        },
+        {
+          "text": "Every request in a batch must share the same prompt and settings",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "when-to-use-a-batch-api",
+      "format": "recall"
+    },
+    {
+      "title": "Fine-tuning vs RAG",
+      "description": "A team wants its model to answer in the company's distinctive tone and format, and also to know documents that change every week. Which split fits best?",
+      "difficulty": "beginner",
+      "explanation": "Fine-tuning shapes behavior such as style, format, and task skill, but it is a poor way to add facts that change, since each update means retraining. RAG supplies current knowledge at query time and lets answers cite it.",
+      "options": [
+        {
+          "text": "Use prompt caching for both, so the model memorizes the documents",
+          "is_correct": false
+        },
+        {
+          "text": "Fine-tune for the tone and format; use RAG for the weekly documents",
+          "is_correct": true
+        },
+        {
+          "text": "Fine-tune on the weekly documents; use RAG for the tone and format",
+          "is_correct": false
+        },
+        {
+          "text": "Fine-tune for both, retraining whenever one of the documents changes",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "fine-tuning-vs-rag",
+      "format": "recall"
+    },
+    {
+      "title": "Nucleus (top-p) sampling",
+      "description": "How does top-p (nucleus) sampling choose the next token?",
+      "difficulty": "intermediate",
+      "explanation": "Top-p keeps the most likely tokens until their cumulative probability reaches p and samples within that set, so the pool grows when the model is unsure and shrinks when it is confident. A fixed-size pool is top-k sampling.",
+      "options": [
+        {
+          "text": "It always picks the single most probable token and ignores all the rest",
+          "is_correct": false
+        },
+        {
+          "text": "It samples from the smallest set of tokens whose probabilities sum to p",
+          "is_correct": true
+        },
+        {
+          "text": "It samples from a fixed number of the most likely tokens, set by p",
+          "is_correct": false
+        },
+        {
+          "text": "It scales each token's probability by p and then samples from all of them",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "nucleus-top-p-sampling",
+      "format": "recall"
+    },
+    {
+      "title": "Lost in the middle",
+      "description": "Research on long-context models describes a 'lost in the middle' effect. What is it?",
+      "difficulty": "intermediate",
+      "explanation": "Liu et al. (2023) found accuracy is highest when relevant information sits at the beginning or end of the context and drops when it is buried in the middle, even well within the window. Putting key material at the edges and retrieving fewer, better chunks both help.",
+      "options": [
+        {
+          "text": "Streaming responses lose tokens in the middle when the network is slow",
+          "is_correct": false
+        },
+        {
+          "text": "Facts buried mid-prompt are used less reliably than ones at either end",
+          "is_correct": true
+        },
+        {
+          "text": "Models drop the middle of a prompt once it overflows the context window",
+          "is_correct": false
+        },
+        {
+          "text": "Retrieval ranks mid-length chunks below very short or very long ones",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "lost-in-the-middle",
+      "format": "recall"
+    },
+    {
+      "title": "Billing for reasoning tokens",
+      "description": "Reasoning models, such as Claude with extended thinking or OpenAI's reasoning models, think before answering. How are those reasoning tokens billed?",
+      "difficulty": "intermediate",
+      "explanation": "Thinking or reasoning tokens are generated by the model, so they are billed as output tokens and count toward output limits even when the API returns only a summary or nothing at all. Longer thinking raises both cost and latency.",
+      "options": [
+        {
+          "text": "As input tokens, because the model reads its reasoning back in",
+          "is_correct": false
+        },
+        {
+          "text": "As a flat fee per request, no matter how long the model ends up thinking",
+          "is_correct": false
+        },
+        {
+          "text": "As output tokens, even when the reasoning itself is hidden from you",
+          "is_correct": true
+        },
+        {
+          "text": "Not at all, because only the visible answer counts toward usage",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "billing-for-reasoning-tokens",
+      "format": "recall"
+    },
+    {
+      "title": "JSON mode vs Structured Outputs",
+      "description": "OpenAI offers JSON mode and Structured Outputs with strict: true. What does Structured Outputs guarantee that JSON mode does not?",
+      "difficulty": "intermediate",
+      "explanation": "JSON mode only ensures the output is valid JSON. Structured Outputs constrains decoding to your schema, so required keys, types, and enum values are guaranteed; neither makes the content itself correct.",
+      "options": [
+        {
+          "text": "The response returns faster because decoding skips extra checks",
+          "is_correct": false
+        },
+        {
+          "text": "The response conforms to the exact JSON Schema you supplied",
+          "is_correct": true
+        },
+        {
+          "text": "The values inside the JSON are checked to be factually correct",
+          "is_correct": false
+        },
+        {
+          "text": "The response is syntactically valid JSON that will always parse",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "json-mode-vs-structured-outputs",
+      "format": "recall"
+    },
+    {
+      "title": "Prompt chaining",
+      "description": "What is the main advantage of prompt chaining, where a task is split into several LLM calls that each feed the next?",
+      "difficulty": "intermediate",
+      "explanation": "Chaining trades extra latency for accuracy: each call has one focused job, and code can validate or transform intermediate results before passing them on. The steps run in sequence, so it rarely saves time or tokens.",
+      "options": [
+        {
+          "text": "It lets each call keep state for the next without resending context",
+          "is_correct": false
+        },
+        {
+          "text": "It cuts total cost because each call uses fewer tokens than one big call",
+          "is_correct": false
+        },
+        {
+          "text": "Each step is simpler, and its output can be checked before the next",
+          "is_correct": true
+        },
+        {
+          "text": "It removes latency because the steps all run in parallel on the server",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "prompt-chaining",
+      "format": "recall"
+    },
+    {
+      "title": "Every summary copies the example",
+      "description": "A prompt includes three example product summaries, each exactly two sentences long and each starting with 'This product'. The model's outputs now nearly always start with 'This product' and stop at two sentences, even when more detail is needed. What is the best fix?",
+      "difficulty": "intermediate",
+      "explanation": "Models imitate examples closely, including incidental features such as the opening words and length. Examples that vary in those features show what is essential and what is free to change.",
+      "options": [
+        {
+          "text": "Add more examples with the same shape so the pattern is clearer",
+          "is_correct": false
+        },
+        {
+          "text": "Move the examples after the request so they carry less weight",
+          "is_correct": false
+        },
+        {
+          "text": "Vary the examples so no incidental pattern repeats across all of them",
+          "is_correct": true
+        },
+        {
+          "text": "Raise the temperature so the outputs drift away from the examples",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "few-shot-prompting",
+      "format": "situational"
+    },
+    {
+      "title": "Approximate nearest neighbor search",
+      "description": "Why do most vector databases use approximate nearest neighbor (ANN) indexes instead of exact search?",
+      "difficulty": "intermediate",
+      "explanation": "Exact k-NN compares the query with every stored vector, so cost grows linearly with the corpus. ANN structures such as HNSW or IVF check only promising candidates, returning most of the true neighbors far faster; their parameters move you along the recall-speed curve.",
+      "options": [
+        {
+          "text": "ANN indexes find the true nearest neighbors using less memory",
+          "is_correct": false
+        },
+        {
+          "text": "Exact search returns duplicate results that ANN indexes filter out",
+          "is_correct": false
+        },
+        {
+          "text": "Exact search cannot handle vectors with more than a few dimensions",
+          "is_correct": false
+        },
+        {
+          "text": "They give up a little recall for much faster queries at scale",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "approximate-nearest-neighbor-search",
+      "format": "recall"
+    },
+    {
+      "title": "Hybrid search",
+      "description": "Why do many RAG systems combine BM25 keyword search with embedding search?",
+      "difficulty": "intermediate",
+      "explanation": "Dense embeddings capture meaning but can miss exact matches such as product codes, names, or rare terms, which lexical search catches. Hybrid retrieval runs both and merges the ranked lists, often with reciprocal rank fusion.",
+      "options": [
+        {
+          "text": "Embedding search on its own cannot handle a corpus in more than one language",
+          "is_correct": false
+        },
+        {
+          "text": "BM25 lets the system skip embedding the documents, which saves storage space",
+          "is_correct": false
+        },
+        {
+          "text": "Keywords catch exact terms like IDs and error codes that embeddings blur",
+          "is_correct": true
+        },
+        {
+          "text": "Keyword search supplies the citations the model needs for each answer",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "hybrid-search",
+      "format": "recall"
+    },
+    {
+      "title": "pgvector HNSW vs IVFFlat",
+      "description": "pgvector offers HNSW and IVFFlat indexes. Which statement describes the trade-off between them?",
+      "difficulty": "intermediate",
+      "explanation": "Per the pgvector docs, HNSW has a better speed-recall trade-off but slower builds and higher memory use, and it can be built on an empty table. IVFFlat builds faster and smaller but needs data first, because it clusters the existing vectors into lists.",
+      "options": [
+        {
+          "text": "IVFFlat queries better and can be created before the table has any rows",
+          "is_correct": false
+        },
+        {
+          "text": "HNSW queries better but builds slower and uses more memory than IVFFlat",
+          "is_correct": true
+        },
+        {
+          "text": "HNSW performs exact search, while IVFFlat is the approximate option",
+          "is_correct": false
+        },
+        {
+          "text": "IVFFlat supports cosine distance, while HNSW supports only L2 distance",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "pgvector-hnsw-vs-ivfflat",
+      "format": "recall"
+    },
+    {
+      "title": "Normalized embedding vectors",
+      "description": "OpenAI's embeddings are normalized to length 1. What does that mean when ranking search results?",
+      "difficulty": "intermediate",
+      "explanation": "For unit-length vectors the dot product equals cosine similarity, and Euclidean distance gives the identical ranking too. The dot product is simply the cheapest of the three to compute.",
+      "options": [
+        {
+          "text": "All the similarity scores tie, so a reranker becomes required",
+          "is_correct": false
+        },
+        {
+          "text": "Dot product and cosine similarity give the same ranking",
+          "is_correct": true
+        },
+        {
+          "text": "Euclidean distance can no longer be used to rank the results",
+          "is_correct": false
+        },
+        {
+          "text": "Cosine similarity must be used, since every dot product is zero",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "normalized-embedding-vectors",
+      "format": "recall"
+    },
+    {
+      "title": "Reranking retrieved chunks",
+      "description": "In a RAG pipeline, what does a reranker such as Cohere Rerank or a cross-encoder add after vector search?",
+      "difficulty": "intermediate",
+      "explanation": "First-stage vector search embeds the query and documents separately, which is fast but coarse. A cross-encoder reranker reads the query and each candidate together and scores relevance more accurately, so it is run only on the top few dozen results.",
+      "options": [
+        {
+          "text": "It scores each query and chunk together to reorder the top results",
+          "is_correct": true
+        },
+        {
+          "text": "It rewrites the user's query into several variants before the search runs",
+          "is_correct": false
+        },
+        {
+          "text": "It compresses retrieved chunks so more of them fit in the context",
+          "is_correct": false
+        },
+        {
+          "text": "It drops chunks whose embeddings are too similar to one another",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "reranking-retrieved-chunks",
+      "format": "recall"
+    },
+    {
+      "title": "Small-to-big retrieval",
+      "description": "What problem does small-to-big (parent document) retrieval address?",
+      "difficulty": "intermediate",
+      "explanation": "The technique embeds small chunks for precise matching, then hands the model their larger parent section, so retrieval stays sharp while the model still gets enough context to answer.",
+      "options": [
+        {
+          "text": "Small indexes miss queries worded differently from the documents",
+          "is_correct": false
+        },
+        {
+          "text": "Large documents cost too much to embed, so only titles are embedded",
+          "is_correct": false
+        },
+        {
+          "text": "Large chunks exceed the vector size limits of most vector databases",
+          "is_correct": false
+        },
+        {
+          "text": "Small chunks match queries precisely but lack surrounding context",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "small-to-big-retrieval",
+      "format": "recall"
+    },
+    {
+      "title": "Recursive character splitting",
+      "description": "LangChain's RecursiveCharacterTextSplitter tries a list of separators in order. What is the point of that order?",
+      "difficulty": "intermediate",
+      "explanation": "It tries the largest natural boundaries first (blank lines, then newlines, then spaces, then single characters) and falls back to smaller ones only when a piece is still too big, so chunks follow the document's structure as far as the size limit allows.",
+      "options": [
+        {
+          "text": "It asks an LLM where each topic starts and ends before splitting",
+          "is_correct": false
+        },
+        {
+          "text": "It splits only on headings, so each chunk is exactly one section",
+          "is_correct": false
+        },
+        {
+          "text": "It splits text at random points so chunk sizes vary within a range",
+          "is_correct": false
+        },
+        {
+          "text": "It keeps paragraphs, then lines, then words intact where it can",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "recursive-character-splitting",
+      "format": "recall"
+    },
+    {
+      "title": "Long context vs RAG",
+      "description": "Some models now accept a million tokens of context. Why do teams still use retrieval instead of putting the whole knowledge base in every prompt?",
+      "difficulty": "intermediate",
+      "explanation": "Every request pays for every token, long prompts add latency, and accuracy drops with length (lost in the middle, context rot). Most corpora also exceed any window, and retrieval can enforce per-user access control.",
+      "options": [
+        {
+          "text": "Retrieved text is free, while text pasted into the prompt is billed",
+          "is_correct": false
+        },
+        {
+          "text": "Models cannot read documents sent in the same request as the question",
+          "is_correct": false
+        },
+        {
+          "text": "Cost, latency, and answer quality all suffer as the prompt grows",
+          "is_correct": true
+        },
+        {
+          "text": "Long prompts fail unless every document has a system prompt",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "long-context-vs-rag",
+      "format": "recall"
+    },
+    {
+      "title": "Answer ignores the retrieved passage",
+      "description": "In a RAG app, logs show the correct passage was retrieved and placed in the prompt, yet the model answered with an older figure from its general knowledge. The prompt says only 'Use the documents if helpful.' What is the best first fix?",
+      "difficulty": "intermediate",
+      "explanation": "Retrieval worked, so the failure is in generation: a weak instruction leaves the model free to prefer what it learned in training. Requiring answers grounded in the documents, with citations and an explicit 'not found' option, fixes most of these cases.",
+      "options": [
+        {
+          "text": "Retrieve more chunks so the correct passage shows up several times",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to a larger embedding model so the passage ranks even higher",
+          "is_correct": false
+        },
+        {
+          "text": "Use smaller chunks so the correct passage takes up fewer tokens",
+          "is_correct": false
+        },
+        {
+          "text": "Require answers grounded only in the provided documents, with a citation",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "grounded-generation",
+      "format": "situational"
+    },
+    {
+      "title": "MCP vs function calling",
+      "description": "How does MCP relate to the function calling (tool use) feature of a model API?",
+      "difficulty": "intermediate",
+      "explanation": "Function calling is the model-side mechanism: the model emits a structured call and the app runs it. MCP is the integration layer: a host discovers a server's tools and passes them to the model as tool definitions, so one server works across many apps and models.",
+      "options": [
+        {
+          "text": "Tool use is only for remote tools, while MCP covers only the local ones",
+          "is_correct": false
+        },
+        {
+          "text": "MCP standardizes how apps get tools; tool use is how models call them",
+          "is_correct": true
+        },
+        {
+          "text": "MCP replaces tool use, so models no longer need to emit any tool calls",
+          "is_correct": false
+        },
+        {
+          "text": "They are the same feature, marketed under two names by two vendors",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-vs-function-calling",
+      "format": "recall"
+    },
+    {
+      "title": "Who controls each MCP primitive",
+      "description": "The MCP specification describes who controls each server primitive. Which mapping is correct?",
+      "difficulty": "intermediate",
+      "explanation": "Prompts are user-controlled templates, often exposed as slash commands; resources are application-controlled context the client attaches, such as file contents; tools are model-controlled functions the LLM decides to call, ideally with a human able to deny them.",
+      "options": [
+        {
+          "text": "Prompts by the model, resources by the end user, tools by the app",
+          "is_correct": false
+        },
+        {
+          "text": "Prompts by the app, resources by the model, tools by the end user",
+          "is_correct": false
+        },
+        {
+          "text": "Prompts by the user, resources by the app, tools by the model",
+          "is_correct": true
+        },
+        {
+          "text": "All three by the model, with the user approving every call",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "who-controls-each-mcp-primitive",
+      "format": "recall"
+    },
+    {
+      "title": "MCP server breaks after adding logs",
+      "description": "A local MCP server runs over the stdio transport. After a developer adds print() calls for debugging, the host starts reporting JSON parse errors and drops the connection. What is the fix?",
+      "difficulty": "intermediate",
+      "explanation": "In the stdio transport the server must not write anything to stdout that is not a valid MCP message, so stray text corrupts the stream. Servers may write logs to stderr, which the host can capture or ignore.",
+      "options": [
+        {
+          "text": "Flush stdout after each print() so the messages do not interleave",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to Streamable HTTP, because stdio servers cannot log anything",
+          "is_correct": false
+        },
+        {
+          "text": "Raise the host's timeout so it waits for each full JSON message",
+          "is_correct": false
+        },
+        {
+          "text": "Send debug logs to stderr, since stdout carries only protocol messages",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-transports",
+      "format": "situational"
+    },
+    {
+      "title": "Two MCP servers both expose search",
+      "description": "A host connects to a docs server and a ticketing server, and both expose a tool named search. The model keeps calling the wrong one. According to the MCP spec, what should the host do?",
+      "difficulty": "intermediate",
+      "explanation": "Tool names only need to be unique within one server. A host that aggregates several servers should disambiguate, for example by prefixing a server identifier, and should not rely on serverInfo names, which are not guaranteed to be unique.",
+      "options": [
+        {
+          "text": "Keep the server that connected first and hide the other's tool",
+          "is_correct": false
+        },
+        {
+          "text": "Rely on each server's serverInfo name, which is unique by design",
+          "is_correct": false
+        },
+        {
+          "text": "Disambiguate the tools, for example by prefixing a server ID",
+          "is_correct": true
+        },
+        {
+          "text": "Refuse to connect until both servers rename their search tools",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-tool-name-collisions",
+      "format": "situational"
+    },
+    {
+      "title": "MCP elicitation",
+      "description": "What does the elicitation feature let an MCP server do?",
+      "difficulty": "intermediate",
+      "explanation": "Elicitation lets a server request extra information from the user mid-operation, such as a missing parameter or a confirmation, with a schema describing the expected answer. The user can accept, decline, or cancel.",
+      "options": [
+        {
+          "text": "Read files outside the folders the user has shared with the client",
+          "is_correct": false
+        },
+        {
+          "text": "Push new tools to the client without waiting to be asked for them",
+          "is_correct": false
+        },
+        {
+          "text": "Have the client's model write a completion for it on the client's key",
+          "is_correct": false
+        },
+        {
+          "text": "Ask the user, through the client, for input it needs to continue",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-elicitation",
+      "format": "recall"
+    },
+    {
+      "title": "Returning parallel tool results",
+      "description": "Claude returns three tool_use blocks in a single response. How should the three results go back to the API?",
+      "difficulty": "intermediate",
+      "explanation": "Run the calls (concurrently if you can) and answer them together: one user message containing every tool_result, each with its tool_use_id. Splitting results across messages discourages Claude from making parallel calls.",
+      "options": [
+        {
+          "text": "All three tool_result blocks together in a single user message",
+          "is_correct": true
+        },
+        {
+          "text": "Only the first result, after which Claude requests the other two",
+          "is_correct": false
+        },
+        {
+          "text": "One text block joining all three outputs into a single message",
+          "is_correct": false
+        },
+        {
+          "text": "Three separate user messages, each with one of the tool_result blocks",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "returning-parallel-tool-results",
+      "format": "recall"
+    },
+    {
+      "title": "Agentic workflow patterns",
+      "description": "Among the workflow patterns in Anthropic's 'Building effective agents', which one classifies an input and sends it to a specialized prompt or model?",
+      "difficulty": "intermediate",
+      "explanation": "Routing classifies an input and directs it to a specialized follow-up, such as sending refund requests and technical questions to different prompts, or easy queries to a smaller model, so each path can be optimized on its own.",
+      "options": [
+        {
+          "text": "Evaluator-optimizer",
+          "is_correct": false
+        },
+        {
+          "text": "Orchestrator-workers",
+          "is_correct": false
+        },
+        {
+          "text": "Routing",
+          "is_correct": true
+        },
+        {
+          "text": "Prompt chaining",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "agentic-workflow-patterns",
+      "format": "recall"
+    },
+    {
+      "title": "Translation drafts miss nuance",
+      "description": "A team's translation pipeline produces drafts that miss tone and nuance. They have clear criteria for a good translation and want the system to improve each draft over several rounds. Which workflow pattern fits best?",
+      "difficulty": "intermediate",
+      "explanation": "Evaluator-optimizer fits when there are clear evaluation criteria and iterative refinement adds measurable value: a generator drafts, an evaluator gives feedback, and the loop repeats until the criteria are met. Anthropic cites literary translation as an example.",
+      "options": [
+        {
+          "text": "Evaluator-optimizer: one call drafts, another critiques, and they loop",
+          "is_correct": true
+        },
+        {
+          "text": "Parallelization: split the drafts into sentences and translate them at once",
+          "is_correct": false
+        },
+        {
+          "text": "Routing: classify each text and send it on to a language-specific prompt",
+          "is_correct": false
+        },
+        {
+          "text": "Prompt chaining: translate, summarize each draft, then translate the summary",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "evaluator-optimizer-workflow",
+      "format": "situational"
+    },
+    {
+      "title": "LangGraph checkpointers",
+      "description": "What does attaching a checkpointer to a LangGraph graph enable?",
+      "difficulty": "intermediate",
+      "explanation": "A checkpointer persists the graph's state per thread after each step, which enables human-in-the-loop interrupts, resuming after failures, and memory across turns. Tracing to LangSmith is a separate feature.",
+      "options": [
+        {
+          "text": "Running every node in parallel so the graph finishes in a single step",
+          "is_correct": false
+        },
+        {
+          "text": "Sending a trace of every LLM call to LangSmith for later debugging",
+          "is_correct": false
+        },
+        {
+          "text": "Checking each node's output against a JSON Schema before moving on",
+          "is_correct": false
+        },
+        {
+          "text": "Saving state after each step so a run can pause for a human and resume",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "langgraph-checkpointers",
+      "format": "recall"
+    },
+    {
+      "title": "Position bias in LLM judges",
+      "description": "When an LLM judge compares two answers side by side, it tends to favor whichever appears first. How is this bias usually reduced?",
+      "difficulty": "intermediate",
+      "explanation": "Position bias is a known failure of LLM judges. Swapping the order and counting a win only when the verdict holds both ways, or averaging the two, cancels it; clear rubrics also help with related biases such as verbosity and self-preference.",
+      "options": [
+        {
+          "text": "Use the model that wrote the answers as the judge, since it knows them",
+          "is_correct": false
+        },
+        {
+          "text": "Judge each pair twice with the order swapped and combine the verdicts",
+          "is_correct": true
+        },
+        {
+          "text": "Tell the judge to prefer the shorter answer whenever they look close",
+          "is_correct": false
+        },
+        {
+          "text": "Set the judge's temperature to 0 so its preference cannot change",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "position-bias-in-llm-judges",
+      "format": "recall"
+    },
+    {
+      "title": "Faithfulness metric for RAG",
+      "description": "RAG evaluation frameworks such as Ragas report a faithfulness score. What does it measure?",
+      "difficulty": "intermediate",
+      "explanation": "Faithfulness checks the generated answer against the retrieved context: a faithful answer makes no claims the context does not support. Retrieval quality is measured separately, for example with context precision and context recall.",
+      "options": [
+        {
+          "text": "Whether the answer's claims are supported by the retrieved context",
+          "is_correct": true
+        },
+        {
+          "text": "Whether the answer matches the reference answer exactly, word for word",
+          "is_correct": false
+        },
+        {
+          "text": "Whether the model replied in the same language as the user's question",
+          "is_correct": false
+        },
+        {
+          "text": "Whether the retrieved chunks are the most relevant in the index",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "faithfulness-metric-for-rag",
+      "format": "recall"
+    },
+    {
+      "title": "Prompt fix breaks refunds",
+      "description": "An engineer edits a support bot's system prompt to stop occasional rude replies. A week later, users report the bot now refuses to discuss refunds at all. What practice would have caught this before release?",
+      "difficulty": "intermediate",
+      "explanation": "Prompts behave like code with non-local effects. Versioning the prompt and running an eval set that covers key behaviors on every change catches regressions like this before users do; logs only reveal them afterward.",
+      "options": [
+        {
+          "text": "Writing the system prompt in capitals so every rule gets equal weight",
+          "is_correct": false
+        },
+        {
+          "text": "Pinning the temperature at 0 so the bot always replies the same way",
+          "is_correct": false
+        },
+        {
+          "text": "Running a regression eval set on every prompt change before shipping",
+          "is_correct": true
+        },
+        {
+          "text": "Logging every conversation so problems appear in the weekly analytics",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "purpose-of-an-eval-set",
+      "format": "situational"
+    },
+    {
+      "title": "Indirect prompt injection",
+      "description": "What makes a prompt injection 'indirect'?",
+      "difficulty": "intermediate",
+      "explanation": "In indirect injection the attacker never talks to the model; they plant instructions in data the system later reads, such as web pages, documents, emails, or tool results. Any agent that reads untrusted content is exposed.",
+      "options": [
+        {
+          "text": "The attack targets the model's training data rather than its prompts",
+          "is_correct": false
+        },
+        {
+          "text": "The attacker words the request very politely so that filters do not flag it",
+          "is_correct": false
+        },
+        {
+          "text": "The instructions are spread across several turns of one conversation",
+          "is_correct": false
+        },
+        {
+          "text": "The instructions arrive in content the app reads, like a page or email",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "indirect-prompt-injection",
+      "format": "recall"
+    },
+    {
+      "title": "Inbox assistant can delete mail",
+      "description": "An assistant only needs to read and summarize a user's inbox, but its email tool is granted full mailbox permissions, including send and delete. Which risk from the OWASP Top 10 for LLM Applications does this illustrate?",
+      "difficulty": "intermediate",
+      "explanation": "Excessive agency means giving an LLM system more functionality, permissions, or autonomy than its task needs. The fix is least privilege: a read-only scope here, plus human approval for anything destructive.",
+      "options": [
+        {
+          "text": "Sensitive information disclosure",
+          "is_correct": false
+        },
+        {
+          "text": "Improper output handling",
+          "is_correct": false
+        },
+        {
+          "text": "Unbounded consumption",
+          "is_correct": false
+        },
+        {
+          "text": "Excessive agency",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "excessive-agency",
+      "format": "situational"
+    },
+    {
+      "title": "Chat widget runs a script",
+      "description": "A support widget inserts the model's reply into the page as raw HTML. An attacker gets the model to output a script tag through a crafted question, and it runs in other users' browsers when they view shared transcripts. What is the core fix?",
+      "difficulty": "intermediate",
+      "explanation": "Model output is untrusted input to whatever consumes it. Encode or sanitize it like any user content before rendering, and validate it before passing it to shells, SQL, or other interpreters; prompt rules alone are not a security control.",
+      "options": [
+        {
+          "text": "Treat model output as untrusted and escape it before rendering",
+          "is_correct": true
+        },
+        {
+          "text": "Lower the temperature so the model is less likely to emit code",
+          "is_correct": false
+        },
+        {
+          "text": "Use a larger model that is better at refusing unusual requests",
+          "is_correct": false
+        },
+        {
+          "text": "Add a system prompt rule telling the model never to produce HTML",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "improper-output-handling",
+      "format": "situational"
+    },
+    {
+      "title": "Prompt cache never hits",
+      "description": "A team turns on prompt caching for a long, fixed system prompt on Claude, but cache_read_input_tokens stays at zero. The system prompt begins with 'Current time:' followed by the exact time of each request. What is the cause?",
+      "difficulty": "intermediate",
+      "explanation": "Prompt caches key on the exact bytes of the prompt up to each breakpoint, so any change early on invalidates everything after it. Keep stable content first and put volatile values such as timestamps after the last breakpoint; a tool list whose order changes between requests breaks caching the same way.",
+      "options": [
+        {
+          "text": "Timestamps are stripped before caching, which shifts the token count",
+          "is_correct": false
+        },
+        {
+          "text": "Cached prompts expire after a few seconds, so only rapid repeats hit",
+          "is_correct": false
+        },
+        {
+          "text": "System prompts cannot be cached; the cache only covers the messages",
+          "is_correct": false
+        },
+        {
+          "text": "The cache matches exact prefixes, so the timestamp breaks every match",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "what-prompt-caching-reuses",
+      "format": "situational"
+    },
+    {
+      "title": "What prompt caching reuses",
+      "description": "What does prompt caching, as offered by Anthropic and OpenAI, reuse between API requests?",
+      "difficulty": "intermediate",
+      "explanation": "Prompt caching stores the model's computed state for a repeated prompt prefix, such as a long system prompt, tool definitions, or a document, so later requests with the same prefix are cheaper and faster. The response is still generated fresh each time.",
+      "options": [
+        {
+          "text": "The processed form of a prompt prefix that repeats across requests",
+          "is_correct": true
+        },
+        {
+          "text": "The output tokens already streamed, so a dropped stream can resume",
+          "is_correct": false
+        },
+        {
+          "text": "The final answer for any prompt that repeats across requests",
+          "is_correct": false
+        },
+        {
+          "text": "Embeddings of user messages, so similar questions share one answer",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "what-prompt-caching-reuses",
+      "format": "recall"
+    },
+    {
+      "title": "LoRA fine-tuning",
+      "description": "What makes LoRA a parameter-efficient way to fine-tune a large model?",
+      "difficulty": "intermediate",
+      "explanation": "LoRA represents the weight update as the product of two small low-rank matrices and trains only those, cutting trainable parameters and memory by orders of magnitude. Adapters are small files that can be swapped on one base model; QLoRA adds a 4-bit quantized base.",
+      "options": [
+        {
+          "text": "It trains only the final output layer and freezes everything before it",
+          "is_correct": false
+        },
+        {
+          "text": "It retrains all weights but stores them in lower precision to save memory",
+          "is_correct": false
+        },
+        {
+          "text": "It freezes the base weights and trains small low-rank update matrices",
+          "is_correct": true
+        },
+        {
+          "text": "It prunes the least important layers so fewer parameters remain to train",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "lora-fine-tuning",
+      "format": "recall"
+    },
+    {
+      "title": "Nondeterminism at temperature 0",
+      "description": "Why can an LLM behind an API return different outputs for the same prompt at temperature 0?",
+      "difficulty": "advanced",
+      "explanation": "Greedy decoding is deterministic in principle, but inference kernels are not batch-invariant: the batch a request lands in changes the order of floating-point operations, and tiny numeric differences can change which of two nearly tied tokens wins, after which the outputs diverge.",
+      "options": [
+        {
+          "text": "The provider adds a random seed to every request to prevent caching",
+          "is_correct": false
+        },
+        {
+          "text": "Each replica serves a slightly different fine-tuned copy of the model",
+          "is_correct": false
+        },
+        {
+          "text": "Temperature 0 still samples at random, just from a much narrower token set",
+          "is_correct": false
+        },
+        {
+          "text": "Batching changes the floating-point math, which can flip near-tied tokens",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "nondeterminism-at-temperature-0",
+      "format": "recall"
+    },
+    {
+      "title": "Purpose of the KV cache",
+      "description": "During autoregressive generation, what does a transformer's KV cache store, and why?",
+      "difficulty": "advanced",
+      "explanation": "Each new token attends to all previous tokens. Caching their attention key and value vectors avoids recomputing them at every step; the cost is GPU memory that grows with context length and batch size, which is why serving systems manage it carefully.",
+      "options": [
+        {
+          "text": "Prompts as keys and replies as values, so repeat questions skip the model",
+          "is_correct": false
+        },
+        {
+          "text": "The model weights in GPU memory, so they need not reload per request",
+          "is_correct": false
+        },
+        {
+          "text": "Embeddings of retrieved documents, so repeated RAG queries stay fast",
+          "is_correct": false
+        },
+        {
+          "text": "Keys and values of past tokens, so each step computes only the new token",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "purpose-of-the-kv-cache",
+      "format": "recall"
+    },
+    {
+      "title": "Usage jumps after a model migration",
+      "description": "A team migrates its app to a newer Claude model without changing any prompt text, and the app does not use prompt caching. The usage dashboard now reports noticeably more input tokens for the same requests. What is the most likely explanation?",
+      "difficulty": "advanced",
+      "explanation": "Token counts depend on the tokenizer, and tokenizers change between model generations; Anthropic notes, for example, that the tokenizer introduced with Opus 4.7 uses up to about 1.35 times as many tokens as earlier models for the same text. Re-baseline costs and limits with the provider's token counting endpoint after a migration.",
+      "options": [
+        {
+          "text": "The new model pads every request up to a minimum billable size",
+          "is_correct": false
+        },
+        {
+          "text": "The new model rereads the same system prompt once per message in history",
+          "is_correct": false
+        },
+        {
+          "text": "The new model's tokenizer splits the same text into more tokens",
+          "is_correct": true
+        },
+        {
+          "text": "Usage reporting now rounds each request's tokens up to the nearest thousand",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "what-a-token-is",
+      "format": "situational"
+    },
+    {
+      "title": "Self-consistency decoding",
+      "description": "What does the self-consistency technique do to improve answers on reasoning tasks?",
+      "difficulty": "advanced",
+      "explanation": "Self-consistency (Wang et al., 2022) samples several chain-of-thought completions at nonzero temperature and takes a majority vote over their final answers, trading extra cost for accuracy because correct reasoning paths tend to agree.",
+      "options": [
+        {
+          "text": "Runs one greedy pass at temperature 0 so that the final answer cannot vary",
+          "is_correct": false
+        },
+        {
+          "text": "Asks the model to restate the question to confirm it understood it",
+          "is_correct": false
+        },
+        {
+          "text": "Samples several reasoning paths and keeps the most common final answer",
+          "is_correct": true
+        },
+        {
+          "text": "Has a second model check each reasoning step against a list of rules",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "self-consistency-decoding",
+      "format": "recall"
+    },
+    {
+      "title": "Contract Q&A misses clauses",
+      "description": "A legal assistant sends a prompt that begins with the user's question and detailed instructions, followed by an 80-page contract. Answers often miss clauses buried deep in the document. Without changing the model, which change to the prompt layout is most likely to help?",
+      "difficulty": "advanced",
+      "explanation": "With long inputs, models do better when documents come first and the query and instructions come last; Anthropic reports this ordering improved response quality by up to 30% in its tests, especially with complex, multi-document inputs.",
+      "options": [
+        {
+          "text": "Split the contract into separate user messages, one per section",
+          "is_correct": false
+        },
+        {
+          "text": "Put the contract first and the question and instructions after it",
+          "is_correct": true
+        },
+        {
+          "text": "Shorten the instructions so the contract fills more of the window",
+          "is_correct": false
+        },
+        {
+          "text": "Repeat the user's question again at the very start of the prompt",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "long-context-prompt-ordering",
+      "format": "situational"
+    },
+    {
+      "title": "HNSW ef_search",
+      "description": "In an HNSW vector index, what happens when you raise ef_search at query time?",
+      "difficulty": "advanced",
+      "explanation": "ef_search is the size of the candidate list kept during the graph search: larger values examine more neighbors, raising recall at the cost of latency. It is a query-time setting, unlike m and ef_construction, which are fixed when the index is built.",
+      "options": [
+        {
+          "text": "The index is rebuilt with more links per node, which uses more memory",
+          "is_correct": false
+        },
+        {
+          "text": "Results become exact, because the search falls back to a full table scan",
+          "is_correct": false
+        },
+        {
+          "text": "Queries speed up, because fewer candidates are checked per layer",
+          "is_correct": false
+        },
+        {
+          "text": "Recall improves, but each query explores more of the graph and slows",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "hnsw-ef-search",
+      "format": "recall"
+    },
+    {
+      "title": "Filtered vector query returns 3 rows",
+      "description": "A multi-tenant app runs a pgvector query with an HNSW index: WHERE tenant_id = 42 ORDER BY embedding <=> $1 LIMIT 10. The tenant has thousands of matching rows, yet the query often returns only 2 or 3. What explains this?",
+      "difficulty": "advanced",
+      "explanation": "With approximate indexes, pgvector applies filters after the index scan, and with the default hnsw.ef_search of 40 a selective filter leaves few survivors. Fixes include iterative index scans (pgvector 0.8.0 and later), a higher ef_search, or partial indexes or partitioning by tenant.",
+      "options": [
+        {
+          "text": "The index returns ef_search candidates first, then the filter drops most",
+          "is_correct": true
+        },
+        {
+          "text": "LIMIT is applied before ORDER BY whenever an approximate index is chosen",
+          "is_correct": false
+        },
+        {
+          "text": "The <=> operator ignores any WHERE clauses whenever an HNSW index is used",
+          "is_correct": false
+        },
+        {
+          "text": "HNSW indexes skip rows inserted since the index was first built",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "filtered-vector-search",
+      "format": "situational"
+    },
+    {
+      "title": "Shortening embeddings",
+      "description": "OpenAI's text-embedding-3 models accept a dimensions parameter that returns shorter vectors. Why can these embeddings be shortened without retraining?",
+      "difficulty": "advanced",
+      "explanation": "The models are trained so numbers can be removed from the end of a vector while it keeps its concept-representing properties, the idea behind Matryoshka representation learning; truncating trades a little accuracy for storage and speed. If you shorten vectors yourself, renormalize them to unit length.",
+      "options": [
+        {
+          "text": "The trailing dimensions are always zero, so dropping them loses nothing",
+          "is_correct": false
+        },
+        {
+          "text": "The API runs PCA on each vector and keeps the top principal components",
+          "is_correct": false
+        },
+        {
+          "text": "They are trained so the leading dimensions carry the most information",
+          "is_correct": true
+        },
+        {
+          "text": "A separate, smaller model behind the API produces the shorter vectors",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "shortening-embeddings",
+      "format": "recall"
+    },
+    {
+      "title": "pgvector query ignores the index",
+      "description": "A team creates an HNSW index on embedding using vector_l2_ops. Their search query orders by embedding <=> $1 to rank by cosine distance. EXPLAIN shows a sequential scan, and latency grows with the table. What is wrong?",
+      "difficulty": "advanced",
+      "explanation": "pgvector needs an index for each distance function: <=> (cosine distance) is served by vector_cosine_ops, while vector_l2_ops serves <-> (L2 distance). With a mismatch the planner cannot use the index, so it scans the table.",
+      "options": [
+        {
+          "text": "A cosine query can only use an IVFFlat index, so HNSW is skipped",
+          "is_correct": false
+        },
+        {
+          "text": "HNSW indexes are only used after the table is rewritten by VACUUM FULL",
+          "is_correct": false
+        },
+        {
+          "text": "Cosine distance needs the vectors stored as halfvec before indexing",
+          "is_correct": false
+        },
+        {
+          "text": "The index operator class does not match the query's distance operator",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "pgvector-index-operator-class",
+      "format": "situational"
+    },
+    {
+      "title": "Hypothetical document embeddings (HyDE)",
+      "description": "How does HyDE (Hypothetical Document Embeddings) improve retrieval?",
+      "difficulty": "advanced",
+      "explanation": "Short questions and long answer passages look different in embedding space. HyDE has an LLM write a plausible answer, embeds that instead of the question, and retrieves real documents near it; the draft is discarded, so its errors never reach the user directly.",
+      "options": [
+        {
+          "text": "It embeds every document several times using a different random seed each time",
+          "is_correct": false
+        },
+        {
+          "text": "It embeds a model-written draft answer and searches with that vector",
+          "is_correct": true
+        },
+        {
+          "text": "It generates synthetic documents and adds them to the index as data",
+          "is_correct": false
+        },
+        {
+          "text": "It trains a small embedding model on questions users asked earlier",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "hypothetical-document-embeddings-hyde",
+      "format": "recall"
+    },
+    {
+      "title": "Reciprocal rank fusion",
+      "description": "Hybrid search often merges BM25 and vector results with reciprocal rank fusion (RRF). Why fuse by rank instead of by raw score?",
+      "difficulty": "advanced",
+      "explanation": "BM25 scores are unbounded and depend on the corpus, while cosine similarity has a fixed range, so adding them is meaningless without careful normalization. RRF sums 1/(k + rank) across the lists, rewarding documents that rank well in either.",
+      "options": [
+        {
+          "text": "Rank fusion avoids computing scores for most of the documents",
+          "is_correct": false
+        },
+        {
+          "text": "Raw scores would reveal private document text to the ranking step",
+          "is_correct": false
+        },
+        {
+          "text": "BM25 and cosine scores sit on different scales and do not compare",
+          "is_correct": true
+        },
+        {
+          "text": "Raw scores change each time the index is rebuilt or compacted",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "reciprocal-rank-fusion",
+      "format": "recall"
+    },
+    {
+      "title": "Contextual retrieval",
+      "description": "Anthropic's contextual retrieval technique changes how chunks are indexed. What does it do?",
+      "difficulty": "advanced",
+      "explanation": "A chunk such as 'revenue grew 3%' loses its subject once split out. Contextual retrieval has an LLM write a sentence or two situating each chunk within its document and prepends it before embedding and BM25 indexing; Anthropic reported 49% fewer failed retrievals, and 67% fewer with reranking.",
+      "options": [
+        {
+          "text": "Indexes every chunk twice, once as plain text and once as a summary",
+          "is_correct": false
+        },
+        {
+          "text": "Stores the whole parent document in the metadata of every chunk",
+          "is_correct": false
+        },
+        {
+          "text": "Prepends a short, chunk-specific context to each chunk before indexing",
+          "is_correct": true
+        },
+        {
+          "text": "Embeds the user's conversation history along with every query",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "contextual-retrieval",
+      "format": "recall"
+    },
+    {
+      "title": "When GraphRAG helps",
+      "description": "Microsoft's GraphRAG builds an entity graph and community summaries from a corpus. Which kind of question does it answer better than chunk-based RAG?",
+      "difficulty": "advanced",
+      "explanation": "Chunk-based RAG retrieves a few local passages, which fails for questions like 'what are the main themes across all these reports?'. GraphRAG pre-summarizes communities of related entities so such global questions can be answered, at a much higher indexing cost.",
+      "options": [
+        {
+          "text": "Broad questions about themes that span the whole corpus",
+          "is_correct": true
+        },
+        {
+          "text": "Exact lookups of a product code that appears on a single page",
+          "is_correct": false
+        },
+        {
+          "text": "Questions about documents added to the corpus minutes ago",
+          "is_correct": false
+        },
+        {
+          "text": "Questions that need the full text of one long contract",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "when-graphrag-helps",
+      "format": "recall"
+    },
+    {
+      "title": "Assistant leaks another team's files",
+      "description": "An internal RAG assistant indexes every department's documents in one vector index. The prompt tells the model 'Only use documents the user is allowed to see.' An engineer gets an answer quoting a confidential HR file. What is the right fix?",
+      "difficulty": "advanced",
+      "explanation": "Access control has to be enforced in code at retrieval time, with metadata filters or per-tenant indexes. Instructions to the model are not a security boundary: anything placed in its context can end up in an answer.",
+      "options": [
+        {
+          "text": "Encrypt the HR vectors so their similarity scores always rank lowest",
+          "is_correct": false
+        },
+        {
+          "text": "Filter retrieval by the user's permissions before chunks reach the model",
+          "is_correct": true
+        },
+        {
+          "text": "Have the model check each chunk's label and drop any it judges to be private",
+          "is_correct": false
+        },
+        {
+          "text": "Repeat the access rule at the end of the user's prompt so the model weighs it more",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "permission-aware-retrieval",
+      "format": "situational"
+    },
+    {
+      "title": "RAG accuracy is stuck at 60%",
+      "description": "A RAG assistant answers 60% of an evaluation set correctly. The team wants to know whether to work on retrieval or on the prompt. What should they measure first?",
+      "difficulty": "advanced",
+      "explanation": "Measuring retrieval on its own, such as recall@k against labeled source passages, splits the failures: if the passage was never retrieved, fix chunking, embeddings, or search; if it was retrieved and the answer was still wrong, fix generation.",
+      "options": [
+        {
+          "text": "Whether the needed passage is in the retrieved top-k for each question",
+          "is_correct": true
+        },
+        {
+          "text": "The cosine similarity between each answer and its original question",
+          "is_correct": false
+        },
+        {
+          "text": "The average length of the answers compared with the length of the references",
+          "is_correct": false
+        },
+        {
+          "text": "How often the answer changes when the same question is sent again",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "evaluating-retrieval-separately",
+      "format": "situational"
+    },
+    {
+      "title": "MCP tool errors vs protocol errors",
+      "description": "An MCP tool calls a weather API that times out. How does the MCP specification say the server should report this?",
+      "difficulty": "advanced",
+      "explanation": "API failures, input validation errors, and business logic errors are tool execution errors, returned in the result with isError: true so the model can self-correct. JSON-RPC protocol errors are for problems such as unknown tools or malformed requests.",
+      "options": [
+        {
+          "text": "As a log message on stderr, leaving the tool call without a result",
+          "is_correct": false
+        },
+        {
+          "text": "As a tool result with isError: true, so the model can see it and adapt",
+          "is_correct": true
+        },
+        {
+          "text": "As a JSON-RPC error response, so the client can retry the request",
+          "is_correct": false
+        },
+        {
+          "text": "As an empty but successful result, so the conversation is not disrupted",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-tool-errors-vs-protocol-errors",
+      "format": "recall"
+    },
+    {
+      "title": "MCP tool annotations",
+      "description": "An MCP server marks one of its tools with readOnlyHint: true. How should a client treat that annotation?",
+      "difficulty": "advanced",
+      "explanation": "Annotations describe intended behavior, but the spec says clients must treat them as untrusted unless they come from trusted servers. A malicious or buggy server can label a destructive tool as read-only.",
+      "options": [
+        {
+          "text": "As a caching hint that lets the client reuse earlier tool results",
+          "is_correct": false
+        },
+        {
+          "text": "As untrusted information, unless the server itself is trusted",
+          "is_correct": true
+        },
+        {
+          "text": "As trusted facts, since servers must enforce their own annotations",
+          "is_correct": false
+        },
+        {
+          "text": "As permission to skip user confirmation whenever the tool runs",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-tool-annotations",
+      "format": "recall"
+    },
+    {
+      "title": "MCP authorization by transport",
+      "description": "How does the MCP specification expect servers to obtain credentials on each transport?",
+      "difficulty": "advanced",
+      "explanation": "Authorization is optional, but HTTP-based servers should follow the spec's OAuth 2.1 flow, acting as OAuth resource servers. stdio servers should not use that flow and instead take credentials from their environment, since they run as local processes launched by the client.",
+      "options": [
+        {
+          "text": "Over both via OAuth 2.1, with a token in each JSON-RPC message",
+          "is_correct": false
+        },
+        {
+          "text": "Over neither, since the protocol expects a VPN for all access",
+          "is_correct": false
+        },
+        {
+          "text": "Over HTTP via OAuth 2.1; over stdio from the environment",
+          "is_correct": true
+        },
+        {
+          "text": "Over stdio via OAuth 2.1; over HTTP from an API key in the URL",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-authorization-by-transport",
+      "format": "recall"
+    },
+    {
+      "title": "MCP server forwards the client's token",
+      "description": "A remote MCP server wraps a company's internal API. To save work, it forwards the access token it received from the MCP client to the internal API unchanged, without checking who the token was issued for. What does the MCP spec say about this design?",
+      "difficulty": "advanced",
+      "explanation": "MCP servers must validate that tokens were issued for them as the audience and must not accept or pass through other tokens. Passthrough enables confused-deputy attacks and bypasses the server's own controls; to call upstream APIs, the server should get its own separate token.",
+      "options": [
+        {
+          "text": "It is recommended, because the server then has no secrets to store",
+          "is_correct": false
+        },
+        {
+          "text": "It is forbidden: servers may only accept tokens issued for them",
+          "is_correct": true
+        },
+        {
+          "text": "It is allowed as long as the internal API also validates the token",
+          "is_correct": false
+        },
+        {
+          "text": "It is allowed if the token travels in the URL, not in a header",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-token-passthrough",
+      "format": "situational"
+    },
+    {
+      "title": "Local MCP server reachable from a web page",
+      "description": "A developer runs an MCP server on a laptop over Streamable HTTP, bound to 0.0.0.0 with no authentication, and it never checks the Origin header. Which attack does the MCP spec warn this setup exposes?",
+      "difficulty": "advanced",
+      "explanation": "Without Origin validation, DNS rebinding lets a page in the user's browser talk to a local server. The spec requires servers to validate the Origin header, recommends binding local servers to 127.0.0.1 rather than 0.0.0.0, and says to authenticate all connections.",
+      "options": [
+        {
+          "text": "Cross-site scripting through tool results rendered in the host app",
+          "is_correct": false
+        },
+        {
+          "text": "Model inversion that pulls training data out through the server",
+          "is_correct": false
+        },
+        {
+          "text": "A website using DNS rebinding to send requests to the local server",
+          "is_correct": true
+        },
+        {
+          "text": "A man-in-the-middle attack on the local pipe between host and server",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-dns-rebinding",
+      "format": "situational"
+    },
+    {
+      "title": "Agent fails after a tool crashes",
+      "description": "In a hand-written Claude tool loop, one tool raises an exception. The code logs it and calls the API again without adding anything for that call, and the API rejects the request with a 400 error. What should the code do instead?",
+      "difficulty": "advanced",
+      "explanation": "Every tool_use block must be answered by a tool_result with the same tool_use_id in the next user message, or the API rejects the request. Reporting the failure with is_error: true keeps the history valid and lets Claude try another approach.",
+      "options": [
+        {
+          "text": "Delete the failed tool_use block from the history and send it again",
+          "is_correct": false
+        },
+        {
+          "text": "Retry the request with exponential backoff until the 400 error clears",
+          "is_correct": false
+        },
+        {
+          "text": "Start a fresh conversation so the failed call is no longer included",
+          "is_correct": false
+        },
+        {
+          "text": "Send a tool_result for that call with is_error: true and the error",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "returning-a-tool-result-to-claude",
+      "format": "situational"
+    },
+    {
+      "title": "Cost of multi-agent systems",
+      "description": "Anthropic's multi-agent research system has a lead agent spawn subagents that search in parallel. What trade-off did Anthropic report?",
+      "difficulty": "advanced",
+      "explanation": "Subagents explore in parallel, each with its own context window, which helps breadth-first research, but Anthropic measured multi-agent runs using about 15 times the tokens of a chat. The approach pays off only for valuable, parallelizable tasks.",
+      "options": [
+        {
+          "text": "Faster runs, but much lower accuracy on questions that need breadth",
+          "is_correct": false
+        },
+        {
+          "text": "Lower token usage, since each subagent sees only its own part of the task",
+          "is_correct": false
+        },
+        {
+          "text": "Better results on broad research at several times the token usage",
+          "is_correct": true
+        },
+        {
+          "text": "The same results as one agent, with simpler debugging and tracing",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "cost-of-multi-agent-systems",
+      "format": "recall"
+    },
+    {
+      "title": "Agent with 300 tools picks badly",
+      "description": "An agent connects to a dozen MCP servers exposing about 300 tools in total. Tool definitions fill a large share of the context before the user asks anything, and the model often picks the wrong tool. What is the most effective change?",
+      "difficulty": "advanced",
+      "explanation": "Large tool catalogs waste context and blur tool selection. Deferring definitions and letting the model search for the few it needs, as Anthropic's tool search tool does with defer_loading, keeps context small and choices accurate; pruning overlapping tools helps too.",
+      "options": [
+        {
+          "text": "Load tool definitions on demand through a tool search step instead",
+          "is_correct": true
+        },
+        {
+          "text": "Cut every tool description down to a single word to save context",
+          "is_correct": false
+        },
+        {
+          "text": "Raise max_tokens so the model has more room to compare definitions",
+          "is_correct": false
+        },
+        {
+          "text": "Merge all the tools into one generic tool that takes free-form commands",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "tool-search-for-large-catalogs",
+      "format": "situational"
+    },
+    {
+      "title": "Compaction in long-running agents",
+      "description": "A coding agent runs for hours and its conversation approaches the context limit. What does compaction do?",
+      "difficulty": "advanced",
+      "explanation": "Compaction replaces earlier conversation with a summary that keeps decisions, open issues, and key details, freeing context so the agent can keep going. Clearing old tool results is a separate, lighter technique, and caching saves cost without shrinking context.",
+      "options": [
+        {
+          "text": "Drops every tool result while keeping all of the original tool calls",
+          "is_correct": false
+        },
+        {
+          "text": "Compresses token IDs so the same history needs fewer tokens to store",
+          "is_correct": false
+        },
+        {
+          "text": "Summarizes older history into a shorter form and continues from it",
+          "is_correct": true
+        },
+        {
+          "text": "Moves the oldest messages into the prompt cache so they stop counting",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "compaction-in-long-running-agents",
+      "format": "recall"
+    },
+    {
+      "title": "pass@k for code generation",
+      "description": "Code generation benchmarks report pass@k. What does pass@k measure?",
+      "difficulty": "advanced",
+      "explanation": "pass@k estimates the probability that at least one of k samples is correct, so it rises with k. When users get one try, pass@1 is the number that matters; requiring all k to pass measures consistency instead.",
+      "options": [
+        {
+          "text": "The chance that all k sampled solutions pass every test in the suite",
+          "is_correct": false
+        },
+        {
+          "text": "The share of tests passed by the single best of k sampled solutions",
+          "is_correct": false
+        },
+        {
+          "text": "The number of samples needed before the first passing solution",
+          "is_correct": false
+        },
+        {
+          "text": "The chance that at least one of k sampled solutions passes the tests",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "pass-k-for-code-generation",
+      "format": "recall"
+    },
+    {
+      "title": "LLM judge disagrees with clinicians",
+      "description": "A team uses an LLM judge to score a medical Q&A assistant. The judge's scores rise with each release, but clinicians reviewing samples find quality has not improved. What should the team do first?",
+      "difficulty": "advanced",
+      "explanation": "An LLM judge is itself a model that needs validation. Checking it against expert labels exposes biases such as rewarding length or confident style; until it agrees with experts, rising scores mean little.",
+      "options": [
+        {
+          "text": "Show the assistant the rubric so its answers match what is scored",
+          "is_correct": false
+        },
+        {
+          "text": "Average the judge's scores over many more samples to reduce their variance",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to a larger judge model, which removes the need for checks",
+          "is_correct": false
+        },
+        {
+          "text": "Measure the judge's agreement with expert labels and fix its rubric",
+          "is_correct": true
+        }
+      ],
+      "category": "ai",
+      "concept": "validating-an-llm-judge",
+      "format": "situational"
+    },
+    {
+      "title": "Agent with private repos and open web access",
+      "description": "An agent can read the user's private repositories, browse arbitrary web pages, and send HTTP requests to any URL. A security reviewer flags this combination, even though each tool is useful on its own. What is the risk?",
+      "difficulty": "advanced",
+      "explanation": "Private data access, exposure to untrusted content, and a way to send data out together let an indirect prompt injection exfiltrate data, a combination Simon Willison calls the lethal trifecta. Remove one leg, for example by restricting outbound requests to an allowlist, rather than trusting the model to resist.",
+      "options": [
+        {
+          "text": "Instructions planted in a web page can make it send private data out",
+          "is_correct": true
+        },
+        {
+          "text": "The model will lose track of which tool returned which result",
+          "is_correct": false
+        },
+        {
+          "text": "Running three kinds of tools together will exceed the API's rate limit",
+          "is_correct": false
+        },
+        {
+          "text": "Web pages can overwrite repository files that the agent has read",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "indirect-prompt-injection",
+      "format": "situational"
+    },
+    {
+      "title": "Data leak through a rendered image",
+      "description": "A chat app renders the model's replies as Markdown. After the model summarizes a malicious web page, its reply contains an image whose URL points to an attacker's server with the user's earlier messages encoded in the query string. How did the data leave?",
+      "difficulty": "advanced",
+      "explanation": "Injected instructions can make the model build a URL containing private data; when the client loads it as an image, the request delivers the data. Defenses include not auto-loading external images, allowlisting image domains, and sanitizing links in model output.",
+      "options": [
+        {
+          "text": "The attacker read the data from provider logs using the image's ID",
+          "is_correct": false
+        },
+        {
+          "text": "The image file ran a script that read the chat when it was opened",
+          "is_correct": false
+        },
+        {
+          "text": "The client loaded the image, sending the encoded data to the attacker",
+          "is_correct": true
+        },
+        {
+          "text": "The model uploaded the data itself over a hidden outbound network connection",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "markdown-image-exfiltration",
+      "format": "situational"
+    },
+    {
+      "title": "Hidden instructions in a tool description",
+      "description": "A user installs a third-party MCP server whose add_numbers tool works correctly. Its description, which the model reads but the host's UI never shows, also tells the model to read ~/.ssh/id_rsa and pass the contents in a 'notes' argument. Which mitigation helps most?",
+      "difficulty": "advanced",
+      "explanation": "This is tool poisoning: tool descriptions are model-visible text, so a malicious server can inject instructions through them. The MCP spec tells clients to show tool inputs to users before calling, to ask for confirmation, and to treat annotations from untrusted servers as untrusted; vet and pin servers too.",
+      "options": [
+        {
+          "text": "Show the full tool description and call arguments before approval",
+          "is_correct": true
+        },
+        {
+          "text": "Lower the temperature so the model ignores unusual instructions",
+          "is_correct": false
+        },
+        {
+          "text": "Trust any tool whose description or annotations say it is read-only",
+          "is_correct": false
+        },
+        {
+          "text": "Run the server over Streamable HTTP so its tools are sandboxed",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "mcp-tool-poisoning",
+      "format": "situational"
+    },
+    {
+      "title": "PagedAttention in vLLM",
+      "description": "What problem does vLLM's PagedAttention address when serving LLMs?",
+      "difficulty": "advanced",
+      "explanation": "PagedAttention stores each sequence's KV cache in small fixed-size blocks, like virtual memory pages, instead of one contiguous region sized for the maximum length. Less fragmentation fits bigger batches on a GPU, which raises throughput.",
+      "options": [
+        {
+          "text": "Tokenizer bottlenecks when many requests arrive at the same moment",
+          "is_correct": false
+        },
+        {
+          "text": "KV cache memory wasted by reserving one big block per request",
+          "is_correct": true
+        },
+        {
+          "text": "Slow loading of model weights from disk whenever a request arrives",
+          "is_correct": false
+        },
+        {
+          "text": "Attention cost that grows with the square of the input length",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "pagedattention-in-vllm",
+      "format": "recall"
+    },
+    {
+      "title": "Speculative decoding",
+      "description": "How does speculative decoding speed up generation without lowering output quality?",
+      "difficulty": "advanced",
+      "explanation": "A cheap draft model guesses several tokens ahead and the large model checks them all in a single forward pass, keeping the longest accepted prefix. With the standard acceptance rule the output distribution matches the large model's, so quality is unchanged while latency drops.",
+      "options": [
+        {
+          "text": "A small model drafts tokens and the large model verifies them in one pass",
+          "is_correct": true
+        },
+        {
+          "text": "The large model writes several tokens per step by lowering its numeric precision",
+          "is_correct": false
+        },
+        {
+          "text": "Several replicas each write part of the answer, which is then stitched together",
+          "is_correct": false
+        },
+        {
+          "text": "Likely answers are precomputed in advance and served from a cache",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "speculative-decoding",
+      "format": "recall"
+    },
+    {
+      "title": "Model distillation",
+      "description": "What does knowledge distillation do when building a smaller production model?",
+      "difficulty": "advanced",
+      "explanation": "Distillation uses a strong teacher model's outputs, or its probability distributions, as training targets for a cheaper student, transferring much of the capability for a task at lower cost and latency. Pruning and quantization shrink the same model instead.",
+      "options": [
+        {
+          "text": "Trains a small student model to imitate a larger teacher's outputs",
+          "is_correct": true
+        },
+        {
+          "text": "Removes a large model's layers one by one until it meets a size goal",
+          "is_correct": false
+        },
+        {
+          "text": "Averages the weights of several fine-tuned models into a single model",
+          "is_correct": false
+        },
+        {
+          "text": "Stores a large model's weights at lower precision to shrink its size",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "model-distillation",
+      "format": "recall"
+    },
+    {
+      "title": "Fitting a 70B model on one GPU",
+      "description": "A team wants to self-host a 70-billion-parameter open model on a single 80 GB GPU, but in 16-bit precision the weights alone need about 140 GB. Which approach makes it fit, and at what usual cost?",
+      "difficulty": "advanced",
+      "explanation": "Weight memory is roughly parameters times bytes per parameter: 70B at 2 bytes is 140 GB, while 4-bit weights take about 35 to 40 GB, leaving room for the KV cache. Quantization usually costs a little accuracy; LoRA and context length do not shrink the base weights.",
+      "options": [
+        {
+          "text": "Quantize the weights to 4 bits, accepting a small loss in quality",
+          "is_correct": true
+        },
+        {
+          "text": "Apply LoRA so that only the small adapter weights get loaded onto the GPU",
+          "is_correct": false
+        },
+        {
+          "text": "Shorten the context window, which shrinks the size of the model weights",
+          "is_correct": false
+        },
+        {
+          "text": "Use speculative decoding so only the draft model sits on the GPU",
+          "is_correct": false
+        }
+      ],
+      "category": "ai",
+      "concept": "quantization-trade-off",
+      "format": "situational"
+    }
+  ]
+}

@@ -41,7 +41,7 @@ python seeds/generate_coverage.py
 python -m scripts.purge_stale_attempts
 ```
 
-**Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds).
+**Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds). For the `ai` category also read [seeds/ai_coverage.md](seeds/ai_coverage.md): its questions name products and specs, so it records which facts were checked against which source and which have drifted.
 
 **Tests:** `tests/` holds smoke tests only (the app imports, the OpenAPI schema
 builds, `/health` answers). Nothing touches a database, because CI has no
