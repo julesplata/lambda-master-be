@@ -19,7 +19,18 @@ async def lifespan(app: FastAPI):
     shutdown_analytics()
 
 
-app = FastAPI(title=settings.app_name, debug=settings.debug, lifespan=lifespan)
+# The interactive docs and schema list every route, admin ones included, so
+# they are served only in local development (npm run gen:api reads the schema).
+docs_enabled = settings.env == "development"
+
+app = FastAPI(
+    title=settings.app_name,
+    debug=settings.debug,
+    lifespan=lifespan,
+    docs_url="/docs" if docs_enabled else None,
+    redoc_url="/redoc" if docs_enabled else None,
+    openapi_url="/openapi.json" if docs_enabled else None,
+)
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
