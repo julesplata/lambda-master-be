@@ -19,7 +19,18 @@ async def lifespan(app: FastAPI):
     shutdown_analytics()
 
 
-app = FastAPI(title=settings.app_name, debug=settings.debug, lifespan=lifespan)
+# The schema lists every admin endpoint. They all require a key, but there is
+# no reason to hand out the map, so production serves no docs or schema.
+_docs_enabled = settings.env != "production"
+
+app = FastAPI(
+    title=settings.app_name,
+    debug=settings.debug,
+    lifespan=lifespan,
+    docs_url="/docs" if _docs_enabled else None,
+    redoc_url="/redoc" if _docs_enabled else None,
+    openapi_url="/openapi.json" if _docs_enabled else None,
+)
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
