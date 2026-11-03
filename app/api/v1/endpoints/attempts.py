@@ -157,7 +157,12 @@ async def create_attempt(
             detail="No questions available for the requested criteria",
         )
 
-    attempt = QuizAttempt(total_questions=len(question_ids))
+    attempt = QuizAttempt(
+        total_questions=len(question_ids),
+        # "" filters nothing in _select_question_ids, so it is stored as "all".
+        category=body.category or None,
+        difficulty=body.difficulty,
+    )
     session.add(attempt)
     await session.flush()
 
@@ -177,9 +182,10 @@ async def create_attempt(
         request,
         "quiz_started",
         {
+            "attempt_id": str(attempt.id),
             "question_count": len(question_ids),
-            "difficulty": body.difficulty,
-            "category": body.category,
+            "difficulty": attempt.difficulty,
+            "category": attempt.category,
         },
     )
     return AttemptCreateResponse(attempt_id=attempt.id, started_at=attempt.started_at)
@@ -362,7 +368,14 @@ async def complete_attempt(
     track(
         request,
         "quiz_completed",
-        {"score": score, "total_questions": total, "percentage": percentage},
+        {
+            "attempt_id": str(attempt.id),
+            "score": score,
+            "total_questions": total,
+            "percentage": percentage,
+            "difficulty": attempt.difficulty,
+            "category": attempt.category,
+        },
     )
     return AttemptComplete(
         score=score,

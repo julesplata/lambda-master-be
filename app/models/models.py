@@ -170,6 +170,12 @@ class QuestionTag(Base):
 
 class QuizAttempt(Base):
     __tablename__ = "quiz_attempts"
+    __table_args__ = (
+        CheckConstraint(
+            "difficulty IN ('beginner', 'intermediate', 'advanced')",
+            name="quiz_attempts_difficulty_check",
+        ),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
@@ -179,6 +185,9 @@ class QuizAttempt(Base):
     user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     total_questions: Mapped[int] = mapped_column(Integer, nullable=False)
+    # The filters the quiz was started with (migration 0008). NULL means "all".
+    category: Mapped[str | None] = mapped_column(String(50))
+    difficulty: Mapped[str | None] = mapped_column(String(12))
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
