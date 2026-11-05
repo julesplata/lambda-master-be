@@ -55,7 +55,8 @@ Key variables:
 | `CORS_ORIGINS` | Comma/JSON list of allowed frontend origins. Defaults to localhost only. |
 | `RATE_LIMIT_*` | Per-IP rate-limit windows (default, attempt creation, reports / feedback, admin sign-in). There are no app-wide buckets. |
 | `RATE_LIMIT_STORAGE_URI` | Empty = in-memory (single instance). Set to a Redis URL when scaling to 2+ instances. |
-| `TRUSTED_PROXY_HOPS` | Proxies that append to `X-Forwarded-For`; the client IP is read that many entries from the right. `1` on Railway, `0` if exposed directly. |
+| `ORIGIN_SECRET` | Required in production. The `X-Origin-Auth` value a Cloudflare Transform Rule adds. Requests carrying it are keyed on `CF-Connecting-IP`; with it set, requests without it get 403 (except `/health`). |
+| `TRUSTED_PROXY_HOPS` | For requests without `ORIGIN_SECRET`: proxies that append to `X-Forwarded-For`; the client IP is read that many entries from the right. `1` on Railway, `0` if exposed directly. Do not count Cloudflare. |
 | `POSTHOG_API_KEY` | Project analytics. Empty = analytics disabled (no client, no network calls). |
 | `ANALYTICS_IP_SALT` | Salt for the anonymous analytics id (`HMAC(salt, client_ip)`), so raw IPs never reach PostHog. Empty = a random per-process salt. |
 | `JWT_SECRET` / `AUTH_BYPASS_USER_ID` | Only relevant if user accounts are re-enabled. |
@@ -167,7 +168,7 @@ A [`Procfile`](Procfile) is included for platforms like Railway/Heroku:
 web: uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Behind a proxy or load balancer, set `TRUSTED_PROXY_HOPS` to the number of proxies in front of the app (`1` on Railway). When running 2+ instances, point `RATE_LIMIT_STORAGE_URI` at Redis so per-IP rate limits stay consistent across processes. Review [`SECURITY.md`](SECURITY.md) before going to production.
+Production sits behind Cloudflare: set `ORIGIN_SECRET` and the matching Cloudflare Transform Rule (steps in [`SECURITY.md`](SECURITY.md)). Elsewhere, behind a proxy or load balancer, set `TRUSTED_PROXY_HOPS` to the number of proxies in front of the app (`1` on Railway). When running 2+ instances, point `RATE_LIMIT_STORAGE_URI` at Redis so per-IP rate limits stay consistent across processes. Review [`SECURITY.md`](SECURITY.md) before going to production.
 
 ---
 

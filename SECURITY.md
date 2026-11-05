@@ -51,33 +51,62 @@ Size the per-IP values for a shared address, not one person: classrooms, offices
 and mobile carrier-grade NAT put dozens of users behind one IP, and a 10-question
 quiz is ~14 API calls.
 
-Client IP is resolved in `app/core/limiter.py`. **Behind a proxy/load balancer
-(Railway) the TCP peer is the proxy**, so without special handling every request
-would share a single rate bucket. So the limiter reads `X-Forwarded-For`, but
-**never its leftmost entry**: the client writes that one, and each proxy only
-appends to the right. `TRUSTED_PROXY_HOPS` (default `1`) is how many entries,
-counted from the right, were written by proxies you control; the limiter uses
-the entry at that position and ignores everything to its left.
+Client IP is resolved in `app/core/limiter.py`, and the same value feeds the
+anonymous analytics id. Production is **Cloudflare → Railway's edge → app**, so
+the TCP peer is Railway's edge and the address Railway's edge sees is a
+Cloudflare data centre's. Neither identifies a client.
+
+**Through Cloudflare (production).** Cloudflare writes the client's address to
+`CF-Connecting-IP`, replacing any value the client sent. But Railway's edge also
+serves `api.lambdamaster.app` to anyone who connects to it directly (checked
+2026-11-05: `curl --resolve api.lambdamaster.app:443:<Railway edge IP>` returns
+200 from `server: railway-hikari`, no Cloudflare). Removing the
+`*.up.railway.app` domain does not change that. A request sent that way can carry
+any `CF-Connecting-IP` it likes. So:
+
+- A Cloudflare Transform Rule adds `X-Origin-Auth: <ORIGIN_SECRET>` to every
+  request it forwards. "Set static" replaces a client-sent header of the same
+  name, so the secret cannot be supplied from outside.
+- `client_ip` believes `CF-Connecting-IP` only on a request with the right
+  secret (`app/core/edge.py`, compared in constant time).
+- With `ORIGIN_SECRET` set, the app refuses (403) every request without it,
+  except `GET /api/v1/health`, which Railway's deploy healthcheck calls
+  directly. Without that refusal, a direct request could not choose its own
+  bucket, but it would skip Cloudflare's WAF and rate limiting rule.
+- `ENV=production` refuses to start without a 32+ character `ORIGIN_SECRET`,
+  because without it every user is keyed on a Cloudflare address.
+
+**Without the secret (dev, staging without Cloudflare)** the limiter reads
+`X-Forwarded-For`, but **never its leftmost entry**: the client writes that one,
+and each proxy only appends to the right. `TRUSTED_PROXY_HOPS` (default `1`) is
+how many entries, counted from the right, were written by proxies you control;
+the limiter uses the entry at that position and ignores everything to its left.
 
 - Behind one platform edge (Railway): `TRUSTED_PROXY_HOPS=1`.
-- Behind Cloudflare *and* Railway, or nginx in front of the app: add one per
-  proxy that appends to the header.
 - App exposed directly to clients: `TRUSTED_PROXY_HOPS=0`. The header is not
   read at all and the TCP peer address is used.
-
-The setting fails in two directions, so verify it after each deploy that
-changes the network path:
-
-- **Too high → the limits are bypassable.** Check: send 6 requests to
-  `POST /api/v1/admin/session`, each with a different
-  `-H "X-Forwarded-For: $RANDOM.1.1.1"`. The 6th must return 429.
-- **Too low → every user shares one bucket.** Check: exhaust that limit from
-  one network (e.g. your laptop), then call it from another (e.g. a phone on
-  mobile data). The second must not get 429.
+- **Do not raise it to 2 to count Cloudflare.** Because Railway's edge is
+  reachable directly, the second entry from the right is whatever a direct
+  caller writes, and every request could land in a fresh bucket. Use
+  `ORIGIN_SECRET`.
 
 Railway's staff have described its edge both ways (stripping the header vs.
 appending to it), which is why the right-hand count is used: it is correct in
 either case as long as the hop count is.
+
+Verify after each deploy that changes the network path (`$EDGE` is a Railway
+edge IP, e.g. `dig +short any-name.up.railway.app`):
+
+- **Cloudflare is the only way in.**
+  `curl -s -o /dev/null -w '%{http_code}' --resolve api.lambdamaster.app:443:$EDGE https://api.lambdamaster.app/api/v1/categories`
+  must print 403. The same URL without `--resolve` must print 200.
+- **A client cannot pick its bucket.** Send 6 requests to
+  `POST /api/v1/admin/session` through Cloudflare, each with a different
+  `-H "X-Forwarded-For: $RANDOM.1.1.1" -H "CF-Connecting-IP: $RANDOM.2.2.2"`.
+  The 6th must return 429.
+- **Users do not share a bucket.** Exhaust that limit from one network (e.g.
+  your laptop), then call it from another (e.g. a phone on mobile data). The
+  second must not get 429.
 
 > Note: SlowAPI's default limiter store is in-memory, so limits are per-process
 > and reset on redeploy. For multi-instance deployments, set
@@ -148,8 +177,9 @@ Set these as Railway environment variables:
       deletes many, run `VACUUM (ANALYZE) user_answers;` afterwards.
 - [ ] `ENV=production` — turns on the startup checks: the process refuses to
       boot (and says why) if `DEBUG` is on, `AUTH_BYPASS_USER_ID` is set,
-      `JWT_SECRET` or `ADMIN_API_KEY` is under 32 characters, or `CORS_ORIGINS`
-      still includes localhost. Without it none of the items below are enforced.
+      `JWT_SECRET`, `ADMIN_API_KEY` or `ORIGIN_SECRET` is under 32 characters,
+      or `CORS_ORIGINS` still includes localhost. Without it none of the items
+      below are enforced.
 - [ ] `DEBUG=false` — leaving it on exposes stack traces and SQL query logs.
 - [ ] `ADMIN_API_KEY` — long random value; without it admin routes are disabled.
 - [ ] `AUTH_BYPASS_USER_ID` — must be **empty/unset**; it short-circuits JWT auth.
@@ -159,9 +189,20 @@ Set these as Railway environment variables:
       needed if user accounts are re-enabled.)
 - [ ] `CORS_ORIGINS` — set to your real frontend origin(s); the default is
       localhost-only. Do not use `*` together with `allow_credentials=true`.
-- [ ] `TRUSTED_PROXY_HOPS=1` on Railway, and run both checks under rate
-      limiting above. Remove the old `TRUST_FORWARDED_FOR` variable; it is no
-      longer read.
+- [ ] **`ORIGIN_SECRET` and its Cloudflare Transform Rule, in this order.**
+      Doing step 3 before step 1 makes every request 403.
+      1. Generate a value: `python -c "import secrets; print(secrets.token_urlsafe(32))"`.
+      2. Cloudflare → the zone → Rules → Create rule → Request Header Transform
+         Rule. Custom filter `(http.host eq "api.lambdamaster.app")`, then
+         Set static, header `X-Origin-Auth`, value the secret. The app running
+         now ignores the header, so this is safe at any time.
+      3. Set `ORIGIN_SECRET` on Railway to the same value and deploy.
+      4. Run the three checks under rate limiting above.
+
+      To rotate it, change both and accept a few minutes of 403s while Railway
+      redeploys.
+- [ ] `TRUSTED_PROXY_HOPS=1` on Railway. Only requests without the secret use
+      it. Remove the old `TRUST_FORWARDED_FOR` variable; it is no longer read.
 - [ ] `ANALYTICS_IP_SALT` — long random value, set whenever `POSTHOG_API_KEY`
       is. Unauthenticated visitors are reported to PostHog as
       `HMAC(salt, client_ip)`, so the salt is what keeps client IPs inside
@@ -187,7 +228,7 @@ Set these as Railway environment variables:
       - 60 requests per 10 seconds per IP, then Block for 10 seconds.
 
       This is a flood guard. It stops bursts before they reach Railway and is
-      keyed on the real client IP even if `TRUSTED_PROXY_HOPS` is wrong, but
+      keyed on the real client IP even if `ORIGIN_SECRET` is missing, but
       its sustained ceiling (6 a second) is far looser than the app's own
       `30/minute`, which is what bounds a patient script. It is sized so a
       class starting together is never blocked. A browser it does block sees a

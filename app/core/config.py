@@ -9,6 +9,8 @@ from pydantic_settings import BaseSettings, NoDecode
 ADMIN_API_KEY_MIN_LENGTH = 32
 # HS256 is only as strong as its key; PyJWT itself warns below 32 bytes.
 JWT_SECRET_MIN_LENGTH = 32
+# The origin secret is guessable online the same way the admin key is.
+ORIGIN_SECRET_MIN_LENGTH = 32
 
 
 class Settings(BaseSettings):
@@ -73,12 +75,23 @@ class Settings(BaseSettings):
     # instances, point this at Redis, e.g. "redis://default:pass@host:6379".
     rate_limit_storage_uri: str = ""
 
-    # How many proxies in front of the app append to X-Forwarded-For. The client
-    # IP is the entry this many places from the RIGHT; everything further left
-    # was written by the client and is ignored. 1 = a single platform edge
-    # (Railway). 0 = the app is exposed directly, so the header is not read at
-    # all. Too high makes the limits bypassable; too low puts every user in one
-    # bucket — so when unsure, err low. See SECURITY.md for how to verify it.
+    # Production is Cloudflare -> Railway's edge -> app, and Railway's edge also
+    # answers for our domain to anyone who connects to it directly. A Cloudflare
+    # Transform Rule adds this value as the X-Origin-Auth header to every request
+    # it forwards. A request carrying it came through Cloudflare, so its
+    # CF-Connecting-IP is the client IP. Once this is set, requests without it
+    # are refused (see core/edge.py). Required in production.
+    origin_secret: str = ""
+
+    # Only used for requests that did not come through Cloudflare (local dev, a
+    # deploy without ORIGIN_SECRET). How many proxies in front of the app append
+    # to X-Forwarded-For. The client IP is the entry this many places from the
+    # RIGHT; everything further left was written by the client and is ignored.
+    # 1 = a single platform edge (Railway). 0 = the app is exposed directly, so
+    # the header is not read at all. Too high makes the limits bypassable; too
+    # low puts every user in one bucket — so when unsure, err low. Do not raise
+    # it to count Cloudflare: Railway's edge is reachable directly, so the extra
+    # entry would be forgeable. Use ORIGIN_SECRET instead. See SECURITY.md.
     trusted_proxy_hops: int = Field(default=1, ge=0)
 
     admin_api_key: str = ""  # set via ADMIN_API_KEY in .env
@@ -170,6 +183,15 @@ class Settings(BaseSettings):
             )
         if any("localhost" in o or "127.0.0.1" in o for o in self.cors_origins):
             errors.append("CORS_ORIGINS must not include localhost origins")
+        # Production only: without it every request is keyed on a Cloudflare
+        # address. A staging deploy may not sit behind Cloudflare at all.
+        if (
+            self.env == "production"
+            and len(self.origin_secret) < ORIGIN_SECRET_MIN_LENGTH
+        ):
+            errors.append(
+                f"ORIGIN_SECRET must be at least {ORIGIN_SECRET_MIN_LENGTH} characters"
+            )
         if errors:
             raise ValueError(f"Unsafe settings for ENV={self.env}: " + "; ".join(errors))
         return self

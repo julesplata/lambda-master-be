@@ -24,6 +24,7 @@ PRODUCTION_OK = {
     "jwt_secret": STRONG,
     "admin_api_key": STRONG,
     "cors_origins": ["https://app.example.com"],
+    "origin_secret": STRONG,
 }
 
 
@@ -100,11 +101,18 @@ def test_production_settings_accept_a_safe_config():
         ({"auth_bypass_user_id": "00000000-0000-0000-0000-000000000000"}, "AUTH_BYPASS"),
         ({"cors_origins": ["http://localhost:5173"]}, "CORS_ORIGINS"),
         ({"env": "staging", "jwt_secret": ""}, "JWT_SECRET"),
+        ({"origin_secret": ""}, "ORIGIN_SECRET"),
+        ({"origin_secret": "short"}, "ORIGIN_SECRET"),
     ],
 )
 def test_deployed_settings_refuse_unsafe_config(override, message):
     with pytest.raises(ValidationError, match=message):
         Settings(_env_file=None, **{**PRODUCTION_OK, **override})
+
+
+def test_staging_does_not_require_an_origin_secret():
+    # A staging deploy may not sit behind Cloudflare at all.
+    Settings(_env_file=None, **{**PRODUCTION_OK, "env": "staging", "origin_secret": ""})
 
 
 def test_development_settings_allow_missing_secrets():
