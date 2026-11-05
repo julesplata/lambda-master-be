@@ -14,7 +14,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -185,6 +185,11 @@ class QuizAttempt(Base):
     user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     total_questions: Mapped[int] = mapped_column(Integer, nullable=False)
+    # The questions picked at start, in the order they are served (migration
+    # 0009). user_answers gets a row only once one of them is answered.
+    question_ids: Mapped[list[uuid.UUID]] = mapped_column(
+        ARRAY(UUID(as_uuid=True)), nullable=False
+    )
     # The filters the quiz was started with (migration 0008). NULL means "all".
     category: Mapped[str | None] = mapped_column(String(50))
     difficulty: Mapped[str | None] = mapped_column(String(12))

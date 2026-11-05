@@ -140,6 +140,12 @@ Set these as Railway environment variables:
 - [ ] **Apply migration `0005`** (any time; order-independent of the deploy).
       It shuffles stored option positions, which had the correct answer first
       for almost every seeded question.
+- [ ] **Apply migration `0009` before deploying the backend, and `0010` right
+      after the new code is live.** `0009` adds `quiz_attempts.question_ids`,
+      which every attempt query now reads, and is safe for the old code. `0010`
+      backfills attempts the old code started in between (until it runs, those
+      show no questions), then deletes the placeholder answer rows. If it
+      deletes many, run `VACUUM (ANALYZE) user_answers;` afterwards.
 - [ ] `ENV=production` — turns on the startup checks: the process refuses to
       boot (and says why) if `DEBUG` is on, `AUTH_BYPASS_USER_ID` is set,
       `JWT_SECRET` or `ADMIN_API_KEY` is under 32 characters, or `CORS_ORIGINS`
@@ -166,5 +172,24 @@ Set these as Railway environment variables:
 - [ ] Serve only over HTTPS (Railway does this at its edge by default).
 - [ ] Schedule the abandoned-attempt purge — add a Railway Cron service running
       `python -m scripts.purge_stale_attempts` (suggested schedule: `0 3 * * *`).
-      `POST /quiz-attempts` is open and writes up to 101 rows per call; without
-      this job, attempts left in progress accumulate permanently.
+      `POST /quiz-attempts` is open and stores a row per call; without this
+      job, attempts left in progress accumulate permanently. The same run is
+      the database-size alert: it exits 1 once the database passes
+      `DATABASE_SIZE_ALERT_MB` (default 350, 70% of Supabase Free's 500 MB
+      quota). Make sure a failed run notifies someone, or the alert is silent.
+- [ ] **Cloudflare rate limiting rule on quiz starts** (Security → WAF → Rate
+      limiting rules). The Free plan allows one rule, a 10-second window and
+      block, IP as the only key, and matching on path but not method:
+      - Expression: `(http.request.uri.path eq "/api/v1/quiz-attempts")`. An
+        exact match, so reading an attempt and posting answers are not
+        counted. Browser CORS preflights to this path do count, at most one
+        per visitor per 10 minutes.
+      - 60 requests per 10 seconds per IP, then Block for 10 seconds.
+
+      This is a flood guard. It stops bursts before they reach Railway and is
+      keyed on the real client IP even if `TRUSTED_PROXY_HOPS` is wrong, but
+      its sustained ceiling (6 a second) is far looser than the app's own
+      `30/minute`, which is what bounds a patient script. It is sized so a
+      class starting together is never blocked. A browser it does block sees a
+      network error rather than the app's "Too many quizzes" message, because
+      Cloudflare's 429 carries no CORS headers.
