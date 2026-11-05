@@ -7,7 +7,9 @@ from app.schemas.question import Difficulty, QuestionDetail
 
 
 class AttemptCreate(BaseModel):
-    question_count: int = Field(gt=0, le=100)
+    # The frontend always asks for 10. This is an open endpoint, so the ceiling
+    # stays close to what a real quiz needs rather than what the bank could serve.
+    question_count: int = Field(gt=0, le=20)
     difficulty: Difficulty | None = None
     category: str | None = None
 
