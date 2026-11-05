@@ -47,17 +47,26 @@ class Settings(BaseSettings):
     # The open, unauthenticated submit endpoints (question reports + app feedback).
     rate_limit_submit: str = "5/minute;50/hour"
 
-    # Anonymous quiz-attempt creation writes one quiz_attempts row plus up to 100
-    # user_answers rows per call, so it is tighter than the default. The minute
-    # limit covers a whole class starting at once; the hourly one bounds what a
-    # single address can write over time. Note an explicit per-route limit
-    # replaces rate_limit_default rather than stacking with it.
+    # Anonymous quiz-attempt creation is open and stores a row per call (the
+    # picked question ids; answers are written as they arrive), so it is tighter
+    # than the default. The minute limit covers a whole class starting at once;
+    # the hourly one bounds what a single address can write over time. Note an
+    # explicit per-route limit replaces rate_limit_default rather than stacking
+    # with it.
     rate_limit_attempt_create: str = "30/minute;500/hour"
 
     # Abandoned anonymous attempts have no owner and no expiry. The
     # scripts/purge_stale_attempts.py job deletes in-progress ones older than
-    # this many days. Completed attempts are kept.
+    # this many days. Completed attempts are kept, and an attempt cannot be
+    # completed without an answer, so a script that starts and completes quizzes
+    # in a loop leaves in-progress rows that this deletes.
     attempt_retention_days: int = 7
+
+    # The same job exits non-zero when the database is larger than this, so the
+    # scheduled run fails while there is still room. Supabase Free allows a
+    # 500 MB database (going over risks a Fair Use restriction) on a 2 GB disk
+    # that turns read-only at 95%. 350 is 70% of the 500.
+    database_size_alert_mb: int = 350
 
     # Storage backend for rate-limit counters. Empty = in-memory (per-process,
     # resets on redeploy) which is fine for a single instance. For multiple
