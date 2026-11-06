@@ -3,6 +3,6 @@
 # Pinned exactly, like requirements.txt, so CI does not change under an unrelated PR.
 # Dependabot opens the upgrade PRs.
 
-ruff==0.16.6      # a new ruff release can add rules and fail an unrelated PR
+ruff==0.17.3      # a new ruff release can add rules and fail an unrelated PR
 pytest==9.2.0
 httpx==0.28.1     # required by fastapi.testclient.TestClient
