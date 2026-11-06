@@ -4,10 +4,12 @@ pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
 slowapi>=0.1.9
 redis>=5.0.0  # rate-limit storage backend when RATE_LIMIT_STORAGE_URI is set
-sqlalchemy[asyncio]>=2.0.0
+sqlalchemy[asyncio]>=2.1.0  # 2.1+: scrub_event (app/core/error_tracking.py) relies on its asyncpg error layout
 asyncpg>=0.29.0
 psycopg2-binary>=2.9.0
 bcrypt>=4.1.0
 pyjwt>=2.8.0
 pydantic[email]>=2.0.0
 posthog>=3.5.0
+# Below 3: a major release can change what is sent by default (app/core/error_tracking.py).
+sentry-sdk[fastapi]>=2.0.0,<3  # error reports and cron check-ins when SENTRY_DSN is set

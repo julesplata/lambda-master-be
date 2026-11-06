@@ -156,6 +156,15 @@ class Settings(BaseSettings):
     # ids then differ per instance and reset on every redeploy.
     analytics_ip_salt: str = ""
 
+    # Sentry error tracking (core/error_tracking.py). Empty = off: no client, no
+    # network calls, so local dev and tests stay quiet. Set it on the Railway web
+    # service and on the purge cron service.
+    sentry_dsn: str = ""
+    # Railway sets RAILWAY_GIT_COMMIT_SHA on deploys from GitHub. It is sent as
+    # the Sentry release, so an error names the commit that shipped it. Sentry
+    # does not read this variable by itself.
+    railway_git_commit_sha: str = ""
+
     @model_validator(mode="after")
     def _deployment_guards(self) -> "Settings":
         """Refuse to start a staging/production process with unsafe settings.
