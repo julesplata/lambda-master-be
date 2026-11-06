@@ -13,8 +13,12 @@ uvicorn app.main:app --reload --port 8000
 # Activate virtualenv
 source .venv/bin/activate
 
-# Install dependencies
+# Install dependencies (requirements.txt is the pinned lock)
 pip install -r requirements.txt
+
+# Add or change a dependency: edit requirements.in, then regenerate the lock
+# (pip install pip-tools; run it on the Python in .python-version)
+pip-compile --strip-extras requirements.in
 
 # Install the lint/test tooling CI runs (ruff, pytest, httpx)
 pip install -r requirements-dev.txt

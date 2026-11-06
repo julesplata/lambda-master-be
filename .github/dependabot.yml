@@ -1,0 +1,12 @@
+version: 2
+updates:
+  # requirements.txt is compiled from requirements.in with pip-compile. Dependabot
+  # reruns pip-compile with the options in the lock's header, on .python-version.
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      # One PR a week for minor and patch bumps; each major gets its own PR.
+      minor-and-patch:
+        update-types: [minor, patch]
