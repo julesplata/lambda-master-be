@@ -3,12 +3,20 @@ from slowapi.util import get_remote_address
 from starlette.requests import Request
 
 from app.core.config import settings
+from app.core.edge import came_through_cloudflare
 
 
 def client_ip(request: Request) -> str:
-    """Resolve the real client IP for rate limiting.
+    """Resolve the real client IP for rate limiting (and the analytics id).
 
-    Behind a proxy/load balancer (Railway, nginx, Cloudflare) the TCP peer is
+    In production every request comes through Cloudflare, which writes the
+    client's address to CF-Connecting-IP. That header is only believed when the
+    request also carries the origin secret Cloudflare adds (see core/edge.py),
+    because Railway's edge can be reached directly and a client going that way
+    can send any CF-Connecting-IP it likes.
+
+    Everything below handles requests without the secret: local dev, or a
+    deploy without ORIGIN_SECRET. Behind a proxy/load balancer the TCP peer is
     the proxy, so the per-IP limit would be shared across all users. Each proxy
     appends the address it received the request from to X-Forwarded-For, but
     whatever the client sent comes first, so every entry left of the ones our
@@ -21,6 +29,10 @@ def client_ip(request: Request) -> str:
     the hop count the request did not come through our proxies, so we fall back
     to the TCP peer rather than trust any of it.
     """
+    if came_through_cloudflare(request.headers):
+        cloudflare_ip = request.headers.get("cf-connecting-ip", "").strip()
+        if cloudflare_ip:
+            return cloudflare_ip
     hops = settings.trusted_proxy_hops
     if hops:
         # getlist + join: a client can send its own separate X-Forwarded-For

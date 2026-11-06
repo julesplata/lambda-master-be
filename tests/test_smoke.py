@@ -49,6 +49,7 @@ def test_unknown_route_is_not_found():
 
 
 DOCS_PATHS = ("/docs", "/redoc", "/openapi.json")
+ORIGIN_SECRET = "o" * 32
 
 
 def test_api_docs_are_served_in_development():
@@ -62,7 +63,9 @@ def test_api_docs_are_hidden_outside_development():
     probe = (
         "from fastapi.testclient import TestClient\n"
         "from app.main import app\n"
-        "client = TestClient(app)\n"
+        # Sent the way Cloudflare forwards it, so the 404 is the docs being
+        # off and not RequireCloudflare refusing the request.
+        f"client = TestClient(app, headers={{'X-Origin-Auth': {ORIGIN_SECRET!r}}})\n"
         f"print([client.get(p).status_code for p in {DOCS_PATHS!r}])\n"
     )
     env = {
@@ -73,6 +76,7 @@ def test_api_docs_are_hidden_outside_development():
         "JWT_SECRET": "j" * 32,
         "ADMIN_API_KEY": "k" * 32,
         "CORS_ORIGINS": "https://www.example.com",
+        "ORIGIN_SECRET": ORIGIN_SECRET,
     }
     result = subprocess.run(
         [sys.executable, "-c", probe],

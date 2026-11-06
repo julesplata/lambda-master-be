@@ -2,7 +2,7 @@
   "questions": [
     {
       "title": "Purpose of a load balancer",
-      "description": "What is the primary purpose of placing a load balancer in front of a pool of identical application servers?",
+      "description": "What is the primary purpose of placing a load balancer, such as Nginx or an AWS Application Load Balancer, in front of a pool of identical application servers?",
       "difficulty": "beginner",
       "explanation": "A load balancer distributes incoming requests across multiple backend servers so no single instance is overwhelmed, improving throughput and availability.",
       "options": [
@@ -380,7 +380,7 @@
     },
     {
       "title": "Reverse proxy role",
-      "description": "Which function is commonly handled by a reverse proxy?",
+      "description": "Which function is commonly handled by a reverse proxy such as Nginx or HAProxy?",
       "difficulty": "beginner",
       "explanation": "A reverse proxy sits in front of servers and can terminate TLS, route requests, cache responses, and balance load.",
       "options": [
@@ -1028,7 +1028,7 @@
     },
     {
       "title": "Time-series database fit",
-      "description": "Which workload is a time-series database optimized for?",
+      "description": "Which workload is a time-series database, such as InfluxDB or TimescaleDB, optimized for?",
       "difficulty": "intermediate",
       "explanation": "Time-series databases optimize for high-volume timestamped writes and time-window aggregations, like metrics and IoT sensor data.",
       "options": [
@@ -1271,7 +1271,7 @@
     },
     {
       "title": "Message queue purpose",
-      "description": "What is the primary benefit of putting a message queue between a producer and a consumer service?",
+      "description": "What is the primary benefit of putting a message queue, such as RabbitMQ or Amazon SQS, between a producer and a consumer service?",
       "difficulty": "beginner",
       "explanation": "A queue decouples producer and consumer, smoothing load spikes and letting the consumer process work asynchronously at its own pace.",
       "options": [
@@ -1676,7 +1676,7 @@
     },
     {
       "title": "Service discovery",
-      "description": "What problem does service discovery solve in a microservices architecture?",
+      "description": "What problem does service discovery, as provided by tools like Consul or Kubernetes Services, solve in a microservices architecture?",
       "difficulty": "intermediate",
       "explanation": "Service discovery lets services find the current network locations of other services, which change as instances scale, move, or fail.",
       "options": [
@@ -2108,7 +2108,7 @@
     },
     {
       "title": "API gateway responsibilities",
-      "description": "Which responsibility is commonly centralized in an API gateway?",
+      "description": "Which responsibility is commonly centralized in an API gateway, such as Kong or Amazon API Gateway?",
       "difficulty": "intermediate",
       "explanation": "Gateways centralize cross-cutting concerns like authentication, rate limiting, routing, and request aggregation in front of microservices.",
       "options": [

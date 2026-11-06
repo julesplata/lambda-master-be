@@ -9,6 +9,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from app.api.v1.routes import router as v1_router
 from app.core.analytics import init_analytics, shutdown_analytics
 from app.core.config import settings
+from app.core.edge import RequireCloudflare
 from app.core.limiter import limiter
 
 
@@ -42,6 +43,13 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# Added last so it runs first: a request that skipped Cloudflare is refused
+# before it reaches the rate limiter, CORS or a route.
+app.add_middleware(
+    RequireCloudflare,
+    exempt_paths=frozenset({f"{settings.api_v1_prefix}/health"}),
 )
 
 app.include_router(v1_router, prefix=settings.api_v1_prefix)
