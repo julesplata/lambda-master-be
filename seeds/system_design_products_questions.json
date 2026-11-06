@@ -1,0 +1,841 @@
+{
+  "questions": [
+    {
+      "title": "Live leaderboard for a mobile game",
+      "description": "A mobile game needs a leaderboard that shows the top 100 players and any player's current rank, updated on every score change for millions of players. The team already runs Redis. Which Redis data type fits best?",
+      "difficulty": "beginner",
+      "explanation": "A Redis sorted set keeps members ordered by score, so updating a score and reading the top N or one member's rank are logarithmic operations instead of a full sort on every read.",
+      "options": [
+        {
+          "text": "A list, with each new score pushed on and the whole list sorted again on every read",
+          "is_correct": false
+        },
+        {
+          "text": "A sorted set scored by points, so rank and top-N reads stay fast as scores change",
+          "is_correct": true
+        },
+        {
+          "text": "A hash keyed by player id, scanned and sorted in the app whenever the board is shown",
+          "is_correct": false
+        },
+        {
+          "text": "A plain set of player ids, with each player's score stored in a separate string key",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "redis-sorted-set-leaderboard",
+      "format": "situational"
+    },
+    {
+      "title": "Redis vs Memcached",
+      "description": "Redis and Memcached are both popular in-memory caches. Which capability does Redis offer that Memcached does not?",
+      "difficulty": "beginner",
+      "explanation": "Memcached stores opaque values and does not understand data structures. Redis has server-side lists, sets, sorted sets and hashes. Keeping data in RAM, per-key expiry and spreading keys across several servers are available with both.",
+      "options": [
+        {
+          "text": "Keeping values in RAM so reads skip a round trip to the database on disk",
+          "is_correct": false
+        },
+        {
+          "text": "Setting an expiry time on each key so stale entries are dropped later on",
+          "is_correct": false
+        },
+        {
+          "text": "Server-side data structures such as lists, sets, sorted sets and hashes",
+          "is_correct": true
+        },
+        {
+          "text": "Spreading keys over several cache servers so no one machine holds it all",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "redis-vs-memcached",
+      "format": "recall"
+    },
+    {
+      "title": "One command freezes the Redis cache",
+      "description": "A debugging script runs KEYS session:* against the production Redis instance, which holds 40 million keys. For several seconds every other client times out. What explains this, and what should the script use instead?",
+      "difficulty": "intermediate",
+      "explanation": "Redis executes commands one at a time, so an O(N) command over the whole keyspace blocks every other client until it finishes; the Redis docs warn against KEYS in production for this reason. SCAN iterates with a cursor and returns a few keys per call, letting other commands run in between.",
+      "options": [
+        {
+          "text": "KEYS takes a write lock on each matching key; calling GET on each key one at a time avoids the locks",
+          "is_correct": false
+        },
+        {
+          "text": "KEYS copies the dataset to disk first; turning off persistence would make it nearly instant",
+          "is_correct": false
+        },
+        {
+          "text": "KEYS is only slow on replicas; running it on the primary would avoid the whole stall",
+          "is_correct": false
+        },
+        {
+          "text": "KEYS walks the whole keyspace in one blocking call; SCAN returns it in small batches",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "redis-keys-vs-scan",
+      "format": "situational"
+    },
+    {
+      "title": "Redis cache starts rejecting writes",
+      "description": "Your team uses Redis purely as a cache and set maxmemory to 4 GB. Once memory fills up, writes start failing with an out-of-memory error instead of old entries being evicted. What is the most likely cause?",
+      "difficulty": "advanced",
+      "explanation": "Under the noeviction policy, which is the default, Redis returns errors for commands that would add data past the limit. allkeys-lru (or allkeys-lfu) evicts the least used keys, which is what a pure cache wants; the volatile-* policies only evict keys that have a TTL.",
+      "options": [
+        {
+          "text": "The eviction policy is still the default, noeviction; a cache should use allkeys-lru",
+          "is_correct": true
+        },
+        {
+          "text": "maxmemory only counts replica buffers, so the limit must be raised to the server's RAM",
+          "is_correct": false
+        },
+        {
+          "text": "Keys without a TTL can never be evicted under any policy, so every key needs an expiry",
+          "is_correct": false
+        },
+        {
+          "text": "Redis evicts only after a restart, so the instance must restart when memory is full",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "redis-maxmemory-policy",
+      "format": "situational"
+    },
+    {
+      "title": "Multi-key command fails in Redis Cluster",
+      "description": "After moving from a single Redis server to Redis Cluster, an MGET for the keys cart:42 and profile:42 fails with a CROSSSLOT error. How do you keep these related keys usable in one command?",
+      "difficulty": "advanced",
+      "explanation": "Redis Cluster splits keys across 16,384 hash slots, and multi-key commands only work when every key is in the same slot. When a key contains {...}, only the part inside the braces is hashed, so keys sharing a hash tag always land in the same slot.",
+      "options": [
+        {
+          "text": "Raise the number of hash slots so that every user's related keys get a slot of their own",
+          "is_correct": false
+        },
+        {
+          "text": "Use hash tags like {user:42}:cart and {user:42}:profile so both keys hash to one slot",
+          "is_correct": true
+        },
+        {
+          "text": "Send the MGET to a replica, since replicas hold a full copy of every slot in the cluster",
+          "is_correct": false
+        },
+        {
+          "text": "Wrap the MGET in MULTI and EXEC so the cluster runs it as one cross-node transaction",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "redis-cluster-hash-tags",
+      "format": "situational"
+    },
+    {
+      "title": "New product missing from search results",
+      "description": "Right after a product is indexed into Elasticsearch, an automated test searches for it and gets no hits. When the same search runs again a second later, it finds the product. What explains this?",
+      "difficulty": "intermediate",
+      "explanation": "Elasticsearch search is near real-time: new documents become visible to search when the index is refreshed, by default every second on indices that are being searched. A test that must see the document at once can index it with refresh=wait_for.",
+      "options": [
+        {
+          "text": "The document was written to a replica first, and primaries only receive it after a delay",
+          "is_correct": false
+        },
+        {
+          "text": "Elasticsearch caches every query result for a few seconds, so the first search was stale",
+          "is_correct": false
+        },
+        {
+          "text": "Search is near real-time: new documents become searchable after the next index refresh",
+          "is_correct": true
+        },
+        {
+          "text": "Indexing is queued in batches of 1,000 documents, and that batch had not filled up yet",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "elasticsearch-near-real-time-search",
+      "format": "situational"
+    },
+    {
+      "title": "Order missing from a DynamoDB index query",
+      "description": "An app writes an order to a DynamoDB table and immediately queries a global secondary index on customer_id to list that customer's orders. Every so often the new order is missing from the list. What explains this?",
+      "difficulty": "advanced",
+      "explanation": "DynamoDB updates a global secondary index asynchronously, and GSI queries only support eventually consistent reads. Read the just-written item from the base table, or let the client tolerate a short delay in index results.",
+      "options": [
+        {
+          "text": "The write was throttled, so DynamoDB silently dropped it and the order was never stored at all",
+          "is_correct": false
+        },
+        {
+          "text": "Query results on an index are cached for one minute, so the previous list was simply served again",
+          "is_correct": false
+        },
+        {
+          "text": "The table has no sort key, so the item was written to the base table but never to the index",
+          "is_correct": false
+        },
+        {
+          "text": "Global secondary indexes are updated asynchronously and only offer eventually consistent reads",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "dynamodb-gsi-read-consistency",
+      "format": "situational"
+    },
+    {
+      "title": "Cassandra LOCAL_QUORUM",
+      "description": "A Cassandra cluster spans two data centers with a replication factor of 3 in each. Why do many apps read and write at LOCAL_QUORUM rather than QUORUM?",
+      "difficulty": "advanced",
+      "explanation": "QUORUM needs a majority of all replicas (4 of 6 here), so every request waits on the remote data center. LOCAL_QUORUM needs 2 of the 3 local replicas, which keeps latency local and still gives read-your-writes within that data center when reads and writes both use it.",
+      "options": [
+        {
+          "text": "It needs a majority only in the local data center, so requests skip cross-region waits",
+          "is_correct": true
+        },
+        {
+          "text": "It writes to one replica locally and copies to the others during the nightly repair job",
+          "is_correct": false
+        },
+        {
+          "text": "It reads from every replica in both data centers so results are always the newest version",
+          "is_correct": false
+        },
+        {
+          "text": "It skips the commit log for local writes, which roughly doubles single-node throughput",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cassandra-local-quorum",
+      "format": "recall"
+    },
+    {
+      "title": "Extra Kafka consumers sit idle",
+      "description": "A Kafka topic has 6 partitions. To work through a backlog faster, the team scales its consumer group from 6 to 10 instances, but throughput does not change and 4 instances receive no messages. Why?",
+      "difficulty": "intermediate",
+      "explanation": "Within a consumer group, Kafka assigns each partition to exactly one consumer at a time. Parallelism is capped by the partition count, so using 10 consumers needs at least 10 partitions.",
+      "options": [
+        {
+          "text": "New consumers only receive messages produced after they joined, so they wait for new traffic",
+          "is_correct": false
+        },
+        {
+          "text": "Each partition goes to one consumer in a group, so 6 partitions cap it at 6 busy consumers",
+          "is_correct": true
+        },
+        {
+          "text": "Kafka limits each consumer group to 6 members by default until a broker setting is raised",
+          "is_correct": false
+        },
+        {
+          "text": "New instances must first replay the topic from offset 0 before the group gives them work",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kafka-consumer-group-parallelism",
+      "format": "situational"
+    },
+    {
+      "title": "Kafka retention vs a classic queue",
+      "description": "How does Kafka's handling of consumed messages differ from a classic RabbitMQ queue?",
+      "difficulty": "beginner",
+      "explanation": "Kafka is an append-only log: messages stay until a retention time or size limit passes, whether or not they were read, and each consumer group tracks its own offset and can rewind. A classic queue removes a message once a consumer acknowledges it.",
+      "options": [
+        {
+          "text": "Kafka deletes a message as soon as one consumer reads it, so each message is processed once",
+          "is_correct": false
+        },
+        {
+          "text": "Kafka moves every read message to a dead letter queue, where it waits for manual cleanup",
+          "is_correct": false
+        },
+        {
+          "text": "Kafka keeps messages for a retention period after they are read, so consumers can replay them",
+          "is_correct": true
+        },
+        {
+          "text": "Kafka keeps messages only in memory, so a broker restart clears everything that was read",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kafka-message-retention",
+      "format": "recall"
+    },
+    {
+      "title": "Acknowledged Kafka writes lost",
+      "description": "A Kafka topic has replication factor 3, producers use acks=all, and min.insync.replicas is left at its default of 1. Both followers fall behind and drop out of the in-sync set, then the leader's disk fails, and some acknowledged writes are gone. Which setting would have prevented this?",
+      "difficulty": "advanced",
+      "explanation": "acks=all waits for every replica currently in the in-sync set. If that set shrinks to the leader alone, min.insync.replicas=1 still lets writes succeed with a single copy. With 2, the producer gets a NotEnoughReplicas error instead, so every acknowledged write exists on at least two brokers.",
+      "options": [
+        {
+          "text": "acks=1, so that the producer waits for the leader to flush each write to disk before acking",
+          "is_correct": false
+        },
+        {
+          "text": "A larger linger.ms, so the producer batches writes and sends fewer requests to the leader",
+          "is_correct": false
+        },
+        {
+          "text": "unclean.leader.election.enable=true, so a lagging follower can take over the partition",
+          "is_correct": false
+        },
+        {
+          "text": "min.insync.replicas=2, so acks=all fails unless at least one follower also has the write",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "kafka-min-insync-replicas",
+      "format": "situational"
+    },
+    {
+      "title": "SQS jobs run twice",
+      "description": "Workers pull video-encoding jobs from an Amazon SQS queue. Each job takes about 2 minutes, and the queue uses the default visibility timeout of 30 seconds. Many videos are encoded twice. What is the most likely cause?",
+      "difficulty": "intermediate",
+      "explanation": "When a worker receives a message, SQS hides it for the visibility timeout. If the message is not deleted before that ends, it becomes visible again and another worker can receive it. Set the timeout above the job time, or extend it with ChangeMessageVisibility while working.",
+      "options": [
+        {
+          "text": "The message becomes visible again after 30 seconds, so another worker picks it up mid-job",
+          "is_correct": true
+        },
+        {
+          "text": "SQS standard queues always hand every message to two workers at once for redundancy",
+          "is_correct": false
+        },
+        {
+          "text": "The worker deletes each message too early, which makes SQS queue a replacement copy",
+          "is_correct": false
+        },
+        {
+          "text": "Long polling is turned off, so each receive call returns the same message a second time",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "sqs-visibility-timeout",
+      "format": "situational"
+    },
+    {
+      "title": "SQS standard vs FIFO queues",
+      "description": "What does an Amazon SQS FIFO queue guarantee that a standard queue does not?",
+      "difficulty": "intermediate",
+      "explanation": "Standard queues give at-least-once delivery with best-effort ordering. FIFO queues keep strict order within each message group, and a send retried within the 5-minute deduplication interval does not add a duplicate.",
+      "options": [
+        {
+          "text": "Every message is delivered within one second of being sent, regardless of queue load",
+          "is_correct": false
+        },
+        {
+          "text": "Messages in one message group keep their order, and retried sends are deduplicated",
+          "is_correct": true
+        },
+        {
+          "text": "Messages are kept forever instead of being deleted when the retention period ends",
+          "is_correct": false
+        },
+        {
+          "text": "Each message is pushed to every consumer instead of one, like a pub/sub topic does",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "sqs-standard-vs-fifo",
+      "format": "recall"
+    },
+    {
+      "title": "RabbitMQ exchange types",
+      "description": "In RabbitMQ, a service publishes events with routing keys like order.created.eu and order.shipped.us. One queue should receive every EU order event. Which exchange type supports this?",
+      "difficulty": "intermediate",
+      "explanation": "A topic exchange matches dot-separated routing keys against binding patterns, where * matches exactly one word and # matches zero or more. A direct exchange needs an exact key match, a fanout exchange ignores the routing key, and a headers exchange routes on message headers instead.",
+      "options": [
+        {
+          "text": "A fanout exchange, binding the queue with the routing key eu",
+          "is_correct": false
+        },
+        {
+          "text": "A direct exchange, binding the queue with the pattern order.*.eu",
+          "is_correct": false
+        },
+        {
+          "text": "A topic exchange, binding the queue with the pattern order.*.eu",
+          "is_correct": true
+        },
+        {
+          "text": "A headers exchange, binding the queue with the routing key eu",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "rabbitmq-topic-exchange",
+      "format": "recall"
+    },
+    {
+      "title": "Amazon S3 read-after-write consistency",
+      "description": "A service overwrites an existing object in Amazon S3 and gets a success response. Right after that, another client sends a GET for the same key. What does it receive?",
+      "difficulty": "intermediate",
+      "explanation": "S3 provides strong read-after-write consistency for PUT and DELETE requests on objects in all regions, overwrites included, at no extra cost. The older rule that overwrites were only eventually consistent no longer applies.",
+      "options": [
+        {
+          "text": "Possibly the old version for a few seconds, as overwrites are eventually consistent",
+          "is_correct": false
+        },
+        {
+          "text": "An error until replication across availability zones finishes, usually in seconds",
+          "is_correct": false
+        },
+        {
+          "text": "The old version until the writer invalidates the CloudFront cache for the bucket",
+          "is_correct": false
+        },
+        {
+          "text": "The new version, because S3 gives strong read-after-write consistency for objects",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "s3-strong-consistency",
+      "format": "recall"
+    },
+    {
+      "title": "CDN hit rate stuck near zero",
+      "description": "Static images are served through Amazon CloudFront, but almost every request misses the cache and goes to the origin. The cache key includes all cookies and query strings, and every visitor has a unique tracking cookie. What is the best fix?",
+      "difficulty": "intermediate",
+      "explanation": "A CDN keeps a separate copy for each unique cache key. Including a per-visitor cookie makes every request unique, so nothing is shared. Keep only the headers, cookies and query strings that actually change the response in the cache key.",
+      "options": [
+        {
+          "text": "Remove cookies and unused query strings from the cache key so visitors share one copy",
+          "is_correct": true
+        },
+        {
+          "text": "Lower the cache TTL so that edge locations refresh images from the origin more often",
+          "is_correct": false
+        },
+        {
+          "text": "Invalidate the whole distribution after each deploy so the edge caches start out empty",
+          "is_correct": false
+        },
+        {
+          "text": "Move the images to a larger origin server so that cache misses are answered faster",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cdn-cache-key",
+      "format": "situational"
+    },
+    {
+      "title": "Lambda spike exhausts Postgres connections",
+      "description": "An AWS Lambda function opens a PostgreSQL connection on each invocation. During a traffic spike, Lambda scales to 800 concurrent executions and the database starts rejecting connections with a too many clients error. What is the most appropriate fix?",
+      "difficulty": "advanced",
+      "explanation": "Each concurrent execution environment holds its own connection, so 800 executions can mean 800 connections, beyond Postgres's max_connections. A pooler such as RDS Proxy shares a small pool among them, and reserved concurrency caps how many run at once. Opening the connection outside the handler only reuses it within one environment.",
+      "options": [
+        {
+          "text": "Raise the function's memory so that each execution holds its connection for less time",
+          "is_correct": false
+        },
+        {
+          "text": "Put a connection pooler such as RDS Proxy in front of the database and cap concurrency",
+          "is_correct": true
+        },
+        {
+          "text": "Open the connection outside the handler so all 800 executions share a single socket",
+          "is_correct": false
+        },
+        {
+          "text": "Switch the function to provisioned concurrency so it stops opening new connections",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "serverless-database-connection-exhaustion",
+      "format": "situational"
+    },
+    {
+      "title": "AWS Lambda maximum run time",
+      "description": "A nightly job that rebuilds a search index takes about 40 minutes. Why is a single invocation of a standard AWS Lambda function a poor fit for it?",
+      "difficulty": "beginner",
+      "explanation": "A standard Lambda function's timeout can be set to at most 900 seconds (15 minutes). Longer jobs belong on a container task or batch service, or in a workflow such as Step Functions that splits the work into shorter steps.",
+      "options": [
+        {
+          "text": "Lambda functions cannot connect to databases or other AWS services at all",
+          "is_correct": false
+        },
+        {
+          "text": "Lambda bills a fixed fee per hour, so long jobs cost more than a server",
+          "is_correct": false
+        },
+        {
+          "text": "One invocation can run for at most 15 minutes, so the job would be stopped",
+          "is_correct": true
+        },
+        {
+          "text": "Lambda only runs when an HTTP request arrives, so it can never run on a set schedule",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "aws-lambda-time-limit",
+      "format": "recall"
+    },
+    {
+      "title": "API keys in Amazon API Gateway",
+      "description": "Amazon API Gateway lets you attach API keys to usage plans with per-client throttling and quotas. What does AWS say these API keys should not be used for?",
+      "difficulty": "advanced",
+      "explanation": "AWS's documentation says not to use API keys for authentication or authorization: they are identifiers for metering and throttling, and usage-plan limits are applied on a best-effort basis. Use IAM, a Lambda authorizer or an Amazon Cognito user pool to control access.",
+      "options": [
+        {
+          "text": "Metering requests per customer so that each plan's monthly quota can be enforced",
+          "is_correct": false
+        },
+        {
+          "text": "Throttling each customer's request rate separately from the API's overall limit",
+          "is_correct": false
+        },
+        {
+          "text": "Identifying which usage plan applies to a request when several plans are defined",
+          "is_correct": false
+        },
+        {
+          "text": "As the only check on who may call the API; use IAM, Cognito or an authorizer instead",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "api-gateway-api-keys-not-auth",
+      "format": "recall"
+    },
+    {
+      "title": "Layer 4 vs layer 7 load balancing",
+      "description": "You want /api/* requests to go to one server pool and /images/* to another. Why does this need a layer 7 load balancer, such as an AWS Application Load Balancer, rather than a layer 4 one, such as an AWS Network Load Balancer?",
+      "difficulty": "intermediate",
+      "explanation": "A layer 4 balancer forwards TCP or UDP connections by address and port without parsing the payload. A layer 7 balancer understands HTTP, so it can route on path, host or headers, at the cost of more work per request. Layer 4 balancers can still carry HTTPS traffic.",
+      "options": [
+        {
+          "text": "Layer 7 reads the HTTP request, including its path; layer 4 sees only IPs and ports",
+          "is_correct": true
+        },
+        {
+          "text": "Layer 7 balancers are faster, since they skip the TCP handshake layer 4 must do",
+          "is_correct": false
+        },
+        {
+          "text": "Layer 4 balancers cannot carry HTTPS traffic at all, so any web app needs layer 7 instead",
+          "is_correct": false
+        },
+        {
+          "text": "Layer 4 balancers send all traffic to one server; layer 7 spreads it over a pool",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "l4-vs-l7-load-balancing",
+      "format": "recall"
+    },
+    {
+      "title": "Nginx returns 504 errors",
+      "description": "Nginx sits in front of your application as a reverse proxy. Under heavy load, users get 504 Gateway Timeout pages, while the app's logs show those requests finishing after about 90 seconds. What does the 504 tell you?",
+      "difficulty": "beginner",
+      "explanation": "A 504 means the proxy gave up waiting for the upstream; Nginx's proxy_read_timeout defaults to 60 seconds. A 502 Bad Gateway instead means the connection to the upstream failed or it sent an invalid response, such as when the app has crashed.",
+      "options": [
+        {
+          "text": "The app crashed and refused the connection, so Nginx could not reach it at all",
+          "is_correct": false
+        },
+        {
+          "text": "Nginx waited for the app longer than its proxy timeout and gave up on the request",
+          "is_correct": true
+        },
+        {
+          "text": "Nginx itself ran out of memory and dropped the request before forwarding it",
+          "is_correct": false
+        },
+        {
+          "text": "The user's browser closed the connection before the app finished responding",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "http-502-vs-504",
+      "format": "situational"
+    },
+    {
+      "title": "Docker image vs container",
+      "description": "In Docker, what is the difference between an image and a container?",
+      "difficulty": "beginner",
+      "explanation": "An image is an immutable, layered template. Running it creates a container: a running instance with its own writable layer and isolated process. Many containers can run from one image.",
+      "options": [
+        {
+          "text": "An image runs directly on the host; a container runs inside a full virtual machine",
+          "is_correct": false
+        },
+        {
+          "text": "An image holds only source code; a container also holds the binaries and libraries",
+          "is_correct": false
+        },
+        {
+          "text": "An image is a read-only template; a container is a running instance made from it",
+          "is_correct": true
+        },
+        {
+          "text": "An image is used in development; a container is the same thing renamed for release",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "docker-image-vs-container",
+      "format": "recall"
+    },
+    {
+      "title": "Every Docker build reinstalls dependencies",
+      "description": "A Node.js Dockerfile runs COPY . . and then RUN npm ci. Even a one-line code change makes the build reinstall every dependency, which takes 5 minutes. What is the best fix?",
+      "difficulty": "intermediate",
+      "explanation": "Once a layer changes, Docker rebuilds every layer after it. Copying all the source first invalidates the npm ci layer on every edit; copying only package.json and the lockfile first keeps that layer cached until the dependencies change.",
+      "options": [
+        {
+          "text": "Merge COPY and RUN into one instruction so Docker caches them together as one layer",
+          "is_correct": false
+        },
+        {
+          "text": "Add --no-cache to the build so Docker stops checking old layers and builds faster",
+          "is_correct": false
+        },
+        {
+          "text": "Switch to a larger base image that already includes most popular npm packages",
+          "is_correct": false
+        },
+        {
+          "text": "Copy package.json and the lockfile, run npm ci, then copy the rest of the code",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "docker-layer-caching",
+      "format": "situational"
+    },
+    {
+      "title": "Kubernetes liveness vs readiness probes",
+      "description": "In Kubernetes, what happens when a container fails its readiness probe, compared with failing its liveness probe?",
+      "difficulty": "intermediate",
+      "explanation": "A failing readiness probe marks the pod not ready, so Services stop sending it traffic until it recovers. A failing liveness probe makes the kubelet kill the container, which is then restarted according to its restart policy.",
+      "options": [
+        {
+          "text": "Readiness failure stops Service traffic to the pod; liveness failure restarts the container",
+          "is_correct": true
+        },
+        {
+          "text": "Readiness failure restarts the container; liveness failure stops Service traffic to the pod",
+          "is_correct": false
+        },
+        {
+          "text": "Both failures restart the container, but readiness waits for three failed checks in a row first",
+          "is_correct": false
+        },
+        {
+          "text": "Readiness failure deletes the pod for good; liveness failure moves it onto another node",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kubernetes-liveness-vs-readiness",
+      "format": "recall"
+    },
+    {
+      "title": "Liveness probe restarts every pod",
+      "description": "Each pod's liveness probe calls /health, which also queries the database. During a 2-minute database slowdown, Kubernetes restarts every pod of the service, and the outage lasts far longer than the slowdown. What is the best fix?",
+      "difficulty": "advanced",
+      "explanation": "Liveness should only answer whether this process is stuck. A restart cannot fix a slow database, so tying liveness to it turns a dependency blip into a restart storm; the Kubernetes docs warn that incorrect liveness probes can cause cascading failures.",
+      "options": [
+        {
+          "text": "Lower the liveness probe's timeout so pods with a slow database restart sooner",
+          "is_correct": false
+        },
+        {
+          "text": "Make liveness check only the process itself and keep dependency checks out of it",
+          "is_correct": true
+        },
+        {
+          "text": "Add more replicas, so that some pods survive while the others are restarting",
+          "is_correct": false
+        },
+        {
+          "text": "Replace the liveness probe with a startup probe that also checks the database",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kubernetes-liveness-probe-dependencies",
+      "format": "situational"
+    },
+    {
+      "title": "Kubernetes CPU vs memory limits",
+      "description": "What happens when a Kubernetes container tries to use more than its limit, for CPU versus memory?",
+      "difficulty": "advanced",
+      "explanation": "CPU limits are enforced by throttling, so a container at its CPU limit just runs slower. Memory limits are enforced by the kernel's out-of-memory killer, so a container that exceeds its memory limit can be terminated (OOMKilled).",
+      "options": [
+        {
+          "text": "Over either limit it is OOM-killed, then restarted by the pod's restart policy",
+          "is_correct": false
+        },
+        {
+          "text": "Over the CPU limit it is evicted; over the memory limit it moves to a bigger node",
+          "is_correct": false
+        },
+        {
+          "text": "Over the CPU limit it is throttled; over the memory limit it can be OOM-killed",
+          "is_correct": true
+        },
+        {
+          "text": "Over either limit it keeps running, as limits only affect where pods are placed",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kubernetes-cpu-vs-memory-limits",
+      "format": "recall"
+    },
+    {
+      "title": "Autoscaler never adds pods",
+      "description": "A HorizontalPodAutoscaler targets 70% average CPU utilization, but it never scales the deployment, even when the pods are clearly busy. The pod spec sets CPU limits but no resource requests. What is the most likely cause?",
+      "difficulty": "advanced",
+      "explanation": "For utilization targets, the HPA divides each pod's usage by its resource request. If a container has no CPU request, utilization is undefined and the autoscaler takes no action for that metric. Set requests, or target an absolute value instead.",
+      "options": [
+        {
+          "text": "The autoscaler only reacts to memory, so a CPU target is silently ignored by Kubernetes",
+          "is_correct": false
+        },
+        {
+          "text": "CPU limits stop the autoscaler from acting, because limited pods can never be scaled",
+          "is_correct": false
+        },
+        {
+          "text": "The deployment must first be scaled to its maximum by hand before autoscaling can begin",
+          "is_correct": false
+        },
+        {
+          "text": "Utilization is measured against requests, so without a CPU request there is no percentage",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "kubernetes-hpa-needs-requests",
+      "format": "situational"
+    },
+    {
+      "title": "Updating a Kubernetes Deployment",
+      "description": "You change the container image in a Kubernetes Deployment and apply it. With the default strategy, what does Kubernetes do?",
+      "difficulty": "beginner",
+      "explanation": "The default strategy is RollingUpdate: Kubernetes adds new pods and removes old ones in steps, by default keeping at least 75% of the desired pods up and at most 125% running, so the app keeps serving during the rollout.",
+      "options": [
+        {
+          "text": "Replaces old pods with new ones in steps, keeping some pods serving throughout",
+          "is_correct": true
+        },
+        {
+          "text": "Deletes every old pod at once, then starts the new pods after they are all gone",
+          "is_correct": false
+        },
+        {
+          "text": "Starts new pods beside the old ones and keeps both versions running permanently",
+          "is_correct": false
+        },
+        {
+          "text": "Does nothing until each running pod is restarted by hand with the new image tag",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "kubernetes-deployment-rolling-update",
+      "format": "recall"
+    },
+    {
+      "title": "How Prometheus collects metrics",
+      "description": "How does Prometheus normally collect metrics from a service?",
+      "difficulty": "beginner",
+      "explanation": "Prometheus uses a pull model: it scrapes each target's metrics endpoint over HTTP on a schedule. For short-lived batch jobs that may finish before a scrape, a Pushgateway can hold their results for Prometheus to scrape.",
+      "options": [
+        {
+          "text": "Each service pushes its metrics to Prometheus whenever a value changes in memory",
+          "is_correct": false
+        },
+        {
+          "text": "It scrapes an HTTP endpoint such as /metrics on each target at a regular interval",
+          "is_correct": true
+        },
+        {
+          "text": "It reads the service's log files and turns every log line into a metric series",
+          "is_correct": false
+        },
+        {
+          "text": "It attaches to the service's process and samples its memory from the host",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "prometheus-pull-model",
+      "format": "recall"
+    },
+    {
+      "title": "Prometheus runs out of memory",
+      "description": "A team adds a user_id label to its http_requests_total counter in Prometheus to see traffic per user. The app has 2 million users. Within days, Prometheus memory use climbs and queries slow down. What is the cause?",
+      "difficulty": "advanced",
+      "explanation": "Every unique combination of label values is a separate time series that Prometheus must index and keep. Unbounded values such as user ids explode the series count; keep labels to small, fixed sets and put per-user detail in logs or traces.",
+      "options": [
+        {
+          "text": "Counters store every single request as its own sample, so busy users write too much",
+          "is_correct": false
+        },
+        {
+          "text": "Labels are stored as plain text in each sample, so long ids make every point too big",
+          "is_correct": false
+        },
+        {
+          "text": "Each label value makes a new time series, so a user_id label means millions of series",
+          "is_correct": true
+        },
+        {
+          "text": "Prometheus keeps its whole history in memory, so the fix is a much shorter retention period",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "prometheus-label-cardinality",
+      "format": "situational"
+    },
+    {
+      "title": "What OpenTelemetry provides",
+      "description": "What does OpenTelemetry provide to a team instrumenting its services?",
+      "difficulty": "beginner",
+      "explanation": "OpenTelemetry is a vendor-neutral standard with APIs, SDKs and a Collector for producing and exporting traces, metrics and logs. It is not a backend: you send the data to a tool such as Jaeger, Prometheus or a commercial vendor, and can switch backends without re-instrumenting.",
+      "options": [
+        {
+          "text": "A hosted dashboard that stores and charts telemetry for every service on its own",
+          "is_correct": false
+        },
+        {
+          "text": "A replacement for server logs that records only users' clicks in the browser",
+          "is_correct": false
+        },
+        {
+          "text": "A load-testing tool that generates traffic and measures how services respond",
+          "is_correct": false
+        },
+        {
+          "text": "Vendor-neutral APIs and SDKs that send traces, metrics and logs to any backend",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "opentelemetry-purpose",
+      "format": "recall"
+    }
+  ]
+}

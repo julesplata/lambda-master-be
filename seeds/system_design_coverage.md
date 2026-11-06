@@ -40,6 +40,56 @@ A question is a duplicate if a learner who can answer an existing question can a
 ### Situational set (deliberate exception to the dedup rule)
 [`system_design_situational_questions.json`](system_design_situational_questions.json) (50 questions, added 2026-07-10) is a different **format**, not new concepts: each question is a 2–4 sentence real-world scenario ending in an applied question ("What is the best first improvement?", "What is the most likely cause?"), testing application rather than recall. These intentionally revisit concepts already covered in recall form, so the dedup rule applies *within* each format, not across formats — a recall question and a situational question on the same concept may coexist, but two situational questions on the same concept are still a dup.
 
+## Named products: verify before writing
+
+[`system_design_products_questions.json`](system_design_products_questions.json)
+(31 questions) and [`database_products_questions.json`](database_products_questions.json)
+(13 questions), added 2026-11-06, test common named products: Redis, Kafka,
+RabbitMQ, Amazon SQS, S3, CloudFront, AWS Lambda, API Gateway, Nginx, Docker,
+Kubernetes, Prometheus, OpenTelemetry, PostgreSQL, PgBouncer, MySQL InnoDB,
+MongoDB, DynamoDB, SQLite, Cassandra and Elasticsearch. Ten older generic stems
+also gained a product example (migration `0011`).
+
+Product facts drift. Check each one against the vendor's docs when you write
+it, not from memory, and re-check the questions below when a source ships a
+breaking change, and at least every six months.
+
+| Source checked on 2026-11-06 | Questions that depend on it |
+|---|---|
+| Redis docs (eviction, persistence, cluster spec, KEYS) | Redis cache starts rejecting writes; Redis RDB vs AOF persistence; Multi-key command fails in Redis Cluster; One command freezes the Redis cache |
+| Memcached docs | Redis vs Memcached |
+| Apache Kafka docs (broker and producer configs, design) | Acknowledged Kafka writes lost; Extra Kafka consumers sit idle; Kafka retention vs a classic queue |
+| Amazon SQS developer guide | SQS jobs run twice; SQS standard vs FIFO queues |
+| RabbitMQ AMQP concepts and topics tutorial | RabbitMQ exchange types |
+| Amazon S3, CloudFront, Lambda, RDS Proxy, API Gateway and ELB docs | Amazon S3 read-after-write consistency; CDN hit rate stuck near zero; AWS Lambda maximum run time; Lambda spike exhausts Postgres connections; API keys in Amazon API Gateway; Layer 4 vs layer 7 load balancing |
+| nginx proxy module docs | Nginx returns 504 errors |
+| Kubernetes docs (probes, resource management, HPA, Deployments) | Kubernetes liveness vs readiness probes; Liveness probe restarts every pod; Kubernetes CPU vs memory limits; Autoscaler never adds pods; Updating a Kubernetes Deployment |
+| Docker build cache and image docs | Docker image vs container; Every Docker build reinstalls dependencies |
+| Prometheus and OpenTelemetry docs | How Prometheus collects metrics; Prometheus runs out of memory; What OpenTelemetry provides |
+| PostgreSQL docs (CREATE INDEX, EXPLAIN, JSON types, isolation) and PgBouncer docs | Adding an index blocks checkout; EXPLAIN ANALYZE on a DELETE; Slow queries on a JSONB column; PgBouncer transaction pooling |
+| MySQL 8.4 InnoDB docs | InnoDB secondary index lookups |
+| MongoDB manual (limits, write concern, rollbacks) | Popular post stops accepting comments; MongoDB write concern majority; MongoDB embedding vs referencing; How MongoDB stores data |
+| DynamoDB developer guide | DynamoDB partition key and sort key; DynamoDB lookup gets slower every month; Order missing from a DynamoDB index query |
+| SQLite WAL and "when to use" pages | SQLite with many concurrent writers |
+| Elasticsearch near real-time search docs | New product missing from search results |
+
+Not re-fetched, because it is long-standing documented behavior: Cassandra
+LOCAL_QUORUM.
+
+### Facts most likely to drift
+
+- **AWS Lambda's 15-minute limit** applies to standard functions. Lambda
+  Managed Instances allow longer async runs, so the question says "standard".
+- **MongoDB's default write concern** is majority since 5.0, with an exception
+  for some arbiter setups. Majority writes resist rollback only with journaling,
+  which is on by default.
+- **PgBouncer prepared statements** now work in transaction pooling
+  (max_prepared_statements), so the PgBouncer question uses SET, not PREPARE.
+- **Elasticsearch's refresh interval** is 1s on searched indices in the Elastic
+  Stack and 5s on Serverless. The question's explanation says "every second",
+  which is the Elastic Stack default.
+- **The MongoDB document limit** is 16 MiB; write it that way.
+
 ---
 
 ## Gap List — safe expansion targets

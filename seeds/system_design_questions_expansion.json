@@ -920,7 +920,7 @@
     },
     {
       "title": "Inverted index for search",
-      "description": "What is the core data structure behind a full-text search engine, and what does it map?",
+      "description": "What is the core data structure behind a full-text search engine such as Elasticsearch, and what does it map?",
       "difficulty": "intermediate",
       "explanation": "An inverted index maps each term (token) to the list of documents (and positions) containing it, so a search resolves by looking up posting lists rather than scanning every document.",
       "options": [
@@ -974,7 +974,7 @@
     },
     {
       "title": "Cold start in serverless",
-      "description": "What causes a 'cold start' latency spike in serverless functions?",
+      "description": "What causes a 'cold start' latency spike in serverless functions such as AWS Lambda?",
       "difficulty": "intermediate",
       "explanation": "When no warm instance is available, the platform must provision a container and initialize the runtime and code before handling the request, adding startup latency that warm invocations avoid.",
       "options": [
@@ -1271,7 +1271,7 @@
     },
     {
       "title": "Dead letter queue purpose",
-      "description": "What is a dead letter queue (DLQ) used for?",
+      "description": "What is a dead letter queue (DLQ), such as one attached to an Amazon SQS queue, used for?",
       "difficulty": "beginner",
       "explanation": "A DLQ holds messages that could not be processed successfully after retries, isolating them so they don't block the main queue and can be inspected or replayed later.",
       "options": [
