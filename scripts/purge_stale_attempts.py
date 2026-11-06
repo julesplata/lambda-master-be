@@ -11,18 +11,36 @@ The run then exits with status 1 when the database is larger than
 DATABASE_SIZE_ALERT_MB, so a growing database shows up as a failed scheduled
 run while there is still room to act.
 
+With SENTRY_DSN set, every run checks in with Sentry Crons, so a run that fails,
+crashes or never starts is an alert, and an oversized database is also reported
+as its own Sentry issue with the size in the title.
+
 Run from the repo root:  python -m scripts.purge_stale_attempts
 """
 
 import asyncio
 import sys
 
+import sentry_sdk
 from sqlalchemy import text
 
 from app.core.config import settings
+from app.core.error_tracking import init_error_tracking
 from app.db.session import AsyncSessionLocal, engine
 
 BATCH_SIZE = 5000
+
+# Sentry creates the monitor from this config on the first check-in. Keep the
+# schedule equal to the Railway cron service's (SECURITY.md): a run with no
+# check-in by schedule + checkin_margin minutes is reported as missed, and one
+# still running after max_runtime minutes as timed out.
+CRON_MONITOR_SLUG = "purge-stale-attempts"
+CRON_MONITOR_CONFIG = {
+    "schedule": {"type": "crontab", "value": "0 3 * * *"},
+    "timezone": "UTC",
+    "checkin_margin": 60,
+    "max_runtime": 30,
+}
 
 # Batched so a large backlog never holds one long transaction or a wide lock.
 # make_interval(days => :retention_days) types the parameter explicitly, which
@@ -78,9 +96,28 @@ async def main() -> int:
     )
     if size_mb > settings.database_size_alert_mb:
         print("ALERT: the database is over DATABASE_SIZE_ALERT_MB", file=sys.stderr)
+        sentry_sdk.capture_message(
+            f"Database is {size_mb:.0f} MB, over DATABASE_SIZE_ALERT_MB "
+            f"({settings.database_size_alert_mb} MB)",
+            level="error",
+        )
         return 1
     return 0
 
 
+def run() -> int:
+    """Run the job inside a Sentry Crons check-in (a no-op without SENTRY_DSN)."""
+    init_error_tracking()
+    with sentry_sdk.monitor(
+        monitor_slug=CRON_MONITOR_SLUG, monitor_config=CRON_MONITOR_CONFIG
+    ):
+        exit_code = asyncio.run(main())
+        if exit_code:
+            # Exiting inside the block reports the run as failed; leaving the
+            # block normally reports it as ok.
+            sys.exit(exit_code)
+    return 0
+
+
 if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    sys.exit(run())
