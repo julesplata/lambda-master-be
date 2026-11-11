@@ -56,6 +56,16 @@ def test_many_addresses_cannot_lock_everyone_out(client):
     assert post_session(client, "192.0.2.7", key=VALID_KEY).status_code == 200
 
 
+def test_rotating_ipv6_addresses_in_one_slash_64_hits_the_limit(client):
+    # A host with a /64 could otherwise send each request from a new address.
+    statuses = [
+        post_session(client, f"2001:db8:aa:bb::{n:x}").status_code for n in range(1, 7)
+    ]
+
+    assert statuses == [401] * 5 + [429]
+    assert post_session(client, "2001:db8:aa:bc::1").status_code == 401
+
+
 def test_short_admin_key_disables_admin_routes(client, monkeypatch):
     short_key = "k" * (ADMIN_API_KEY_MIN_LENGTH - 1)
     monkeypatch.setattr(settings, "admin_api_key", short_key)

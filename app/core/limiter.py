@@ -1,3 +1,5 @@
+import ipaddress
+
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from starlette.requests import Request
@@ -5,9 +7,46 @@ from starlette.requests import Request
 from app.core.config import settings
 from app.core.edge import came_through_cloudflare
 
+# One IPv6 host normally controls a whole /64 (2**64 addresses), so keying on
+# the full address would let it pick a fresh bucket for every request. Narrow
+# to /56 if abuse turns up from residential ranges, which are often given one.
+IPV6_PREFIX = 64
+
+
+def bucket(ip: str) -> str:
+    """Rate-limit key for an address: IPv4 as-is, IPv6 grouped by network.
+
+    The address is also put in canonical form, since one IPv6 address has many
+    spellings (2001:DB8::1, 2001:db8:0:0::1) and each would get its own bucket.
+    IPv4-mapped addresses (::ffff:203.0.113.9) are IPv4 clients and keyed as
+    such; grouping them by /64 would put every one of them in ::/64.
+    Anything that doesn't parse (e.g. Starlette's "testclient") is returned
+    unchanged.
+    """
+    try:
+        addr = ipaddress.ip_address(ip.strip())
+    except ValueError:
+        return ip
+    if addr.version == 6:
+        if addr.ipv4_mapped:
+            return str(addr.ipv4_mapped)
+        return str(ipaddress.ip_network(f"{addr}/{IPV6_PREFIX}", strict=False))
+    return str(addr)
+
 
 def client_ip(request: Request) -> str:
-    """Resolve the real client IP for rate limiting (and the analytics id).
+    """The client's rate-limit bucket (and the input to the analytics id).
+
+    The resolved address, grouped by bucket(), so no route can key on a raw
+    IPv6 address. For analytics this means one id per IPv6 /64 rather than one
+    per address, which also stops the id changing whenever the OS rotates its
+    temporary (privacy) address.
+    """
+    return bucket(_resolve_client_ip(request))
+
+
+def _resolve_client_ip(request: Request) -> str:
+    """Resolve the real client IP.
 
     In production every request comes through Cloudflare, which writes the
     client's address to CF-Connecting-IP. That header is only believed when the

@@ -115,3 +115,46 @@ def test_unset_secret_never_matches_a_missing_header(monkeypatch):
     )
 
     assert client_ip(request) == "198.51.100.4"
+
+
+# IPv6: one host normally controls a whole /64, so the bucket is the /64.
+
+
+def test_ipv6_addresses_in_one_slash_64_share_a_bucket(origin_secret):
+    keys = {
+        client_ip(via_cloudflare(f"2001:db8:aa:bb::{n:x}")) for n in range(1, 50)
+    }
+
+    assert keys == {"2001:db8:aa:bb::/64"}
+
+
+def test_ipv6_addresses_in_different_slash_64s_do_not(origin_secret):
+    assert client_ip(via_cloudflare("2001:db8:aa:bb::1")) != client_ip(
+        via_cloudflare("2001:db8:aa:bc::1")
+    )
+
+
+def test_ipv6_from_x_forwarded_for_is_grouped_too(hops):
+    hops(1)
+
+    assert client_ip(make_request("2001:db8:aa:bb:1:2:3:4")) == "2001:db8:aa:bb::/64"
+
+
+def test_ipv6_spellings_of_one_network_share_a_bucket(origin_secret):
+    assert client_ip(via_cloudflare("2001:DB8:AA:BB:0:0:0:1")) == "2001:db8:aa:bb::/64"
+
+
+def test_ipv4_mapped_ipv6_is_keyed_as_ipv4(origin_secret):
+    # Grouping these by /64 would put every IPv4 client in ::/64.
+    assert client_ip(via_cloudflare("::ffff:203.0.113.9")) == "203.0.113.9"
+
+
+def test_ipv4_is_unchanged(origin_secret):
+    assert client_ip(via_cloudflare("203.0.113.9")) == "203.0.113.9"
+
+
+def test_an_unparseable_address_is_passed_through(monkeypatch):
+    monkeypatch.setattr(settings, "trusted_proxy_hops", 0)
+    request = Request({"type": "http", "headers": [], "client": ("testclient", 50000)})
+
+    assert client_ip(request) == "testclient"
