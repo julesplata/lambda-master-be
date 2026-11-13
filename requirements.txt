@@ -32,7 +32,7 @@ dnspython==2.9.2
     # via email-validator
 email-validator==2.3.0
     # via pydantic
-fastapi==0.162.0
+fastapi==0.162.2
     # via -r requirements.in
 greenlet==3.5.6
     # via sqlalchemy
@@ -51,7 +51,7 @@ opentelemetry-api==1.45.2
     # via fastapi
 packaging==26.3
     # via limits
-posthog==7.84.2
+posthog==7.86.5
     # via -r requirements.in
 psycopg2-binary==2.9.13
     # via -r requirements.in
