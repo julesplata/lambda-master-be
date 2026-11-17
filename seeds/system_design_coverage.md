@@ -40,6 +40,16 @@ A question is a duplicate if a learner who can answer an existing question can a
 ### Situational set (deliberate exception to the dedup rule)
 [`system_design_situational_questions.json`](system_design_situational_questions.json) (50 questions, added 2026-07-10) is a different **format**, not new concepts: each question is a 2–4 sentence real-world scenario ending in an applied question ("What is the best first improvement?", "What is the most likely cause?"), testing application rather than recall. These intentionally revisit concepts already covered in recall form, so the dedup rule applies *within* each format, not across formats — a recall question and a situational question on the same concept may coexist, but two situational questions on the same concept are still a dup.
 
+### Beginner set
+[`system_design_beginner_questions.json`](system_design_beginner_questions.json)
+(51 questions, added 2026-11-17) brings System Design / Beginner to about the
+size of Intermediate, because it is the most-played quiz. Most questions write
+the missing format for a concept that already had a Beginner question in only
+one format, or a beginner-level question for a concept covered at a higher
+level in the other format. A few add new beginner concepts (status code
+classes, timeouts, backups, secrets, feature flags, structured logs). None
+names a product, so none needs a source check.
+
 ## Named products: verify before writing
 
 [`system_design_products_questions.json`](system_design_products_questions.json)
