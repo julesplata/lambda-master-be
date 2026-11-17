@@ -59,7 +59,7 @@ through them, as with the tables (0011). The column rules are in the header of
 | `category`, `difficulty` | The quiz's filters. `'all'` / `'mixed'` when NULL from 2026-11-01 14:09 UTC (0008) on, NULL (unknown) before |
 | `low_effort` | Answers averaged under 6 seconds each: (last `answered_at` - `started_at`) / answers. Before 2026-11-05 `answered_at` held the start time, so those attempts use `completed_at`, and unfinished ones are NULL |
 | `first_time` | `analytics_answers` only. False when the question was a repeat in that browser; NULL before 0015 |
-| `after_edit` | `analytics_answers` only. False when the answer predates the question's last console edit |
+| `after_edit` | `analytics_answers` only. False when the answer predates the question's last console edit, or its options have been replaced since (`selected_option_id` NULL) |
 | `answered`, `correct` | `analytics_attempts` only. Counts of stored answers |
 
 Hardest questions, counting first-time, considered answers to the question as

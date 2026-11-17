@@ -55,7 +55,7 @@ class AttemptCreate(BaseModel):
     @field_validator("source", mode="before")
     @classmethod
     def unknown_source_is_other(cls, value: object) -> object:
-        if value is None or value in _QUIZ_SOURCES:
+        if value is None or (isinstance(value, str) and value in _QUIZ_SOURCES):
             return value
         return "other"
 

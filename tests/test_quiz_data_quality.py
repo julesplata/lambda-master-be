@@ -66,7 +66,7 @@ def test_known_source_is_kept():
     assert AttemptCreate(question_count=10, source="topic_guide").source == "topic_guide"
 
 
-@pytest.mark.parametrize("value", ["somewhere_new", "x" * 400, 42])
+@pytest.mark.parametrize("value", ["somewhere_new", "x" * 400, 42, ["x"], {"a": 1}])
 def test_unknown_source_is_stored_as_other(value):
     assert AttemptCreate(question_count=10, source=value).source == "other"
 
