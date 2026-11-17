@@ -13,8 +13,12 @@ uvicorn app.main:app --reload --port 8000
 # Activate virtualenv
 source .venv/bin/activate
 
-# Install dependencies
+# Install dependencies (requirements.txt is the pinned lock)
 pip install -r requirements.txt
+
+# Add or change a dependency: edit requirements.in, then regenerate the lock
+# (pip install pip-tools; run it on the Python in .python-version)
+pip-compile --strip-extras requirements.in
 
 # Install the lint/test tooling CI runs (ruff, pytest, httpx)
 pip install -r requirements-dev.txt
@@ -41,7 +45,7 @@ python seeds/generate_coverage.py
 python -m scripts.purge_stale_attempts
 ```
 
-**Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds). For the `ai` category also read [seeds/ai_coverage.md](seeds/ai_coverage.md): its questions name products and specs, so it records which facts were checked against which source and which have drifted. The `*_products_questions.json` files in `system-design` and `database` name products too; their sources are listed under "Named products" in `system_design_coverage.md`. Changing the text of a question that is already in the database also needs a data migration (see `0006` and `0011`), because bulk import skips existing titles.
+**Adding seed questions:** read [seeds/system_design_coverage.md](seeds/system_design_coverage.md) first — it explains the `concept`/`format` fields, the dedup rules, and the generated `seeds/coverage_report.md` inventory (never hand-edit that report; rerun the script after changing seeds). For the `ai` category also read [seeds/ai_coverage.md](seeds/ai_coverage.md): its questions name products and specs, so it records which facts were checked against which source and which have drifted. The `*_products_questions.json` files in `system-design` and `database` name products too; their sources are listed under "Named products" in `system_design_coverage.md`. Changing the text of a question that is already in the database also needs a data migration (see `0006` and `0012`), because bulk import skips existing titles.
 
 **Tests:** `tests/` holds smoke tests only (the app imports, the OpenAPI schema
 builds, `/health` answers). Nothing touches a database, because CI has no

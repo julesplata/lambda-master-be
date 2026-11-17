@@ -11,11 +11,11 @@ Built with **FastAPI**, **SQLAlchemy** (async, `asyncpg`), and **PostgreSQL**. A
 ## Quick start
 
 ```bash
-# 1. Create and activate a virtualenv
-python -m venv .venv
+# 1. Create and activate a virtualenv on the Python in .python-version (3.11)
+python3.11 -m venv .venv
 source .venv/bin/activate
 
-# 2. Install dependencies
+# 2. Install dependencies (requirements.txt is the pinned lock)
 pip install -r requirements.txt
 
 # 3. Configure environment

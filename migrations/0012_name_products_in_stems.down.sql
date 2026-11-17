@@ -1,4 +1,4 @@
--- Revert 0011: restore the ten generic question stems.
+-- Revert 0012: restore the ten generic question stems.
 --
 -- Ten generic question stems now name a common product as an example (Nginx,
 -- RabbitMQ, Amazon SQS, Elasticsearch, AWS Lambda, PostgreSQL, ...), alongside

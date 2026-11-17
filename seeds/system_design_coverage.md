@@ -48,7 +48,7 @@ A question is a duplicate if a learner who can answer an existing question can a
 RabbitMQ, Amazon SQS, S3, CloudFront, AWS Lambda, API Gateway, Nginx, Docker,
 Kubernetes, Prometheus, OpenTelemetry, PostgreSQL, PgBouncer, MySQL InnoDB,
 MongoDB, DynamoDB, SQLite, Cassandra and Elasticsearch. Ten older generic stems
-also gained a product example (migration `0011`).
+also gained a product example (migration `0012`).
 
 Product facts drift. Check each one against the vendor's docs when you write
 it, not from memory, and re-check the questions below when a source ships a
