@@ -5,7 +5,7 @@ the key is empty every helper here is a no-op so local dev and tests emit no
 events and make no network calls.
 
 Endpoints report a handful of product events through ``track`` — a quiz started,
-a quiz completed — and nothing else. There is deliberately no per-request event:
+a question answered, a quiz completed — and nothing else. There is deliberately no per-request event:
 event volume would then scale with raw traffic, including 404s, 422s and 429s,
 so one script looping a cheap GET could burn through the PostHog quota (the
 free tier stops ingesting at 1M events a month, taking browser analytics down
@@ -13,10 +13,14 @@ with it). Tracking only successful product actions ties volume to real usage,
 and the rate limits on those endpoints cap what one address can generate.
 
 The distinct id is the authenticated user id when a valid access token is
-present, otherwise a salted hash of the client IP, so events tie back to users
-where possible and to a stable pseudonymous id otherwise. The raw IP never
-leaves the process: it is PII, and in guest-only mode every event would carry
-one.
+present, then ``visitor-<uuid>`` from the ``X-Visitor-Id`` header, otherwise a
+salted hash of the client IP, so events tie back to users where possible and to
+a stable pseudonymous id otherwise. The frontend sends the visitor id only after
+the visitor accepts analytics; it is a random UUID kept in their browser, so it
+survives a change of network where the IP hash does not. Every event carries
+``id_source`` (``user``, ``visitor`` or ``ip``) so charts can leave out the IP
+hash, which is shared by everyone behind one address. The raw IP never leaves
+the process: it is PII, and in guest-only mode every event would carry one.
 
 A visitor who refused analytics is never tracked: the frontend sends
 ``X-Analytics-Opt-Out: 1`` once they decline the consent banner, and browsers
@@ -36,6 +40,7 @@ round-trip.
 import hashlib
 import hmac
 import secrets
+import uuid
 
 import jwt
 from posthog import Posthog
@@ -49,6 +54,8 @@ _client: Posthog | None = None
 
 # Must match OPT_OUT_HEADER in frontend/lib/consent.ts.
 _OPT_OUT_HEADER = "x-analytics-opt-out"
+# Must match VISITOR_HEADER in frontend/src/api/client.ts.
+_VISITOR_HEADER = "x-visitor-id"
 
 # Fallback key used when ANALYTICS_IP_SALT is unset. An *unsalted* IP hash is not
 # anonymisation — the whole IPv4 space is ~4 billion candidates, so a digest can
@@ -100,18 +107,43 @@ def opted_out(request: Request) -> bool:
     return headers.get(_OPT_OUT_HEADER) == "1" or headers.get("sec-gpc") == "1"
 
 
-def _distinct_id(request: Request) -> str:
-    """User id from a valid Bearer token, else a salted hash of the client IP."""
+def visitor_id(request: Request) -> uuid.UUID | None:
+    """The browser's visitor id from ``X-Visitor-Id``, or None.
+
+    None when the header is missing or is not a UUID, and always when the
+    visitor refused analytics, even if a header came along: an id kept for
+    measurement exists only with consent.
+    """
+    if opted_out(request):
+        return None
+    value = request.headers.get(_VISITOR_HEADER)
+    if not value or len(value) > 36:
+        return None
+    try:
+        return uuid.UUID(value)
+    except ValueError:
+        return None
+
+
+def _distinct_id(request: Request) -> tuple[str, str]:
+    """The id to report events under, and where it came from.
+
+    A user id from a valid Bearer token, else the visitor id header, else a
+    salted hash of the client IP.
+    """
     header = request.headers.get("authorization", "")
     scheme, _, token = header.partition(" ")
     if scheme.lower() == "bearer" and token:
         try:
-            return str(decode_access_token(token))
+            return str(decode_access_token(token)), "user"
         except jwt.PyJWTError:
             # Not InvalidTokenError: a missing JWT_SECRET raises InvalidKeyError,
             # a sibling class.
             pass
-    return _anonymous_id(request)
+    visitor = visitor_id(request)
+    if visitor is not None:
+        return f"visitor-{visitor}", "visitor"
+    return _anonymous_id(request), "ip"
 
 
 def track(
@@ -127,8 +159,9 @@ def track(
     """
     if _client is None or opted_out(request):
         return
+    distinct_id, id_source = _distinct_id(request)
     _client.capture(
-        distinct_id=_distinct_id(request),
+        distinct_id=distinct_id,
         event=event,
-        properties=properties or {},
+        properties={**(properties or {}), "id_source": id_source},
     )

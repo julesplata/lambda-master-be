@@ -2,12 +2,12 @@ import random
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from sqlalchemy import Row, func, select, text
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import Row, func, literal, select, text
+from sqlalchemy.dialects.postgresql import ARRAY, UUID, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.core.analytics import track
+from app.core.analytics import track, visitor_id
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.db.session import get_session
@@ -104,16 +104,20 @@ async def _load_attempt(
 async def _select_question_ids(
     session: AsyncSession, body: AttemptCreate
 ) -> list[uuid.UUID]:
-    """Pick a fresh random sample of questions for a new attempt.
+    """Pick the questions for a new attempt.
 
-    The optional difficulty and category filters narrow the pool before sampling.
+    The optional difficulty and category filters narrow the pool first. Without
+    a seen list the pick is a plain random sample. With one, questions the
+    visitor has not answered come first, in random order, and then the ones
+    they answered longest ago, so nothing repeats until the pool is used up.
     """
+    seen = body.seen_question_ids
     # Fast path: with no filters we can use TABLESAMPLE SYSTEM_ROWS, which reads
     # roughly N random rows directly instead of scanning and sorting the whole
     # table the way ORDER BY random() does. It's approximate (it can return
     # slightly fewer rows than asked on small tables), so we only use it
     # unfiltered and fall back to the exact path when a filter is present.
-    if not body.difficulty and not body.category:
+    if not seen and not body.difficulty and not body.category:
         # Archived questions are still in the table, so the sample is taken over
         # both and filtered afterwards. Oversampling absorbs the rows the filter
         # removes; the LIMIT trims the surplus back to what was asked for.
@@ -123,14 +127,25 @@ async def _select_question_ids(
         ).bindparams(sample=body.question_count * 2, count=body.question_count)
         return list((await session.execute(stmt)).scalars())
 
-    # Filtered path: the WHERE clause shrinks the pool first, so ordering by
-    # random() over that smaller set is cheap.
+    # Exact path: the WHERE clause shrinks the pool first, so sorting it is
+    # cheap. With a seen list this also runs unfiltered, over the whole bank,
+    # which is a few hundred rows. array_position is NULL for an unseen id, and
+    # otherwise its place in the list, where 1 is the longest ago answered. Ids
+    # that are unknown, archived or outside the filters match no row.
     stmt = select(Question.id).where(Question.archived_at.is_(None))
     if body.difficulty:
         stmt = stmt.where(Question.difficulty == body.difficulty)
     if body.category:
         stmt = stmt.join(Question.category).where(Category.slug == body.category)
-    stmt = stmt.order_by(func.random()).limit(body.question_count)
+    if seen:
+        seen_array = literal(seen, type_=ARRAY(UUID(as_uuid=True)))
+        stmt = stmt.order_by(
+            func.array_position(seen_array, Question.id).nulls_first(),
+            func.random(),
+        )
+    else:
+        stmt = stmt.order_by(func.random())
+    stmt = stmt.limit(body.question_count)
 
     return [qid for (qid,) in (await session.execute(stmt)).all()]
 
@@ -160,8 +175,11 @@ async def create_attempt(
             detail="No questions available for the requested criteria",
         )
     # This is the order the quiz is served in. The unfiltered TABLESAMPLE path
-    # returns rows in on-disk order, which follows how the bank was inserted.
+    # returns rows in on-disk order, which follows how the bank was inserted,
+    # and the seen-list path returns repeats last, which would give them away.
     random.shuffle(question_ids)
+    seen = set(body.seen_question_ids)
+    repeated_questions = sum(1 for question_id in question_ids if question_id in seen)
 
     attempt = QuizAttempt(
         total_questions=len(question_ids),
@@ -169,6 +187,9 @@ async def create_attempt(
         # "" filters nothing in _select_question_ids, so it is stored as "all".
         category=body.category or None,
         difficulty=body.difficulty,
+        # None without the header, with a malformed one, or when the visitor
+        # refused analytics (visitor_id checks), so it is never an error.
+        visitor_id=visitor_id(request),
     )
     session.add(attempt)
     await session.commit()
@@ -179,6 +200,7 @@ async def create_attempt(
         {
             "attempt_id": str(attempt.id),
             "question_count": len(question_ids),
+            "repeated_questions": repeated_questions,
             "difficulty": attempt.difficulty,
             "category": attempt.category,
         },
@@ -265,17 +287,18 @@ async def _store_answer(
     attempt_id: uuid.UUID,
     question_id: uuid.UUID,
     option: QuestionOption,
-) -> Row | None:
+) -> tuple[Row | None, bool]:
     """Record an answer and return the one stored, which may be another request's.
 
     The upsert inserts a missing row and fills in one without a selected option.
     Two in-flight submits for the same question (a double tap, a retry racing
     the original) are serialised by the unique (attempt_id, question_id) index:
     the second waits for the first to commit, changes nothing, and reads back
-    the first one's answer.
+    the first one's answer. The flag says whether this request wrote the row,
+    which RETURNING reports only for an insert or an update that happened.
     """
     answer = {"selected_option_id": option.id, "is_correct": option.is_correct}
-    await session.execute(
+    written = await session.execute(
         insert(UserAnswer)
         .values(attempt_id=attempt_id, question_id=question_id, **answer)
         .on_conflict_do_update(
@@ -283,8 +306,10 @@ async def _store_answer(
             set_={**answer, "answered_at": func.now()},
             where=UserAnswer.selected_option_id.is_(None),
         )
+        .returning(UserAnswer.id)
     )
-    return await _stored_answer(session, attempt_id, question_id)
+    stored_here = written.first() is not None
+    return await _stored_answer(session, attempt_id, question_id), stored_here
 
 
 async def _options_and_explanation(
@@ -309,6 +334,7 @@ async def _options_and_explanation(
 
 @router.post("/{attempt_id}/answers", response_model=AnswerResult)
 async def submit_answer(
+    request: Request,
     attempt_id: uuid.UUID,
     body: AnswerSubmit,
     session: AsyncSession = Depends(get_session),
@@ -347,8 +373,11 @@ async def submit_answer(
             detail="Option does not belong to the question",
         )
 
+    stored_here = False
     if stored is None:
-        stored = await _store_answer(session, attempt.id, body.question_id, selected)
+        stored, stored_here = await _store_answer(
+            session, attempt.id, body.question_id, selected
+        )
         if stored is None or stored.selected_option_id != selected.id:
             # A concurrent submit answered this question first, with another option.
             raise HTTPException(
@@ -363,6 +392,23 @@ async def submit_answer(
 
     # Commits a new answer; a replay has nothing to write.
     await session.commit()
+    # Only the request that stored the answer reports it, so a replay or a
+    # racing duplicate costs no event.
+    if stored_here:
+        track(
+            request,
+            "question_answered",
+            {
+                "attempt_id": str(attempt.id),
+                "question_id": str(body.question_id),
+                "question_number": attempt.question_ids.index(body.question_id) + 1,
+                "total_questions": attempt.total_questions,
+                "correct": stored.is_correct,
+                "time_spent_ms": body.time_spent_ms,
+                "difficulty": attempt.difficulty,
+                "category": attempt.category,
+            },
+        )
     return AnswerResult(
         correct=stored.is_correct,
         explanation=explanation,
