@@ -12,6 +12,11 @@ class AttemptCreate(BaseModel):
     question_count: int = Field(gt=0, le=20)
     difficulty: Difficulty | None = None
     category: str | None = None
+    # Questions this browser has answered, oldest first (B2). Used once to put
+    # unseen questions first and the longest-ago answered next, then dropped:
+    # never stored or logged. The cap keeps the request small; ids that fall off
+    # the front are the oldest, so treating them as unseen is the right order.
+    seen_question_ids: list[uuid.UUID] = Field(default_factory=list, max_length=500)
 
 
 class AttemptCreateResponse(BaseModel):
@@ -22,6 +27,9 @@ class AttemptCreateResponse(BaseModel):
 class AnswerSubmit(BaseModel):
     question_id: uuid.UUID
     selected_option_id: uuid.UUID
+    # Time on the question, sent to PostHog with question_answered and not
+    # stored. Capped at an hour so one request cannot report nonsense.
+    time_spent_ms: int | None = Field(default=None, ge=0, le=3_600_000)
 
 
 class AnswerResult(BaseModel):
