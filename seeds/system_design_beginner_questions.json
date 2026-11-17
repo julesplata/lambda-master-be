@@ -1,0 +1,1354 @@
+{
+  "questions": [
+    {
+      "title": "One domain, two backends",
+      "description": "Your site's pages come from a static file server and its API from separate application servers. You want both under one domain, with /api/ requests going to the app servers and everything else to the file server. What component does this?",
+      "difficulty": "beginner",
+      "explanation": "A reverse proxy receives every request for the domain and forwards it to the right backend by rules such as the URL path, so clients see a single site.",
+      "options": [
+        {
+          "text": "A reverse proxy that forwards each request to a backend based on its path",
+          "is_correct": true
+        },
+        {
+          "text": "A forward proxy that each visitor installs to rewrite the URLs they visit",
+          "is_correct": false
+        },
+        {
+          "text": "A DNS record per path, so /api/ resolves to a different IP than other paths",
+          "is_correct": false
+        },
+        {
+          "text": "A database view that merges the file server and the API into one table",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "reverse-proxy-role",
+      "format": "situational"
+    },
+    {
+      "title": "Orders with strict relationships",
+      "description": "You are designing storage for an online store. Orders reference customers and products, totals must always match their line items, and finance runs reports that join these tables. Which kind of database is the most natural first choice?",
+      "difficulty": "beginner",
+      "explanation": "Data with clear relationships, joins and strict consistency needs fits a relational (SQL) database, which enforces constraints and supports transactions across tables.",
+      "options": [
+        {
+          "text": "A key-value store, because every order can be saved as one opaque blob of data",
+          "is_correct": false
+        },
+        {
+          "text": "A relational database, since the data has relationships, joins and strict rules",
+          "is_correct": true
+        },
+        {
+          "text": "A document store, because relationships between records are not allowed in SQL",
+          "is_correct": false
+        },
+        {
+          "text": "A time-series database, because each order has a timestamp attached to it",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "sql-vs-nosql-choice",
+      "format": "situational"
+    },
+    {
+      "title": "Money leaves but never arrives",
+      "description": "A transfer debits one account and then credits another. Sometimes the server crashes between the two steps, and money disappears from the first account without reaching the second. Which database property, used correctly, prevents this?",
+      "difficulty": "beginner",
+      "explanation": "Atomicity means all the statements in a transaction take effect together or none do, so a crash between the debit and the credit rolls both back.",
+      "options": [
+        {
+          "text": "Durability: write the debit to disk faster so the crash happens after both steps",
+          "is_correct": false
+        },
+        {
+          "text": "Isolation: lock the second account so other users can't read it during the transfer",
+          "is_correct": false
+        },
+        {
+          "text": "Atomicity: wrap both steps in one transaction so they succeed or fail together",
+          "is_correct": true
+        },
+        {
+          "text": "Replication: copy the first account to a second server before starting the debit",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "acid-atomicity",
+      "format": "situational"
+    },
+    {
+      "title": "Uploads saved on one server's disk",
+      "description": "Your app saves uploaded files to the local disk of whichever app server received them. With three servers behind a load balancer, users often get \"file not found\" for their own uploads. Where should uploads go?",
+      "difficulty": "beginner",
+      "explanation": "Object storage gives every server one shared, durable place to read and write files by key, so it doesn't matter which server handled the upload.",
+      "options": [
+        {
+          "text": "A larger local disk on each server, so every server keeps more of the files",
+          "is_correct": false
+        },
+        {
+          "text": "A nightly job that copies each server's files to the other two servers",
+          "is_correct": false
+        },
+        {
+          "text": "The browser's local storage, so each user keeps their own files on the device",
+          "is_correct": false
+        },
+        {
+          "text": "Object storage that every server reads and writes, with files fetched by key",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "object-storage-use-case",
+      "format": "situational"
+    },
+    {
+      "title": "Orders for customers who don't exist",
+      "description": "A bug deleted some customers while their orders stayed, and now reports show orders pointing at customer IDs that no longer exist. Which database feature would have stopped this at write time?",
+      "difficulty": "beginner",
+      "explanation": "A foreign key constraint requires each order's customer_id to match an existing customer, so the database rejects (or cascades) a delete that would orphan orders.",
+      "options": [
+        {
+          "text": "A foreign key from orders.customer_id to customers.id, refusing orphans",
+          "is_correct": true
+        },
+        {
+          "text": "An index on orders.customer_id, so lookups by customer return results faster",
+          "is_correct": false
+        },
+        {
+          "text": "A unique constraint on orders.customer_id, so each customer has a single order",
+          "is_correct": false
+        },
+        {
+          "text": "A default value on orders.customer_id, so a missing customer becomes customer 0",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "foreign-key-constraint-role",
+      "format": "situational"
+    },
+    {
+      "title": "Paging restarts on another server",
+      "description": "To list search results, your API remembers on the server which page each client is on, and the client just calls /next. Behind a load balancer, clients often jump back to page 1. What change follows REST's stateless rule?",
+      "difficulty": "beginner",
+      "explanation": "A stateless API keeps no per-client state between requests: each request carries everything needed, such as a page cursor, so any server can answer it.",
+      "options": [
+        {
+          "text": "Send every client to the same server forever, so the page counter is never lost",
+          "is_correct": false
+        },
+        {
+          "text": "Have the client send the page or cursor with each request",
+          "is_correct": true
+        },
+        {
+          "text": "Save the page counter in each server's memory twice, so a copy is always there",
+          "is_correct": false
+        },
+        {
+          "text": "Return all results in one response, so the client never needs to ask for a page",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "rest-statelessness",
+      "format": "situational"
+    },
+    {
+      "title": "Retried DELETE returns 404",
+      "description": "A client sends DELETE /files/42, the connection drops before the reply, and it sends the same DELETE again. The second call returns 404, and the file is gone either way. Why is retrying this DELETE considered safe?",
+      "difficulty": "beginner",
+      "explanation": "DELETE is idempotent: repeating it leaves the same final state (the file is gone), even if the status code differs, so a retry after a lost reply does no extra harm.",
+      "options": [
+        {
+          "text": "DELETE is cached by the browser, so the second request never reaches the server",
+          "is_correct": false
+        },
+        {
+          "text": "DELETE requests are queued, so the server runs them once a day in one batch job",
+          "is_correct": false
+        },
+        {
+          "text": "DELETE is idempotent: repeating it leaves the same end state, the file being gone",
+          "is_correct": true
+        },
+        {
+          "text": "A 404 reply means the server ignored both calls, so nothing was ever deleted",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "http-idempotent-methods",
+      "format": "situational"
+    },
+    {
+      "title": "New server, old address",
+      "description": "You move your website to a new server with a new IP address. Visitors who type your domain name still reach the old server for a while. Which system is responsible for turning the name into an address?",
+      "difficulty": "beginner",
+      "explanation": "DNS maps domain names to IP addresses. Resolvers cache answers for the record's TTL, so some visitors keep the old address until their cached entry expires.",
+      "options": [
+        {
+          "text": "The load balancer, which remembers each visitor's last server in a cookie for a day",
+          "is_correct": false
+        },
+        {
+          "text": "The browser's history, which stores every IP address the visitor has ever used",
+          "is_correct": false
+        },
+        {
+          "text": "The TLS certificate, which lists the server's IP address and expires every hour",
+          "is_correct": false
+        },
+        {
+          "text": "DNS, which maps the domain name to an IP address and caches the answer for a time",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "dns-role",
+      "format": "situational"
+    },
+    {
+      "title": "Script gets 429 responses",
+      "description": "Your nightly script calls a partner's API in a tight loop. After a few hundred calls, every response is HTTP 429 with a Retry-After header. What is the right way to handle this?",
+      "difficulty": "beginner",
+      "explanation": "429 Too Many Requests means the client exceeded a rate limit. The fix is to slow down: wait for the Retry-After time and pace requests under the limit.",
+      "options": [
+        {
+          "text": "Slow down: wait as long as Retry-After says, then send requests at a lower rate",
+          "is_correct": true
+        },
+        {
+          "text": "Retry each failed call immediately, because 429 means the server briefly crashed",
+          "is_correct": false
+        },
+        {
+          "text": "Send the same requests from several machines so each one stays under the limit",
+          "is_correct": false
+        },
+        {
+          "text": "Treat the partner's data as deleted, because 429 means the resource is gone",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "http-429-meaning",
+      "format": "situational"
+    },
+    {
+      "title": "Logged-in user sees others' invoices",
+      "description": "Users must log in before viewing invoices, and login works correctly. A tester finds that changing the invoice ID in the URL shows other customers' invoices. Which check is missing?",
+      "difficulty": "beginner",
+      "explanation": "Authentication proved who the user is; authorization decides what that user may access. The app never checks that the invoice belongs to the logged-in user.",
+      "options": [
+        {
+          "text": "Authentication: asking the user for their password again before each invoice",
+          "is_correct": false
+        },
+        {
+          "text": "Authorization: checking that this invoice belongs to the logged-in user",
+          "is_correct": true
+        },
+        {
+          "text": "Encryption: sending the invoice over HTTPS so its contents can't be changed",
+          "is_correct": false
+        },
+        {
+          "text": "Validation: checking that the invoice ID in the URL contains only digits",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "authentication-vs-authorization",
+      "format": "situational"
+    },
+    {
+      "title": "Old logs cost too much",
+      "description": "Your team keeps three years of application logs on fast, expensive storage. Logs older than 30 days are read maybe once a quarter, during audits. What is the usual way to cut the cost?",
+      "difficulty": "beginner",
+      "explanation": "Tiering moves rarely read data to cheaper, slower (cold) storage and keeps recent, frequently read data on fast (hot) storage.",
+      "options": [
+        {
+          "text": "Delete every log older than 30 days, since audits can ask the developers instead",
+          "is_correct": false
+        },
+        {
+          "text": "Copy every log to a second fast disk, so audits read from a backup copy instead",
+          "is_correct": false
+        },
+        {
+          "text": "Move logs older than 30 days to cheaper cold storage, keep recent ones fast",
+          "is_correct": true
+        },
+        {
+          "text": "Compress only the newest logs, since they are the ones read most often each day",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "hot-vs-cold-storage-tiering",
+      "format": "situational"
+    },
+    {
+      "title": "Slow redirects for distant users",
+      "description": "Your site runs a small piece of code on every request that picks a language and redirects the visitor. Users far from your only data center wait noticeably longer for that redirect. What reduces their wait the most?",
+      "difficulty": "beginner",
+      "explanation": "Running the logic at edge locations near users removes the long round trip to a distant data center, which is what dominates their latency.",
+      "options": [
+        {
+          "text": "Add more CPU to the data center servers, so the redirect code runs a little faster",
+          "is_correct": false
+        },
+        {
+          "text": "Make the redirect permanent in the database, so it is read from disk more quickly",
+          "is_correct": false
+        },
+        {
+          "text": "Ask distant users to use a VPN that ends inside the same city as the data center",
+          "is_correct": false
+        },
+        {
+          "text": "Run the redirect logic at edge locations close to users",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "edge-computing-benefit",
+      "format": "situational"
+    },
+    {
+      "title": "Dead letters after an outage",
+      "description": "A downstream email service was down for an hour. Messages that kept failing during the outage were moved to the dead-letter queue. The email service is healthy again. What should happen to those messages?",
+      "difficulty": "beginner",
+      "explanation": "A dead-letter queue holds failed messages so they aren't lost. Once the cause is fixed, they are inspected and sent back (redriven) to the main queue to be processed.",
+      "options": [
+        {
+          "text": "Check them and send them back to the main queue to be processed again",
+          "is_correct": true
+        },
+        {
+          "text": "Leave them in the dead-letter queue, since every message there is invalid",
+          "is_correct": false
+        },
+        {
+          "text": "Delete them, since a message that failed once can never succeed later on",
+          "is_correct": false
+        },
+        {
+          "text": "Process them by hand in the database, skipping the email service entirely",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "dead-letter-queue-redrive",
+      "format": "situational"
+    },
+    {
+      "title": "Deploys cut off requests",
+      "description": "During each deploy, the platform stops old instances and some users see failed requests. Logs show instances exiting immediately on the stop signal while still handling requests. What should the service do when it gets that signal?",
+      "difficulty": "beginner",
+      "explanation": "On SIGTERM a service should stop accepting new work, finish the requests already in flight, then exit. That is a graceful shutdown.",
+      "options": [
+        {
+          "text": "Exit at once, because the stop signal means the server has already crashed",
+          "is_correct": false
+        },
+        {
+          "text": "Stop taking new requests, finish the ones in progress, and then exit",
+          "is_correct": true
+        },
+        {
+          "text": "Ignore the signal and keep running until the next deploy replaces it again",
+          "is_correct": false
+        },
+        {
+          "text": "Restart itself in place, so it can keep serving requests on the same port",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "graceful-shutdown-signal",
+      "format": "situational"
+    },
+    {
+      "title": "Single point of failure",
+      "description": "What is a single point of failure in a system?",
+      "difficulty": "beginner",
+      "explanation": "A single point of failure is any one component whose failure takes the whole system down. Redundancy, such as a second instance, removes it.",
+      "options": [
+        {
+          "text": "The first server that fails when traffic grows past the system's normal load",
+          "is_correct": false
+        },
+        {
+          "text": "A component that fails only once a year and recovers without any operator",
+          "is_correct": false
+        },
+        {
+          "text": "One component whose failure alone stops the whole system from working",
+          "is_correct": true
+        },
+        {
+          "text": "The single error message that appears most often in the application logs",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "single-point-of-failure-redundancy",
+      "format": "recall"
+    },
+    {
+      "title": "Queue as a buffer",
+      "description": "How does a message queue help a service that receives short, large bursts of work?",
+      "difficulty": "beginner",
+      "explanation": "A queue absorbs a burst by holding the extra messages, and workers process them at a steady rate they can sustain, so producers aren't slowed or rejected.",
+      "options": [
+        {
+          "text": "It makes each message smaller, so workers finish a burst in less time",
+          "is_correct": false
+        },
+        {
+          "text": "It rejects new messages during a burst, so workers are never overloaded",
+          "is_correct": false
+        },
+        {
+          "text": "It runs each message twice, so a burst is finished even if a worker fails",
+          "is_correct": false
+        },
+        {
+          "text": "It holds the extra work so workers can process it at a steady rate",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "queue-as-burst-buffer",
+      "format": "recall"
+    },
+    {
+      "title": "502 vs 504 from a gateway",
+      "description": "A proxy or gateway returns errors from the server behind it. What is the difference between a 502 and a 504?",
+      "difficulty": "beginner",
+      "explanation": "502 Bad Gateway means the upstream sent an invalid response or the connection failed; 504 Gateway Timeout means the upstream did not answer in time.",
+      "options": [
+        {
+          "text": "502: upstream gave a bad response; 504: upstream did not reply in time",
+          "is_correct": true
+        },
+        {
+          "text": "502: the client sent bad input; 504: the client waited too long to send it",
+          "is_correct": false
+        },
+        {
+          "text": "502: the gateway is overloaded; 504: the gateway has been shut down for good",
+          "is_correct": false
+        },
+        {
+          "text": "502: the page was moved elsewhere; 504: the page was deleted from the server",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "http-502-vs-504",
+      "format": "recall"
+    },
+    {
+      "title": "Product pages hit the database every time",
+      "description": "Every product page reads the same product row from the database, and the database is busy. You add a cache. In the cache-aside pattern, what does the app do on a page request?",
+      "difficulty": "beginner",
+      "explanation": "In cache-aside, the app checks the cache first; on a miss it reads the database, stores the result in the cache, and returns it, so later requests are served from the cache.",
+      "options": [
+        {
+          "text": "Read the database first; then copy every row in the table into the cache",
+          "is_correct": false
+        },
+        {
+          "text": "Check the cache first; on a miss, read the database and cache the result",
+          "is_correct": true
+        },
+        {
+          "text": "Read only from the cache; the database copies every change into it by itself",
+          "is_correct": false
+        },
+        {
+          "text": "Write each page to the cache, then delete the database row it came from",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cache-aside-pattern",
+      "format": "situational"
+    },
+    {
+      "title": "Cache is full",
+      "description": "Your in-memory cache has reached its size limit and must remove an entry to add a new one. It is set to the LRU policy. Which entry does it remove?",
+      "difficulty": "beginner",
+      "explanation": "LRU (least recently used) evicts the entry that has gone longest without being read, on the assumption that recently used data is more likely to be used again.",
+      "options": [
+        {
+          "text": "The entry that was added to the cache most recently",
+          "is_correct": false
+        },
+        {
+          "text": "The largest entry, to free up the most memory at once",
+          "is_correct": false
+        },
+        {
+          "text": "The entry that has gone the longest without being read",
+          "is_correct": true
+        },
+        {
+          "text": "A random entry, so that no key is ever favoured",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "cache-eviction-with-lru",
+      "format": "situational"
+    },
+    {
+      "title": "Fast enough, but not for everyone",
+      "description": "After an optimisation, each request to your API finishes in 50 ms instead of 200 ms, but the service still can't handle more than 100 requests per second. Which measure improved, and which did not?",
+      "difficulty": "beginner",
+      "explanation": "Latency is how long one request takes; throughput is how many requests are handled per unit of time. Faster requests don't raise throughput if capacity is the limit.",
+      "options": [
+        {
+          "text": "Throughput improved; latency, the time of a single request, did not change",
+          "is_correct": false
+        },
+        {
+          "text": "Both improved, since faster requests always mean more requests per second",
+          "is_correct": false
+        },
+        {
+          "text": "Neither improved, since 50 ms and 200 ms are both measured per second",
+          "is_correct": false
+        },
+        {
+          "text": "Latency improved; throughput, the number of requests per second, did not",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "latency-vs-throughput",
+      "format": "situational"
+    },
+    {
+      "title": "What 99.9% allows",
+      "description": "Your service promises 99.9% availability over a 30-day month. Roughly how much downtime does that allow in the month?",
+      "difficulty": "beginner",
+      "explanation": "0.1% of 30 days (43,200 minutes) is about 43 minutes. Each extra nine cuts the allowed downtime by ten.",
+      "options": [
+        {
+          "text": "About 43 minutes",
+          "is_correct": true
+        },
+        {
+          "text": "About 4 minutes",
+          "is_correct": false
+        },
+        {
+          "text": "About 7 hours",
+          "is_correct": false
+        },
+        {
+          "text": "About 3 days",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "availability-and-the-nines",
+      "format": "situational"
+    },
+    {
+      "title": "Rollback takes an hour",
+      "description": "Your deploys replace the running version in place, and when a release goes wrong it takes an hour to rebuild and redeploy the old version. You want to switch back within seconds. Which approach fits?",
+      "difficulty": "beginner",
+      "explanation": "Blue-green runs the new version beside the old one and switches traffic over; rolling back is switching traffic back to the old environment, which is still running.",
+      "options": [
+        {
+          "text": "Deploy less often, so there are fewer releases that could ever need a rollback",
+          "is_correct": false
+        },
+        {
+          "text": "Blue-green: run both versions side by side and switch traffic between them",
+          "is_correct": true
+        },
+        {
+          "text": "Deploy only at night, so a slow rollback happens when there are fewer users",
+          "is_correct": false
+        },
+        {
+          "text": "Deploy to every server at once, so a failed release is noticed more quickly",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "blue-green-deployment",
+      "format": "situational"
+    },
+    {
+      "title": "Reports slow down checkout",
+      "description": "Heavy analytics reports run against your main database and slow down checkout writes. The reports can tolerate data that is a few seconds old. What is the usual first step?",
+      "difficulty": "beginner",
+      "explanation": "A read replica copies the primary's data and serves read-only queries, so heavy reads move off the primary. Replicas lag slightly, which these reports can accept.",
+      "options": [
+        {
+          "text": "Run the reports on the primary more often, so each one handles less data",
+          "is_correct": false
+        },
+        {
+          "text": "Remove the indexes the reports use, so checkout writes have less work to do",
+          "is_correct": false
+        },
+        {
+          "text": "Run the reports on a read replica, so they no longer load the primary database",
+          "is_correct": true
+        },
+        {
+          "text": "Move checkout writes to the replica, so the reports keep the primary to themselves",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "read-replicas-and-scaling-reads",
+      "format": "situational"
+    },
+    {
+      "title": "Hard-coded service addresses",
+      "description": "Your services call each other using IP addresses written into config files. Every time an instance is replaced or scaled, someone has to edit the files by hand. What solves this?",
+      "difficulty": "beginner",
+      "explanation": "Service discovery keeps a live registry of where each service's healthy instances are, so callers look services up by name instead of using fixed addresses.",
+      "options": [
+        {
+          "text": "A bigger config file that lists every IP address any service could ever use",
+          "is_correct": false
+        },
+        {
+          "text": "A rule that instances may never be replaced, so their addresses stay the same",
+          "is_correct": false
+        },
+        {
+          "text": "A shared spreadsheet where each team writes down its new addresses after deploys",
+          "is_correct": false
+        },
+        {
+          "text": "Service discovery: callers look up healthy instances by service name at run time",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "service-discovery",
+      "format": "situational"
+    },
+    {
+      "title": "Errors are up, but what are they?",
+      "description": "A dashboard shows the checkout error rate jumped from 0.1% to 5% ten minutes ago. You need the exception message and stack trace of the failing requests to see what is wrong. Which kind of telemetry holds that detail?",
+      "difficulty": "beginner",
+      "explanation": "Metrics are numbers over time: they show that errors rose, not what they are. Logs record individual events with their details, such as the exception and stack trace.",
+      "options": [
+        {
+          "text": "Logs, which record each failing request's error message and stack trace",
+          "is_correct": true
+        },
+        {
+          "text": "Metrics, which record each failing request's error message and stack trace",
+          "is_correct": false
+        },
+        {
+          "text": "Uptime checks, which record whether checkout answers from outside the network",
+          "is_correct": false
+        },
+        {
+          "text": "CPU graphs, which record how busy each checkout server was at that moment",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "observability-pillars",
+      "format": "situational"
+    },
+    {
+      "title": "Customer address in three places",
+      "description": "Your database stores a customer's address on the customer row, on every order and on every invoice. When customers move, some copies are updated and others are not. What is normalization's answer?",
+      "difficulty": "beginner",
+      "explanation": "Normalization stores each fact once and references it elsewhere, so an update happens in one place and copies can't disagree.",
+      "options": [
+        {
+          "text": "Store the address on even more tables, so one of the copies is always correct",
+          "is_correct": false
+        },
+        {
+          "text": "Store the address once and have orders and invoices refer to it",
+          "is_correct": true
+        },
+        {
+          "text": "Store the address only in the application's memory, so the database holds none",
+          "is_correct": false
+        },
+        {
+          "text": "Store the address as an image, so it can't be edited by accident in any table",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "normalization-goal",
+      "format": "situational"
+    },
+    {
+      "title": "Three engineers, twelve services",
+      "description": "A startup of three engineers split its new app into twelve microservices. They now spend most of their time on deployment pipelines, network errors between services and keeping versions in step. What would most teams of this size do instead?",
+      "difficulty": "beginner",
+      "explanation": "Microservices pay off when many teams need to deploy independently. For a small team, a well-structured monolith avoids network calls and deployment overhead.",
+      "options": [
+        {
+          "text": "Split the app into even more services, so each one is simpler on its own",
+          "is_correct": false
+        },
+        {
+          "text": "Rewrite each service in a different language, so each one runs faster",
+          "is_correct": false
+        },
+        {
+          "text": "Start with a well-structured monolith and split out services only when needed",
+          "is_correct": true
+        },
+        {
+          "text": "Put all twelve services on one server, so the network errors go away",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "microservices-vs-monolith-trade-off",
+      "format": "situational"
+    },
+    {
+      "title": "Dead workers keep their jobs",
+      "description": "A coordinator hands jobs to workers. When a worker's machine dies, the coordinator never notices, and that worker's jobs are never picked up again. What simple mechanism lets the coordinator detect this?",
+      "difficulty": "beginner",
+      "explanation": "Workers send periodic heartbeats; when the coordinator misses several in a row, it marks the worker dead and reassigns its jobs.",
+      "options": [
+        {
+          "text": "Longer job timeouts, so a dead worker has more time to finish its jobs anyway",
+          "is_correct": false
+        },
+        {
+          "text": "Larger jobs, so each worker needs to be given work far less often than now",
+          "is_correct": false
+        },
+        {
+          "text": "A daily restart of every worker, so dead ones come back the next morning",
+          "is_correct": false
+        },
+        {
+          "text": "Heartbeats: workers report in regularly, and missing reports mark a worker as dead",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "heartbeat-mechanism",
+      "format": "situational"
+    },
+    {
+      "title": "Missed payment notifications",
+      "description": "A payment provider sends your server a webhook when a payment succeeds. During a short outage of yours, some webhooks failed and those orders were never marked paid. What should your side do so this can't lose orders?",
+      "difficulty": "beginner",
+      "explanation": "Webhook senders usually retry failed deliveries, so the receiver must answer 2xx only after storing the event, handle repeats safely, and reconcile against the provider's API.",
+      "options": [
+        {
+          "text": "Store each event before replying, and handle repeats safely",
+          "is_correct": true
+        },
+        {
+          "text": "Reply with success before processing, so the provider never has to retry",
+          "is_correct": false
+        },
+        {
+          "text": "Ignore webhooks entirely and ask customers to email proof of each payment",
+          "is_correct": false
+        },
+        {
+          "text": "Turn off retries on the provider side, so every event arrives exactly once",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "webhook-reliability",
+      "format": "situational"
+    },
+    {
+      "title": "Double-tapped \"Add to cart\"",
+      "description": "A user double-taps \"Add to cart\", two identical POST requests reach the server, and the cart now holds two of the item instead of one. Retrying \"Set quantity to 1\" never causes this. Why does one operation misbehave on a repeat and the other not?",
+      "difficulty": "beginner",
+      "explanation": "\"Add one\" is not idempotent: each request changes the state again. \"Set quantity to 1\" is idempotent: repeating it leaves the same result, so duplicates are harmless.",
+      "options": [
+        {
+          "text": "Adding an item is cached, while setting the quantity skips the cache",
+          "is_correct": false
+        },
+        {
+          "text": "Adding an item is not idempotent, while setting the quantity is",
+          "is_correct": true
+        },
+        {
+          "text": "POST requests are always sent twice by browsers on a mobile network",
+          "is_correct": false
+        },
+        {
+          "text": "The cart is stored in two databases that each save the item once",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "idempotency-definition",
+      "format": "situational"
+    },
+    {
+      "title": "Order placed, three teams care",
+      "description": "When an order is placed, the email service, the warehouse service and the analytics service each need to react to it. Which messaging style fits?",
+      "difficulty": "beginner",
+      "explanation": "Publish-subscribe delivers a copy of each event to every subscriber, so all three services get the order. A point-to-point queue gives each message to one consumer.",
+      "options": [
+        {
+          "text": "Point-to-point queue, so the first service to read the order is the only one",
+          "is_correct": false
+        },
+        {
+          "text": "Direct database reads, so each service polls the orders table every second",
+          "is_correct": false
+        },
+        {
+          "text": "Publish-subscribe, so every subscribed service gets its own copy of the event",
+          "is_correct": true
+        },
+        {
+          "text": "A shared log file, so each service greps the web server's output for orders",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "pub-sub-vs-point-to-point",
+      "format": "situational"
+    },
+    {
+      "title": "Cache invalidation on write",
+      "description": "When data changes in the database, why does the cached copy of that data need to be updated or removed?",
+      "difficulty": "beginner",
+      "explanation": "Otherwise readers keep getting the old value from the cache until it expires. Invalidating (or updating) the entry on write keeps the cache from serving stale data.",
+      "options": [
+        {
+          "text": "So the database can free the memory that the cached copy was using",
+          "is_correct": false
+        },
+        {
+          "text": "So the cache can grow without limit while the database stays the same size",
+          "is_correct": false
+        },
+        {
+          "text": "So the next write to the same row is sent to the cache instead of the database",
+          "is_correct": false
+        },
+        {
+          "text": "So readers don't keep getting the old value from the cache after the change",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "cache-invalidation-on-write",
+      "format": "recall"
+    },
+    {
+      "title": "Scheduled scaling",
+      "description": "Your traffic triples every weekday at 9 a.m. Why can scaling up on a schedule beat waiting for CPU-based autoscaling?",
+      "difficulty": "beginner",
+      "explanation": "Reactive autoscaling starts new instances only after load rises, and they take time to boot. Scaling on a schedule adds capacity before a spike you know is coming.",
+      "options": [
+        {
+          "text": "New instances are ready before the spike, instead of booting after load rises",
+          "is_correct": true
+        },
+        {
+          "text": "Scheduled scaling uses less CPU per request than autoscaling based on load",
+          "is_correct": false
+        },
+        {
+          "text": "CPU-based autoscaling can only remove instances and never add new ones",
+          "is_correct": false
+        },
+        {
+          "text": "Scheduled scaling stops traffic from tripling in the morning in the first place",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "autoscaling-for-predictable-spikes",
+      "format": "recall"
+    },
+    {
+      "title": "Video uploads choke the API",
+      "description": "Users upload large videos through your API servers, which then pass them on to object storage. The API servers spend most of their bandwidth and memory on these uploads. What is the common fix?",
+      "difficulty": "beginner",
+      "explanation": "A presigned URL lets the client upload straight to object storage with a short-lived, scoped permission, so large files never pass through the API servers.",
+      "options": [
+        {
+          "text": "Make the API servers buffer each video in memory before passing it on",
+          "is_correct": false
+        },
+        {
+          "text": "Give the client a short-lived presigned URL to upload to storage directly",
+          "is_correct": true
+        },
+        {
+          "text": "Ask users to email their videos so support staff can upload them by hand",
+          "is_correct": false
+        },
+        {
+          "text": "Store the videos in the main database first, then copy them to storage",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "presigned-urls-for-uploads",
+      "format": "situational"
+    },
+    {
+      "title": "Millions of sensor readings",
+      "description": "Thousands of sensors each send a temperature reading every few seconds. You mostly query averages over time windows and delete data older than a year. What kind of database fits best?",
+      "difficulty": "beginner",
+      "explanation": "A time-series database is built for timestamped append-heavy data, with fast time-window aggregation and built-in retention, which matches this workload.",
+      "options": [
+        {
+          "text": "A graph database, built for following relationships between connected records",
+          "is_correct": false
+        },
+        {
+          "text": "A document database, built for storing each sensor as one nested JSON file",
+          "is_correct": false
+        },
+        {
+          "text": "A time-series database, built for timestamped data, time windows and retention",
+          "is_correct": true
+        },
+        {
+          "text": "A full-text search engine, built for ranking documents by relevant keywords",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "time-series-database-fit",
+      "format": "situational"
+    },
+    {
+      "title": "Replica falls behind during an import",
+      "description": "Dashboards read from a replica. During a large nightly data import into the primary, dashboard numbers fall several minutes behind, then catch up after the import ends. What explains this?",
+      "difficulty": "beginner",
+      "explanation": "The replica must apply every change the primary makes. A burst of heavy writes produces changes faster than the replica applies them, so its lag grows until the burst ends.",
+      "options": [
+        {
+          "text": "The import locks the replica, so dashboards read an old backup until it ends",
+          "is_correct": false
+        },
+        {
+          "text": "The dashboards cache their numbers during imports to protect the replica",
+          "is_correct": false
+        },
+        {
+          "text": "The primary stops sending changes during imports to save network bandwidth",
+          "is_correct": false
+        },
+        {
+          "text": "Replication lag grows because the replica can't apply the heavy writes as fast",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "replication-lag-impact",
+      "format": "situational"
+    },
+    {
+      "title": "Certificates on fifty servers",
+      "description": "Every one of your fifty application servers holds its own TLS certificate, and renewing them is a recurring chore. What is a common way to simplify this?",
+      "difficulty": "beginner",
+      "explanation": "Terminating TLS at the load balancer or reverse proxy means one place holds and renews the certificate, and the servers behind it don't each need one.",
+      "options": [
+        {
+          "text": "Terminate TLS at the load balancer, so the certificate is managed in one place",
+          "is_correct": true
+        },
+        {
+          "text": "Turn off HTTPS for the site, so no server needs a certificate at all anymore",
+          "is_correct": false
+        },
+        {
+          "text": "Give all fifty servers the same private key, emailed to each team for setup",
+          "is_correct": false
+        },
+        {
+          "text": "Let each browser generate its own certificate the first time it visits the site",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "tls-termination-location",
+      "format": "situational"
+    },
+    {
+      "title": "4xx vs 5xx status codes",
+      "description": "What is the difference between HTTP status codes in the 4xx range and the 5xx range?",
+      "difficulty": "beginner",
+      "explanation": "4xx codes mean the request itself was at fault (bad input, missing auth, not found); 5xx codes mean the server failed to handle a valid request.",
+      "options": [
+        {
+          "text": "4xx: the request succeeded; 5xx: the request was redirected to another page",
+          "is_correct": false
+        },
+        {
+          "text": "4xx: the request was at fault; 5xx: the server failed to handle the request",
+          "is_correct": true
+        },
+        {
+          "text": "4xx: the server is overloaded; 5xx: the client's network connection failed",
+          "is_correct": false
+        },
+        {
+          "text": "4xx: the response was cached; 5xx: the response was built fresh on the server",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "http-status-code-classes",
+      "format": "recall"
+    },
+    {
+      "title": "Timeouts on outbound calls",
+      "description": "Why should a service set a timeout on every call it makes to another service?",
+      "difficulty": "beginner",
+      "explanation": "Without a timeout, a call to a hung dependency can wait forever, holding a thread or connection; enough of these exhaust the caller and spread the failure.",
+      "options": [
+        {
+          "text": "So the other service is forced to respond faster than it normally would",
+          "is_correct": false
+        },
+        {
+          "text": "So each call is retried automatically by the network after a fixed delay",
+          "is_correct": false
+        },
+        {
+          "text": "So a hung dependency can't hold the caller's threads and connections forever",
+          "is_correct": true
+        },
+        {
+          "text": "So the response is cached for the time given in the timeout setting",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "timeouts-on-outbound-calls",
+      "format": "recall"
+    },
+    {
+      "title": "Retries make it worse",
+      "description": "Your client retries every failed request three times. Requests rejected with 400 Bad Request because of invalid input are retried too and fail every time. Which errors are worth retrying?",
+      "difficulty": "beginner",
+      "explanation": "Retries help only with transient failures such as timeouts, 503 or 429. A 400 means the request itself is wrong, so sending it again fails the same way.",
+      "options": [
+        {
+          "text": "Only 400 errors, since invalid input often becomes valid on a second attempt",
+          "is_correct": false
+        },
+        {
+          "text": "Every error, since three retries cost little and some will eventually pass",
+          "is_correct": false
+        },
+        {
+          "text": "No errors at all, since retries never succeed for any kind of failed request",
+          "is_correct": false
+        },
+        {
+          "text": "Only transient ones, such as timeouts, 503 or 429, not errors in the request",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "retry-only-transient-errors",
+      "format": "situational"
+    },
+    {
+      "title": "Backups that don't restore",
+      "description": "Your database is backed up every night. After an accidental table drop, the team discovers the backups were incomplete for months and can't be restored. What practice would have caught this?",
+      "difficulty": "beginner",
+      "explanation": "A backup is only proven by restoring it. Regular test restores show that backups are complete and that the team knows how to recover, before a real incident.",
+      "options": [
+        {
+          "text": "Regularly restoring a backup into a test environment to prove it works",
+          "is_correct": true
+        },
+        {
+          "text": "Taking backups twice as often, so there are more copies to choose from",
+          "is_correct": false
+        },
+        {
+          "text": "Keeping backups on the same disk as the database, so they're quick to reach",
+          "is_correct": false
+        },
+        {
+          "text": "Checking each night that the backup job finished without an error message",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "backup-restore-testing",
+      "format": "situational"
+    },
+    {
+      "title": "Password in the repository",
+      "description": "A database password is written in a config file committed to the code repository, which many people can read. What is the standard way to handle it?",
+      "difficulty": "beginner",
+      "explanation": "Secrets belong in environment variables or a secrets manager, injected at run time, so they never sit in source control and can be rotated without a code change.",
+      "options": [
+        {
+          "text": "Keep it in the repository, but in a file whose name starts with a dot",
+          "is_correct": false
+        },
+        {
+          "text": "Keep it in a secrets manager or an environment variable instead",
+          "is_correct": true
+        },
+        {
+          "text": "Keep it in the repository, but encoded in Base64 so it can't be read",
+          "is_correct": false
+        },
+        {
+          "text": "Keep it in the repository, but only on a branch that is never merged",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "secrets-outside-source-code",
+      "format": "situational"
+    },
+    {
+      "title": "Synchronous vs asynchronous work",
+      "description": "Sending a welcome email takes several seconds. Why is it often done asynchronously instead of inside the sign-up request?",
+      "difficulty": "beginner",
+      "explanation": "Done asynchronously (for example through a queue), the slow task runs in the background, so the user gets a fast response and a failed email doesn't fail the sign-up.",
+      "options": [
+        {
+          "text": "Asynchronous work is always cheaper, because it needs no server to run it",
+          "is_correct": false
+        },
+        {
+          "text": "Emails sent asynchronously are guaranteed to arrive in the user's inbox",
+          "is_correct": false
+        },
+        {
+          "text": "The user gets a fast response, and the slow email runs in the background",
+          "is_correct": true
+        },
+        {
+          "text": "Synchronous requests can't send email, only read from the database",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "synchronous-vs-asynchronous-processing",
+      "format": "recall"
+    },
+    {
+      "title": "What to alert on",
+      "description": "Which is usually the better condition for paging an on-call engineer?",
+      "difficulty": "beginner",
+      "explanation": "Alerting on symptoms users feel, such as error rate or latency, catches real problems whatever the cause, and avoids paging for causes that don't hurt anyone.",
+      "options": [
+        {
+          "text": "One server's CPU went above 70% for a minute",
+          "is_correct": false
+        },
+        {
+          "text": "A log line containing the word warning appeared",
+          "is_correct": false
+        },
+        {
+          "text": "Disk use on a build machine grew by one percent",
+          "is_correct": false
+        },
+        {
+          "text": "Users are seeing a high error rate or slow responses",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "alerting-on-symptoms",
+      "format": "recall"
+    },
+    {
+      "title": "Batch vs stream processing",
+      "description": "What is the main difference between batch and stream processing?",
+      "difficulty": "beginner",
+      "explanation": "Batch processing runs over a bounded set of data collected over time (for example nightly); stream processing handles each event continuously as it arrives.",
+      "options": [
+        {
+          "text": "Batch runs on collected data at intervals; streaming handles each event live",
+          "is_correct": true
+        },
+        {
+          "text": "Batch runs on one machine only; streaming always needs a cluster of machines",
+          "is_correct": false
+        },
+        {
+          "text": "Batch handles text data only; streaming handles images, audio and video only",
+          "is_correct": false
+        },
+        {
+          "text": "Batch keeps no results at all; streaming saves every result to the database",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "batch-vs-stream-processing",
+      "format": "recall"
+    },
+    {
+      "title": "Primary key",
+      "description": "What is the job of a primary key in a database table?",
+      "difficulty": "beginner",
+      "explanation": "A primary key uniquely identifies each row; the database enforces that it is unique and not null, and other tables reference rows by it.",
+      "options": [
+        {
+          "text": "To sort the table so new rows always appear at the very end",
+          "is_correct": false
+        },
+        {
+          "text": "To identify each row uniquely, so it can be found and referenced",
+          "is_correct": true
+        },
+        {
+          "text": "To encrypt the row so only its owner is allowed to read it",
+          "is_correct": false
+        },
+        {
+          "text": "To decide which server stores the row in a replicated setup",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "primary-key-purpose",
+      "format": "recall"
+    },
+    {
+      "title": "Staging environment",
+      "description": "What is a staging environment for?",
+      "difficulty": "beginner",
+      "explanation": "Staging mirrors production as closely as practical, so a release can be tested with realistic config and data shapes before real users see it.",
+      "options": [
+        {
+          "text": "Storing old releases so they can be downloaded again by end users",
+          "is_correct": false
+        },
+        {
+          "text": "Running production traffic at night when developers are offline",
+          "is_correct": false
+        },
+        {
+          "text": "Testing a release in a production-like setup before real users get it",
+          "is_correct": true
+        },
+        {
+          "text": "Keeping a live backup of the production database for fast restores",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "staging-environment-purpose",
+      "format": "recall"
+    },
+    {
+      "title": "Feature flags",
+      "description": "What does a feature flag let a team do?",
+      "difficulty": "beginner",
+      "explanation": "A feature flag turns code paths on or off at run time, so a feature can ship dark, roll out to some users, or be switched off without a redeploy.",
+      "options": [
+        {
+          "text": "Mark a feature as finished so it can't be changed by anyone later",
+          "is_correct": false
+        },
+        {
+          "text": "Report which features have the most bugs in the issue tracker",
+          "is_correct": false
+        },
+        {
+          "text": "Block a deploy until every feature in it has been fully tested",
+          "is_correct": false
+        },
+        {
+          "text": "Turn a feature on or off for some or all users without redeploying",
+          "is_correct": true
+        }
+      ],
+      "category": "system-design",
+      "concept": "feature-flags-purpose",
+      "format": "recall"
+    },
+    {
+      "title": "Structured logging",
+      "description": "What is the main benefit of writing logs as structured records (for example JSON with named fields) instead of free text?",
+      "difficulty": "beginner",
+      "explanation": "Named fields let a log system filter, group and search reliably, for example by request_id or user, without fragile text parsing.",
+      "options": [
+        {
+          "text": "Logs can be filtered and searched by field, such as request_id, reliably",
+          "is_correct": true
+        },
+        {
+          "text": "Logs take no disk space, because structured records are never stored",
+          "is_correct": false
+        },
+        {
+          "text": "Logs are encrypted automatically, so no one else is able to read them",
+          "is_correct": false
+        },
+        {
+          "text": "Logs are written faster, because the program skips writing any text",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "structured-logging",
+      "format": "recall"
+    },
+    {
+      "title": "Compressing HTTP responses",
+      "description": "Why do web servers commonly compress text responses such as HTML, CSS and JSON (for example with gzip)?",
+      "difficulty": "beginner",
+      "explanation": "Text compresses well, so compression sends far fewer bytes over the network, which speeds up loading, especially on slow connections, for a small CPU cost.",
+      "options": [
+        {
+          "text": "The browser no longer has to parse the HTML before showing it",
+          "is_correct": false
+        },
+        {
+          "text": "Fewer bytes travel over the network, so pages load faster",
+          "is_correct": true
+        },
+        {
+          "text": "Compressed responses are cached forever by every browser",
+          "is_correct": false
+        },
+        {
+          "text": "Compression hides the response contents from network observers",
+          "is_correct": false
+        }
+      ],
+      "category": "system-design",
+      "concept": "response-compression",
+      "format": "recall"
+    }
+  ]
+}
