@@ -3,9 +3,9 @@
 #   pip-compile --strip-extras requirements.in
 # Run that on the Python in .python-version, so the lock matches production.
 
-fastapi>=0.136.0
+fastapi>=0.162.7
 uvicorn[standard]>=0.48.0
-pydantic-settings>=2.0.0
+pydantic-settings>=2.16.3
 python-dotenv>=1.0.0
 slowapi>=0.1.9
 redis>=5.0.0  # rate-limit storage backend when RATE_LIMIT_STORAGE_URI is set
@@ -15,6 +15,6 @@ psycopg2-binary>=2.9.0
 bcrypt>=4.1.0
 pyjwt>=2.8.0
 pydantic[email]>=2.0.0
-posthog>=3.5.0
+posthog>=7.91.1
 # Below 3: a major release can change what is sent by default (app/core/error_tracking.py).
 sentry-sdk[fastapi]>=2.0.0,<3  # error reports and cron check-ins when SENTRY_DSN is set
