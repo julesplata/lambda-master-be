@@ -9,6 +9,7 @@ Numbered SQL migrations for the system design quiz database (PostgreSQL).
 - `up` applies the change; `down` reverts it
 - Each migration is wrapped in `BEGIN; ... COMMIT;`
 - Never edit a migration once it has been applied to a shared environment — write a new one instead
+- Every new table needs `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` in the migration that creates it, with no policies (see 0011). Without it, Supabase's Data API serves the table to anyone holding the anon key
 
 ## Applying
 
@@ -36,4 +37,5 @@ psql "$DATABASE_URL" -f 0001_init_schema.down.sql
 | 0008 | quiz_attempts_settings | Adds nullable `quiz_attempts.category` (slug) and `quiz_attempts.difficulty`, the filters a quiz was started with. NULL means "all"; rows from before the migration are NULL too |
 | 0009 | quiz_attempts_question_ids | Adds `quiz_attempts.question_ids`, the picked questions in serve order, and backfills it from the placeholder answer rows. Expand step: apply **before** deploying the code that reads it; the column's default keeps the old code's INSERT working |
 | 0010 | drop_placeholder_answers | Backfills attempts started between 0009 and the deploy, drops the column default, and deletes the never-answered placeholder `user_answers` rows. Contract step: apply **right after** the deploy. The down migration recreates the placeholders the old code needs |
-| 0011 | name_products_in_stems | One-off data migration: ten existing question stems now name a common product as an example (Nginx, Amazon SQS, Elasticsearch, AWS Lambda, PostgreSQL, ...). Matches each stem on (category, title, old description), so admin-edited stems are skipped and a rerun is a no-op; the down migration restores the old stems the same way |
+| 0011 | enable_rls | Enables Row Level Security, with no policies, on every table in `public`, so Supabase's Data API (`anon`/`authenticated`) can read and write nothing. The backend connects as `postgres`, the owner, and is unaffected. A rerun is a no-op; the down migration disables it again |
+| 0012 | name_products_in_stems | One-off data migration: ten existing question stems now name a common product as an example (Nginx, Amazon SQS, Elasticsearch, AWS Lambda, PostgreSQL, ...). Matches each stem on (category, title, old description), so admin-edited stems are skipped and a rerun is a no-op; the down migration restores the old stems the same way |
