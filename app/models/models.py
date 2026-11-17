@@ -193,6 +193,10 @@ class QuizAttempt(Base):
     # The filters the quiz was started with (migration 0008). NULL means "all".
     category: Mapped[str | None] = mapped_column(String(50))
     difficulty: Mapped[str | None] = mapped_column(String(12))
+    # A random id the browser keeps once the visitor accepts analytics, sent as
+    # X-Visitor-Id (migration 0013). It links one browser's quizzes so return
+    # visits can be counted. NULL without consent.
+    visitor_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
