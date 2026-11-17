@@ -2648,7 +2648,7 @@
     },
     {
       "title": "What VACUUM/compaction addresses",
-      "description": "In MVCC databases, what problem does a process like VACUUM (or compaction) address?",
+      "description": "In MVCC databases such as PostgreSQL, what problem does a process like VACUUM (or compaction) address?",
       "difficulty": "intermediate",
       "explanation": "MVCC keeps old row versions for concurrent readers; VACUUM reclaims space from dead tuples that are no longer visible to any transaction.",
       "options": [

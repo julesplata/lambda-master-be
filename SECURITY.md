@@ -70,8 +70,8 @@ any `CF-Connecting-IP` it likes. So:
 - `client_ip` believes `CF-Connecting-IP` only on a request with the right
   secret (`app/core/edge.py`, compared in constant time).
 - With `ORIGIN_SECRET` set, the app refuses (403) every request without it,
-  except `GET /api/v1/health`, which Railway's deploy healthcheck calls
-  directly. Without that refusal, a direct request could not choose its own
+  except `GET /api/v1/health` and `GET /api/v1/ready`, which Railway's deploy
+  healthcheck calls directly. Without that refusal, a direct request could not choose its own
   bucket, but it would skip Cloudflare's WAF and rate limiting rule.
 - `ENV=production` refuses to start without a 32+ character `ORIGIN_SECRET`,
   because without it every user is keyed on a Cloudflare address.
@@ -217,7 +217,30 @@ Set these as Railway environment variables:
       job, attempts left in progress accumulate permanently. The same run is
       the database-size alert: it exits 1 once the database passes
       `DATABASE_SIZE_ALERT_MB` (default 350, 70% of Supabase Free's 500 MB
-      quota). Make sure a failed run notifies someone, or the alert is silent.
+      quota). Set `SENTRY_DSN` on the cron service so the failure is heard:
+      each run checks in with Sentry Crons (monitor `purge-stale-attempts`,
+      created by the first run), and a run that fails, crashes or never starts
+      emails you. An oversized database also opens its own Sentry issue with
+      the size in the title. Keep `CRON_MONITOR_CONFIG` in
+      `scripts/purge_stale_attempts.py` on the same schedule as the Railway
+      cron, or Sentry reports runs as missed.
+- [ ] **Error tracking: `SENTRY_DSN`** on the web service and the purge cron
+      service (a Sentry Python project's DSN). Empty means no reports at all.
+      Set it on the web service only once the frontend's privacy policy names
+      Sentry, which ships with the frontend's error-reporting change. The cron
+      service sends no visitor data, so it can have it right away.
+      In Sentry, Settings → Security & Privacy, turn on "Prevent Storing of IP
+      Addresses" as a backstop (the API sends none). Keep the default alert for
+      high-priority issues, which emails you. What the app keeps out of every
+      report, and why: `app/core/error_tracking.py`.
+- [ ] **Healthcheck path `/api/v1/ready`** (service → Settings → Deploy). It
+      runs `SELECT 1`, so a deploy that cannot reach the database never goes
+      live. Railway checks it only while deploying, never afterwards.
+- [ ] **Uptime monitor** on `https://api.lambdamaster.app/api/v1/ready` and
+      `https://www.lambdamaster.app/`, alerting by email or push. Between
+      deploys it is the only thing that notices an outage. If the API check
+      gets a 403 or a challenge page, Cloudflare's bot protection is blocking
+      the monitor, not the app.
 - [ ] **Cloudflare rate limiting rule on quiz starts** (Security → WAF → Rate
       limiting rules). The Free plan allows one rule, a 10-second window and
       block, IP as the only key, and matching on path but not method:

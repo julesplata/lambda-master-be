@@ -12,6 +12,11 @@ engine = create_async_engine(
     # by the (often serverless) Postgres host is transparently replaced instead
     # of surfacing as a "server closed the connection" error on the next request.
     pool_pre_ping=True,
+    # SQLAlchemy otherwise writes bound parameters, such as a visitor's feedback
+    # text, into every database error message, and error reports send that
+    # message (core/error_tracking.py). DEBUG (local only) keeps them for the
+    # query log.
+    hide_parameters=not settings.debug,
     pool_size=settings.db_pool_size,
     max_overflow=settings.db_max_overflow,
     connect_args={"statement_cache_size": 0},

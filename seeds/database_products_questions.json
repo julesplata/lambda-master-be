@@ -1,0 +1,355 @@
+{
+  "questions": [
+    {
+      "title": "How MongoDB stores data",
+      "description": "How does MongoDB organize the data it stores?",
+      "difficulty": "beginner",
+      "explanation": "MongoDB is a document database: each record is a BSON document with nested fields and arrays, documents live in collections, and documents in one collection can have different fields unless you add schema validation.",
+      "options": [
+        {
+          "text": "As rows in tables with a fixed schema, joined by foreign keys the database enforces",
+          "is_correct": false
+        },
+        {
+          "text": "As key-value pairs whose values are opaque strings that the database cannot query",
+          "is_correct": false
+        },
+        {
+          "text": "As JSON-like BSON documents grouped into collections, with no fixed table schema",
+          "is_correct": true
+        },
+        {
+          "text": "As nodes and edges in a graph, with relationships stored as first-class objects",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "mongodb-document-model",
+      "format": "recall"
+    },
+    {
+      "title": "MongoDB embedding vs referencing",
+      "description": "When modeling data in MongoDB, when is embedding related data inside a document usually better than referencing it from another collection?",
+      "difficulty": "intermediate",
+      "explanation": "Embedding fits small, bounded data that is read with its parent, such as an address on a user, because one read returns everything. Data that is shared, queried on its own, or grows without limit is better referenced.",
+      "options": [
+        {
+          "text": "When the related data is shared by many parents and updated independently",
+          "is_correct": false
+        },
+        {
+          "text": "When the related data can grow without limit, like every event a user logs",
+          "is_correct": false
+        },
+        {
+          "text": "When the related data is often queried on its own, without loading its parent",
+          "is_correct": false
+        },
+        {
+          "text": "When the data is read together with its parent and stays small and bounded",
+          "is_correct": true
+        }
+      ],
+      "category": "database",
+      "concept": "mongodb-embedding-vs-referencing",
+      "format": "recall"
+    },
+    {
+      "title": "Popular post stops accepting comments",
+      "description": "A blog stores every comment in an array inside its post document in MongoDB. A viral post with hundreds of thousands of comments starts failing on every new comment. What is the cause, and the fix?",
+      "difficulty": "advanced",
+      "explanation": "A BSON document can be at most 16 MiB, and an ever-growing embedded array also makes every read and update of the post heavier. Unbounded one-to-many data belongs in its own collection with a post_id reference and an index on it.",
+      "options": [
+        {
+          "text": "The post hit the 16 MiB document limit; keep comments in their own collection by post id",
+          "is_correct": true
+        },
+        {
+          "text": "Arrays are capped at 65,536 items; split the comments array into several smaller arrays",
+          "is_correct": false
+        },
+        {
+          "text": "The post's index is full; rebuild the collection's indexes so that new entries fit again",
+          "is_correct": false
+        },
+        {
+          "text": "Writes to one document are rate limited; batch the new comments into hourly inserts",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "mongodb-unbounded-arrays",
+      "format": "situational"
+    },
+    {
+      "title": "MongoDB write concern majority",
+      "description": "In a MongoDB replica set, why can a write acknowledged with write concern w: 1 be lost in a failover, while one acknowledged with w: majority survives it?",
+      "difficulty": "advanced",
+      "explanation": "With w: 1 the primary acknowledges as soon as it has applied the write. If it steps down before any secondary replicates it, the new primary never had it and the old primary rolls it back when it rejoins. A majority-acknowledged, journaled write is on whichever member gets elected. Since MongoDB 5.0, majority is the default write concern for most deployments.",
+      "options": [
+        {
+          "text": "w: 1 skips the journal on the primary, while majority writes are flushed to every disk",
+          "is_correct": false
+        },
+        {
+          "text": "w: 1 means only the primary had it; after failover, writes missing from a majority roll back",
+          "is_correct": true
+        },
+        {
+          "text": "w: 1 writes go to a secondary first, which may be dropped when the replica set reconfigures",
+          "is_correct": false
+        },
+        {
+          "text": "w: 1 is acknowledged before the write runs, while majority waits for it to finish",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "mongodb-write-concern-majority",
+      "format": "recall"
+    },
+    {
+      "title": "DynamoDB partition key and sort key",
+      "description": "A DynamoDB table uses customer_id as its partition key and order_date as its sort key. What does this let you do efficiently?",
+      "difficulty": "beginner",
+      "explanation": "The partition key decides which partition holds an item, and the sort key orders items within it. A Query takes one partition key value and can then use ranges on the sort key. Querying by date across all customers would need another index, and two items cannot share both keys.",
+      "options": [
+        {
+          "text": "Fetch all orders in a date range across every customer with a single Query call",
+          "is_correct": false
+        },
+        {
+          "text": "Join the orders table to a customers table on customer_id inside DynamoDB itself, without app code",
+          "is_correct": false
+        },
+        {
+          "text": "Fetch one customer's orders, sorted or filtered by date, with a single Query call",
+          "is_correct": true
+        },
+        {
+          "text": "Store several items that share both the same customer_id and the same order_date",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "dynamodb-partition-and-sort-key",
+      "format": "recall"
+    },
+    {
+      "title": "DynamoDB lookup gets slower every month",
+      "description": "An API finds a user's sessions in DynamoDB by running a Scan with a filter on user_id. As the table grows, the call gets slower and uses most of the table's read capacity. What is the best fix?",
+      "difficulty": "intermediate",
+      "explanation": "A Scan reads every item in the table and applies the filter afterwards, so it consumes the same read capacity with or without the filter and its cost grows with the table. A Query on a key, the table's own or a global secondary index's, reads only the matching items.",
+      "options": [
+        {
+          "text": "Add a stricter filter expression so that the Scan reads fewer items in total",
+          "is_correct": false
+        },
+        {
+          "text": "Switch the Scan to strongly consistent reads so it needs to retry less often",
+          "is_correct": false
+        },
+        {
+          "text": "Raise the page size to the maximum so the Scan needs fewer round trips",
+          "is_correct": false
+        },
+        {
+          "text": "Query a table key or global secondary index on user_id instead of scanning",
+          "is_correct": true
+        }
+      ],
+      "category": "database",
+      "concept": "dynamodb-scan-vs-query",
+      "format": "situational"
+    },
+    {
+      "title": "EXPLAIN ANALYZE on a DELETE",
+      "description": "To find out why a DELETE in PostgreSQL is slow, a developer runs EXPLAIN ANALYZE DELETE FROM orders WHERE created_at < '2020-01-01' on production. What happens?",
+      "difficulty": "intermediate",
+      "explanation": "EXPLAIN alone shows the estimated plan. EXPLAIN ANALYZE actually executes the statement to measure real row counts and timings, so a DELETE really deletes. The PostgreSQL docs suggest wrapping it in BEGIN and ROLLBACK to measure a write safely.",
+      "options": [
+        {
+          "text": "The DELETE really runs and removes the rows, then the real timings are shown",
+          "is_correct": true
+        },
+        {
+          "text": "Only the estimated plan is shown, because ANALYZE never runs write queries",
+          "is_correct": false
+        },
+        {
+          "text": "The table's planner statistics are refreshed, but the command touches no rows at all",
+          "is_correct": false
+        },
+        {
+          "text": "The matching rows are locked and counted, then unlocked again once the command is finished",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "explain-analyze-executes-the-query",
+      "format": "situational"
+    },
+    {
+      "title": "Adding an index blocks checkout",
+      "description": "Running CREATE INDEX on a 200-million-row PostgreSQL orders table during business hours makes every INSERT into orders hang until the build finishes 20 minutes later. What should have been used instead?",
+      "difficulty": "advanced",
+      "explanation": "A plain CREATE INDEX locks out writes, but not reads, for the whole build. CREATE INDEX CONCURRENTLY lets writes continue by scanning the table twice; it takes longer, cannot run inside a transaction block, and leaves an invalid index to drop and retry if it fails.",
+      "options": [
+        {
+          "text": "A plain CREATE INDEX inside a transaction, so other sessions keep writing to it",
+          "is_correct": false
+        },
+        {
+          "text": "CREATE INDEX CONCURRENTLY, which builds without blocking writes but takes longer",
+          "is_correct": true
+        },
+        {
+          "text": "Set a lower fillfactor on the table, so the build has room to update pages in place",
+          "is_correct": false
+        },
+        {
+          "text": "Run VACUUM FULL before the build, so the table is compact and indexing is nearly instant",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "postgres-create-index-concurrently",
+      "format": "situational"
+    },
+    {
+      "title": "Slow queries on a JSONB column",
+      "description": "A PostgreSQL events table stores attributes in a JSONB column, and the app filters with attributes @> '{\"plan\": \"pro\"}'. The query does a sequential scan over millions of rows. Which index helps?",
+      "difficulty": "intermediate",
+      "explanation": "A GIN index indexes the keys and values inside each JSONB document, and the default jsonb operator class supports the containment operator @> and the key-exists operators. A B-tree on the whole column only helps equality or ordering of entire values.",
+      "options": [
+        {
+          "text": "A B-tree index on the JSONB column, which supports containment on nested keys",
+          "is_correct": false
+        },
+        {
+          "text": "A hash index on the JSONB column, which supports matching any key inside it",
+          "is_correct": false
+        },
+        {
+          "text": "A GIN index on the JSONB column, which supports the @> containment operator",
+          "is_correct": true
+        },
+        {
+          "text": "No index can help with JSONB, so the attribute must move to its own column",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "postgres-jsonb-gin-index",
+      "format": "situational"
+    },
+    {
+      "title": "PgBouncer transaction pooling",
+      "description": "An app connects through PgBouncer in transaction pooling mode. Why might a SET search_path run outside a transaction appear to be ignored by later queries?",
+      "difficulty": "advanced",
+      "explanation": "In transaction pooling, PgBouncer gives a client a server connection only for the length of one transaction, then returns it to the pool. Session state such as SET, LISTEN or session advisory locks may stay on one server connection while later queries run on another. Use SET LOCAL inside the transaction, or session pooling.",
+      "options": [
+        {
+          "text": "PgBouncer strips SET commands it does not recognize before forwarding them on",
+          "is_correct": false
+        },
+        {
+          "text": "PostgreSQL resets search_path after each query unless postgresql.conf sets it",
+          "is_correct": false
+        },
+        {
+          "text": "Transaction mode runs every query in its own read-only snapshot, hiding the change",
+          "is_correct": false
+        },
+        {
+          "text": "Each transaction may run on a different server connection, so session state is lost",
+          "is_correct": true
+        }
+      ],
+      "category": "database",
+      "concept": "pgbouncer-transaction-pooling",
+      "format": "recall"
+    },
+    {
+      "title": "InnoDB secondary index lookups",
+      "description": "In MySQL's InnoDB engine, what does an entry in a secondary index store to locate the full row?",
+      "difficulty": "advanced",
+      "explanation": "InnoDB stores table rows in the clustered index, ordered by primary key. Each secondary index record holds the indexed columns plus the primary key, which is used to look the row up in the clustered index. That is why a long primary key makes every secondary index larger.",
+      "options": [
+        {
+          "text": "The row's primary key value, which is then looked up in the clustered index",
+          "is_correct": true
+        },
+        {
+          "text": "The physical page and offset of the row, so it can be read from disk directly",
+          "is_correct": false
+        },
+        {
+          "text": "A full copy of every column of the row, so a second lookup is never required",
+          "is_correct": false
+        },
+        {
+          "text": "A hash of the row's contents, which is matched against a separate row table",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "innodb-secondary-index-lookup",
+      "format": "recall"
+    },
+    {
+      "title": "SQLite with many concurrent writers",
+      "description": "Why is SQLite usually a poor fit as the database for a busy web app with many servers writing at once?",
+      "difficulty": "beginner",
+      "explanation": "SQLite runs inside the app process and stores the database in one local file. It allows only one writer at a time (WAL mode lets readers run alongside it), and its docs point to a client/server database when there are many concurrent writers or the data is reached over a network. It does support transactions and indexes.",
+      "options": [
+        {
+          "text": "It does not support transactions, so concurrent writes can corrupt the file",
+          "is_correct": false
+        },
+        {
+          "text": "It is an embedded file database that allows only one writer at any moment",
+          "is_correct": true
+        },
+        {
+          "text": "It keeps everything in memory only, so the data is lost when a server restarts",
+          "is_correct": false
+        },
+        {
+          "text": "It cannot index tables, so every query has to scan the whole database file",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "sqlite-single-writer",
+      "format": "recall"
+    },
+    {
+      "title": "Redis RDB vs AOF persistence",
+      "description": "Redis offers two persistence options, RDB snapshots and the append-only file (AOF). What is the main trade-off between them?",
+      "difficulty": "intermediate",
+      "explanation": "An RDB snapshot is a compact point-in-time dump that restarts quickly, but a crash loses everything written since the last one. AOF logs every write; with the default fsync every second it loses about one second of writes at most, at the cost of larger files. Redis suggests enabling both for stronger safety.",
+      "options": [
+        {
+          "text": "RDB logs every write as it happens, while AOF saves full copies at fixed intervals",
+          "is_correct": false
+        },
+        {
+          "text": "RDB keeps data only on replicas, while AOF keeps it only on the primary's local disk",
+          "is_correct": false
+        },
+        {
+          "text": "RDB snapshots restore fast but lose writes since the last one; AOF logs every write",
+          "is_correct": true
+        },
+        {
+          "text": "RDB persists only strings, while AOF is needed for lists, sets and sorted sets",
+          "is_correct": false
+        }
+      ],
+      "category": "database",
+      "concept": "redis-rdb-vs-aof",
+      "format": "recall"
+    }
+  ]
+}

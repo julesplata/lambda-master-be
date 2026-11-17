@@ -34,7 +34,7 @@ python main.py
 Once running:
 
 - API base: `http://localhost:8000/api/v1`
-- Health check: `GET http://localhost:8000/api/v1/health`
+- Health check: `GET http://localhost:8000/api/v1/health` (the process answers); readiness: `GET http://localhost:8000/api/v1/ready` (the database answers too)
 - Interactive docs (Swagger): `http://localhost:8000/docs`
 
 There is no test suite yet.
@@ -55,10 +55,11 @@ Key variables:
 | `CORS_ORIGINS` | Comma/JSON list of allowed frontend origins. Defaults to localhost only. |
 | `RATE_LIMIT_*` | Per-IP rate-limit windows (default, attempt creation, reports / feedback, admin sign-in). There are no app-wide buckets. |
 | `RATE_LIMIT_STORAGE_URI` | Empty = in-memory (single instance). Set to a Redis URL when scaling to 2+ instances. |
-| `ORIGIN_SECRET` | Required in production. The `X-Origin-Auth` value a Cloudflare Transform Rule adds. Requests carrying it are keyed on `CF-Connecting-IP`; with it set, requests without it get 403 (except `/health`). |
+| `ORIGIN_SECRET` | Required in production. The `X-Origin-Auth` value a Cloudflare Transform Rule adds. Requests carrying it are keyed on `CF-Connecting-IP`; with it set, requests without it get 403 (except `/health` and `/ready`). |
 | `TRUSTED_PROXY_HOPS` | For requests without `ORIGIN_SECRET`: proxies that append to `X-Forwarded-For`; the client IP is read that many entries from the right. `1` on Railway, `0` if exposed directly. Do not count Cloudflare. |
 | `POSTHOG_API_KEY` | Project analytics. Empty = analytics disabled (no client, no network calls). |
 | `ANALYTICS_IP_SALT` | Salt for the anonymous analytics id (`HMAC(salt, client_ip)`), so raw IPs never reach PostHog. Empty = a random per-process salt. |
+| `SENTRY_DSN` | Sentry error reports from the API and the purge job's cron check-ins. Empty = off. Headers, local variables and request bodies are kept out; see [`app/core/error_tracking.py`](app/core/error_tracking.py). Set it on the web service and the purge cron service. |
 | `JWT_SECRET` / `AUTH_BYPASS_USER_ID` | Only relevant if user accounts are re-enabled. |
 
 ---
@@ -82,7 +83,8 @@ All routes are mounted under `/api/v1`. Currently active routers:
 
 | Method & path | Description |
 |---------------|-------------|
-| `GET /health` | Liveness check |
+| `GET /health` | Liveness check (touches nothing) |
+| `GET /ready` | Readiness check: runs `SELECT 1`, 503 when the database does not answer within 2 s (about 4 s if a pooled connection has gone silent). Point Railway's healthcheck and the uptime monitor here |
 | `GET /categories` | List question categories |
 | `POST /questions/bulk` | Bulk-create questions (admin) |
 | `GET /tags` | List all tags |
@@ -105,7 +107,7 @@ All routes are mounted under `/api/v1`. Currently active routers:
 
 ```
 Request → SlowAPI rate-limit middleware → CORS middleware
-        → app/api/v1/routes.py (health + sub-routers)
+        → app/api/v1/routes.py (health, ready + sub-routers)
             → endpoints/{questions,attempts,categories,tags,reports,feedback}.py
         → deps.py (auth guards)
         → db/session.py (AsyncSession via get_session dependency)
