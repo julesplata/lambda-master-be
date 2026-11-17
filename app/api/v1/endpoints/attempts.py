@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import ARRAY, UUID, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.core.analytics import track, visitor_id
+from app.core.analytics import is_internal, track, visitor_id
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.db.session import get_session
@@ -179,7 +179,9 @@ async def create_attempt(
     # and the seen-list path returns repeats last, which would give them away.
     random.shuffle(question_ids)
     seen = set(body.seen_question_ids)
-    repeated_questions = sum(1 for question_id in question_ids if question_id in seen)
+    repeated_question_ids = [
+        question_id for question_id in question_ids if question_id in seen
+    ]
 
     attempt = QuizAttempt(
         total_questions=len(question_ids),
@@ -190,6 +192,9 @@ async def create_attempt(
         # None without the header, with a malformed one, or when the visitor
         # refused analytics (visitor_id checks), so it is never an error.
         visitor_id=visitor_id(request),
+        is_internal=is_internal(request),
+        repeated_question_ids=repeated_question_ids,
+        source=body.source,
     )
     session.add(attempt)
     await session.commit()
@@ -200,9 +205,11 @@ async def create_attempt(
         {
             "attempt_id": str(attempt.id),
             "question_count": len(question_ids),
-            "repeated_questions": repeated_questions,
+            "repeated_questions": len(repeated_question_ids),
             "difficulty": attempt.difficulty,
             "category": attempt.category,
+            "source": attempt.source,
+            "referrer_host": body.referrer_host,
         },
     )
     return AttemptCreateResponse(attempt_id=attempt.id, started_at=attempt.started_at)
@@ -287,6 +294,7 @@ async def _store_answer(
     attempt_id: uuid.UUID,
     question_id: uuid.UUID,
     option: QuestionOption,
+    time_spent_ms: int | None,
 ) -> tuple[Row | None, bool]:
     """Record an answer and return the one stored, which may be another request's.
 
@@ -297,7 +305,11 @@ async def _store_answer(
     the first one's answer. The flag says whether this request wrote the row,
     which RETURNING reports only for an insert or an update that happened.
     """
-    answer = {"selected_option_id": option.id, "is_correct": option.is_correct}
+    answer = {
+        "selected_option_id": option.id,
+        "is_correct": option.is_correct,
+        "time_spent_ms": time_spent_ms,
+    }
     written = await session.execute(
         insert(UserAnswer)
         .values(attempt_id=attempt_id, question_id=question_id, **answer)
@@ -330,6 +342,16 @@ async def _options_and_explanation(
     options = [option for option, _ in rows]
     explanation = rows[0][1] if rows else None
     return options, explanation
+
+
+def _first_time(attempt: QuizAttempt, question_id: uuid.UUID) -> bool | None:
+    """Whether this browser is seeing the question for the first time.
+
+    None for an attempt started before repeats were recorded (migration 0015).
+    """
+    if attempt.repeated_question_ids is None:
+        return None
+    return question_id not in attempt.repeated_question_ids
 
 
 @router.post("/{attempt_id}/answers", response_model=AnswerResult)
@@ -376,7 +398,7 @@ async def submit_answer(
     stored_here = False
     if stored is None:
         stored, stored_here = await _store_answer(
-            session, attempt.id, body.question_id, selected
+            session, attempt.id, body.question_id, selected, body.time_spent_ms
         )
         if stored is None or stored.selected_option_id != selected.id:
             # A concurrent submit answered this question first, with another option.
@@ -405,6 +427,7 @@ async def submit_answer(
                 "total_questions": attempt.total_questions,
                 "correct": stored.is_correct,
                 "time_spent_ms": body.time_spent_ms,
+                "first_time": _first_time(attempt, body.question_id),
                 "difficulty": attempt.difficulty,
                 "category": attempt.category,
             },

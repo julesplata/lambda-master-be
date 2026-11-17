@@ -114,7 +114,7 @@ def test_events_use_the_visitor_id(recorder):
 
     event = recorder.events[0]
     assert event["distinct_id"] == f"visitor-{visitor}"
-    assert event["properties"] == {"a": 1, "id_source": "visitor"}
+    assert event["properties"] == {"a": 1, "id_source": "visitor", "internal": False}
 
 
 def test_events_fall_back_to_the_ip_hash(recorder):
@@ -122,4 +122,4 @@ def test_events_fall_back_to_the_ip_hash(recorder):
 
     event = recorder.events[0]
     assert event["distinct_id"].startswith("anon-")
-    assert event["properties"] == {"id_source": "ip"}
+    assert event["properties"] == {"id_source": "ip", "internal": False}

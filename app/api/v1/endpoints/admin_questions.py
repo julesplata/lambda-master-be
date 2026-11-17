@@ -1,7 +1,7 @@
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import func, select, update
+from sqlalchemy import func, select, text, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -15,6 +15,7 @@ from app.schemas.admin import (
     AdminOption,
     AdminQuestion,
     AdminQuestionIds,
+    AdminQuestionStats,
     AdminQuestionWrite,
 )
 
@@ -110,6 +111,38 @@ async def list_questions_for_admin(
 
     questions = (await session.execute(stmt)).scalars().unique().all()
     return [_serialize(q) for q in questions]
+
+
+# First-time, considered answers given since the question last read as it does
+# now (the filters are explained in migration 0017). Answers from before
+# repeats were recorded have first_time NULL and are left out.
+_QUESTION_STATS = text(
+    """
+    SELECT q.id AS question_id,
+           count(a.question_id) AS first_answers,
+           avg(a.is_correct::int) AS correct_rate,
+           percentile_cont(0.5) WITHIN GROUP (ORDER BY a.time_spent_ms)
+               AS median_time_ms,
+           (SELECT count(*) FROM question_reports r
+            WHERE r.question_id = q.id AND r.status = 'open') AS open_reports
+    FROM questions q
+    LEFT JOIN analytics_answers a
+           ON a.question_id = q.id
+          AND a.first_time AND NOT a.low_effort AND a.after_edit
+    GROUP BY q.id
+    """
+)
+
+
+@router.get("/stats", response_model=list[AdminQuestionStats])
+async def question_stats(session: AsyncSession = Depends(get_session)):
+    """How each question performs, for the console's question table.
+
+    Every question gets an entry; one with no qualifying answers has
+    first_answers 0 and NULL rates.
+    """
+    rows = (await session.execute(_QUESTION_STATS)).mappings().all()
+    return [AdminQuestionStats(**row) for row in rows]
 
 
 @router.post("", response_model=AdminQuestion, status_code=status.HTTP_201_CREATED)
@@ -224,6 +257,8 @@ async def update_question(
     question.difficulty = body.difficulty
     question.explanation = body.explanation
     question.category_id = await _category_id_for_slug(session, body.category)
+    # Answers given before this describe a different question (analytics views).
+    question.content_updated_at = func.now()
 
     # Drop the old options in their own flush. question_options has a
     # (question_id, position) unique constraint and the replacements start again

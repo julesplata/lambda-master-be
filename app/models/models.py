@@ -107,6 +107,12 @@ class Question(Base):
     # user_answers cascades from questions and a hard delete would erase the
     # answer rows of every past attempt that used this question.
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # Set only when the console rewrites the question (migration 0017), unlike
+    # updated_at, which archiving and bulk edits move too. Answers given before
+    # it describe a different question.
+    content_updated_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True)
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
@@ -197,6 +203,16 @@ class QuizAttempt(Base):
     # X-Visitor-Id (migration 0013). It links one browser's quizzes so return
     # visits can be counted. NULL without consent.
     visitor_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    # Started in a browser signed in to the admin console, sent as X-Internal
+    # (migration 0014). Left out of the analytics views.
+    is_internal: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # The picked questions this browser had answered before (migration 0015).
+    # Empty when none were; NULL on attempts from before the column.
+    repeated_question_ids: Mapped[list[uuid.UUID] | None] = mapped_column(
+        ARRAY(UUID(as_uuid=True))
+    )
+    # Where the quiz was started, e.g. "home_hero" (migration 0016).
+    source: Mapped[str | None] = mapped_column(String(30))
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
@@ -228,6 +244,9 @@ class UserAnswer(Base):
         UUID(as_uuid=True), ForeignKey("question_options.id", ondelete="SET NULL")
     )
     is_correct: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # Time on the question as the browser measured it (migration 0015). NULL
+    # on answers from before the column.
+    time_spent_ms: Mapped[int | None] = mapped_column(Integer)
     answered_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
