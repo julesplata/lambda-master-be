@@ -42,7 +42,7 @@ A question is a duplicate if a learner who can answer an existing question can a
 
 ### Beginner set
 [`system_design_beginner_questions.json`](system_design_beginner_questions.json)
-(51 questions, added 2026-11-17) brings System Design / Beginner to about the
+(50 questions, added 2026-11-17) brings System Design / Beginner to about the
 size of Intermediate, because it is the most-played quiz. Most questions write
 the missing format for a concept that already had a Beginner question in only
 one format, or a beginner-level question for a concept covered at a higher

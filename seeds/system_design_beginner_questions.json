@@ -1,52 +1,25 @@
 {
   "questions": [
     {
-      "title": "One web server can't keep up",
-      "description": "Your shop runs on a single web server. Before a sale you add two more identical servers, but customers still only reach the first one, which slows down. What should you add so traffic reaches all three?",
+      "title": "One domain, two backends",
+      "description": "Your site's pages come from a static file server and its API from separate application servers. You want both under one domain, with /api/ requests going to the app servers and everything else to the file server. What component does this?",
       "difficulty": "beginner",
-      "explanation": "A load balancer sits in front of a pool of servers and spreads incoming requests across them, so added servers actually take a share of the traffic.",
+      "explanation": "A reverse proxy receives every request for the domain and forwards it to the right backend by rules such as the URL path, so clients see a single site.",
       "options": [
         {
-          "text": "A load balancer in front of the three servers that spreads requests across them",
+          "text": "A reverse proxy that forwards each request to a backend based on its path",
           "is_correct": true
         },
         {
-          "text": "A bigger database server, so each query on the first server returns faster",
+          "text": "A forward proxy that each visitor installs to rewrite the URLs they visit",
           "is_correct": false
         },
         {
-          "text": "A message queue between the browser and the first server to hold extra requests",
+          "text": "A DNS record per path, so /api/ resolves to a different IP than other paths",
           "is_correct": false
         },
         {
-          "text": "A second domain name for each new server, printed on the shop's home page",
-          "is_correct": false
-        }
-      ],
-      "category": "system-design",
-      "concept": "purpose-of-a-load-balancer",
-      "format": "situational"
-    },
-    {
-      "title": "Every service handles its own TLS",
-      "description": "Three internal services each manage their own TLS certificates, compression and request logging, and each team configures them differently. You want one place in front of all of them to handle these concerns. What fits best?",
-      "difficulty": "beginner",
-      "explanation": "A reverse proxy receives client requests on behalf of the services behind it, so it is the natural single place to terminate TLS, compress responses and log requests.",
-      "options": [
-        {
-          "text": "A forward proxy on each developer's laptop that rewrites outgoing requests",
-          "is_correct": false
-        },
-        {
-          "text": "A reverse proxy in front of them that handles TLS, compression and logging",
-          "is_correct": true
-        },
-        {
-          "text": "A shared database table where each service writes its TLS settings at startup",
-          "is_correct": false
-        },
-        {
-          "text": "A cron job that copies the same certificate files onto every server each night",
+          "text": "A database view that merges the file server and the API into one table",
           "is_correct": false
         }
       ],
@@ -65,12 +38,12 @@
           "is_correct": false
         },
         {
-          "text": "A document store, because relationships between records are not allowed in SQL",
-          "is_correct": false
-        },
-        {
           "text": "A relational database, since the data has relationships, joins and strict rules",
           "is_correct": true
+        },
+        {
+          "text": "A document store, because relationships between records are not allowed in SQL",
+          "is_correct": false
         },
         {
           "text": "A time-series database, because each order has a timestamp attached to it",
@@ -96,12 +69,12 @@
           "is_correct": false
         },
         {
-          "text": "Replication: copy the first account to a second server before starting the debit",
-          "is_correct": false
-        },
-        {
           "text": "Atomicity: wrap both steps in one transaction so they succeed or fail together",
           "is_correct": true
+        },
+        {
+          "text": "Replication: copy the first account to a second server before starting the debit",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -115,10 +88,6 @@
       "explanation": "Object storage gives every server one shared, durable place to read and write files by key, so it doesn't matter which server handled the upload.",
       "options": [
         {
-          "text": "Object storage that every server reads and writes, with files fetched by key",
-          "is_correct": true
-        },
-        {
           "text": "A larger local disk on each server, so every server keeps more of the files",
           "is_correct": false
         },
@@ -129,6 +98,10 @@
         {
           "text": "The browser's local storage, so each user keeps their own files on the device",
           "is_correct": false
+        },
+        {
+          "text": "Object storage that every server reads and writes, with files fetched by key",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -142,12 +115,12 @@
       "explanation": "A foreign key constraint requires each order's customer_id to match an existing customer, so the database rejects (or cascades) a delete that would orphan orders.",
       "options": [
         {
-          "text": "An index on orders.customer_id, so lookups by customer return results faster",
-          "is_correct": false
-        },
-        {
           "text": "A foreign key from orders.customer_id to customers.id, refusing orphans",
           "is_correct": true
+        },
+        {
+          "text": "An index on orders.customer_id, so lookups by customer return results faster",
+          "is_correct": false
         },
         {
           "text": "A unique constraint on orders.customer_id, so each customer has a single order",
@@ -173,12 +146,12 @@
           "is_correct": false
         },
         {
-          "text": "Save the page counter in each server's memory twice, so a copy is always there",
-          "is_correct": false
-        },
-        {
           "text": "Have the client send the page or cursor with each request",
           "is_correct": true
+        },
+        {
+          "text": "Save the page counter in each server's memory twice, so a copy is always there",
+          "is_correct": false
         },
         {
           "text": "Return all results in one response, so the client never needs to ask for a page",
@@ -204,12 +177,12 @@
           "is_correct": false
         },
         {
-          "text": "A 404 reply means the server ignored both calls, so nothing was ever deleted",
-          "is_correct": false
-        },
-        {
           "text": "DELETE is idempotent: repeating it leaves the same end state, the file being gone",
           "is_correct": true
+        },
+        {
+          "text": "A 404 reply means the server ignored both calls, so nothing was ever deleted",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -223,10 +196,6 @@
       "explanation": "DNS maps domain names to IP addresses. Resolvers cache answers for the record's TTL, so some visitors keep the old address until their cached entry expires.",
       "options": [
         {
-          "text": "DNS, which maps the domain name to an IP address and caches the answer for a time",
-          "is_correct": true
-        },
-        {
           "text": "The load balancer, which remembers each visitor's last server in a cookie for a day",
           "is_correct": false
         },
@@ -237,6 +206,10 @@
         {
           "text": "The TLS certificate, which lists the server's IP address and expires every hour",
           "is_correct": false
+        },
+        {
+          "text": "DNS, which maps the domain name to an IP address and caches the answer for a time",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -250,12 +223,12 @@
       "explanation": "429 Too Many Requests means the client exceeded a rate limit. The fix is to slow down: wait for the Retry-After time and pace requests under the limit.",
       "options": [
         {
-          "text": "Retry each failed call immediately, because 429 means the server briefly crashed",
-          "is_correct": false
-        },
-        {
           "text": "Slow down: wait as long as Retry-After says, then send requests at a lower rate",
           "is_correct": true
+        },
+        {
+          "text": "Retry each failed call immediately, because 429 means the server briefly crashed",
+          "is_correct": false
         },
         {
           "text": "Send the same requests from several machines so each one stays under the limit",
@@ -281,12 +254,12 @@
           "is_correct": false
         },
         {
-          "text": "Encryption: sending the invoice over HTTPS so its contents can't be changed",
-          "is_correct": false
-        },
-        {
           "text": "Authorization: checking that this invoice belongs to the logged-in user",
           "is_correct": true
+        },
+        {
+          "text": "Encryption: sending the invoice over HTTPS so its contents can't be changed",
+          "is_correct": false
         },
         {
           "text": "Validation: checking that the invoice ID in the URL contains only digits",
@@ -312,12 +285,12 @@
           "is_correct": false
         },
         {
-          "text": "Compress only the newest logs, since they are the ones read most often each day",
-          "is_correct": false
-        },
-        {
           "text": "Move logs older than 30 days to cheaper cold storage, keep recent ones fast",
           "is_correct": true
+        },
+        {
+          "text": "Compress only the newest logs, since they are the ones read most often each day",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -331,10 +304,6 @@
       "explanation": "Running the logic at edge locations near users removes the long round trip to a distant data center, which is what dominates their latency.",
       "options": [
         {
-          "text": "Run the redirect logic at edge locations close to users",
-          "is_correct": true
-        },
-        {
           "text": "Add more CPU to the data center servers, so the redirect code runs a little faster",
           "is_correct": false
         },
@@ -345,6 +314,10 @@
         {
           "text": "Ask distant users to use a VPN that ends inside the same city as the data center",
           "is_correct": false
+        },
+        {
+          "text": "Run the redirect logic at edge locations close to users",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -358,12 +331,12 @@
       "explanation": "A dead-letter queue holds failed messages so they aren't lost. Once the cause is fixed, they are inspected and sent back (redriven) to the main queue to be processed.",
       "options": [
         {
-          "text": "Leave them in the dead-letter queue, since every message there is invalid",
-          "is_correct": false
-        },
-        {
           "text": "Check them and send them back to the main queue to be processed again",
           "is_correct": true
+        },
+        {
+          "text": "Leave them in the dead-letter queue, since every message there is invalid",
+          "is_correct": false
         },
         {
           "text": "Delete them, since a message that failed once can never succeed later on",
@@ -389,12 +362,12 @@
           "is_correct": false
         },
         {
-          "text": "Ignore the signal and keep running until the next deploy replaces it again",
-          "is_correct": false
-        },
-        {
           "text": "Stop taking new requests, finish the ones in progress, and then exit",
           "is_correct": true
+        },
+        {
+          "text": "Ignore the signal and keep running until the next deploy replaces it again",
+          "is_correct": false
         },
         {
           "text": "Restart itself in place, so it can keep serving requests on the same port",
@@ -420,12 +393,12 @@
           "is_correct": false
         },
         {
-          "text": "The single error message that appears most often in the application logs",
-          "is_correct": false
-        },
-        {
           "text": "One component whose failure alone stops the whole system from working",
           "is_correct": true
+        },
+        {
+          "text": "The single error message that appears most often in the application logs",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -439,10 +412,6 @@
       "explanation": "A queue absorbs a burst by holding the extra messages, and workers process them at a steady rate they can sustain, so producers aren't slowed or rejected.",
       "options": [
         {
-          "text": "It holds the extra work so workers can process it at a steady rate",
-          "is_correct": true
-        },
-        {
           "text": "It makes each message smaller, so workers finish a burst in less time",
           "is_correct": false
         },
@@ -453,6 +422,10 @@
         {
           "text": "It runs each message twice, so a burst is finished even if a worker fails",
           "is_correct": false
+        },
+        {
+          "text": "It holds the extra work so workers can process it at a steady rate",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -466,12 +439,12 @@
       "explanation": "502 Bad Gateway means the upstream sent an invalid response or the connection failed; 504 Gateway Timeout means the upstream did not answer in time.",
       "options": [
         {
-          "text": "502: the client sent bad input; 504: the client waited too long to send it",
-          "is_correct": false
-        },
-        {
           "text": "502: upstream gave a bad response; 504: upstream did not reply in time",
           "is_correct": true
+        },
+        {
+          "text": "502: the client sent bad input; 504: the client waited too long to send it",
+          "is_correct": false
         },
         {
           "text": "502: the gateway is overloaded; 504: the gateway has been shut down for good",
@@ -497,12 +470,12 @@
           "is_correct": false
         },
         {
-          "text": "Read only from the cache; the database copies every change into it by itself",
-          "is_correct": false
-        },
-        {
           "text": "Check the cache first; on a miss, read the database and cache the result",
           "is_correct": true
+        },
+        {
+          "text": "Read only from the cache; the database copies every change into it by itself",
+          "is_correct": false
         },
         {
           "text": "Write each page to the cache, then delete the database row it came from",
@@ -528,12 +501,12 @@
           "is_correct": false
         },
         {
-          "text": "A random entry, so that no key is ever favoured",
-          "is_correct": false
-        },
-        {
           "text": "The entry that has gone the longest without being read",
           "is_correct": true
+        },
+        {
+          "text": "A random entry, so that no key is ever favoured",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -547,10 +520,6 @@
       "explanation": "Latency is how long one request takes; throughput is how many requests are handled per unit of time. Faster requests don't raise throughput if capacity is the limit.",
       "options": [
         {
-          "text": "Latency improved; throughput, the number of requests per second, did not",
-          "is_correct": true
-        },
-        {
           "text": "Throughput improved; latency, the time of a single request, did not change",
           "is_correct": false
         },
@@ -561,6 +530,10 @@
         {
           "text": "Neither improved, since 50 ms and 200 ms are both measured per second",
           "is_correct": false
+        },
+        {
+          "text": "Latency improved; throughput, the number of requests per second, did not",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -574,12 +547,12 @@
       "explanation": "0.1% of 30 days (43,200 minutes) is about 43 minutes. Each extra nine cuts the allowed downtime by ten.",
       "options": [
         {
-          "text": "About 4 minutes",
-          "is_correct": false
-        },
-        {
           "text": "About 43 minutes",
           "is_correct": true
+        },
+        {
+          "text": "About 4 minutes",
+          "is_correct": false
         },
         {
           "text": "About 7 hours",
@@ -605,12 +578,12 @@
           "is_correct": false
         },
         {
-          "text": "Deploy only at night, so a slow rollback happens when there are fewer users",
-          "is_correct": false
-        },
-        {
           "text": "Blue-green: run both versions side by side and switch traffic between them",
           "is_correct": true
+        },
+        {
+          "text": "Deploy only at night, so a slow rollback happens when there are fewer users",
+          "is_correct": false
         },
         {
           "text": "Deploy to every server at once, so a failed release is noticed more quickly",
@@ -636,12 +609,12 @@
           "is_correct": false
         },
         {
-          "text": "Move checkout writes to the replica, so the reports keep the primary to themselves",
-          "is_correct": false
-        },
-        {
           "text": "Run the reports on a read replica, so they no longer load the primary database",
           "is_correct": true
+        },
+        {
+          "text": "Move checkout writes to the replica, so the reports keep the primary to themselves",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -655,10 +628,6 @@
       "explanation": "Service discovery keeps a live registry of where each service's healthy instances are, so callers look services up by name instead of using fixed addresses.",
       "options": [
         {
-          "text": "Service discovery: callers look up healthy instances by service name at run time",
-          "is_correct": true
-        },
-        {
           "text": "A bigger config file that lists every IP address any service could ever use",
           "is_correct": false
         },
@@ -669,6 +638,10 @@
         {
           "text": "A shared spreadsheet where each team writes down its new addresses after deploys",
           "is_correct": false
+        },
+        {
+          "text": "Service discovery: callers look up healthy instances by service name at run time",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -676,25 +649,25 @@
       "format": "situational"
     },
     {
-      "title": "Slow, but where?",
-      "description": "Users report that one page is slow. You have request counts and error rates, but nothing tells you which step of the request took the time. Which kind of telemetry answers that?",
+      "title": "Errors are up, but what are they?",
+      "description": "A dashboard shows the checkout error rate jumped from 0.1% to 5% ten minutes ago. You need the exception message and stack trace of the failing requests to see what is wrong. Which kind of telemetry holds that detail?",
       "difficulty": "beginner",
-      "explanation": "Metrics show that something is wrong; traces follow one request through each step and service, showing where its time went; logs give detail on individual events.",
+      "explanation": "Metrics are numbers over time: they show that errors rose, not what they are. Logs record individual events with their details, such as the exception and stack trace.",
       "options": [
         {
-          "text": "More metrics, which count how many requests the page received each minute",
-          "is_correct": false
-        },
-        {
-          "text": "Traces, which follow one request through each step and show its timing",
+          "text": "Logs, which record each failing request's error message and stack trace",
           "is_correct": true
         },
         {
-          "text": "Uptime checks, which show whether the page answers at all from outside",
+          "text": "Metrics, which record each failing request's error message and stack trace",
           "is_correct": false
         },
         {
-          "text": "Error logs, which list only the requests that failed with an exception",
+          "text": "Uptime checks, which record whether checkout answers from outside the network",
+          "is_correct": false
+        },
+        {
+          "text": "CPU graphs, which record how busy each checkout server was at that moment",
           "is_correct": false
         }
       ],
@@ -713,12 +686,12 @@
           "is_correct": false
         },
         {
-          "text": "Store the address only in the application's memory, so the database holds none",
-          "is_correct": false
-        },
-        {
           "text": "Store the address once and have orders and invoices refer to it",
           "is_correct": true
+        },
+        {
+          "text": "Store the address only in the application's memory, so the database holds none",
+          "is_correct": false
         },
         {
           "text": "Store the address as an image, so it can't be edited by accident in any table",
@@ -744,12 +717,12 @@
           "is_correct": false
         },
         {
-          "text": "Put all twelve services on one server, so the network errors go away",
-          "is_correct": false
-        },
-        {
           "text": "Start with a well-structured monolith and split out services only when needed",
           "is_correct": true
+        },
+        {
+          "text": "Put all twelve services on one server, so the network errors go away",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -763,10 +736,6 @@
       "explanation": "Workers send periodic heartbeats; when the coordinator misses several in a row, it marks the worker dead and reassigns its jobs.",
       "options": [
         {
-          "text": "Heartbeats: workers report in regularly, and missing reports mark a worker as dead",
-          "is_correct": true
-        },
-        {
           "text": "Longer job timeouts, so a dead worker has more time to finish its jobs anyway",
           "is_correct": false
         },
@@ -777,6 +746,10 @@
         {
           "text": "A daily restart of every worker, so dead ones come back the next morning",
           "is_correct": false
+        },
+        {
+          "text": "Heartbeats: workers report in regularly, and missing reports mark a worker as dead",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -790,12 +763,12 @@
       "explanation": "Webhook senders usually retry failed deliveries, so the receiver must answer 2xx only after storing the event, handle repeats safely, and reconcile against the provider's API.",
       "options": [
         {
-          "text": "Reply with success before processing, so the provider never has to retry",
-          "is_correct": false
-        },
-        {
           "text": "Store each event before replying, and handle repeats safely",
           "is_correct": true
+        },
+        {
+          "text": "Reply with success before processing, so the provider never has to retry",
+          "is_correct": false
         },
         {
           "text": "Ignore webhooks entirely and ask customers to email proof of each payment",
@@ -811,25 +784,25 @@
       "format": "situational"
     },
     {
-      "title": "Double-clicked button",
-      "description": "A user double-clicks \"Mark as read\" on a message, and two identical requests reach the server. The message ends up marked as read, exactly as after one click. What property does this operation have?",
+      "title": "Double-tapped \"Add to cart\"",
+      "description": "A user double-taps \"Add to cart\", two identical POST requests reach the server, and the cart now holds two of the item instead of one. Retrying \"Set quantity to 1\" never causes this. Why does one operation misbehave on a repeat and the other not?",
       "difficulty": "beginner",
-      "explanation": "An idempotent operation has the same effect whether it is applied once or several times, so a duplicate request is harmless.",
+      "explanation": "\"Add one\" is not idempotent: each request changes the state again. \"Set quantity to 1\" is idempotent: repeating it leaves the same result, so duplicates are harmless.",
       "options": [
         {
-          "text": "It is atomic: both requests were combined into one database transaction",
+          "text": "Adding an item is cached, while setting the quantity skips the cache",
           "is_correct": false
         },
         {
-          "text": "It is stateless: the server forgot the first click before the second arrived",
-          "is_correct": false
-        },
-        {
-          "text": "It is idempotent: doing it twice has the same effect as doing it once",
+          "text": "Adding an item is not idempotent, while setting the quantity is",
           "is_correct": true
         },
         {
-          "text": "It is cached: the second request was answered without reaching the server",
+          "text": "POST requests are always sent twice by browsers on a mobile network",
+          "is_correct": false
+        },
+        {
+          "text": "The cart is stored in two databases that each save the item once",
           "is_correct": false
         }
       ],
@@ -852,12 +825,12 @@
           "is_correct": false
         },
         {
-          "text": "A shared log file, so each service greps the web server's output for orders",
-          "is_correct": false
-        },
-        {
           "text": "Publish-subscribe, so every subscribed service gets its own copy of the event",
           "is_correct": true
+        },
+        {
+          "text": "A shared log file, so each service greps the web server's output for orders",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -871,10 +844,6 @@
       "explanation": "Otherwise readers keep getting the old value from the cache until it expires. Invalidating (or updating) the entry on write keeps the cache from serving stale data.",
       "options": [
         {
-          "text": "So readers don't keep getting the old value from the cache after the change",
-          "is_correct": true
-        },
-        {
           "text": "So the database can free the memory that the cached copy was using",
           "is_correct": false
         },
@@ -885,6 +854,10 @@
         {
           "text": "So the next write to the same row is sent to the cache instead of the database",
           "is_correct": false
+        },
+        {
+          "text": "So readers don't keep getting the old value from the cache after the change",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -898,12 +871,12 @@
       "explanation": "Reactive autoscaling starts new instances only after load rises, and they take time to boot. Scaling on a schedule adds capacity before a spike you know is coming.",
       "options": [
         {
-          "text": "Scheduled scaling uses less CPU per request than autoscaling based on load",
-          "is_correct": false
-        },
-        {
           "text": "New instances are ready before the spike, instead of booting after load rises",
           "is_correct": true
+        },
+        {
+          "text": "Scheduled scaling uses less CPU per request than autoscaling based on load",
+          "is_correct": false
         },
         {
           "text": "CPU-based autoscaling can only remove instances and never add new ones",
@@ -929,12 +902,12 @@
           "is_correct": false
         },
         {
-          "text": "Ask users to email their videos so support staff can upload them by hand",
-          "is_correct": false
-        },
-        {
           "text": "Give the client a short-lived presigned URL to upload to storage directly",
           "is_correct": true
+        },
+        {
+          "text": "Ask users to email their videos so support staff can upload them by hand",
+          "is_correct": false
         },
         {
           "text": "Store the videos in the main database first, then copy them to storage",
@@ -960,12 +933,12 @@
           "is_correct": false
         },
         {
-          "text": "A full-text search engine, built for ranking documents by relevant keywords",
-          "is_correct": false
-        },
-        {
           "text": "A time-series database, built for timestamped data, time windows and retention",
           "is_correct": true
+        },
+        {
+          "text": "A full-text search engine, built for ranking documents by relevant keywords",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -979,10 +952,6 @@
       "explanation": "The replica must apply every change the primary makes. A burst of heavy writes produces changes faster than the replica applies them, so its lag grows until the burst ends.",
       "options": [
         {
-          "text": "Replication lag grows because the replica can't apply the heavy writes as fast",
-          "is_correct": true
-        },
-        {
           "text": "The import locks the replica, so dashboards read an old backup until it ends",
           "is_correct": false
         },
@@ -993,6 +962,10 @@
         {
           "text": "The primary stops sending changes during imports to save network bandwidth",
           "is_correct": false
+        },
+        {
+          "text": "Replication lag grows because the replica can't apply the heavy writes as fast",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -1006,12 +979,12 @@
       "explanation": "Terminating TLS at the load balancer or reverse proxy means one place holds and renews the certificate, and the servers behind it don't each need one.",
       "options": [
         {
-          "text": "Turn off HTTPS for the site, so no server needs a certificate at all anymore",
-          "is_correct": false
-        },
-        {
           "text": "Terminate TLS at the load balancer, so the certificate is managed in one place",
           "is_correct": true
+        },
+        {
+          "text": "Turn off HTTPS for the site, so no server needs a certificate at all anymore",
+          "is_correct": false
         },
         {
           "text": "Give all fifty servers the same private key, emailed to each team for setup",
@@ -1037,12 +1010,12 @@
           "is_correct": false
         },
         {
-          "text": "4xx: the server is overloaded; 5xx: the client's network connection failed",
-          "is_correct": false
-        },
-        {
           "text": "4xx: the request was at fault; 5xx: the server failed to handle the request",
           "is_correct": true
+        },
+        {
+          "text": "4xx: the server is overloaded; 5xx: the client's network connection failed",
+          "is_correct": false
         },
         {
           "text": "4xx: the response was cached; 5xx: the response was built fresh on the server",
@@ -1068,12 +1041,12 @@
           "is_correct": false
         },
         {
-          "text": "So the response is cached for the time given in the timeout setting",
-          "is_correct": false
-        },
-        {
           "text": "So a hung dependency can't hold the caller's threads and connections forever",
           "is_correct": true
+        },
+        {
+          "text": "So the response is cached for the time given in the timeout setting",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -1087,10 +1060,6 @@
       "explanation": "Retries help only with transient failures such as timeouts, 503 or 429. A 400 means the request itself is wrong, so sending it again fails the same way.",
       "options": [
         {
-          "text": "Only transient ones, such as timeouts, 503 or 429, not errors in the request",
-          "is_correct": true
-        },
-        {
           "text": "Only 400 errors, since invalid input often becomes valid on a second attempt",
           "is_correct": false
         },
@@ -1101,6 +1070,10 @@
         {
           "text": "No errors at all, since retries never succeed for any kind of failed request",
           "is_correct": false
+        },
+        {
+          "text": "Only transient ones, such as timeouts, 503 or 429, not errors in the request",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -1114,12 +1087,12 @@
       "explanation": "A backup is only proven by restoring it. Regular test restores show that backups are complete and that the team knows how to recover, before a real incident.",
       "options": [
         {
-          "text": "Taking backups twice as often, so there are more copies to choose from",
-          "is_correct": false
-        },
-        {
           "text": "Regularly restoring a backup into a test environment to prove it works",
           "is_correct": true
+        },
+        {
+          "text": "Taking backups twice as often, so there are more copies to choose from",
+          "is_correct": false
         },
         {
           "text": "Keeping backups on the same disk as the database, so they're quick to reach",
@@ -1145,12 +1118,12 @@
           "is_correct": false
         },
         {
-          "text": "Keep it in the repository, but encoded in Base64 so it can't be read",
-          "is_correct": false
-        },
-        {
           "text": "Keep it in a secrets manager or an environment variable instead",
           "is_correct": true
+        },
+        {
+          "text": "Keep it in the repository, but encoded in Base64 so it can't be read",
+          "is_correct": false
         },
         {
           "text": "Keep it in the repository, but only on a branch that is never merged",
@@ -1176,12 +1149,12 @@
           "is_correct": false
         },
         {
-          "text": "Synchronous requests can't send email, only read from the database",
-          "is_correct": false
-        },
-        {
           "text": "The user gets a fast response, and the slow email runs in the background",
           "is_correct": true
+        },
+        {
+          "text": "Synchronous requests can't send email, only read from the database",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -1195,10 +1168,6 @@
       "explanation": "Alerting on symptoms users feel, such as error rate or latency, catches real problems whatever the cause, and avoids paging for causes that don't hurt anyone.",
       "options": [
         {
-          "text": "Users are seeing a high error rate or slow responses",
-          "is_correct": true
-        },
-        {
           "text": "One server's CPU went above 70% for a minute",
           "is_correct": false
         },
@@ -1209,6 +1178,10 @@
         {
           "text": "Disk use on a build machine grew by one percent",
           "is_correct": false
+        },
+        {
+          "text": "Users are seeing a high error rate or slow responses",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -1222,12 +1195,12 @@
       "explanation": "Batch processing runs over a bounded set of data collected over time (for example nightly); stream processing handles each event continuously as it arrives.",
       "options": [
         {
-          "text": "Batch runs on one machine only; streaming always needs a cluster of machines",
-          "is_correct": false
-        },
-        {
           "text": "Batch runs on collected data at intervals; streaming handles each event live",
           "is_correct": true
+        },
+        {
+          "text": "Batch runs on one machine only; streaming always needs a cluster of machines",
+          "is_correct": false
         },
         {
           "text": "Batch handles text data only; streaming handles images, audio and video only",
@@ -1253,12 +1226,12 @@
           "is_correct": false
         },
         {
-          "text": "To encrypt the row so only its owner is allowed to read it",
-          "is_correct": false
-        },
-        {
           "text": "To identify each row uniquely, so it can be found and referenced",
           "is_correct": true
+        },
+        {
+          "text": "To encrypt the row so only its owner is allowed to read it",
+          "is_correct": false
         },
         {
           "text": "To decide which server stores the row in a replicated setup",
@@ -1284,12 +1257,12 @@
           "is_correct": false
         },
         {
-          "text": "Keeping a live backup of the production database for fast restores",
-          "is_correct": false
-        },
-        {
           "text": "Testing a release in a production-like setup before real users get it",
           "is_correct": true
+        },
+        {
+          "text": "Keeping a live backup of the production database for fast restores",
+          "is_correct": false
         }
       ],
       "category": "system-design",
@@ -1303,10 +1276,6 @@
       "explanation": "A feature flag turns code paths on or off at run time, so a feature can ship dark, roll out to some users, or be switched off without a redeploy.",
       "options": [
         {
-          "text": "Turn a feature on or off for some or all users without redeploying",
-          "is_correct": true
-        },
-        {
           "text": "Mark a feature as finished so it can't be changed by anyone later",
           "is_correct": false
         },
@@ -1317,6 +1286,10 @@
         {
           "text": "Block a deploy until every feature in it has been fully tested",
           "is_correct": false
+        },
+        {
+          "text": "Turn a feature on or off for some or all users without redeploying",
+          "is_correct": true
         }
       ],
       "category": "system-design",
@@ -1330,12 +1303,12 @@
       "explanation": "Named fields let a log system filter, group and search reliably, for example by request_id or user, without fragile text parsing.",
       "options": [
         {
-          "text": "Logs take no disk space, because structured records are never stored",
-          "is_correct": false
-        },
-        {
           "text": "Logs can be filtered and searched by field, such as request_id, reliably",
           "is_correct": true
+        },
+        {
+          "text": "Logs take no disk space, because structured records are never stored",
+          "is_correct": false
         },
         {
           "text": "Logs are encrypted automatically, so no one else is able to read them",
@@ -1361,12 +1334,12 @@
           "is_correct": false
         },
         {
-          "text": "Compressed responses are cached forever by every browser",
-          "is_correct": false
-        },
-        {
           "text": "Fewer bytes travel over the network, so pages load faster",
           "is_correct": true
+        },
+        {
+          "text": "Compressed responses are cached forever by every browser",
+          "is_correct": false
         },
         {
           "text": "Compression hides the response contents from network observers",
