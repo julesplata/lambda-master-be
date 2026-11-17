@@ -91,3 +91,14 @@ class AdminBulkPatch(BaseModel):
 
 class AdminBulkResult(BaseModel):
     affected: int
+
+
+class AdminQuestionStats(BaseModel):
+    """How one question performs on first-time, considered answers."""
+
+    question_id: uuid.UUID
+    first_answers: int
+    # Share of first_answers that were correct, 0 to 1. NULL without answers.
+    correct_rate: float | None
+    median_time_ms: float | None
+    open_reports: int

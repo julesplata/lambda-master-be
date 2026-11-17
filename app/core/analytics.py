@@ -19,7 +19,8 @@ a stable pseudonymous id otherwise. The frontend sends the visitor id only after
 the visitor accepts analytics; it is a random UUID kept in their browser, so it
 survives a change of network where the IP hash does not. Every event carries
 ``id_source`` (``user``, ``visitor`` or ``ip``) so charts can leave out the IP
-hash, which is shared by everyone behind one address. The raw IP never leaves
+hash, which is shared by everyone behind one address, and ``internal``, true
+for the site owner's own browsers, so charts can leave out their testing. The raw IP never leaves
 the process: it is PII, and in guest-only mode every event would carry one.
 
 A visitor who refused analytics is never tracked: the frontend sends
@@ -56,6 +57,8 @@ _client: Posthog | None = None
 _OPT_OUT_HEADER = "x-analytics-opt-out"
 # Must match VISITOR_HEADER in frontend/src/api/client.ts.
 _VISITOR_HEADER = "x-visitor-id"
+# Must match INTERNAL_HEADER in frontend/src/api/client.ts.
+_INTERNAL_HEADER = "x-internal"
 
 # Fallback key used when ANALYTICS_IP_SALT is unset. An *unsalted* IP hash is not
 # anonymisation — the whole IPv4 space is ~4 billion candidates, so a digest can
@@ -125,6 +128,16 @@ def visitor_id(request: Request) -> uuid.UUID | None:
         return None
 
 
+def is_internal(request: Request) -> bool:
+    """Whether the request comes from a browser marked as the site owner's own.
+
+    The frontend sends ``X-Internal: 1`` once that browser has signed in to the
+    admin console, whatever the analytics choice: it identifies nobody. Anyone
+    can send it, and all it does is leave their own quizzes out of the figures.
+    """
+    return request.headers.get(_INTERNAL_HEADER) == "1"
+
+
 def _distinct_id(request: Request) -> tuple[str, str]:
     """The id to report events under, and where it came from.
 
@@ -163,5 +176,9 @@ def track(
     _client.capture(
         distinct_id=distinct_id,
         event=event,
-        properties={**(properties or {}), "id_source": id_source},
+        properties={
+            **(properties or {}),
+            "id_source": id_source,
+            "internal": is_internal(request),
+        },
     )

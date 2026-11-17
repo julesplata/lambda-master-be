@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import require_admin
+from app.core.analytics import track
 from app.core.config import settings
 from app.core.limiter import limiter
 from app.db.session import get_session
@@ -26,7 +27,11 @@ async def create_feedback(
     body: FeedbackCreate,
     session: AsyncSession = Depends(get_session),
 ):
-    """Submit app-wide feedback. Open to guests."""
+    """Submit app-wide feedback. Open to guests.
+
+    The survey's answer also goes to PostHog, set on the visitor's person, so
+    every event from that visitor can be split by what they are preparing for.
+    """
     feedback = AppFeedback(
         category=body.category,
         message=body.message,
@@ -34,6 +39,15 @@ async def create_feedback(
     )
     session.add(feedback)
     await session.commit()
+    if body.preparing_for is not None:
+        track(
+            request,
+            "survey_answered",
+            {
+                "preparing_for": body.preparing_for,
+                "$set": {"preparing_for": body.preparing_for},
+            },
+        )
     return {"id": feedback.id}
 
 
